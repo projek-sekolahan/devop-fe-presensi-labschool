@@ -6,6 +6,7 @@ import Login from "./Pages/Login";
 import ChangePassword from "./Pages/ChangePassword";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
+import Presensi from "./Pages/Presensi";
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 				<Route path="/password/reset" Component={ChangePassword} />
 				<Route path="/home" Component={Home} />
 				<Route path="/profile" Component={Profile} />
+				<Route path="/presensi" Component={Presensi} />
 			</Routes>
 		</Router>
 	);

@@ -8,22 +8,35 @@ import {
 import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
+import SideMenu from "/src/Components/SideMenu";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+	const [show, setShow] = useState(false);
+
+	window.addEventListener("click", (e) => {
+		if (e.pageX > (screen.width * 75) / 100) {
+			setShow(false);
+		}
+	});
+
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<img
-				src="/src/assets/icons/elipse.svg"
+				src="./src/assets/icons/elipse.svg"
 				alt="elipse"
 				className="w-full absolute z-[1] left-0 top-[-30px] "
 			/>
 			<div id="core" className="relative z-[2] size-full">
 				<nav className="flex items-center justify-between">
-					<Bars3Icon className="fill-white size-8" />
-					<div
-						id="profile"
-						className="flex items-center gap-2 ml-[-7rem] sm:ml-[-5rem]"
+					<button
+						onClick={() => {
+							setShow(true);
+						}}
 					>
+						<Bars3Icon className="fill-white size-8" />
+					</button>
+					<div id="profile" className="flex items-center gap-2">
 						<img
 							src="https://source.unsplash.com/woman-in-white-shirt-holding-green-plant-6l2SLnzdF-A/600x600"
 							alt="photo_profile"
@@ -33,7 +46,9 @@ export default function Home() {
 							Fata Nadhira Putri
 						</p>
 					</div>
-					<BellIcon className="fill-white size-8" />
+					<button>
+						<BellIcon className="fill-white size-8" />
+					</button>
 				</nav>
 				<main className="mt-9 h-56 sm:h-52">
 					<div id="news" className="size-full">
@@ -89,6 +104,7 @@ export default function Home() {
 						</div>
 						<Link
 							id="presensi"
+							to="/presensi"
 							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
@@ -101,6 +117,7 @@ export default function Home() {
 						</Link>
 						<Link
 							id="riwayat_presensi"
+							to="/riwayat"
 							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
@@ -114,20 +131,23 @@ export default function Home() {
 					</div>
 				</main>
 				<div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
-					<Link to="/home" className="flex flex-col justify-center items-center text-primary-md">
+					<Link
+						to="/home"
+						className="flex flex-col justify-center items-center text-primary-md"
+					>
 						<HomeIcon className="size-7" />
-						<p className="text-center font-bold text-xs">
-							Beranda
-						</p>
+						<p className="text-center font-bold text-xs">Beranda</p>
 					</Link>
-					<Link to="/profile" className="flex flex-col justify-center items-center text-bg-2 hover:text-primary-md">
+					<Link
+						to="/profile"
+						className="flex flex-col justify-center items-center text-bg-2 hover:text-primary-md"
+					>
 						<UserIcon className="size-7" />
-						<p className="text-center font-bold text-xs">
-							Profile
-						</p>
+						<p className="text-center font-bold text-xs">Profile</p>
 					</Link>
 				</div>
 			</div>
+			<SideMenu show={show} />
 		</div>
 	);
 }

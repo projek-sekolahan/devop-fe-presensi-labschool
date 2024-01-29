@@ -9,7 +9,7 @@ export default function Profile() {
 		number: "+6212345678",
 	};
 	return (
-		<div className="border-red-500 border-2 font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
+		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<div
 				id="id"
 				className="absolute w-full top-0 left-0 bg-primary-md rounded-b-[3rem] p-6 sm:p-8"
