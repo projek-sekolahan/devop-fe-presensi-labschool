@@ -1,0 +1,53 @@
+{
+	"name": "labschool-unesa",
+	"start_url": "/",
+	"display": "fullscreen",
+	"theme_color": "#fff",
+	"background_color": "#fff",
+	"icons": [
+		{
+			"src": "/src/assets/icons/splash.png",
+			"type": "image/png",
+			"sizes": "2160x2160",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/src/assets/icons/student.svg",
+			"type": "image/svg+xml",
+			"sizes": "72x70",
+			"purpose": "any"
+		},
+		{
+			"src": "/src/assets/icons/teacher.svg",
+			"type": "image/svg+xml",
+			"sizes": "72x70",
+			"purpose": "any"
+		},
+		{
+			"src": "/src/assets/icons/employee.svg",
+			"type": "image/svg+xml",
+			"sizes": "72x70",
+			"purpose": "any"
+		},
+		{
+			"src": "/src/assets/icons/unesa-logo.svg",
+			"type": "image/svg+xml",
+			"sizes": "417x491",
+			"purpose": "any"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "/src/assets/screenshot/sc1.jpg",
+			"type": "image/jpg",
+			"sizes": "1080x2160",
+			"form_factor": "narrow"
+		},
+		{
+			"src": "/src/assets/screenshot/sc2.jpg",
+			"type": "image/jpg",
+			"sizes": "1080x2160",
+			"form_factor": "wide"
+		}
+	]
+}
