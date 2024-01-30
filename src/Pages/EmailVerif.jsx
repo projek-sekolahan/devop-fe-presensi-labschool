@@ -8,7 +8,7 @@ export default function EmailVerif() {
                 <ArrowLeftIcon className="size-7 absolute top-8 left-6"/>
             </Link>
 			<img
-				src="/src/assets/icons/splash.svg"
+				src="/Icons/splash.svg"
 				alt="labschool-unesa-logo"
 				className="size-[241px] m-auto mt-24"
 			/>

@@ -14,7 +14,7 @@ export default function Register() {
 					<div id="role" className="flex justify-center gap-8">
 						<figure>
 							<img
-								src="/src/assets/Icons/student.svg"
+								src="/Icons/student.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">
@@ -23,7 +23,7 @@ export default function Register() {
 						</figure>
 						<figure>
 							<img
-								src="/src/assets/Icons/teacher.svg"
+								src="/Icons/teacher.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">
@@ -32,7 +32,7 @@ export default function Register() {
 						</figure>
 						<figure>
 							<img
-								src="/src/assets/Icons/employee.svg"
+								src="/Icons/employee.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">

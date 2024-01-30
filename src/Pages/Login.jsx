@@ -8,7 +8,7 @@ export default function Login() {
 				<ArrowLeftIcon className="size-7 absolute top-8 left-6 z-[2]" />
 			</Link>
 			<img
-				src="/src/assets/img/login.png"
+				src="/img/login.png"
 				alt="labschool-unesa-logo"
 				className="size-[calc(100vh/2+30px)] absolute top-0 left-0 z-0"
 			/>
