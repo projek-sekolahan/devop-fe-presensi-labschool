@@ -6,31 +6,31 @@
 	"background_color": "#fff",
 	"icons": [
 		{
-			"src": "/src/assets/icons/splash.png",
+			"src": "/Icons/splash.png",
 			"type": "image/png",
 			"sizes": "2160x2160",
 			"purpose": "maskable"
 		},
 		{
-			"src": "/src/assets/icons/student.svg",
+			"src": "/Icons/student.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/src/assets/icons/teacher.svg",
+			"src": "/Icons/teacher.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/src/assets/icons/employee.svg",
+			"src": "/Icons/employee.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/src/assets/icons/unesa-logo.svg",
+			"src": "/Icons/unesa-logo.svg",
 			"type": "image/svg+xml",
 			"sizes": "417x491",
 			"purpose": "any"
@@ -38,13 +38,13 @@
 	],
 	"screenshots": [
 		{
-			"src": "/src/assets/screenshot/sc1.jpg",
+			"src": "/screenshot/sc1.jpg",
 			"type": "image/jpg",
 			"sizes": "1080x2160",
 			"form_factor": "narrow"
 		},
 		{
-			"src": "/src/assets/screenshot/sc2.jpg",
+			"src": "/screenshot/sc2.jpg",
 			"type": "image/jpg",
 			"sizes": "1080x2160",
 			"form_factor": "wide"
