@@ -23,7 +23,7 @@ export default function Home() {
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<img
-				src="./src/assets/icons/elipse.svg"
+				src="/assets/icons/elipse.svg"
 				alt="elipse"
 				className="w-full absolute z-[1] left-0 top-[-30px] "
 			/>
