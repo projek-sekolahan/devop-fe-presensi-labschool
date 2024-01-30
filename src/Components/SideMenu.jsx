@@ -17,14 +17,14 @@ export default function SideMenu({ show }) {
 		>
 			<div className="w-full relative px-4">
 				<img
-					src="/src/assets/icons/Ellipse 190.svg"
+					src="/Icons/Ellipse 190.svg"
 					alt=""
 					className="w-full absolute left-0 top-0"
 				/>
 				<div className="flex absolute top-0 left-0 justify-between w-full">
-					<img src="/src/assets/icons/Group 117.svg" alt="" />
-					<img src="/src/assets/icons/Group 116.svg" alt="" />
-					<img src="/src/assets/icons/Group 115.svg" alt="" />
+					<img src="/Icons/Group 117.svg" alt="" />
+					<img src="/Icons/Group 116.svg" alt="" />
+					<img src="/Icons/Group 115.svg" alt="" />
 				</div>
 				<div id="bio" className="absolute top-9 left-4 flex gap-2">
 					<img
