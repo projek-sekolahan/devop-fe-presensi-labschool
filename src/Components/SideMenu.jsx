@@ -3,7 +3,7 @@ import {
 	UserCircleIcon,
 	Cog6ToothIcon,
 	QuestionMarkCircleIcon,
-	ChevronRightIcon
+	ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function SideMenu({ show }) {
 				show ? "translate-x-[100vw]" : "translate-x-0"
 			}`}
 		>
-			<div className="w-full relative px-4">
+			<div className="size-full relative px-4">
 				<img
 					src="/Icons/Ellipse 190.svg"
 					alt=""
@@ -41,22 +41,28 @@ export default function SideMenu({ show }) {
 					id="menu"
 					className="absolute top-40 w-[65vw] text-primary-high flex flex-col gap-4"
 				>
-					<Link to="/profile" className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center">
+					<Link
+						to="/profile"
+						className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
+					>
 						<UserCircleIcon className="size-9" />
 						<p>Profil</p>
-						<ChevronRightIcon className="size-5 stroke-2 ml-auto"/>
+						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
 					<Link className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center">
 						<Cog6ToothIcon className="size-9" />
 						<p>Pengaturan</p>
-						<ChevronRightIcon className="size-5 stroke-2 ml-auto"/>
+						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
 					<Link className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center">
 						<QuestionMarkCircleIcon className="size-9" />
 						<p>Bantuan</p>
-						<ChevronRightIcon className="size-5 stroke-2 ml-auto"/>
+						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
 				</div>
+				<Link to="/login" className="w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]">
+					Keluar
+				</Link>
 			</div>
 		</div>
 	);

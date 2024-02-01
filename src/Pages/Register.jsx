@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 
 export default function Register() {
 	return (
-		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8">
+		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
 			<h1 className="text-center text-4xl font-bold text-white ">
 				Register
 			</h1>
 			<small className="text-center text-xs font-medium text-white mt-1">
 				Selamat datang!
 			</small>
-			<div className="w-full h-full bg-primary-md rounded-t-[2rem] mt-[6.25rem]">
+			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
 				<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
 					<div id="role" className="flex justify-center gap-8">
 						<figure>
@@ -41,18 +41,18 @@ export default function Register() {
 						</figure>
 					</div>
 					<form
-						className="space-y-4 md:space-y-6 flex flex-col gap-2"
+						className="space-y-4 md:space-y-6 flex flex-col gap-2 "
 						action="#"
 					>
 						<input
 							id="name"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="Nama Lengkap"
 							required=""
 						/>
 						<input
 							id="number"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="No. Telepon"
 							required=""
 						/>
@@ -61,7 +61,7 @@ export default function Register() {
 							type="email"
 							name="email"
 							id="email"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="Email"
 							required=""
 						/>
@@ -71,7 +71,7 @@ export default function Register() {
 							name="password"
 							id="password"
 							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							required=""
 						/>
 						<Link to="/verification">
