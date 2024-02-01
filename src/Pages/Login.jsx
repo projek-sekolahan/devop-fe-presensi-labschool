@@ -10,11 +10,11 @@ export default function Login() {
 			<img
 				src="/img/login.png"
 				alt="labschool-unesa-logo"
-				className="w-full h-3/5 absolute top-0 left-0 z-0"
+				className="w-full h-[60vh] absolute top-0 left-0 z-0"
 			/>
 			<div className="w-full h-fit bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute z-10">
 				<h2 className="font-bold text-4xl">Login</h2>
-				<p className="font-thin text-xs">
+				<p className="font-light text-xs">
 					{"Selamat datang kembali :)"}
 				</p>
 				<div className="my-6 space-y-4 md:space-y-6">
@@ -26,7 +26,7 @@ export default function Login() {
 							type="email"
 							name="email"
 							id="email"
-							className="bg-primary-md border-white border-[1px] text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4"
 							placeholder="Email"
 							required=""
 							autoComplete=""
@@ -36,7 +36,7 @@ export default function Login() {
 							name="password"
 							id="password"
 							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							required=""
 						/>
                         <Link to="/password/reset" className="text-sm font-light text-end">
