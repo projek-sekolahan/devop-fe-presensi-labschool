@@ -7,6 +7,7 @@ import ChangePassword from "./Pages/ChangePassword";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Presensi from "./Pages/Presensi";
+import Riwayat from "./Pages/Riwayat";
 
 function App() {
 	return (
@@ -19,6 +20,8 @@ function App() {
 				<Route path="/home" Component={Home} />
 				<Route path="/profile" Component={Profile} />
 				<Route path="/presensi" Component={Presensi} />
+				<Route path="/riwayat" Component={Riwayat} />
+
 			</Routes>
 		</Router>
 	);

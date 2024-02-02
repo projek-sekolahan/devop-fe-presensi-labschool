@@ -23,7 +23,7 @@ export default function ChangePassword() {
 							type="email"
 							name="email"
 							id="email"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="Email"
 							required=""
 						/>
@@ -32,7 +32,7 @@ export default function ChangePassword() {
 							name="password"
 							id="password"
 							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							required=""
 						/>
 						<input
@@ -40,7 +40,7 @@ export default function ChangePassword() {
 							name="password"
 							id="password"
 							placeholder="New password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							required=""
 						/>
 
