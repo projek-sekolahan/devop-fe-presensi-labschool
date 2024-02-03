@@ -1,4 +1,8 @@
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowLeftIcon,
+	ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
+import airplane from "pepicons/svg/pop/airplane.svg";
 import { Link } from "react-router-dom";
 
 export default function Presensi() {
@@ -18,17 +22,19 @@ export default function Presensi() {
 					<p>09:41 WIB</p>
 					<small>Tanggal : 23-02-2023</small>
 					<div className="grid grid-cols-2 gap-2 text-white">
-						<button className="py-2 bg-secondary-green rounded-md text-center font-semibold">
-							Masuk
+						<button className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
+							<img src={airplane} alt="" />
+							<p className="text-center font-semibold">Masuk</p>
 						</button>
-						<button className="py-2 bg-secondary-green rounded-md text-center font-semibold">
-							Pulang
+						<button className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
+							<p className="text-center font-semibold">Pulang</p>
 						</button>
-                        <button className="py-2 bg-secondary-red rounded-md text-center font-semibold">
-							Sakit
+						<button className="p-5 bg-secondary-red rounded-md flex flex-col justify-center items-center">
+							<p className="text-center font-semibold">Sakit</p>
 						</button>
-						<button className="py-2 bg-secondary-yellow rounded-md text-center font-semibold">
-							Izin
+						<button className="p-5 bg-secondary-yellow rounded-md flex flex-col justify-center items-center">
+							<ExclamationTriangleIcon className="size-20" />
+							<p className="text-center font-semibold">Izin</p>
 						</button>
 					</div>
 				</div>

@@ -8,6 +8,7 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Presensi from "./Pages/Presensi";
 import Riwayat from "./Pages/Riwayat";
+import Bantuan from "./Pages/Bantuan";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 				<Route path="/profile" Component={Profile} />
 				<Route path="/presensi" Component={Presensi} />
 				<Route path="/riwayat" Component={Riwayat} />
+				<Route path="/bantuan" Component={Bantuan} />
 
 			</Routes>
 		</Router>
