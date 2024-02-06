@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline"
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function EmailVerif() {
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">
-            <Link to="/">
-                <ArrowLeftIcon className="size-7 absolute top-8 left-6"/>
-            </Link>
+			<Link to="/">
+				<ArrowLeftIcon className="size-7 absolute top-8 left-6" />
+			</Link>
 			<img
 				src="/Icons/splash.svg"
 				alt="labschool-unesa-logo"
@@ -48,7 +48,7 @@ export default function EmailVerif() {
 							Click Here
 						</Link>
 					</p>
-					<Link to="/verification">
+					<Link to="/home">
 						<button
 							type="submit"
 							className="w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"

@@ -46,9 +46,9 @@ export default function Home() {
 							Fata Nadhira Putri
 						</p>
 					</div>
-					<button>
+					<Link to="/notifikasi">
 						<BellIcon className="fill-white size-8" />
-					</button>
+					</Link>
 				</nav>
 				<main className="mt-9 h-56 sm:h-52">
 					<div id="news" className="size-full">

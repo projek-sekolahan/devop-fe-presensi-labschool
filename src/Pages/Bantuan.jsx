@@ -12,6 +12,18 @@ export default function Bantuan() {
 			head: "Lorem ipsum dolor sit amet, consectetur",
 			desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid dignissimos doloremque deserunt nisi, nesciunt placeat recusandae sit nemo, enim veniam explicabo quaerat autem ipsam dolor. Distinctio accusantium labore",
 		},
+		{
+			head: "Lorem ipsum dolor sit amet, consectetur",
+			desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid dignissimos doloremque deserunt nisi, nesciunt placeat recusandae sit nemo, enim veniam explicabo quaerat autem ipsam dolor. Distinctio accusantium labore",
+		},
+		{
+			head: "Lorem ipsum dolor sit amet, consectetur",
+			desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid dignissimos doloremque deserunt nisi, nesciunt placeat recusandae sit nemo, enim veniam explicabo quaerat autem ipsam dolor. Distinctio accusantium labore",
+		},
+		{
+			head: "Lorem ipsum dolor sit amet, consectetur",
+			desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid dignissimos doloremque deserunt nisi, nesciunt placeat recusandae sit nemo, enim veniam explicabo quaerat autem ipsam dolor. Distinctio accusantium labore",
+		},
 	];
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">

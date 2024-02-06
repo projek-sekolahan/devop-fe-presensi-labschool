@@ -11,7 +11,7 @@ export default function SideMenu({ show }) {
 	return (
 		<div
 			id="container"
-			className={`absolute w-[75vw] h-screen bg-white z-10 left-[-100vw] top-0 duration-500 ${
+			className={`absolute w-3/4 h-screen bg-white z-10 left-[-100vw] top-0 duration-500 ${
 				show ? "translate-x-[100vw]" : "translate-x-0"
 			}`}
 		>
@@ -39,7 +39,7 @@ export default function SideMenu({ show }) {
 				</div>
 				<div
 					id="menu"
-					className="absolute top-40 w-[65vw] text-primary-high flex flex-col gap-4"
+					className="absolute top-40 w-[65vw] sm:w-[65%] text-primary-high flex flex-col gap-4"
 				>
 					<Link
 						to="/profile"
@@ -49,12 +49,12 @@ export default function SideMenu({ show }) {
 						<p>Profil</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
-					<Link className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center">
+					<Link to="/setting" className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center">
 						<Cog6ToothIcon className="size-9" />
 						<p>Pengaturan</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
-					<Link className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center">
+					<Link to="/bantuan" className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center">
 						<QuestionMarkCircleIcon className="size-9" />
 						<p>Bantuan</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />

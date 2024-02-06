@@ -4,9 +4,6 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 export default function Login() {
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-			<Link to="/">
-				<ArrowLeftIcon className="size-7 absolute top-8 left-6 z-[2]" />
-			</Link>
 			<img
 				src="/img/login.png"
 				alt="labschool-unesa-logo"
@@ -64,7 +61,7 @@ export default function Login() {
 				<p className="text-center text-sm font-light text-white dark:text-gray-400 mt-10">
 					Belum memiliki akun?{" "}
 					<Link
-						to="/login"
+						to="/"
 						className="font-medium underline text-white hover:underline dark:text-primary-500"
 					>
 						Register
