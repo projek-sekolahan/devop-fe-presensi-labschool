@@ -21,7 +21,7 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
@@ -55,12 +55,12 @@ export default function Home() {
 						<Carousel
 							leftControl=" "
 							rightControl=" "
-							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
+							className=" drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
 						>
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
+							<img src="/img/news.png" className='h-full' />
+							<img src="/img/news.png" className='h-full' />
+							<img src="/img/news.png" className='h-full' />
+							<img src="/img/news.png" className='h-full' />
 						</Carousel>
 						<div
 							id="rekap"

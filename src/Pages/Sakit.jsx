@@ -31,7 +31,7 @@ export default function Sakit() {
 						placeholder="Berikan alasan...."
 						required
 						rows={6}
-						className="font-medium text-md"
+						className="text-md"
 					></Textarea>
 				</div>
 				<div className="mt-4">
@@ -68,6 +68,12 @@ export default function Sakit() {
 					{alert ? (
                         <p className="text-xs font-semibold text-secondary-red">Harap upload file sesuai format yang telah ditentukan</p>
                     ):null}
+					<button
+					type="submit"
+					className="btn border-none w-full h-12 text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-8"
+				>
+					Submit
+				</button>
 				</div>
 			</main>
 		</div>

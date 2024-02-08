@@ -6,8 +6,7 @@ import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
 import { DoctorRegular } from '@fluentui/react-icons';
 import { Link } from "react-router-dom";
 
-export default function Presensi() {
-	
+export default function PresensiStaff() {
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
 			<header className="h-1/5 bg-primary-md relative p-6">
@@ -26,19 +25,11 @@ export default function Presensi() {
 					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
 							<RaiseHandIcon className="size-20" />
-							<p className="text-center font-semibold">Masuk</p>
+							<p className="text-center font-semibold">Dinas Luar</p>
 						</Link>
 						<Link className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
 							<img src="/Icons/exit-run.svg" className="size-20"/>
-							<p className="text-center font-semibold">Pulang</p>
-						</Link>
-						<Link to="/presensi/sakit" className="p-5 bg-secondary-red rounded-md flex flex-col justify-center items-center">
-							<DoctorRegular className="size-20" stroke-width="1.5"/>
-							<p className="text-center font-semibold">Sakit</p>
-						</Link>
-						<Link to="/presensi/ijin" className="p-5 bg-secondary-yellow rounded-md flex flex-col justify-center items-center">
-							<ExclamationTriangleIcon className="size-20 stroke-[2.5]" />
-							<p className="text-center font-semibold">Izin</p>
+							<p className="text-center font-semibold">Non-Dinas</p>
 						</Link>
 					</div>
 				</div>

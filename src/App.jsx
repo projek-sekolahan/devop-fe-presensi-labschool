@@ -13,6 +13,8 @@ import Notification from "./Pages/Notification";
 import Sakit from "./Pages/Sakit";
 import Ijin from "./Pages/Ijin";
 import Pengaturan from "./Pages/Pengaturan";
+import PresensiStaff from "./Pages/PresensiStaff";
+import FaceVerification from "./Pages/FaceVerification";
 
 function App() {
 	return (
@@ -28,6 +30,8 @@ function App() {
 				<Route path="/riwayat" Component={Riwayat} />
 				<Route path="/bantuan" Component={Bantuan} />
 				<Route path="/notifikasi" Component={Notification} />
+				<Route path="/presensi/staff" Component={PresensiStaff} />
+				<Route path="/presensi/masuk" Component={FaceVerification} />
 				<Route path="/presensi/sakit" Component={Sakit} />
 				<Route path="/presensi/ijin" Component={Ijin} />
 				<Route path="/setting" Component={Pengaturan} />

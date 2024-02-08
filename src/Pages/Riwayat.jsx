@@ -7,6 +7,7 @@ import {
 	ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import CardRiwayat from "../Components/CardRiwayat";
 
 export default function Riwayat() {
 	const [filter, setFilter] = useState("Pilih Durasi Hari");
@@ -20,6 +21,36 @@ export default function Riwayat() {
 			setSwapButton(["on", "off"]);
 		}
 	});
+
+	const historys = [
+		{
+			date: "Rabu, 23 Februari 2024",
+            status: "Terlambat",
+			checkIn: "07:15:00 WIB",
+			checkOut: "15:00:00 WIB",
+            
+		},
+		{
+			date: "Kamis, 24 Februari 2024",
+            status: "Masuk",
+			checkIn: "06:59:00 WIB",
+			checkOut: "15:00:00 WIB",
+            
+		},
+		{
+			date: "Jumat, 25 Februari 2024",
+            status: "Masuk",
+			checkIn: "06:45:00 WIB",
+			checkOut: "15:00:00 WIB",
+            
+		},
+		{
+			date: "Senin, 28 Februari 2024",
+            status: "Izin",
+			checkIn: "",
+			checkOut: "",
+		},
+	];
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
@@ -83,126 +114,9 @@ export default function Riwayat() {
 						</li>
 					</ul>
 				</div>
-				<div className="bg-secondary-red w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk :{" "}
-							<span className="text-secondary-red">
-								07:15 WIB (Terlambat)
-							</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-yellow w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk : <span>07:15 WIB (Terlambat)</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-green w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk : <span>07:15 WIB (Terlambat)</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-red w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk :{" "}
-							<span className="text-secondary-red">
-								07:15 WIB (Terlambat)
-							</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-red w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk :{" "}
-							<span className="text-secondary-red">
-								07:15 WIB (Terlambat)
-							</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-red w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk :{" "}
-							<span className="text-secondary-red">
-								07:15 WIB (Terlambat)
-							</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
-				<div className="bg-secondary-red w-full rounded-xl">
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Ananda,{" "}
-					</h2>
-					<div className="bg-white pl-3 py-1 text-sm font-normal">
-						<p>Hari, Tanggal : Rabu, 23 Februari 2024</p>
-						<p>
-							Jam Masuk :{" "}
-							<span className="text-secondary-red">
-								07:15 WIB (Terlambat)
-							</span>
-						</p>
-						<p>Jam Pulang : 15:00 WIB</p>
-					</div>
-					<h2 className="font-bold text-lg text-white pl-3 py-1">
-						Status Presensi :{" "}
-					</h2>
-				</div>
+				{historys.map((history, i) => {
+					return <CardRiwayat key={i} data={history} />;
+				})}
 			</main>
 		</div>
 	);

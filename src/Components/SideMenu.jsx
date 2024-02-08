@@ -11,9 +11,9 @@ export default function SideMenu({ show }) {
 	return (
 		<div
 			id="container"
-			className={`absolute w-3/4 h-screen bg-white z-10 left-[-100vw] top-0 duration-500 ${
+			className={`${
 				show ? "translate-x-[100vw]" : "translate-x-0"
-			}`}
+			} absolute w-3/4 h-screen bg-white z-10 left-[-100vw] top-0 duration-500 before:size-screen before:bg-gray-500 before:opacity-30 before:blur-xl`}
 		>
 			<div className="size-full relative px-4">
 				<img
@@ -49,18 +49,27 @@ export default function SideMenu({ show }) {
 						<p>Profil</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
-					<Link to="/setting" className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center">
+					<Link
+						to="/setting"
+						className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
+					>
 						<Cog6ToothIcon className="size-9" />
 						<p>Pengaturan</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
-					<Link to="/bantuan" className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center">
+					<Link
+						to="/bantuan"
+						className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center"
+					>
 						<QuestionMarkCircleIcon className="size-9" />
 						<p>Bantuan</p>
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
 				</div>
-				<Link to="/login" className="w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]">
+				<Link
+					to="/login"
+					className="btn border-none w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]"
+				>
 					Keluar
 				</Link>
 			</div>

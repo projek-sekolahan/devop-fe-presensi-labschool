@@ -16,15 +16,26 @@ export default function Ijin() {
 			<main className="w-full h-full px-8 pt-10 pb-4 text-white">
 				<div className="max-w-md">
 					<div className="mb-2 block">
-						<Label htmlFor="comment" value="Keterangan" className="text-white"/>
+						<Label
+							htmlFor="comment"
+							value="Keterangan"
+							className="text-white"
+						/>
 					</div>
 					<Textarea
 						id="comment"
-						placeholder="Leave a comment..."
+						placeholder="Berikan alasan...."
 						required
-						rows={4}
+						rows={6}
+						className="text-md"
 					/>
 				</div>
+				<button
+					type="submit"
+					className="btn border-none w-full h-12 text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-8"
+				>
+					Submit
+				</button>
 			</main>
 		</div>
 	);
