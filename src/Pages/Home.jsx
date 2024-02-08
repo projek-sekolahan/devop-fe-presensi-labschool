@@ -104,7 +104,7 @@ export default function Home() {
 						</div>
 						<Link
 							id="presensi"
-							to="/presensi"
+							to="/presensi/"
 							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
