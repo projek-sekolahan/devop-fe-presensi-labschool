@@ -32,8 +32,8 @@ function App() {
 				<Route path="/notifikasi" Component={Notification} />
 				<Route path="/presensi/staff" Component={PresensiStaff} />
 				<Route path="/presensi/verif" Component={FaceVerification} />
-				<Route path="/presensi/sakit" Component={Sakit} />
-				<Route path="/presensi/ijin" Component={Ijin} />
+				<Route path="/presensi/bukti" Component={Sakit} />
+				<Route path="/presensi/keterangan" Component={Ijin} />
 				<Route path="/setting" Component={Pengaturan} />
 
 			</Routes>

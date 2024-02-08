@@ -23,11 +23,11 @@ export default function PresensiStaff() {
 					<p>09:41 WIB</p>
 					<small>Tanggal : 23-02-2023</small>
 					<div className="grid grid-cols-2 gap-2 text-white">
-						<Link className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
+						<Link to="/presensi/bukti" className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
 							<RaiseHandIcon className="size-20" />
 							<p className="text-center font-semibold">Dinas Luar</p>
 						</Link>
-						<Link className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
+						<Link to="/presensi" className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center">
 							<img src="/Icons/exit-run.svg" className="size-20"/>
 							<p className="text-center font-semibold">Non-Dinas</p>
 						</Link>
