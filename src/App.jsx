@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Register from "./Pages/Register";
-import EmailVerif from "./Pages/EmailVerif";
+import OtpInput from "./Pages/OtpInput";
 import Login from "./Pages/Login";
 import ChangePassword from "./Pages/ChangePassword";
 import Home from "./Pages/Home";
@@ -21,7 +21,7 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" Component={Register} />
-				<Route path="/verification" Component={EmailVerif} />
+				<Route path="/verification" Component={OtpInput} />
 				<Route path="/login" Component={Login} />
 				<Route path="/password/reset" Component={ChangePassword} />
 				<Route path="/home" Component={Home} />
