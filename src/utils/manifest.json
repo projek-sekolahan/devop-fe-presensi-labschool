@@ -35,19 +35,5 @@
 			"sizes": "417x491",
 			"purpose": "any"
 		}
-	],
-	"screenshots": [
-		{
-			"src": "/screenshot/sc1.jpg",
-			"type": "image/jpg",
-			"sizes": "1080x2160",
-			"form_factor": "narrow"
-		},
-		{
-			"src": "/screenshot/sc2.jpg",
-			"type": "image/jpg",
-			"sizes": "1080x2160",
-			"form_factor": "wide"
-		}
 	]
 }

@@ -5,8 +5,9 @@
 		<link
 			rel="icon"
 			type="image/svg+xml"
-			href="/src/assets/icons/splash.svg"
+			href="/public/Icons/splash.png"
 		/>
+		<base href="https://smartapps.smalabschoolunesa1.sch.id/">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="theme-color" content="#fff" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,7 +21,7 @@
 	</head>
 	<body>
 		<div id="root"></div>
-		<script>
+		<script type="module">
 			window.addEventListener("load", () => {
 				if ("serviceWorker" in navigator) {
 					navigator.serviceWorker.register("/src/utils/sw.js");
