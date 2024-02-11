@@ -7,17 +7,27 @@ export default function CardRiwayat({ data }) {
 				className="size-12 rounded-full bg-white"
 			/>
 			<p className="font-bold text-base">Fata Nadhira Putri</p>
-			<div className="w-full grid grid-rows-3 grid-flow-col">
-				<p className="font-medium text-sm">{data.date}</p>
-				<p className="text-xs font-normal">
-					<span className="text-secondary-green">Masuk : </span>
-					{data.checkIn}
-				</p>
-				<p className="text-xs font-normal">
-					<span className="text-secondary-red">Keluar : </span>
-					{data.checkOut}
-				</p>
-				<div className={`${data.status == 'Masuk' ? 'bg-secondary-green' : (data.status == 'Izin' ? "bg-secondary-yellow" : "bg-secondary-red")} row-span-3 justify-self-center self-center w-28 mt-3 py-[0.4rem] px-5 text-center text-sm font-bold text-white rounded-md`}>
+			<div className="w-full flex gap-2 justify-between">
+				<div className="flex flex-col">
+					<p className="font-medium text-xs">{data.date}</p>
+					<p className="text-xs font-normal">
+						<span className="text-secondary-green">Masuk : </span>
+						{data.checkIn}
+					</p>
+					<p className="text-xs font-normal">
+						<span className="text-secondary-red">Keluar : </span>
+						{data.checkOut}
+					</p>
+				</div>
+				<div
+					className={`${
+						data.status == "Masuk"
+							? "bg-secondary-green"
+							: data.status == "Izin"
+							? "bg-secondary-yellow"
+							: "bg-secondary-red"
+					} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+				>
 					{data.status}
 				</div>
 			</div>

@@ -25,7 +25,7 @@ export default function Home() {
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
-				className="w-full absolute z-[1] left-0 top-[-30px] "
+				className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
 			/>
 			<div id="core" className="relative z-[2] size-full">
 				<nav className="flex items-center justify-between">
@@ -50,17 +50,17 @@ export default function Home() {
 						<BellIcon className="fill-white size-8" />
 					</Link>
 				</nav>
-				<main className="mt-9 h-56 sm:h-52">
+				<main className="mt-8 h-56 sm:h-52">
 					<div id="news" className="size-full">
 						<Carousel
 							leftControl=" "
 							rightControl=" "
-							className=" drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
+							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
 						>
-							<img src="/img/news.png" className='h-full' />
-							<img src="/img/news.png" className='h-full' />
-							<img src="/img/news.png" className='h-full' />
-							<img src="/img/news.png" className='h-full' />
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
 						</Carousel>
 						<div
 							id="rekap"

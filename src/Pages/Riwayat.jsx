@@ -53,7 +53,7 @@ export default function Riwayat() {
 	];
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen min-w-[375px] sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
 			<header className="h-1/5 min-h-[130px] bg-primary-md relative p-6">
 				<Link to="/home" className="absolute top-5">
 					<ArrowLeftIcon className="size-7" />
