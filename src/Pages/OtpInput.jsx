@@ -76,7 +76,7 @@ export default function OtpInput() {
 							return (
 								<input
 									key={index}
-									type="text"
+									type="number"
 									ref={(input) =>
 										(inputRefs.current[index] = input)
 									}

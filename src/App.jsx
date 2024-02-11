@@ -15,6 +15,7 @@ import Ijin from "./Pages/Ijin";
 import Pengaturan from "./Pages/Pengaturan";
 import PresensiStaff from "./Pages/PresensiStaff";
 import FaceVerification from "./Pages/FaceVerification";
+import FaceCam from "./Pages/FaceCam";
 
 function App() {
 	return (
@@ -35,7 +36,7 @@ function App() {
 				<Route path="/presensi/bukti" Component={Sakit} />
 				<Route path="/presensi/keterangan" Component={Ijin} />
 				<Route path="/setting" Component={Pengaturan} />
-
+				<Route path="/facecam" Component={FaceCam} />
 			</Routes>
 		</Router>
 	);
