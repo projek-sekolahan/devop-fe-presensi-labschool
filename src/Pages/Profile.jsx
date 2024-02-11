@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, PencilSquareIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import ChangeModal from "../Components/ChangeModal";
 
 export default function Profile() {
 	const biodata = {

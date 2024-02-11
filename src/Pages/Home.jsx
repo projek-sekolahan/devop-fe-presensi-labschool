@@ -21,11 +21,11 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
-				className="w-full absolute z-[1] left-0 top-[-30px] "
+				className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
 			/>
 			<div id="core" className="relative z-[2] size-full">
 				<nav className="flex items-center justify-between">
@@ -46,21 +46,21 @@ export default function Home() {
 							Fata Nadhira Putri
 						</p>
 					</div>
-					<button>
+					<Link to="/notifikasi">
 						<BellIcon className="fill-white size-8" />
-					</button>
+					</Link>
 				</nav>
-				<main className="mt-9 h-56 sm:h-52">
+				<main className="mt-8 h-56 sm:h-52">
 					<div id="news" className="size-full">
 						<Carousel
 							leftControl=" "
 							rightControl=" "
 							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
 						>
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
-							<img src="/img/news.png" alt="..." />
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className=""/>
 						</Carousel>
 						<div
 							id="rekap"
@@ -104,7 +104,7 @@ export default function Home() {
 						</div>
 						<Link
 							id="presensi"
-							to="/presensi"
+							to="/presensi/staff"
 							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
