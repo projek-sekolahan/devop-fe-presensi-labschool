@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const inputRefs = useRef([]);
-	console.log(otp);
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -32,10 +31,16 @@ export default function OtpInput() {
 		if (value && index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
 		}
-		console.log(combinedOtp);
 	};
 	const handleClick = (index) => {
-		inputRefs.current[index].focus(x);
+		inputRefs.current[index].setSelectionRange(1, 1);
+
+		for (let i = 0; i < 4; i++) {
+			if (inputRefs.current[i].value === "") {
+				inputRefs.current[i].focus();
+				break
+			}
+		}
 	};
 	const handleKeyDown = (index, e) => {
 		if (
@@ -44,6 +49,7 @@ export default function OtpInput() {
 			index > 0 &&
 			inputRefs.current[index - 1]
 		) {
+			console.log(inputRefs.current[index].value)
 			inputRefs.current[index - 1].focus();
 		}
 	};
@@ -78,7 +84,7 @@ export default function OtpInput() {
 									onChange={(e) => handleChange(index, e)}
 									onClick={() => handleClick(index)}
 									onKeyDown={(e) => handleKeyDown(index, e)}
-									className="size-16 bg-white text-black font-normal text-center rounded-2xl appearance-auto"
+									className="size-16 bg-white text-black font-semibold text-lg text-center rounded-lg focus:border-black focus:border-3"
 								/>
 							);
 						})}
@@ -95,7 +101,7 @@ export default function OtpInput() {
 							type="submit"
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
 						>
-							Create my account
+							Verifikasi
 						</button>
 					</Link>
 				</form>
