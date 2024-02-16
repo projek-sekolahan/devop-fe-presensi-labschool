@@ -1,5 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+} from "react-router-dom";
 import "./App.css";
+import { useEffect, useState } from "react";
 import Register from "./Pages/Register";
 import OtpInput from "./Pages/OtpInput";
 import Login from "./Pages/Login";
@@ -16,10 +22,22 @@ import Pengaturan from "./Pages/Pengaturan";
 import PresensiStaff from "./Pages/PresensiStaff";
 import FaceVerification from "./Pages/FaceVerification";
 import FaceCam from "./Pages/FaceCam";
+import Errors from "./Pages/Error";
 
 function App() {
 	return (
 		<Router>
+			{window.screen.width > 500 ? (
+				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
+					<div className="modal-box">
+						<h3 className="font-bold text-xl">Warning!</h3>
+						<p className="py-4 text-lg">
+							Harap gunakan Handphone agar dapat mengakses website
+						</p>
+					</div>
+				</div>
+			) : null}
+
 			<Routes>
 				<Route path="/" Component={Register} />
 				<Route path="/verification" Component={OtpInput} />
@@ -37,6 +55,7 @@ function App() {
 				<Route path="/presensi/keterangan" Component={Ijin} />
 				<Route path="/setting" Component={Pengaturan} />
 				<Route path="/facecam" Component={FaceCam} />
+				<Route path="*" Component={Errors} />
 			</Routes>
 		</Router>
 	);
