@@ -19,7 +19,7 @@ export default function FaceVerification() {
 						presensi
 					</p>
 				</div>
-				<Link to="/" className="w-full px-6 absolute bottom-16">
+				<Link to="/facecam" className="w-full px-6 absolute bottom-16">
 					<button className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center">
 						Verifikasi
 					</button>
