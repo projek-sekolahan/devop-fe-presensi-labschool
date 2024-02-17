@@ -12,6 +12,12 @@
 			"purpose": "maskable"
 		},
 		{
+			"src": "/Icons/favicon.png",
+			"type": "image/png",
+			"sizes": "144x144",
+			"purpose": "any"
+		},
+		{
 			"src": "/Icons/student.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",

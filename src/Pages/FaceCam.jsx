@@ -3,7 +3,6 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 
 export default function FaceCam() {
-	const [modelsLoaded, setModelsLoaded] = useState(false);
 	console.log("app rendered");
 
 	const videoRef = useRef();
@@ -53,41 +52,39 @@ export default function FaceCam() {
 
 	const loadModels = () => {
 		Promise.all([
-			faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
 			faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
+			faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
 			faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
 			faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
 			faceapi.nets.faceExpressionNet.loadFromUri("/models"),
 		]).then(() => {
 			faceMyDetect();
-			setModelsLoaded(true)
 		});
 	};
 
 	const faceMyDetect = () => {
 		setInterval(async () => {
 			const referenceImage = await faceapi
-				.detectSingleFace(imgRef.current)
+				.detectSingleFace(
+					imgRef.current
+				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
 
-			if (referenceImage) {
-				console.log(referenceImage)
-			}
-			// create FaceMatcher with automatically assigned labels
-			// from the detection results for the reference image
-			const faceMatcher = new faceapi.FaceMatcher(referenceImage);
-
-			const singleResult = await faceapi
-				.detectSingleFace(videoRef.current)
+			const faceData = await faceapi
+				.detectSingleFace(
+					videoRef.current
+				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
 
-			if (singleResult) {
-				const bestMatch = faceMatcher.findBestMatch(
-					singleResult.descriptor
+			if (referenceImage && faceData) {
+				// Using Euclidean distance to comapare face descriptions
+				const distance = faceapi.euclideanDistance(
+					referenceImage.descriptor,
+					faceData.descriptor
 				);
-				alert(bestMatch.toString());
+				alert(distance);
 			}
 		}, 100);
 	};
@@ -155,30 +152,26 @@ export default function FaceCam() {
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
-			{modelsLoaded ? (
-					<video
-						ref={videoRef}
-						crossOrigin="anonymous"
-						autoPlay
-						// height={videoHeight}
-						// width={videoWidth}
-						// onPlay={handleVideoOnPlay}
-						className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
-					/>
-	
-			) : (
-				<div>loading...</div>
-			)}
+			<video
+				ref={videoRef}
+				crossOrigin="anonymous"
+				autoPlay
+				// height={videoHeight}
+				// width={videoWidth}
+				// onPlay={handleVideoOnPlay}
+				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
+			/>
 			{/* <div className="flex items-center -scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]">
 				<video crossOrigin="anonymous" ref={videoRef} autoPlay></video>
 			</div> */}
+			<div className="absolute top-10 left-10 border-2 border-black size-[250px] z-50"></div>
 			<img src="/img/test.jpg" ref={imgRef} className="hidden" />
-			<canvas
+			{/* <canvas
 				ref={canvasRef}
 				className="relative z-10 top-0"
 				width="300"
 				height="600"
-			></canvas>
+			></canvas> */}
 
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
