@@ -23,6 +23,7 @@ import PresensiStaff from "./Pages/PresensiStaff";
 import FaceVerification from "./Pages/FaceVerification";
 import FaceCam from "./Pages/FaceCam";
 import Errors from "./Pages/Error";
+import RegisterFace from "./Pages/RegisterFace";
 
 function App() {
 	return (
@@ -41,6 +42,7 @@ function App() {
 			<Routes>
 				<Route path="/" Component={Register} />
 				<Route path="/verification" Component={OtpInput} />
+				<Route path="/facereg" Component={RegisterFace} />
 				<Route path="/login" Component={Login} />
 				<Route path="/password/reset" Component={ChangePassword} />
 				<Route path="/home" Component={Home} />
