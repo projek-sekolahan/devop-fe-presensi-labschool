@@ -8,6 +8,8 @@ export default function RegisterFace() {
 	const [progress, setProgress] = useState(0);
 
 	const videoRef = useRef();
+	const barRef = useRef();
+	const textRef = useRef();
 
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -54,9 +56,16 @@ export default function RegisterFace() {
 
 			if (faceData) {
 				console.log(faceData.detection.score);
-				setProgress(faceData.detection.score / 0.9);
-				if (faceData.score <= 0.6) {
+				const percentage = `${Math.round(
+					(faceData.detection.score / 0.8) * 100
+				)}%`;
+				if (faceData.detection.score >= 0.8) {
+					barRef.current.style.width = "100%";
+					textRef.current.innerText = "100%";
 					window.location.replace("/home");
+				} else {
+					barRef.current.style.width = percentage;
+					textRef.current.innerText = percentage;
 				}
 			}
 		}, 1000);
@@ -78,7 +87,9 @@ export default function RegisterFace() {
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
-					<p className="font-bold text-4xl">100%</p>
+					<p className="font-bold text-4xl" ref={textRef}>
+						0%
+					</p>
 					<p className="font-medium text-base">
 						Melakukan Registrasi Wajah Anda...
 					</p>
@@ -86,8 +97,9 @@ export default function RegisterFace() {
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
 					<span
 						id="bar"
-						style={{ width: `${progress}%` }}
-						className={`h-full rounded-r-full rounded-l-full bg-primary-md origin-left duration-500`}
+						style={{ transition: "width 0.5s" }}
+						className={`h-full rounded-r-full rounded-l-full bg-primary-md`}
+						ref={barRef}
 					></span>
 				</div>
 				<small>
