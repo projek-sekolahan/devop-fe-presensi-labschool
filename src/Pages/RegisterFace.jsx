@@ -46,6 +46,7 @@ export default function RegisterFace() {
 		console.log("run detect");
 		setInterval(async () => {
 			console.log("run loop");
+			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
@@ -55,7 +56,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				console.log(faceData.detection.score);
+				console.log(faceData.detection.box);
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
@@ -80,8 +81,11 @@ export default function RegisterFace() {
 				onPlay={faceMyDetect}
 				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
-			<div className="relative top-10 left-10 border-2 border-black size-[250px] z-50">
-				<span></span>
+			<div className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}>
+				<span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
+				<span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
+				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
+				<span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
 			</div>
 
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
