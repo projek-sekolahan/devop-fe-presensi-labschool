@@ -5,8 +5,6 @@ import { useState, useRef, useEffect } from "react";
 export default function RegisterFace() {
 	console.log("app rendered");
 
-	const [progress, setProgress] = useState(0);
-
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
@@ -81,7 +79,9 @@ export default function RegisterFace() {
 				onPlay={faceMyDetect}
 				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
-			<div className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}>
+			<div
+				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
+			>
 				<span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
 				<span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
 				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>

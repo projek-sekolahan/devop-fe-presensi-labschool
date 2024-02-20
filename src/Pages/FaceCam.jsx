@@ -6,28 +6,8 @@ export default function FaceCam() {
 	console.log("app rendered");
 
 	const videoRef = useRef();
-	const imgRef = useRef();
-	// const videoHeight = 400;
-	// const videoWidth = 800;
-	const canvasRef = useRef();
-
-	useEffect(() => {
-		startVideo();
-		videoRef && loadModels();
-	}, []);
-	// useEffect(() => {
-	// 	const loadModels = async () => {
-	// 		const MODEL_URL = "/models";
-
-	// 		Promise.all([
-	// 			faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-	// 			faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-	// 			faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-	// 			faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-	// 		]).then(setModelsLoaded(true));
-	// 	};
-	// 	loadModels();
-	// }, []);
+	const barRef = useRef();
+	const textRef = useRef();
 
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -50,104 +30,44 @@ export default function FaceCam() {
 
 	//LOAD MODELS
 
-	const loadModels = () => {
-		Promise.all([
-			faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
-			faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-			faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-			faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-			faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-		]).then(() => {
-			faceMyDetect();
-		});
-	};
+	Promise.all([
+		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+		faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+	]).then(() => {
+		console.log("models loaded");
+		startVideo();
+	});
 
 	const faceMyDetect = () => {
+		console.log("run detect");
 		setInterval(async () => {
-			const referenceImage = await faceapi
-				.detectSingleFace(
-					imgRef.current
-				)
-				.withFaceLandmarks()
-				.withFaceDescriptor();
-
+			console.log("run loop");
+			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
-					videoRef.current
+					videoRef.current,
+					new faceapi.TinyFaceDetectorOptions()
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
 
-			if (referenceImage && faceData) {
-				// Using Euclidean distance to comapare face descriptions
-				const distance = faceapi.euclideanDistance(
-					referenceImage.descriptor,
-					faceData.descriptor
-				);
-				alert(distance);
+			if (faceData) {
+				console.log(faceData.detection.box);
+				const percentage = `${Math.round(
+					(faceData.detection.score / 0.8) * 100
+				)}%`;
+				if (faceData.detection.score >= 0.8) {
+					barRef.current.style.width = "100%";
+					textRef.current.innerText = "100%";
+					window.location.replace("/home");
+				} else {
+					barRef.current.style.width = percentage;
+					textRef.current.innerText = percentage;
+				}
 			}
-		}, 100);
-	};
-
-	// const handleVideoOnPlay = () => {
-	// 	setInterval(async () => {
-	// 	if (canvasRef && canvasRef.current) {
-	// 					canvasRef.current.innerHTML = faceapi.createCanvas(
-	// 						videoRef.current
-	// 					);
-	// 		const displaySize = {
-	// 			width: videoWidth,
-	// 			height: videoHeight,
-	// 		};
-
-	// 					faceapi.matchDimensions(canvasRef.current, displaySize);
-
-	// 		const detections = await faceapi
-	// 			.detectAllFaces(
-	// 				videoRef.current,
-	// 				new faceapi.TinyFaceDetectorOptions()
-	// 			)
-	// 			.withFaceLandmarks()
-	// 			.withFaceExpressions();
-
-	// 		console.log(detections);
-
-	// 		const resizedDetections = faceapi.resizeResults(
-	// 			detections,
-	// 			displaySize
-	// 		);
-	// 		console.log(resizedDetections);
-
-	// 					canvasRef &&
-	// 						canvasRef.current &&
-	// 						canvasRef.current
-	// 							.getContext("2d")
-	// 							.clearRect(0, 0, videoWidth, videoHeight);
-	// 					canvasRef &&
-	// 						canvasRef.current &&
-	// 						faceapi.draw.drawDetections(
-	// 							canvasRef.current,
-	// 							resizedDetections
-	// 						);
-	// 					canvasRef &&
-	// 						canvasRef.current &&
-	// 						faceapi.draw.drawFaceLandmarks(
-	// 							canvasRef.current,
-	// 							resizedDetections
-	// 						);
-	// 					canvasRef &&
-	// 						canvasRef.current &&
-	// 						faceapi.draw.drawFaceExpressions(
-	// 							canvasRef.current,
-	// 							resizedDetections
-	// 						);
-	// 	}
-	// 	}, 100);
-	// };
-
-	const [counter, setCounter] = useState(0);
-	const add = () => {
-		counter < 100 ? setCounter((count) => count + 10) : setCounter(0);
+		}, 1000);
 	};
 
 	return (
@@ -156,27 +76,24 @@ export default function FaceCam() {
 				ref={videoRef}
 				crossOrigin="anonymous"
 				autoPlay
-				// height={videoHeight}
-				// width={videoWidth}
-				// onPlay={handleVideoOnPlay}
+				onPlay={faceMyDetect}
 				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
-			{/* <div className="flex items-center -scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]">
-				<video crossOrigin="anonymous" ref={videoRef} autoPlay></video>
-			</div> */}
-			<div className="absolute top-10 left-10 border-2 border-black size-[250px] z-50"></div>
-			<img src="/img/test.jpg" ref={imgRef} className="hidden" />
-			{/* <canvas
-				ref={canvasRef}
-				className="relative z-10 top-0"
-				width="300"
-				height="600"
-			></canvas> */}
+			<div
+				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
+			>
+				<span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
+				<span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
+				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
+				<span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
+			</div>
 
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
-					<p className="font-bold text-4xl">100%</p>
+					<p className="font-bold text-4xl" ref={textRef}>
+						0%
+					</p>
 					<p className="font-medium text-base">
 						Memverifikasi Wajah Anda...
 					</p>
@@ -184,13 +101,11 @@ export default function FaceCam() {
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
 					<span
 						id="bar"
-						style={{ transform: `scaleX(${counter}%)` }}
-						className={`w-full h-full rounded-r-full rounded-l-full bg-primary-md origin-left duration-500`}
+						style={{ transition: "width 0.5s" }}
+						className={`h-full rounded-r-full rounded-l-full bg-primary-md`}
+						ref={barRef}
 					></span>
 				</div>
-				<button onClick={add} className="btn">
-					btn
-				</button>
 				<small>
 					Harap bersabar karena sistem kami sedang memproses wajah
 					anda. Pastikan anda melihat kamera

@@ -57,10 +57,10 @@ export default function Home() {
 							rightControl=" "
 							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
 						>
-							<img src="/img/news.png" className=""/>
-							<img src="/img/news.png" className=""/>
-							<img src="/img/news.png" className=""/>
-							<img src="/img/news.png" className=""/>
+							<img src="/img/news.png" className="" />
+							<img src="/img/news.png" className="" />
+							<img src="/img/news.png" className="" />
+							<img src="/img/news.png" className="" />
 						</Carousel>
 						<div
 							id="rekap"
