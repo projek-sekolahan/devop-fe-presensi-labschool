@@ -34,7 +34,7 @@ function App() {
 	}, []);
 	return (
 		<Router>
-			{width && width > 500 ? (
+			{/* {width && width > 500 ? (
 				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
 					<div className="modal-box">
 						<h3 className="font-bold text-xl">Warning!</h3>
@@ -43,7 +43,7 @@ function App() {
 						</p>
 					</div>
 				</div>
-			) : null}
+			) : null} */}
 
 			<Routes>
 				<Route path="/" Component={Register} />

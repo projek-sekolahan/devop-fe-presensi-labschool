@@ -16,6 +16,7 @@ export default function Register() {
 							<img
 								src="/Icons/student.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
+								alt="student-icon"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">
 								Siswa
@@ -25,6 +26,7 @@ export default function Register() {
 							<img
 								src="/Icons/teacher.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
+								alt="teacher-icon"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">
 								Guru
@@ -34,6 +36,7 @@ export default function Register() {
 							<img
 								src="/Icons/employee.svg"
 								className="w-[80px] h-[80px] bg-white rounded-[20px]"
+								alt="employee-icon"
 							></img>
 							<figcaption className="text-center text-white text-xs font-normal mt-1">
 								Karyawan
