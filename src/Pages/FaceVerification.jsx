@@ -5,12 +5,64 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function FaceVerification() {
+	// Fungsi untuk mengonversi derajat menjadi radian
+	function degreesToRadians(degrees) {
+		return (degrees * Math.PI) / 180;
+	}
+
+	// Fungsi untuk menghitung jarak antara dua titik latitude dan longitude menggunakan formula Haversine
+	function calculateDistance(lat1, lon1, lat2, lon2) {
+		const earthRadiusKm = 6371; // Radius bumi dalam kilometer
+
+		const dLat = degreesToRadians(lat2 - lat1);
+		const dLon = degreesToRadians(lon2 - lon1);
+
+		const a =
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(degreesToRadians(lat1)) *
+				Math.cos(degreesToRadians(lat2)) *
+				Math.sin(dLon / 2) *
+				Math.sin(dLon / 2);
+
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		const distance = earthRadiusKm * c; // Jarak dalam kilometer
+
+		return Math.round(distance * 1000, 2);
+	}
+
+	const coordinat = {
+		min_longitude: 112.7293,
+		longitude: 112.7298,
+		max_longitude: 112.7303,
+		min_latitude: -7.3689,
+		latitude: -7.3684,
+		max_latitude: -7.3679,
+	};
+
 	const click = () => {
 		navigator.geolocation.getCurrentPosition((position) => {
 			const latitude = position.coords.latitude;
 			const longitude = position.coords.longitude;
 
-			alert(`${latitude} ${longitude}`);
+			if (
+				latitude >= coordinat.min_latitude &&
+				latitude <= coordinat.max_latitude &&
+				longitude <= coordinat.min_longitude &&
+				longitude >= coordinat.max_longitude
+			) {
+				alert("Anda berada di area sekolah");
+			} else {
+				const distance = calculateDistance(
+					latitude,
+					longitude,
+					coordinat.latitude,
+					coordinat.longitude
+				);
+				alert(
+					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`
+				);
+			}
 		});
 	};
 
@@ -30,14 +82,14 @@ export default function FaceVerification() {
 						presensi
 					</p>
 				</div>
-				{/* <Link to="/facecam" className="w-full px-6 absolute bottom-16"> */}
-				<button
-					onClick={click}
-					className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
-				>
-					Verifikasi
-				</button>
-				{/* </Link> */}
+				<Link className="w-full px-6 absolute bottom-16">
+					<button
+						onClick={click}
+						className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
+					>
+						Verifikasi
+					</button>
+				</Link>
 			</div>
 		</div>
 	);
