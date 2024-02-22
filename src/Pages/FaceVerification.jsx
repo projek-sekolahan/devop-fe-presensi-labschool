@@ -5,13 +5,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function FaceVerification() {
+	const click = () => {
+		navigator.geolocation.getCurrentPosition((position) => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
 
-	const click = () => {navigator.geolocation.getCurrentPosition((position) => {
-		const latitude = position.coords.latitude;
-		const longitude = position.coords.longitude;
-
-		alert(latitude, longitude);
-	})}
+			alert(`${latitude} ${longitude}`);
+		});
+	};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
@@ -30,9 +31,12 @@ export default function FaceVerification() {
 					</p>
 				</div>
 				{/* <Link to="/facecam" className="w-full px-6 absolute bottom-16"> */}
-					<button onClick={click} className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center">
-						Verifikasi
-					</button>
+				<button
+					onClick={click}
+					className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
+				>
+					Verifikasi
+				</button>
 				{/* </Link> */}
 			</div>
 		</div>
