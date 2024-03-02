@@ -1,9 +1,19 @@
 {
 	"name": "labschool-unesa",
+	"short_name": "labschool-unesa",
+	"id": "labschool-unesa",
 	"start_url": "/",
 	"display": "fullscreen",
+	"description": "SmartApps Labschool Unesa is the apps that's developed for SMA Labschool Unesa to digitize the attendance system in schools",
 	"theme_color": "#fff",
 	"background_color": "#fff",
+	"orientation": "potrait",
+	"dir": "auto",
+	"lang": "id",
+	"categories": ["education"],
+	"launch_handler": {
+		"client_mode": "auto"
+	},
 	"icons": [
 		{
 			"src": "/Icons/splash.png",

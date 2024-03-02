@@ -27,24 +27,7 @@ export default function ChangePassword() {
 							placeholder="Email"
 							required=""
 						/>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-							required=""
-						/>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							placeholder="New password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-							required=""
-						/>
-
-						<Link to="/profile">
+						<Link to="/verification/change">
 							<button
 								type="submit"
 								className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

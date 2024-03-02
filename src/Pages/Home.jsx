@@ -1,4 +1,3 @@
-"use client";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
 import {
 	CheckCircleIcon,
@@ -9,7 +8,7 @@ import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Home() {
 	const [show, setShow] = useState(false);

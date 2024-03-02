@@ -44,6 +44,7 @@ const FaceVerification = lazy(() => import("./Pages/FaceVerification"));
 const FaceCam = lazy(() => import("./Pages/FaceCam"));
 const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
+const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
@@ -67,8 +68,7 @@ function App() {
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route path="/" Component={Register} />
-					{/* <Route path="/loading" Component={Loading} /> */}
-					<Route path="/verification" Component={OtpInput} />
+					<Route path="/verification/:status" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />
 					<Route path="/password/reset" Component={ChangePassword} />
@@ -87,6 +87,7 @@ function App() {
 					<Route path="/presensi/keterangan" Component={Ijin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
+					<Route path="/setpassword/:status" Component={SetPassword} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>
