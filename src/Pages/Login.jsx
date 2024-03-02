@@ -8,7 +8,7 @@ export default function Login() {
 	const [csrf, setCsrf] = useState("");
 	const emailRef = useRef();
 	const passwordRef = useRef();
-	const base_url = import.meta.env.VITE_API_URL;
+	const api_url = import.meta.env.VITE_API_URL;
 
 	const data = {
 		email: "",
@@ -55,7 +55,7 @@ export default function Login() {
 	const submitHandler = async () => {
 		console.log(getKey(), getFormData());
 		const res = await axios.post(
-			`${base_url}/api/client/auth/login`,
+			`${api_url}/api/client/auth/login`,
 			{
 				headers: {
 					Authorization: "Basic " + getKey()[0],
