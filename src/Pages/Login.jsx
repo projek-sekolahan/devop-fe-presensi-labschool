@@ -11,14 +11,14 @@ export default function Login() {
 	const api_url = import.meta.env.VITE_API_URL;
 
 	const data = {
-		email: "",
+		username: "",
 		password: "",
 		"devop-sso": "",
 		csrf: "",
 	};
 
 	const getFormData = () => {
-		data.email = emailRef.current.value;
+		data.username = emailRef.current.value;
 		data.password = getHash(passwordRef.current.value);
 		data["devop-sso"] = getKey(
 			emailRef.current.value,
