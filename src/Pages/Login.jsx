@@ -11,13 +11,6 @@ export default function Login() {
 	const passwordRef = useRef();
 	const api_url = import.meta.env.VITE_API_URL;
 
-	const keys = ["username", "password", "devop-sso", "csrf_token"];
-
-	const hash = getHash(passwordRef.current.value);
-	const token_key = getKey(emailRef.current.value, hash)[1];
-
-	const values = [emailRef.current.value, hash, token_key, csrf];
-
 	// const getFormData = () => {
 	// 	data.username = emailRef.current.value;
 	// 	data.password = getHash(passwordRef.current.value);
@@ -38,7 +31,15 @@ export default function Login() {
 	// };
 
 	const submitHandler = async () => {
+		const keys = ["username", "password", "devop-sso", "csrf_token"];
+
+		const hash = getHash(passwordRef.current.value);
+		const token_key = getKey(emailRef.current.value, hash)[1];
+
+		const values = [emailRef.current.value, hash, token_key, csrf];
+
 		setClick(true);
+		
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
