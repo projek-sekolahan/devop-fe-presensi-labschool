@@ -10,14 +10,6 @@ export const getCsrf = async () => {
 };
 
 export const toLogin = async (key, formData) => {
-	const res = await axios.post(
-		`${api_url}/api/client/auth/login`,
-		{
-			headers: {
-				Authorization: "Basic " + key,
-				"User-Agent": "PostmanRuntime/7.36.3",
-			},
-		},
-		formData
-	);
+	const res = await axios.post(`${api_url}/api/client/auth/login`, formData);
+	console.log(res)
 };
