@@ -1,11 +1,12 @@
 import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
 import { Link } from "react-router-dom";
-import {useRef} from "react"
+import { getCsrf } from "../utils/api.js";
+import { useEffect, useRef, useState } from "react";
 
 export default function Register() {
 	const api_url = import.meta.env.VITE_API_URL;
 
-	const formRef = useRef()
+	const formRef = useRef();
 
 	const submitHandler = (e) => {
 		const formData = new FormData(formRef.current);
@@ -21,9 +22,7 @@ export default function Register() {
 				Selamat datang!
 			</small>
 			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
-				<div
-					className="p-6 space-y-4 md:space-y-6 sm:p-8"
-				>
+				<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
 					<div className="flex justify-center gap-8">
 						<label>
 							<input

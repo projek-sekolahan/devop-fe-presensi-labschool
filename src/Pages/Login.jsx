@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { getCsrf, toLogin } from "../utils/api.js";
-import { getHash, getKey } from "../utils/utils.js";
+import { getHash, getKey, getFormData } from "../utils/utils.js";
 import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
@@ -11,37 +11,37 @@ export default function Login() {
 	const passwordRef = useRef();
 	const api_url = import.meta.env.VITE_API_URL;
 
-	const data = {
-		username: "",
-		password: "",
-		"devop-sso": "",
-		csrf_token: "",
-	};
+	const keys = ["username", "password", "devop-sso", "csrf_token"];
 
-	const getFormData = () => {
-		data.username = emailRef.current.value;
-		data.password = getHash(passwordRef.current.value);
-		data["devop-sso"] = getKey(
-			emailRef.current.value,
-			getHash(passwordRef.current.value)
-		)[1];
-		data.csrf_token = csrf;
+	const hash = getHash(passwordRef.current.value);
+	const token_key = getKey(emailRef.current.value, hash)[1];
 
-		return Object.keys(data)
-			.map(
-				(key) =>
-					`${encodeURIComponent(key)}=${encodeURIComponent(
-						data[key]
-					)}`
-			)
-			.join("&");
-	};
+	const values = [emailRef.current.value, hash, token_key, csrf];
+
+	// const getFormData = () => {
+	// 	data.username = emailRef.current.value;
+	// 	data.password = getHash(passwordRef.current.value);
+	// 	data["devop-sso"] = getKey(
+	// 		emailRef.current.value,
+	// 		getHash(passwordRef.current.value)
+	// 	)[1];
+	// 	data.csrf_token = csrf;
+
+	// 	return Object.keys(data)
+	// 		.map(
+	// 			(key) =>
+	// 				`${encodeURIComponent(key)}=${encodeURIComponent(
+	// 					data[key]
+	// 				)}`
+	// 		)
+	// 		.join("&");
+	// };
 
 	const submitHandler = async () => {
 		setClick(true);
 		toLogin(
-			getKey(emailRef.current.value, getHash(passwordRef.current.value)),
-			getFormData()
+			getKey(emailRef.current.value, hash)[0],
+			getFormData(keys, values)
 		);
 	};
 
@@ -50,7 +50,6 @@ export default function Login() {
 			getCsrf().then((result) => setCsrf(result.csrfHash));
 			setClick(false);
 		}
-		
 	}, [click]);
 
 	return (
