@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { getCsrf } from "../utils/api.js";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { getCsrf, toLogin } from "../utils/api.js";
+import { getHash, getKey } from "../utils/utils.js";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import CryptoJS from "crypto-js";
 
 export default function Login() {
 	const [csrf, setCsrf] = useState("");
@@ -17,29 +17,13 @@ export default function Login() {
 		csrf: "",
 	};
 
-	// password encrypt
-	const getPass = () => {
-		const pass = passwordRef.current.value;
-		const keycode = CryptoJS.enc.Hex.parse(
-			CryptoJS.SHA1(btoa(pass)).toString()
-		);
-		const authcode = CryptoJS.enc.Hex.parse(CryptoJS.SHA1(pass).toString());
-		const hash = CryptoJS.AES.encrypt(pass, keycode, { iv: authcode })
-			.toString()
-			.replace(/[^\w\s]/gi, "");
-		return hash;
-	};
-	// key
-	const getKey = () => {
-		const key = btoa(emailRef.current.value + ":" + getPass());
-		const tokenkey = CryptoJS.SHA1(key).toString();
-		return [key, tokenkey];
-	};
-
 	const getFormData = () => {
 		data.email = emailRef.current.value;
-		data.password = getPass();
-		data["devop-sso"] = getKey()[1];
+		data.password = getHash(passwordRef.current.value);
+		data["devop-sso"] = getKey(
+			emailRef.current.value,
+			getHash(passwordRef.current.value)
+		)[1];
 		data.csrf = csrf;
 
 		return Object.keys(data)
@@ -53,14 +37,8 @@ export default function Login() {
 	};
 
 	const submitHandler = async () => {
-		console.log(getKey(), getFormData());
-		const res = await axios.post(
-			`${api_url}/api/client/auth/login`,
-			{
-				headers: {
-					Authorization: "Basic " + getKey()[0],
-				},
-			},
+		toLogin(
+			getKey(emailRef.current.value, getHash(passwordRef.current.value)),
 			getFormData()
 		);
 	};
@@ -93,15 +71,25 @@ export default function Login() {
 							required=""
 							autoComplete=""
 						/>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							ref={passwordRef}
-							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-							required=""
-						/>
+						<div className="flex gap-2">
+							<input
+								type="password"
+								name="password"
+								id="password"
+								ref={passwordRef}
+								placeholder="Password (8 or more characters)"
+								className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+								required=""
+							/>
+							<label
+								className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg"
+							>
+								<input type="checkbox" className="invisible absolute" onChange={() => {passwordRef.current.type == "password" ? passwordRef.current.type = "text" : passwordRef.current.type = "password"}}/>
+								<EyeIcon className="size-6 stroke-2 swap-off absolute" />
+								<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
+							</label>
+						</div>
+
 						<Link
 							to="/password/reset"
 							className="text-sm font-light text-end"

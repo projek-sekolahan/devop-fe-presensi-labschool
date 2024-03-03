@@ -1,8 +1,17 @@
 import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
 import { Link } from "react-router-dom";
+import {useRef} from "react"
 
 export default function Register() {
 	const api_url = import.meta.env.VITE_API_URL;
+
+	const formRef = useRef()
+
+	const submitHandler = (e) => {
+		const formData = new FormData(formRef.current);
+		console.log(formData);
+	};
+
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
 			<h1 className="text-center text-4xl font-bold text-white ">
@@ -12,10 +21,8 @@ export default function Register() {
 				Selamat datang!
 			</small>
 			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
-				<form
+				<div
 					className="p-6 space-y-4 md:space-y-6 sm:p-8"
-					action="foo.com"
-					method="POST"
 				>
 					<div className="flex justify-center gap-8">
 						<label>
@@ -86,7 +93,7 @@ export default function Register() {
 							required=""
 						/>
 						<button
-							type="submit"
+							onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
 							Create my account
@@ -100,7 +107,7 @@ export default function Register() {
 							or
 						</p>
 					</div>
-				</form>
+				</div>
 				<p className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
 					Sudah memiliki akun?{" "}
 					<Link
