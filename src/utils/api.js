@@ -11,5 +11,5 @@ export const getCsrf = async () => {
 
 export const toLogin = async (key, formData) => {
 	const res = await axios.post(`${api_url}/api/client/auth/login`, formData);
-	console.log(res)
+	console.log(res);
 };

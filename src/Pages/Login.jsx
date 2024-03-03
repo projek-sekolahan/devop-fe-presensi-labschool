@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
 	const [csrf, setCsrf] = useState("");
+	const [click, setClick] = useState(false);
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const api_url = import.meta.env.VITE_API_URL;
@@ -14,7 +15,7 @@ export default function Login() {
 		username: "",
 		password: "",
 		"devop-sso": "",
-		csrf: "",
+		csrf_token: "",
 	};
 
 	const getFormData = () => {
@@ -24,7 +25,7 @@ export default function Login() {
 			emailRef.current.value,
 			getHash(passwordRef.current.value)
 		)[1];
-		data.csrf = csrf;
+		data.csrf_token = csrf;
 
 		return Object.keys(data)
 			.map(
@@ -37,6 +38,7 @@ export default function Login() {
 	};
 
 	const submitHandler = async () => {
+		setClick(true);
 		toLogin(
 			getKey(emailRef.current.value, getHash(passwordRef.current.value)),
 			getFormData()
@@ -44,8 +46,12 @@ export default function Login() {
 	};
 
 	useEffect(() => {
-		getCsrf().then((result) => setCsrf(result.csrfHash));
-	}, []);
+		if (click == true) {
+			getCsrf().then((result) => setCsrf(result.csrfHash));
+			setClick(false);
+		}
+		
+	}, [click]);
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
@@ -81,10 +87,18 @@ export default function Login() {
 								className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 								required=""
 							/>
-							<label
-								className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg"
-							>
-								<input type="checkbox" className="invisible absolute" onChange={() => {passwordRef.current.type == "password" ? passwordRef.current.type = "text" : passwordRef.current.type = "password"}}/>
+							<label className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg">
+								<input
+									type="checkbox"
+									className="invisible absolute"
+									onChange={() => {
+										passwordRef.current.type == "password"
+											? (passwordRef.current.type =
+													"text")
+											: (passwordRef.current.type =
+													"password");
+									}}
+								/>
 								<EyeIcon className="size-6 stroke-2 swap-off absolute" />
 								<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
 							</label>
