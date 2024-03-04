@@ -31,6 +31,7 @@ export default function Login() {
 	// };
 
 	const submitHandler = async () => {
+		setClick(true);
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 
 		const hash = getHash(passwordRef.current.value);
@@ -38,8 +39,6 @@ export default function Login() {
 
 		const values = [emailRef.current.value, hash, token_key, csrf];
 
-		setClick(true);
-		
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
