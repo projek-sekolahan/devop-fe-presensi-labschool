@@ -9,7 +9,7 @@ export default function Login() {
 	const [click, setClick] = useState(false);
 	const emailRef = useRef();
 	const passwordRef = useRef();
-	const api_url = import.meta.env.VITE_API_URL;
+	// const api_url = import.meta.env.VITE_API_URL;
 
 	// const getFormData = () => {
 	// 	data.username = emailRef.current.value;
