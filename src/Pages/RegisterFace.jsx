@@ -2,7 +2,7 @@ import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 
-export default function FaceCam() {
+export default function RegisterFace() {
 	console.log("app rendered");
 
 	const videoRef = useRef();
@@ -95,7 +95,7 @@ export default function FaceCam() {
 						0%
 					</p>
 					<p className="font-medium text-base">
-						Memverifikasi Wajah Anda...
+						Melakukan Registrasi Wajah Anda...
 					</p>
 				</div>
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">

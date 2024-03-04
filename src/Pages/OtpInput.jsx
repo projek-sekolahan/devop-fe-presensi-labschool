@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 
 export default function OtpInput() {
+	const {status} = useParams()
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const inputRefs = useRef([]);
 
@@ -38,7 +39,7 @@ export default function OtpInput() {
 		for (let i = 0; i < 4; i++) {
 			if (inputRefs.current[i].value === "") {
 				inputRefs.current[i].focus();
-				break
+				break;
 			}
 		}
 	};
@@ -49,7 +50,7 @@ export default function OtpInput() {
 			index > 0 &&
 			inputRefs.current[index - 1]
 		) {
-			console.log(inputRefs.current[index].value)
+			console.log(inputRefs.current[index].value);
 			inputRefs.current[index - 1].focus();
 		}
 	};
@@ -96,7 +97,7 @@ export default function OtpInput() {
 							Click Here
 						</Link>
 					</p>
-					<Link to="/home">
+					<Link to={`/setpassword/${status}`}>
 						<button
 							type="submit"
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"

@@ -13,3 +13,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.appearance-none{
+  appearance:none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

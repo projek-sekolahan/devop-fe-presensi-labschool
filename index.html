@@ -2,14 +2,20 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+<<<<<<< HEAD
 		<link
 			rel="icon"
 			type="image/svg+xml"
 			href="/Icons/splash.png"
 		/>
 		<!-- <base href="https://smartapps.smalabschoolunesa1.sch.id/"> -->
+=======
+		<meta name="description" content="SmartApps Labschool Unesa" />
+
+>>>>>>> 0ee043a4496fb2aa5e249472f6b673379f73b154
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="theme-color" content="#fff" />
+		<link rel="icon" type="image/png" href="./Icons/favicon.png" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link rel="manifest" href="/src/utils/manifest.json" />
@@ -19,15 +25,21 @@
 		/>
 		<title>labschool-unesa</title>
 	</head>
-	<body data-theme='light'>
+	<body data-theme="light">
 		<div id="root"></div>
 		<script type="module">
 			window.addEventListener("load", () => {
 				if ("serviceWorker" in navigator) {
-					navigator.serviceWorker.register("/src/utils/sw.js");
+					navigator.serviceWorker.register("sw.js");
 				}
 			});
 		</script>
 		<script type="module" src="/src/main.jsx"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+			integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
 	</body>
 </html>

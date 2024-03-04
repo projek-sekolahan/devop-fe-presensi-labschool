@@ -1,7 +1,57 @@
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { getCsrf, toLogin } from "../utils/api.js";
+import { getHash, getKey, getFormData } from "../utils/utils.js";
+import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
+	const [csrf, setCsrf] = useState("");
+	const [click, setClick] = useState(false);
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const api_url = import.meta.env.VITE_API_URL;
+
+	// const getFormData = () => {
+	// 	data.username = emailRef.current.value;
+	// 	data.password = getHash(passwordRef.current.value);
+	// 	data["devop-sso"] = getKey(
+	// 		emailRef.current.value,
+	// 		getHash(passwordRef.current.value)
+	// 	)[1];
+	// 	data.csrf_token = csrf;
+
+	// 	return Object.keys(data)
+	// 		.map(
+	// 			(key) =>
+	// 				`${encodeURIComponent(key)}=${encodeURIComponent(
+	// 					data[key]
+	// 				)}`
+	// 		)
+	// 		.join("&");
+	// };
+
+	const submitHandler = async () => {
+		setClick(true);
+		const keys = ["username", "password", "devop-sso", "csrf_token"];
+
+		const hash = getHash(passwordRef.current.value);
+		const token_key = getKey(emailRef.current.value, hash)[1];
+
+		const values = [emailRef.current.value, hash, token_key, csrf];
+
+		toLogin(
+			getKey(emailRef.current.value, hash)[0],
+			getFormData(keys, values)
+		);
+	};
+
+	useEffect(() => {
+		if (click == true) {
+			getCsrf().then((result) => setCsrf(result.csrfHash));
+			setClick(false);
+		}
+	}, [click]);
+
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
 			<img
@@ -15,40 +65,58 @@ export default function Login() {
 					{"Selamat datang kembali :)"}
 				</p>
 				<div className="my-6 space-y-4 md:space-y-6">
-					<form
-						className="space-y-4 md:space-y-6 flex flex-col gap-2"
-						action="#"
-					>
+					<div className="space-y-4 md:space-y-6 flex flex-col gap-2">
 						<input
 							type="email"
 							name="email"
 							id="email"
+							ref={emailRef}
 							className="bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4"
 							placeholder="Email"
 							required=""
 							autoComplete=""
 						/>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							placeholder="Password (8 or more characters)"
-							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-							required=""
-						/>
-                        <Link to="/password/reset" className="text-sm font-light text-end">
-                            Lupa password?
-                        </Link>
+						<div className="flex gap-2">
+							<input
+								type="password"
+								name="password"
+								id="password"
+								ref={passwordRef}
+								placeholder="Password (8 or more characters)"
+								className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+								required=""
+							/>
+							<label className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg">
+								<input
+									type="checkbox"
+									className="invisible absolute"
+									onChange={() => {
+										passwordRef.current.type == "password"
+											? (passwordRef.current.type =
+													"text")
+											: (passwordRef.current.type =
+													"password");
+									}}
+								/>
+								<EyeIcon className="size-6 stroke-2 swap-off absolute" />
+								<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
+							</label>
+						</div>
 
-						<Link to="/home">
-							<button
-								type="submit"
-								className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-							>
-								Login
-							</button>
+						<Link
+							to="/password/reset"
+							className="text-sm font-light text-end"
+						>
+							Lupa password?
 						</Link>
-					</form>
+
+						<button
+							onClick={submitHandler}
+							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+						>
+							Login
+						</button>
+					</div>
 					<div
 						id="line"
 						className="w-full border-t-[0.25px] border-white h-0 relative top-4"
