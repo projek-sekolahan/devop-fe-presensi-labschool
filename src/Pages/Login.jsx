@@ -7,8 +7,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Login() {
 	const [csrf, setCsrf] = useState("");
 	const [click, setClick] = useState(false);
-	const emailRef = useRef();
-	const passwordRef = useRef();
+	const emailRef = useRef(null);
+	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
 
 	// const getFormData = () => {
@@ -32,12 +32,15 @@ export default function Login() {
 
 	const submitHandler = async () => {
 		setClick(true);
+
+		localStorage.setItem("csrf", csrf);
+		console.log(localStorage.getItem("csrf"));
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-
-		const values = [emailRef.current.value, hash, token_key, csrf];
+		const csrf_token = localStorage.getItem("csrf");
+		const values = [emailRef.current.value, hash, token_key, csrf_token];
 
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
@@ -47,8 +50,13 @@ export default function Login() {
 
 	useEffect(() => {
 		if (click == true) {
-			getCsrf().then((result) => setCsrf(result.csrfHash));
-			setClick(false);
+			getCsrf().then((result) => {
+				setCsrf(result.csrfHash);
+				setClick(false);
+				if (!localStorage.getItem("csrf")) {
+					localStorage.setItem("csrf", result.csrfHash);
+				}
+			});
 		}
 	}, [click]);
 
