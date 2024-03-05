@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
@@ -52,6 +53,11 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
+		getCsrf().then((result) => {
+			if (!localStorage.getItem("csrf")) {
+				localStorage.setItem("csrf", result.csrfHash);
+			}
+		});
 	}, []);
 	return (
 		<Router>
@@ -87,7 +93,10 @@ function App() {
 					<Route path="/presensi/keterangan" Component={Ijin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
-					<Route path="/setpassword/:status" Component={SetPassword} />
+					<Route
+						path="/setpassword/:status"
+						Component={SetPassword}
+					/>
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>

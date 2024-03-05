@@ -5,8 +5,8 @@ import { getHash, getKey, getFormData } from "../utils/utils.js";
 import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
-	const [csrf, setCsrf] = useState("");
-	const [click, setClick] = useState(false);
+	// const [csrf, setCsrf] = useState("");
+	// const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
@@ -31,9 +31,9 @@ export default function Login() {
 	// };
 
 	const submitHandler = async () => {
-		setClick(true);
+		// setClick(true);
 
-		localStorage.setItem("csrf", csrf);
+		// localStorage.setItem("csrf", csrf);
 		console.log(localStorage.getItem("csrf"));
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 
@@ -48,17 +48,17 @@ export default function Login() {
 		);
 	};
 
-	useEffect(() => {
-		if (click == true) {
-			getCsrf().then((result) => {
-				setCsrf(result.csrfHash);
-				setClick(false);
-				if (!localStorage.getItem("csrf")) {
-					localStorage.setItem("csrf", result.csrfHash);
-				}
-			});
-		}
-	}, [click]);
+	// useEffect(() => {
+	// 	if (click == true) {
+	// 		getCsrf().then((result) => {
+	// 			setCsrf(result.csrfHash);
+	// 			setClick(false);
+	// 			if (!localStorage.getItem("csrf")) {
+	// 				localStorage.setItem("csrf", result.csrfHash);
+	// 			}
+	// 		});
+	// 	}
+	// }, [click]);
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
