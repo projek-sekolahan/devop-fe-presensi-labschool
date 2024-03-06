@@ -3,6 +3,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { getCsrf, toLogin } from "../utils/api.js";
 import { getHash, getKey, getFormData } from "../utils/utils.js";
 import { useEffect, useRef, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function Login() {
 	// const [csrf, setCsrf] = useState("");
@@ -10,6 +11,11 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
+	console.log(
+		Cookies.get("ci_sso_csrf_cookie", {
+			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
+		})
+	);
 
 	// const getFormData = () => {
 	// 	data.username = emailRef.current.value;
