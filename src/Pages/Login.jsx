@@ -39,7 +39,7 @@ export default function Login() {
 
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		const csrf_token = localStorage.getItem("csrf");
+		const csrf_token = getCookie("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 
 		toLogin(
