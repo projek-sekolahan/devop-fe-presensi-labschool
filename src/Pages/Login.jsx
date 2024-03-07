@@ -11,41 +11,20 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
-	console.log(
-		Cookies.get("ci_sso_csrf_cookie", {
-			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
-		})
-	);
-
-	// const getFormData = () => {
-	// 	data.username = emailRef.current.value;
-	// 	data.password = getHash(passwordRef.current.value);
-	// 	data["devop-sso"] = getKey(
-	// 		emailRef.current.value,
-	// 		getHash(passwordRef.current.value)
-	// 	)[1];
-	// 	data.csrf_token = csrf;
-
-	// 	return Object.keys(data)
-	// 		.map(
-	// 			(key) =>
-	// 				`${encodeURIComponent(key)}=${encodeURIComponent(
-	// 					data[key]
-	// 				)}`
-	// 		)
-	// 		.join("&");
-	// };
 
 	const submitHandler = async () => {
-		// setClick(true);
-
-		// localStorage.setItem("csrf", csrf);
-		console.log(localStorage.getItem("csrf"));
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		const csrf_token = getCookie("ci_sso_csrf_cookie");
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
+			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
+		});
+		console.log(
+			Cookies.get("ci_sso_csrf_cookie", {
+				domain: "https://devop-sso.smalabschoolunesa1.sch.id",
+			})
+		);
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 
 		toLogin(
@@ -53,18 +32,6 @@ export default function Login() {
 			getFormData(keys, values)
 		);
 	};
-
-	// useEffect(() => {
-	// 	if (click == true) {
-	// 		getCsrf().then((result) => {
-	// 			setCsrf(result.csrfHash);
-	// 			setClick(false);
-	// 			if (!localStorage.getItem("csrf")) {
-	// 				localStorage.setItem("csrf", result.csrfHash);
-	// 			}
-	// 		});
-	// 	}
-	// }, [click]);
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
