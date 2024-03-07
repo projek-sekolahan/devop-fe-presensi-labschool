@@ -13,7 +13,7 @@ export const getCsrf = async () => {
 				document.cookie = cookieHeader;
 			}
 		});
-		console.log(csrf);
+		// console.log(csrf);
 		return csrf;
 };
 
