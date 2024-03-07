@@ -8,10 +8,9 @@ export const getCsrf = async () => {
 		.then((response) => {
 			// Periksa header respons untuk cookie
 			const cookieHeader = response.headers.get('Set-Cookie');
-		  
 			// Jika cookie ditemukan, simpan di document.cookie
 			if (cookieHeader) {
-			  document.cookie = cookieHeader;
+				document.cookie = cookieHeader;
 			}
 		});
 		console.log(csrf);
