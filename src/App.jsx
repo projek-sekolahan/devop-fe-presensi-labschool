@@ -70,10 +70,10 @@ function App() {
 			} */
 
 			if (!localStorage.getItem("csrf")) {
-				localStorage.setItem("csrf", result.csrfHash);
+				localStorage.setItem("csrf", result.data.csrfHash);
 			} else {
 				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", result.csrfHash);
+				localStorage.setItem("csrf", result.data.csrfHash);
 			}
 		});
 	}, []);
