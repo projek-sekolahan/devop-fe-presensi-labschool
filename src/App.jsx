@@ -56,12 +56,12 @@ function App() {
 		});
 		getCsrf().then((result) => {
 			console.log(result);
-			/* if (!localStorage.getItem("csrf")) {
+			if (!localStorage.getItem("csrf")) {
 				localStorage.setItem("csrf", result.csrfHash);
 			} else {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", result.csrfHash);
-			} */
+			}
 		});
 	}, []);
 

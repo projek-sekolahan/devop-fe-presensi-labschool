@@ -27,7 +27,7 @@ export default function Login() {
 		// 	domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 		// });
 		const csrf_token = localStorage.getItem("csrf");
-		getCsrf();
+		// getCsrf();
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],

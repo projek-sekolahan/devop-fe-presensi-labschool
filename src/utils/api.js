@@ -22,8 +22,8 @@ export const getCsrf = async () => {
 			}
 		}
 		);
+		return csrf;
 	// console.log(csrf);
-	console.log(csrf);
 };
 
 export const toLogin = async (key, formData) => {
@@ -32,7 +32,7 @@ export const toLogin = async (key, formData) => {
 			Authorization: `Basic ${key}`,
 		},
 	});
-	console.log(res);
+	// console.log(res);
 };
 export const register = async () => {
 	const res = axios.post(`${api_url}/input/register`);
