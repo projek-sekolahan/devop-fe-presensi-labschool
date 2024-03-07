@@ -7,15 +7,16 @@ import Cookies from "js-cookie";
 
 export default function Login() {
 	const [csrf, setCsrf] = useState("");
-	const [click, setClick] = useState(false);
+	// const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
+	getCsrf().then((result) => setCsrf(result.csrfHash));
 	const cookies = document.cookie;
-	console.log(cookies);
+	console.log(cookies, csrf);
 
 	const submitHandler = async () => {
-		setClick(true);
+		// setClick(true);
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
@@ -35,12 +36,12 @@ export default function Login() {
 		);
 	};
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if (click == true) {
 			getCsrf().then((result) => setCsrf(result.csrfHash));
 			setClick(false);
 		}
-	}, [click]);
+	}, [click]); */
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
