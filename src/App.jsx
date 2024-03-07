@@ -55,14 +55,14 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		getCookie().then((result) => {
+		/* getCookie().then((result) => {
 			const headers = result.headers;
 			const cookie = headers.get('Set-Cookie');
 			console.log(`Set-Cookie: ${cookie}`);
-		});
-		
+		}); */
+
 		getCsrf().then((result) => {
-			console.log(result.headers.get('Set-Cookie'));
+			console.log(result.headers.get("Set-Cookie"));
 			
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
