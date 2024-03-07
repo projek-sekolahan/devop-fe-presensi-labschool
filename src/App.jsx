@@ -49,6 +49,7 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
+
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
@@ -62,6 +63,7 @@ function App() {
 			}
 		});
 	}, []);
+
 	return (
 		<Router>
 			{width && width > 500 ? (
