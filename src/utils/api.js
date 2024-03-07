@@ -9,7 +9,7 @@ export const getCsrf = async () => {
 		})
 		.then((response) => response);
 	// console.log(csrf);
-	return csrf;
+	console.log(csrf);
 };
 
 export const toLogin = async (key, formData) => {
