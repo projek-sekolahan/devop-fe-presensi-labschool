@@ -54,6 +54,12 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
+async function getCookie() {
+    const response = await fetch('https://devop-sso.smalabschoolunesa1.sch.id');
+    const headers = response.headers;
+    const cookie = headers.get('Set-Cookie');
+    console.log(`Set-Cookie: ${cookie}`);
+}
 		getCsrf().then((result) => {
 			console.log(result.headers.get('Set-Cookie'));
 			
