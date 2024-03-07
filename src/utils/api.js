@@ -5,7 +5,8 @@ const api_url = import.meta.env.VITE_API_URL;
 export const getCsrf = async () => {
 	const csrf = await axios
 		.get(`${api_url}/view/tokenGetCsrf`, { withCredentials: true })
-		.then((response) => response);
+		.then((response) => response.headers.get("Set-Cookie"));
+	console.log(csrf);
 };
 
 export const toLogin = async (key, formData) => {
