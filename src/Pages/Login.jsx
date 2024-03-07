@@ -6,11 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Login() {
-	// const [csrf, setCsrf] = useState("");
-	// const [click, setClick] = useState(false);
+	const [csrf, setCsrf] = useState("");
+	const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
+	const cookies = document.cookie;
+	console.log(cookies);
 
 	const submitHandler = async () => {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
@@ -33,6 +35,13 @@ export default function Login() {
 			getFormData(keys, values)
 		);
 	};
+
+	useEffect(() => {
+		if (click == true) {
+			getCsrf().then((result) => setCsrf(result.csrfHash));
+			setClick(false);
+		}
+	}, [click]);
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">

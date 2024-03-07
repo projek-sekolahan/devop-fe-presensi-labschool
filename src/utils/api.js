@@ -4,8 +4,18 @@ const api_url = import.meta.env.VITE_API_URL;
 
 export const getCsrf = async () => {
 	const csrf = await axios
-		.get(`${api_url}/view/tokenGetCsrf`, { withCredentials: true })
-		.then((response) => response);
+		.get(`${api_url}/view/tokenGetCsrf`, { withCredentials: true, credentials: 'include' })
+		.then((response) => {
+			// Periksa header respons untuk cookie
+			const cookieHeader = response.headers.get('Set-Cookie');
+		  
+			// Jika cookie ditemukan, simpan di document.cookie
+			if (cookieHeader) {
+			  document.cookie = cookieHeader;
+			}
+		});
+		console.log(csrf);
+		return csrf;
 };
 
 export const toLogin = async (key, formData) => {
