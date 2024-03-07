@@ -55,12 +55,13 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			if (!localStorage.getItem("csrf")) {
+			console.log(result);
+			/* if (!localStorage.getItem("csrf")) {
 				localStorage.setItem("csrf", result.csrfHash);
 			} else {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", result.csrfHash);
-			}
+			} */
 		});
 	}, []);
 
