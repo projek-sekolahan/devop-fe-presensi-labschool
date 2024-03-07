@@ -62,7 +62,7 @@ function App() {
 		}); */
 
 		getCsrf().then((result) => {
-			console.log(result.headers.get("Set-Cookie"));
+			console.log(result.headers.get("Cookie"));
 			
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
