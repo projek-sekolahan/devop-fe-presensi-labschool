@@ -55,7 +55,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			console.log(result);
+			// console.log(result);
 			
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
@@ -69,12 +69,12 @@ function App() {
 				Cookies.set(cookieName, cookieValue);
 			} */
 
-			/* if (!localStorage.getItem("csrf")) {
+			if (!localStorage.getItem("csrf")) {
 				localStorage.setItem("csrf", result.csrfHash);
 			} else {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", result.csrfHash);
-			} */
+			}
 		});
 	}, []);
 
