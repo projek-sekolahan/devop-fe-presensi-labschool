@@ -22,7 +22,7 @@ export default function Register() {
 		console.log(formData);
 	};
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if (click == true) {
 			getCsrf().then((result) => {
 				setCsrf(result.csrfHash);
@@ -32,7 +32,7 @@ export default function Register() {
 				}
 			});
 		}
-	}, [click]);
+	}, [click]); */
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
