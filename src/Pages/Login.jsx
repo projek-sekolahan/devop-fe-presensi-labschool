@@ -21,6 +21,7 @@ export default function Login() {
 			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 		});
 		console.log(
+			"cookie : ",
 			Cookies.get("ci_sso_csrf_cookie", {
 				domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 			})
