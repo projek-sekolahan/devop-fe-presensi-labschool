@@ -55,7 +55,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			console.log(result);
+			console.log(result.headers.get('content-type'));
 			
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
