@@ -4,13 +4,15 @@ import Cookies from "js-cookie";
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 export const getCsrf = async () => {
-	const csrf = await axios
-		.get(`${api_url}/view/tokenGetCsrf`, {
-			withCredentials: true,
-		})
-		return csrf;
+	const csrf = await axios.get(`${api_url}/view/tokenGetCsrf`, {withCredentials: true});
+	return csrf;
 	// console.log(csrf);
 };
+
+export const getCookie = async () => {
+	const response = await fetch(api_url);
+	return response;
+}
 
 export const toLogin = async (key, formData) => {
 	const res = await axios.post(`${api_url}/api/client/auth/login`, formData, {

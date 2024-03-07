@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { getCsrf } from "./utils/api";
+import { getCsrf, getCookie } from "./utils/api";
 import Register from "./Pages/Register";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
@@ -54,12 +54,13 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-async function getCookie() {
-    const response = await fetch('https://devop-sso.smalabschoolunesa1.sch.id');
-    const headers = response.headers;
-    const cookie = headers.get('Set-Cookie');
-    console.log(`Set-Cookie: ${cookie}`);
-}
+
+		getCookie().then((result) => {
+			const headers = result.headers;
+			const cookie = headers.get('Set-Cookie');
+			console.log(`Set-Cookie: ${cookie}`);
+		});
+		
 		getCsrf().then((result) => {
 			console.log(result.headers.get('Set-Cookie'));
 			
