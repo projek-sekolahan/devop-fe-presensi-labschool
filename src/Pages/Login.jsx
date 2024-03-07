@@ -15,8 +15,8 @@ export default function Login() {
 	console.log(cookies);
 
 	const submitHandler = async () => {
+		setClick(true);
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
-
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
@@ -29,7 +29,6 @@ export default function Login() {
 			})
 		);
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
-
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
