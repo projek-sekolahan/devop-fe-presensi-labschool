@@ -15,8 +15,8 @@ export default function Login() {
 	const passwordRef = useRef(null);
 	// const api_url = import.meta.env.VITE_API_URL;
 	// getCsrf().then((result) => setCsrf(result.csrfHash));
-	const cookies = document.cookie;
-	console.log(cookies);
+	// const cookies = document.cookie;
+	// console.log(cookies);
 
 	const submitHandler = async () => {
 		// setClick(true);
