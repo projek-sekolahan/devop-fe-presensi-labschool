@@ -56,12 +56,25 @@ function App() {
 		});
 		getCsrf().then((result) => {
 			console.log(result);
-			if (!localStorage.getItem("csrf")) {
+			
+			/* console.log('Response Headers:', response.headers.get());
+			const cookieFromResponse = response.headers.get('Set-Cookie');
+			console.log('Cookie dari respons header:', cookieFromResponse);
+			// Jika cookie ditemukan, Anda juga bisa menetapkannya menggunakan js-cookies
+			if (cookieFromResponse) {
+				const cookieData = cookieFromResponse.split(';')[0]; // Ambil bagian pertama dari cookie
+				const cookieNameValue = cookieData.split('='); // Pisahkan nama dan nilai cookie
+				const cookieName = cookieNameValue[0];
+				const cookieValue = cookieNameValue[1];
+				Cookies.set(cookieName, cookieValue);
+			} */
+
+			/* if (!localStorage.getItem("csrf")) {
 				localStorage.setItem("csrf", result.csrfHash);
 			} else {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", result.csrfHash);
-			}
+			} */
 		});
 	}, []);
 

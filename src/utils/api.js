@@ -8,6 +8,7 @@ export const getCsrf = async () => {
 		.get(`${api_url}/view/tokenGetCsrf`, {
 			withCredentials: true,
 		})
+		return csrf;
 	// console.log(csrf);
 };
 
