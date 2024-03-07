@@ -6,14 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Login() {
-	const [csrf, setCsrf] = useState("");
+	// const [csrf, setCsrf] = useState("");
 	// const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = import.meta.env.VITE_API_URL;
-	getCsrf().then((result) => setCsrf(result.csrfHash));
+	// getCsrf().then((result) => setCsrf(result.csrfHash));
 	const cookies = document.cookie;
-	console.log(cookies, csrf);
+	console.log(cookies);
 
 	const submitHandler = async () => {
 		// setClick(true);
