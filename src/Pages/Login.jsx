@@ -9,7 +9,7 @@ export default function Login() {
 	// const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const api_url = import.meta.env.VITE_API_URL;
+	// const api_url = import.meta.env.VITE_API_URL;
 	// getCsrf().then((result) => setCsrf(result.csrfHash));
 	const cookies = document.cookie;
 	console.log(cookies);
@@ -19,9 +19,10 @@ export default function Login() {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
-			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
-		});
+		// const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
+		// 	domain: "https://devop-sso.smalabschoolunesa1.sch.id",
+		// });
+		const csrf_token = localStorage.getItem("csrf");
 		getCsrf();
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
