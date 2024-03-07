@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api_url = import.meta.env.VITE_API_URL;
+const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 export const getCsrf = async () => {
 	const csrf = await axios
