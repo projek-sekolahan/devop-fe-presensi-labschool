@@ -9,7 +9,7 @@ export const getCsrf = async () => {
 			withCredentials: true,
 		})
 		.then((response) => {
-			console.log('Response Headers:', response.headers);
+			console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
 			console.log('Cookie dari respons header:', cookieFromResponse);
 			// Jika cookie ditemukan, Anda juga bisa menetapkannya menggunakan js-cookies
