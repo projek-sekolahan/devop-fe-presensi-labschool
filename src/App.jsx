@@ -53,6 +53,14 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
+		getCsrf().then((result) => {
+			if (!localStorage.getItem("csrf")) {
+				localStorage.setItem("csrf", result.csrfHash);
+			} else {
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", result.csrfHash);
+			}
+		});
 	}, []);
 	return (
 		<Router>
