@@ -20,9 +20,9 @@ export default function Login() {
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
-			domain: "devop-sso.smalabschoolunesa1.sch.id",
+			domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 		});
-		console.log(getCsrf());
+		getCsrf();
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
