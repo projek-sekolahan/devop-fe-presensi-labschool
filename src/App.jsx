@@ -69,8 +69,8 @@ function App() {
 				'Max-Age': '7200',
 				'path': '/',
 				'domain': 'dev-labschool-unesa.vercel.app',
-				'secure': 'true',
-				'SameSite': 'None'
+				// 'secure': 'true',
+				// 'SameSite': 'None'
 			};
 			console.log(cookieData);
 			// Set cookie menggunakan js-cookies
