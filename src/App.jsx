@@ -63,7 +63,6 @@ function App() {
 		}); */
 
 		getCsrf().then((result) => {
-			console.log(result.data.csrfHash);
 			// Data cookie yang diberikan
 			const cookieData = {
 				'ci_sso_csrf_cookie': result.data.csrfHash,
@@ -73,7 +72,7 @@ function App() {
 				'secure': 'true',
 				'SameSite': 'None'
 			};
-
+			console.log(cookieData);
 			// Set cookie menggunakan js-cookies
 			Object
 				.keys(cookieData)
