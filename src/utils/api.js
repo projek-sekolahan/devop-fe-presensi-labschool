@@ -19,6 +19,7 @@ export const toLogin = async (key, formData) => {
 	const res = await axiosInstance.post(`${api_url}/api/client/auth/login`, formData, {
 		headers: {
 			Authorization: `Basic ${key}`,
+			withCredentials:true
 		},
 	});
 	// console.log(res);
