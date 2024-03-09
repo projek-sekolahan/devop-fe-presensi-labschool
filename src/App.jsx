@@ -87,7 +87,7 @@ function App() {
 						sameSite: cookieData['SameSite'] // SameSite diatur sesuai dengan nilai yang diberikan
 					});
 			});
-			
+			console.log('Cookie terbentuk:', Cookies.get('ci_sso_csrf_cookie'));
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');
 			console.log('Cookie dari respons header:', cookieFromResponse);
