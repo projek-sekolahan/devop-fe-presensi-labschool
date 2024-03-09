@@ -26,9 +26,9 @@ export default function Login() {
 		// const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
 		// 	domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 		// });
-		// const csrf_token = localStorage.getItem("csrf");
+		const csrf_token = localStorage.getItem("csrf");
 		// getCsrf();
-		const csrf_token = Cookies.get('ci_sso_csrf_cookie');
+		// const csrf_token = Cookies.get('ci_sso_csrf_cookie');
 
 		/* if (csrf_token) {
 			console.log('Cookie telah terbentuk:', csrf_token);
