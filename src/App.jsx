@@ -61,7 +61,6 @@ function App() {
 				'ci_sso_csrf_cookie': result.data.csrfHash,
 				'Max-Age': '7200',
 			};
-			console.log(cookieData);
 			// Set cookie menggunakan js-cookies
 			Object
 				.keys(cookieData)
@@ -71,7 +70,6 @@ function App() {
 						expires: parseInt(cookieData['Max-Age']), // Konversi Max-Age menjadi jumlah detik
 					});
 			});
-			console.log('Cookie terbentuk:', document.cookie);
 		});
 	}, []);
 

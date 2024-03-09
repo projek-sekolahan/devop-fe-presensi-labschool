@@ -13,13 +13,12 @@ axiosInstance
             // Ambil seluruh cookie
             const allCookies = Cookies.get();
             // Setel header dengan cookie
-            config.headers['Cookie'] = Object
+            /* config.headers['Cookie'] = Object
                 .keys(allCookies)
                 .map(cookieName => {
                     return `${cookieName}=${allCookies[cookieName]}`;
                 })
-                .join('; ');
-            console.log('Config Headers:', config.headers);
+                .join('; '); */
         return config;
     }, error => {
         return Promise.reject(error);
