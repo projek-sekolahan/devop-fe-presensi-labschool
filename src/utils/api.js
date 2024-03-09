@@ -19,7 +19,8 @@ export const toLogin = async (key, formData) => {
 	const res = await axios.post(`${api_url}/api/client/auth/login`, formData, {
 		headers: {
 			Authorization: `Basic ${key}`,
-			withCredentials:true
+			withCredentials:true,
+			Cookie : `ci_sso_csrf_cookie=${localStorage.getItem("csrf")}`
 		},
 	});
 	// console.log(res);
