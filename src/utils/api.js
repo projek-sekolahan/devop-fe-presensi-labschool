@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 export const getCsrf = async () => {
-	const csrf = await axiosInstance.get(`${api_url}/view/tokenGetCsrf`, {withCredentials: true});
+	const csrf = await axiosInstance.get(`${api_url}/view/tokenGetCsrf`);
 	return csrf;
 	// console.log(csrf);
 };
