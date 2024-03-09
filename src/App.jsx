@@ -72,13 +72,6 @@ function App() {
 					});
 			});
 			console.log('Cookie terbentuk:', document.cookie);
-
-			if (!localStorage.getItem("csrf")) {
-				localStorage.setItem("csrf", result.data.csrfHash);
-			} else {
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", result.data.csrfHash);
-			}
 		});
 	}, []);
 
