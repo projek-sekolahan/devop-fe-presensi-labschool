@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(config => {
   config.headers['Cookie'] = Object.keys(allCookies).map(cookieName => {
     return `${cookieName}=${allCookies[cookieName]}`;
   }).join('; ');
-
+  console.log('Config Headers:', config.headers);
   return config;
 }, error => {
   return Promise.reject(error);
