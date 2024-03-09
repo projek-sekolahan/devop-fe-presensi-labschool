@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from './axiosInstance';
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 export const getCsrf = async () => {
@@ -13,7 +13,7 @@ export const getCsrf = async () => {
 } */
 
 export const toLogin = async (key, formData) => {
-	const res = await axios.post(`${api_url}/api/client/auth/login`, formData, {
+	const res = await axiosInstance.post(`${api_url}/api/client/auth/login`, formData, {
 		headers: {
 			Authorization: `Basic ${key}`,
 		},
