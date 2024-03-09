@@ -28,14 +28,14 @@ export default function Login() {
 		// });
 		// const csrf_token = localStorage.getItem("csrf");
 		// getCsrf();
-		const csrfCookie = Cookies.get('ci_sso_csrf_cookie');
+		const csrf_token = Cookies.get('ci_sso_csrf_cookie');
 
-		if (csrfCookie) {
-			console.log('Cookie telah terbentuk:', csrfCookie);
+		/* if (csrf_token) {
+			console.log('Cookie telah terbentuk:', csrf_token);
 		} else {
 			console.log('Cookie belum terbentuk');
-		}
-		const values = [emailRef.current.value, hash, token_key, csrfCookie];
+		} */
+		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
