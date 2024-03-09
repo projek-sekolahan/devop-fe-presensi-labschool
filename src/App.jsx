@@ -55,22 +55,11 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-
-		/* getCookie().then((result) => {
-			const headers = result.headers;
-			const cookie = headers.get('Set-Cookie');
-			console.log(`Set-Cookie: ${cookie}`);
-		}); */
-
 		getCsrf().then((result) => {
 			// Data cookie yang diberikan
 			const cookieData = {
 				'ci_sso_csrf_cookie': result.data.csrfHash,
 				'Max-Age': '7200',
-				'path': '/',
-				'domain': '.smalabschoolunesa1.sch.id',
-				// 'secure': 'true',
-				// 'SameSite': 'None'
 			};
 			console.log(cookieData);
 			// Set cookie menggunakan js-cookies
@@ -80,24 +69,9 @@ function App() {
 					const cookieValue = cookieData[key];
 					Cookies.set(key, cookieValue, {
 						expires: parseInt(cookieData['Max-Age']), // Konversi Max-Age menjadi jumlah detik
-						path: cookieData['path'],
-						domain: cookieData['domain'],
-						secure: cookieData['secure'] === 'true', // Konversi nilai secure menjadi boolean
-						sameSite: cookieData['SameSite'] // SameSite diatur sesuai dengan nilai yang diberikan
 					});
 			});
 			console.log('Cookie terbentuk:', document.cookie);
-			/* console.log('Response Headers:', response.headers.get());
-			const cookieFromResponse = response.headers.get('Set-Cookie');
-			console.log('Cookie dari respons header:', cookieFromResponse);
-			// Jika cookie ditemukan, Anda juga bisa menetapkannya menggunakan js-cookies
-			if (cookieFromResponse) {
-				const cookieData = cookieFromResponse.split(';')[0]; // Ambil bagian pertama dari cookie
-				const cookieNameValue = cookieData.split('='); // Pisahkan nama dan nilai cookie
-				const cookieName = cookieNameValue[0];
-				const cookieValue = cookieNameValue[1];
-				Cookies.set(cookieName, cookieValue);
-			} */
 
 			if (!localStorage.getItem("csrf")) {
 				localStorage.setItem("csrf", result.data.csrfHash);

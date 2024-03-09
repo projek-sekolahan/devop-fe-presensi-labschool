@@ -7,13 +7,7 @@ export const getCsrf = async () => {
 		withCredentials:true
 	});
 	return csrf;
-	// console.log(csrf);
 };
-
-/* export const getCookie = async () => {
-	const response = await fetch(api_url);
-	return response;
-} */
 
 export const toLogin = async (key, formData) => {
 	const res = await axiosInstance.post(`${api_url}/api/client/auth/login`, formData, {
@@ -21,7 +15,6 @@ export const toLogin = async (key, formData) => {
 			Authorization: `Basic ${key}`,
 		},
 	});
-	// console.log(res);
 };
 export const register = async () => {
 	const res = axiosInstance.post(`${api_url}/input/register`);
