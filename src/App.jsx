@@ -9,6 +9,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { getCsrf, getCookie } from "./utils/api";
 import Register from "./Pages/Register";
+import Cookies from "js-cookie";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
 // import Login from "./Pages/Login";
@@ -62,7 +63,30 @@ function App() {
 		}); */
 
 		getCsrf().then((result) => {
-			console.log(result.headers.get("Cookie"));
+			// console.log(result.headers.get("Cookie"));
+			// Data cookie yang diberikan
+			const cookieData = {
+				'ci_sso_csrf_cookie': result.data.csrfHash,
+				'Max-Age': '7200',
+				'path': '/',
+				'domain': 'devop-sso.smalabschoolunesa1.sch.id',
+				'secure': 'true',
+				'SameSite': 'None'
+			};
+
+			// Set cookie menggunakan js-cookies
+			Object
+				.keys(cookieData)
+				.forEach(key => {
+					const cookieValue = cookieData[key];
+					Cookies.set(key, cookieValue, {
+						expires: parseInt(cookieData['Max-Age']), // Konversi Max-Age menjadi jumlah detik
+						path: cookieData['path'],
+						domain: cookieData['domain'],
+						secure: cookieData['secure'] === 'true', // Konversi nilai secure menjadi boolean
+						sameSite: cookieData['SameSite'] // SameSite diatur sesuai dengan nilai yang diberikan
+					});
+			});
 			
 			/* console.log('Response Headers:', response.headers.get());
 			const cookieFromResponse = response.headers.get('Set-Cookie');

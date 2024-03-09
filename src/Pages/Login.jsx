@@ -7,7 +7,7 @@ import {
 	useRef, 
 	// useState 
 } from "react";
-
+import Cookies from "js-cookie";
 export default function Login() {
 	// const [csrf, setCsrf] = useState("");
 	// const [click, setClick] = useState(false);
@@ -26,9 +26,16 @@ export default function Login() {
 		// const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
 		// 	domain: "https://devop-sso.smalabschoolunesa1.sch.id",
 		// });
-		const csrf_token = localStorage.getItem("csrf");
+		// const csrf_token = localStorage.getItem("csrf");
 		// getCsrf();
-		const values = [emailRef.current.value, hash, token_key, csrf_token];
+		const csrfCookie = Cookies.get('ci_sso_csrf_cookie');
+
+		if (csrfCookie) {
+			console.log('Cookie telah terbentuk:', csrfCookie);
+		} else {
+			console.log('Cookie belum terbentuk');
+		}
+		const values = [emailRef.current.value, hash, token_key, csrfCookie];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)

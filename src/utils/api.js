@@ -1,6 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 export const getCsrf = async () => {
