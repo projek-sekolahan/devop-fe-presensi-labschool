@@ -10,15 +10,6 @@ axiosInstance
     .use(config => {
         // Mengatur opsi withCredentials ke true untuk mengizinkan pengiriman cookie lintas domain
         config.withCredentials = true;
-            // Ambil seluruh cookie
-            const allCookies = Cookies.get();
-            // Setel header dengan cookie
-            /* config.headers['Cookie'] = Object
-                .keys(allCookies)
-                .map(cookieName => {
-                    return `${cookieName}=${allCookies[cookieName]}`;
-                })
-                .join('; '); */
         return config;
     }, error => {
         return Promise.reject(error);
