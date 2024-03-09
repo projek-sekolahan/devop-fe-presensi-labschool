@@ -21,20 +21,20 @@ export const toLogin = async (key, formData) => {
 	// console.log(res);
 };
 export const register = async () => {
-	const res = axios.post(`${api_url}/input/register`);
+	const res = axiosInstance.post(`${api_url}/input/register`);
 };
 export const sessTime = async () => {
-	const res = axios.post(`${base_url}/api/client/auth/sessTime`);
+	const res = axiosInstance.post(`${base_url}/api/client/auth/sessTime`);
 };
 export const logout = async () => {
-	const res = axios.post(`${base_url}api/client/auth/logout`);
+	const res = axiosInstance.post(`${base_url}api/client/auth/logout`);
 };
 export const verify = async () => {
-	const res = axios.post(`${base_url}input/verify`);
+	const res = axiosInstance.post(`${base_url}input/verify`);
 };
 export const setPasswordr = async () => {
-	const res = axios.post(`${base_url}input/setpassword`);
+	const res = axiosInstance.post(`${base_url}input/setpassword`);
 };
 export const recover = async () => {
-	const res = axios.post(`${base_url}input/recover`);
+	const res = axiosInstance.post(`${base_url}input/recover`);
 };
