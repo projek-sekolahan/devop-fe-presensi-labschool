@@ -68,7 +68,7 @@ function App() {
 				'ci_sso_csrf_cookie': result.data.csrfHash,
 				'Max-Age': '7200',
 				'path': '/',
-				'domain': 'devop-sso.smalabschoolunesa1.sch.id',
+				'domain': 'dev-labschool-unesa.vercel.app',
 				'secure': 'true',
 				'SameSite': 'None'
 			};
