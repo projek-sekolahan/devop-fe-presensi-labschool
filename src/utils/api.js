@@ -16,10 +16,10 @@ export const getCsrf = async () => {
 } */
 
 export const toLogin = async (key, formData) => {
-	const res = await axiosInstance.post(`${api_url}/api/client/auth/login`, formData, {
+	const res = await axios.post(`${api_url}/api/client/auth/login`, formData, {
 		headers: {
 			Authorization: `Basic ${key}`,
-			// withCredentials:true
+			withCredentials:true
 		},
 	});
 	// console.log(res);
