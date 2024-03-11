@@ -13,8 +13,8 @@ export const toLogin = async (key, formData) => {
 		},
 	});
 };
-export const register = async () => {
-	const res = axiosInstance.post(`${api_url}/input/register`);
+export const register = async (formData) => {
+	const res = axiosInstance.post(`${api_url}/input/register`, formData);
 };
 export const sessTime = async () => {
 	const res = axiosInstance.post(`${base_url}/api/client/auth/sessTime`);

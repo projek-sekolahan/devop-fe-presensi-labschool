@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { getCsrf, toLogin } from "../utils/api.js";
+import { toLogin } from "../utils/api.js";
 import { getHash, getKey, getFormData } from "../utils/utils.js";
-import { 
-	useRef, 
-} from "react";
+import { useRef } from "react";
 import Cookies from "js-cookie";
+
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -13,7 +12,7 @@ export default function Login() {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		const csrf_token = Cookies.get('ci_sso_csrf_cookie');
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],

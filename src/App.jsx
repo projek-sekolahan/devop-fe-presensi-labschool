@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { getCsrf, getCookie } from "./utils/api";
+import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
 import Cookies from "js-cookie";
 // import OtpInput from "./Pages/OtpInput";
@@ -58,17 +58,15 @@ function App() {
 		getCsrf().then((result) => {
 			// Data cookie yang diberikan
 			const cookieData = {
-				'ci_sso_csrf_cookie': result.data.csrfHash,
-				'Max-Age': '7200',
+				ci_sso_csrf_cookie: result.data.csrfHash,
+				"Max-Age": "7200",
 			};
 			// Set cookie menggunakan js-cookies
-			Object
-				.keys(cookieData)
-				.forEach(key => {
-					const cookieValue = cookieData[key];
-					Cookies.set(key, cookieValue, {
-						expires: parseInt(cookieData['Max-Age']), // Konversi Max-Age menjadi jumlah detik
-					});
+			Object.keys(cookieData).forEach((key) => {
+				const cookieValue = cookieData[key];
+				Cookies.set(key, cookieValue, {
+					expires: parseInt(cookieData["Max-Age"]), // Konversi Max-Age menjadi jumlah detik
+				});
 			});
 		});
 	}, []);
