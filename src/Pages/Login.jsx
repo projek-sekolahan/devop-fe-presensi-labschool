@@ -41,9 +41,9 @@ export default function Login() {
 				toLogin(
 					getKey(emailRef.current.value, hash)[0],
 					getFormData(keys, values)
-				).then((data) => data)
+				).then((data) => data.json)
 			);
-			console.log(data);
+			console.log("ini data : ", data);
 		}
 	}, [clicked]);
 
