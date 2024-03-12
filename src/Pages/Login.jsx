@@ -13,6 +13,7 @@ export default function Login() {
 	const passwordRef = useRef(null);
 	const submitHandler = () => {
 		setClicked(true);
+		console.log("change2: ", data);
 		// const keys = ["username", "password", "devop-sso", "csrf_token"];
 		// const hash = getHash(passwordRef.current.value);
 		// const token_key = getKey(emailRef.current.value, hash)[1];
@@ -41,7 +42,6 @@ export default function Login() {
 				getKey(emailRef.current.value, hash)[0],
 				getFormData(keys, values)
 			).then((result) => setData(result));
-			console.log("change1 : ", data);
 		}
 	}, [clicked]);
 
