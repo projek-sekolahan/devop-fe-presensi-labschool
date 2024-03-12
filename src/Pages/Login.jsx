@@ -22,9 +22,7 @@ export default function Login() {
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
-		).then((result) => setData(result));
-
-		console.log("change3", data);
+		).then((result) => console.log(result));
 	};
 
 	// useEffect(() => {
