@@ -60,7 +60,7 @@ function App() {
 
 			const cookieData = {
 				ci_sso_csrf_cookie: result.data.csrfHash,
-				"Max-Age": "7200",
+				"Max-Age": 1 / 12,
 			};
 			if (Cookies.get("ci_sso_csrf_cookie")) {
 				Cookies.remove("ci_sso_csrf_cookie");
@@ -69,7 +69,7 @@ function App() {
 			Object.keys(cookieData).forEach((key) => {
 				const cookieValue = cookieData[key];
 				Cookies.set(key, cookieValue, {
-					expires: parseInt(cookieData["Max-Age"]), // Konversi Max-Age menjadi jumlah detik
+					expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
 				});
 			});
 		});
