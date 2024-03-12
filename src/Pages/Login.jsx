@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 
 export default function Login() {
 	const [clicked, setClicked] = useState(false);
-	const [data, setData] = useState(null);
+	const [data, setData] = useState({});
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
