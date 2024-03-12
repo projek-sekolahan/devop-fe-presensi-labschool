@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 
 export default function Login() {
 	const [clicked, setClicked] = useState(false);
+	const [data, setData] = useState(null);
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -36,9 +37,11 @@ export default function Login() {
 				token_key,
 				csrf_token,
 			];
-			const data = toLogin(
-				getKey(emailRef.current.value, hash)[0],
-				getFormData(keys, values)
+			setData(
+				toLogin(
+					getKey(emailRef.current.value, hash)[0],
+					getFormData(keys, values)
+				)
 			);
 			console.log(data);
 		}
