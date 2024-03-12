@@ -19,11 +19,10 @@ export default function Login() {
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values),
-			(status, res) => {
-				setData(res.data.data);
+			(res) => {
+				console.log(res.data.data);
 			}
 		);
-		console.log(data);
 	};
 
 	return (
