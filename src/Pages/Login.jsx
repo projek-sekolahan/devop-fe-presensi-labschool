@@ -23,7 +23,7 @@ export default function Login() {
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values),
 			(status, res) => {
-				console.log(status, "and", res);
+				console.log(status, "and", typeof(res));
 			}
 		);
 	};
