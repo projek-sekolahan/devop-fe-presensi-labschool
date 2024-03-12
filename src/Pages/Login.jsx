@@ -41,6 +41,7 @@ export default function Login() {
 				getKey(emailRef.current.value, hash)[0],
 				getFormData(keys, values)
 			).then((result) => setData(result));
+			console.log("change1 : ", data);
 		}
 	}, [clicked]);
 
