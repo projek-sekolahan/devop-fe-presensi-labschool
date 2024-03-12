@@ -37,13 +37,10 @@ export default function Login() {
 				token_key,
 				csrf_token,
 			];
-			setData(
-				toLogin(
-					getKey(emailRef.current.value, hash)[0],
-					getFormData(keys, values)
-				).then((data) => data.json)
-			);
-			console.log("ini data : ", data);
+			toLogin(
+				getKey(emailRef.current.value, hash)[0],
+				getFormData(keys, values)
+			).then((result) => setData(result));
 		}
 	}, [clicked]);
 
