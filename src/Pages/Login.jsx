@@ -21,8 +21,11 @@ export default function Login() {
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
-			getFormData(keys, values)
-		).then((result) => console.log(result));
+			getFormData(keys, values),
+			(status, res) => {
+				console.log(status, "and", res);
+			}
+		);
 	};
 
 	// useEffect(() => {

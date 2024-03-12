@@ -6,17 +6,32 @@ export const getCsrf = async () => {
 	return csrf;
 };
 
-export const toLogin = async (key, formData) => {
-	const res = await axiosInstance.post(
-		`${api_url}/api/client/auth/login`,
-		formData,
-		{
+// export const toLogin = async (key, formData) => {
+// 	const res = await axiosInstance.post(
+// 		`${api_url}/api/client/auth/login`,
+// 		formData,
+// 		{
+// 			headers: {
+// 				Authorization: `Basic ${key}`,
+// 			},
+// 		}
+// 	);
+// 	return res.data;
+// };
+
+export const toLogin = (key, formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/api/client/auth/login`, formData, {
 			headers: {
 				Authorization: `Basic ${key}`,
 			},
-		}
-	);
-	return res.data;
+		})
+		.then((res) => {
+			callback(true, res);
+		})
+		.catch((error) => {
+			callback(false, res);
+		});
 };
 export const register = async (formData) => {
 	const res = axiosInstance.post(`${api_url}/input/register`, formData);
