@@ -8,13 +8,13 @@ import Cookies from "js-cookie";
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const submitHandler = async () => {
+	const submitHandler = () => {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
-		const data = await toLogin(
+		const data = toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
 		).then((data) => console.log(data.info));
