@@ -27,10 +27,10 @@ export const toLogin = (key, formData, callback) => {
 			},
 		})
 		.then((res) => {
-			callback(true, res);
+			callback(res);
 		})
 		.catch((error) => {
-			callback(false, res);
+			callback(error);
 		});
 };
 export const register = async (formData) => {
