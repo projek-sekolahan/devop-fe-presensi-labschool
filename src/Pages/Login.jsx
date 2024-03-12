@@ -18,7 +18,9 @@ export default function Login() {
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values),
 			(res) => {
-				console.log(res);
+				if (res.status == 201) {
+					console.log("login berhasil");
+				}
 			}
 		);
 	};
