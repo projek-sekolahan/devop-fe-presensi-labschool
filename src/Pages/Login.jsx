@@ -20,7 +20,7 @@ export default function Login() {
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values),
 			(res) => {
-				console.log(res.data.data);
+				console.log(res);
 			}
 		);
 	};
