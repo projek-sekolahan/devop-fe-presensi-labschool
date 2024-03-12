@@ -41,7 +41,7 @@ export default function Login() {
 				toLogin(
 					getKey(emailRef.current.value, hash)[0],
 					getFormData(keys, values)
-				)
+				).then((data) => data)
 			);
 			console.log(data);
 		}
