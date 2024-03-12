@@ -17,7 +17,8 @@ export default function Login() {
 		const data = toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
-		).then((data) => console.log(data.info));
+		);
+		console.log(data);
 	};
 
 	return (
