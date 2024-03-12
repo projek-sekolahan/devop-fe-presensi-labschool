@@ -14,10 +14,11 @@ export default function Login() {
 		const token_key = getKey(emailRef.current.value, hash)[1];
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
-		toLogin(
+		const data = await toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
-		);
+		).then((data) => data.info);
+		console.log(data);
 	};
 
 	return (

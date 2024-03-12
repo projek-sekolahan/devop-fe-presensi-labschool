@@ -16,6 +16,7 @@ export const toLogin = async (key, formData) => {
 			},
 		}
 	);
+	return res.data;
 };
 export const register = async (formData) => {
 	const res = axiosInstance.post(`${api_url}/input/register`, formData);
