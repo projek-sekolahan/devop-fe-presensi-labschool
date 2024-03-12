@@ -17,8 +17,7 @@ export default function Login() {
 		const data = await toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
-		).then((data) => data.info);
-		console.log(data);
+		).then((data) => console.log(data.info));
 	};
 
 	return (
