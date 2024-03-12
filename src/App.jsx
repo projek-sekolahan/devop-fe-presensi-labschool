@@ -50,6 +50,7 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
+	const [cookie, setCookie] = useState({})
 
 	useEffect(() => {
 		window.addEventListener("resize", () => {
@@ -58,18 +59,17 @@ function App() {
 		getCsrf().then((result) => {
 			// Data cookie yang diberikan
 
-			const cookieData = {
+			setCookie({
 				ci_sso_csrf_cookie: result.data.csrfHash,
 				"Max-Age": "7200",
-			};
+			});
 			if (Cookies.get("ci_sso_csrf_cookie")) {
 				Cookies.remoe("ci_sso_csrf_cookie");
 			}
 			// Set cookie menggunakan js-cookies
-			Object.keys(cookieData).forEach((key) => {
-				const cookieValue = cookieData[key];
-				Cookies.set(key, cookieValue, {
-					expires: parseInt(cookieData["Max-Age"]), // Konversi Max-Age menjadi jumlah detik
+			Object.keys(cookie).forEach((key) => {
+				Cookies.set(key, cookie[key], {
+					expires: parseInt(cookie["Max-Age"]), // Konversi Max-Age menjadi jumlah detik
 				});
 			});
 		});
