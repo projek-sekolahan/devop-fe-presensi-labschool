@@ -6,8 +6,6 @@ import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 
 export default function Login() {
-	const [data, setData] = useState({});
-
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const submitHandler = () => {
