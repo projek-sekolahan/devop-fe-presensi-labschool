@@ -50,7 +50,7 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
-	const [cookie, setCookie] = useState({})
+	const [cookie, setCookie] = useState({});
 
 	useEffect(() => {
 		window.addEventListener("resize", () => {
@@ -64,7 +64,7 @@ function App() {
 				"Max-Age": "7200",
 			});
 			if (Cookies.get("ci_sso_csrf_cookie")) {
-				Cookies.remoe("ci_sso_csrf_cookie");
+				Cookies.remove("ci_sso_csrf_cookie");
 			}
 			// Set cookie menggunakan js-cookies
 			Object.keys(cookie).forEach((key) => {
