@@ -19,7 +19,9 @@ export default function Login() {
 			getFormData(keys, values),
 			(res) => {
 				if (res.status == 201) {
-					console.log("login berhasil");
+					localStorage.setItem("jwt_token", res.data.data.Tokenjwt);
+				} else {
+					alert("login error");
 				}
 			}
 		);
