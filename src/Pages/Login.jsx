@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { toLogin } from "../utils/api.js";
-import { getHash, getKey, getFormData } from "../utils/utils.js";
+import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
+	// localStorage.setItem(
+	// 	"token",
+	// 	"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoiUWxaU1VUUkpMM2RxVkhWR0wzTTBSMmx2UkhseEswOTZXamhKZVdwME1FNUNjMVJQUzJKbk5ERndZMk5WZGxZdmFIUlpWbXhXWWsweU1saHJSVUpUYWs1WlJtZDZjMU53VlhOc1R6RnBNVlpyVFVzMlFqbHlZVWd5UmtKS2FTOVBVV3hKTmk5TGNUaHhTbWR2Y3pOb1Zpc3ZZVzFtVjFOYWJUY3hWVkp2Vkd0cFYzSjZSM0Y0VlRRcmREWjZaRzlTVmxoWmEwNTRkMVUzSzFWU1VuUklOVmxwT0ZaVmQzcERka3B2TlVWdUwxUnlXWFI1VUVSa01tTklaM2Q2TUdSUVZXWlhiRk5oWWtobldtRkViMWhHWkVwTlYwWlJXakZKZFZrMWNrMWhXVzlTWlVGWFZIaHpNM3BVV214Vk5sUjJTV2wxV25wMldXNU1RVkV3VEZwUlJqbE5hMHB6UlN0S2RsbHVjVlpxU21kNGJIQk5jbXgyUTFOR1VsUTFWMnBKUWxwSmVIcFpaRkpIVVdvMmMyeEtPVTQyVG1kemVVVlZOSE5aWWtkMlVEZz0ifQ.WpAd5f45dZaqypkazoXo9KayXnELA3eJlDijWoF2L7s"
+	// );
+	console.log(
+		parseJwt(
+			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoiUWxaU1VUUkpMM2RxVkhWR0wzTTBSMmx2UkhseEswOTZXamhKZVdwME1FNUNjMVJQUzJKbk5ERndZMk5WZGxZdmFIUlpWbXhXWWsweU1saHJSVUpUYWs1WlJtZDZjMU53VlhOc1R6RnBNVlpyVFVzMlFqbHlZVWd5UmtKS2FTOVBVV3hKTmk5TGNUaHhTbWR2Y3pOb1Zpc3ZZVzFtVjFOYWJUY3hWVkp2Vkd0cFYzSjZSM0Y0VlRRcmREWjZaRzlTVmxoWmEwNTRkMVUzSzFWU1VuUklOVmxwT0ZaVmQzcERka3B2TlVWdUwxUnlXWFI1VUVSa01tTklaM2Q2TUdSUVZXWlhiRk5oWWtobldtRkViMWhHWkVwTlYwWlJXakZKZFZrMWNrMWhXVzlTWlVGWFZIaHpNM3BVV214Vk5sUjJTV2wxV25wMldXNU1RVkV3VEZwUlJqbE5hMHB6UlN0S2RsbHVjVlpxU21kNGJIQk5jbXgyUTFOR1VsUTFWMnBKUWxwSmVIcFpaRkpIVVdvMmMyeEtPVTQyVG1kemVVVlZOSE5aWWtkMlVEZz0ifQ.WpAd5f45dZaqypkazoXo9KayXnELA3eJlDijWoF2L7s"
+		)
+	);
 	const submitHandler = () => {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);

@@ -1,11 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
+import Cookies from "js-cookie";
+import { verify } from "../utils/api";
 
 export default function OtpInput() {
-	const {status} = useParams()
+	const { status } = useParams();
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const inputRefs = useRef([]);
+	const formRef = useRef();
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -13,8 +16,13 @@ export default function OtpInput() {
 		}
 	}, []);
 
-	const onOtpSubmit = (otp) => {
-		console.log(otp);
+	const onOtpSubmit = (e) => {
+		e.preventDefault();
+		let formData = new FormData(formRef.current);
+		const csrf = Cookies.get("ci_sso_csrf_cookie");
+		formData.append("csrf_token", csrf);
+
+		const response = verify(formData);
 	};
 
 	const handleChange = (index, e) => {
@@ -27,7 +35,6 @@ export default function OtpInput() {
 		setOtp(newOtp);
 
 		const combinedOtp = newOtp.join("");
-		if (combinedOtp.length === 4) onOtpSubmit(combinedOtp);
 
 		if (value && index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
@@ -71,13 +78,14 @@ export default function OtpInput() {
 					Enter the verification code that was sended to your email
 					addreas
 				</p>
-				<form>
+				<form onSubmit={onOtpSubmit} ref={formRef}>
 					<div className="flex justify-between my-8">
 						{otp.map((value, index) => {
 							return (
 								<input
 									key={index}
 									type="number"
+									name="digit-input[]"
 									ref={(input) =>
 										(inputRefs.current[index] = input)
 									}
@@ -97,14 +105,12 @@ export default function OtpInput() {
 							Click Here
 						</Link>
 					</p>
-					<Link to={`/setpassword/${status}`}>
-						<button
-							type="submit"
-							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
-						>
-							Verifikasi
-						</button>
-					</Link>
+					<button
+						type="submit"
+						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
+					>
+						Verifikasi
+					</button>
 				</form>
 			</div>
 		</div>

@@ -6,19 +6,6 @@ export const getCsrf = async () => {
 	return csrf;
 };
 
-// export const toLogin = async (key, formData) => {
-// 	const res = await axiosInstance.post(
-// 		`${api_url}/api/client/auth/login`,
-// 		formData,
-// 		{
-// 			headers: {
-// 				Authorization: `Basic ${key}`,
-// 			},
-// 		}
-// 	);
-// 	return res.data;
-// };
-
 export const toLogin = (key, formData, callback) => {
 	axiosInstance
 		.post(`${api_url}/api/client/auth/login`, formData, {
@@ -35,19 +22,25 @@ export const toLogin = (key, formData, callback) => {
 };
 export const register = async (formData) => {
 	const res = axiosInstance.post(`${api_url}/input/register`, formData);
+	return res;
 };
 export const sessTime = async () => {
-	const res = axiosInstance.post(`${base_url}/api/client/auth/sessTime`);
+	const res = axiosInstance.post(`${api_url}/api/client/auth/sessTime`);
+	return res;
 };
 export const logout = async () => {
-	const res = axiosInstance.post(`${base_url}api/client/auth/logout`);
+	const res = axiosInstance.post(`${api_url}/api/client/auth/logout`);
+	return res;
 };
-export const verify = async () => {
-	const res = axiosInstance.post(`${base_url}input/verify`);
+export const verify = async (formData) => {
+	const res = axiosInstance.post(`${api_url}/input/verify`, formData);
+	return res;
 };
 export const setPasswordr = async () => {
-	const res = axiosInstance.post(`${base_url}input/setpassword`);
+	const res = axiosInstance.post(`${api_url}/input/setpassword`);
+	return res;
 };
 export const recover = async () => {
-	const res = axiosInstance.post(`${base_url}input/recover`);
+	const res = axiosInstance.post(`${api_url}/input/recover`);
+	return res;
 };
