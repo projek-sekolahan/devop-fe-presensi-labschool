@@ -54,7 +54,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				console.log(faceData.detection.box);
+				console.log(faceData.descriptor);
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;

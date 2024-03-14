@@ -4,9 +4,11 @@ import { register } from "../utils/api.js";
 import { getFormData } from "../utils/utils.js";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
+import ModalNotification from "/src/Components/ModalNotification";
 
 export default function Register() {
 	const api_url = import.meta.env.VITE_API_URL;
+	const [response, setResponse] = useState(false);
 	const [role, setRole] = useState("");
 	const nameRef = useRef();
 	const numberRef = useRef();
@@ -33,10 +35,14 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		register(getFormData(keys, values));
+		setResponse(register(getFormData(keys, values)));
+		console.log(response);
+		setResponse(false);
+		document.getElementById("my_modal_3").showModal();
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
+			<ModalNotification status={response} data={"hehe"} />
 			<h1 className="text-center text-4xl font-bold text-white ">
 				Register
 			</h1>
