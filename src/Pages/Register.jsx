@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import ModalNotification from "/src/Components/ModalNotification";
 
 export default function Register() {
-	const api_url = import.meta.env.VITE_API_URL;
 	const [response, setResponse] = useState(null);
 	const [status, setStatus] = useState();
 	const [role, setRole] = useState("");
@@ -40,12 +39,19 @@ export default function Register() {
 			}
 			setResponse(res.data);
 		});
-		console.log("change1", status, "and", response);
+		response
+			? console.log("change10", status, "and", response)
+			: "data akan segera masuk";
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
-			<ModalNotification status={status} data={response} />;
+			{response ? (
+				<ModalNotification status={status} data={response} />
+			) : (
+				<p>Lodaing....</p>
+			)}
+
 			<h1 className="text-center text-4xl font-bold text-white ">
 				Register
 			</h1>

@@ -19,7 +19,7 @@ export default function ModalNotification({ status, data }) {
 									d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 								/>
 							</svg>
-							<span>{data ? data.title : null}</span>
+							<span>{data ? data.data.title : null}</span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
@@ -37,7 +37,7 @@ export default function ModalNotification({ status, data }) {
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
 						<span className="block">
-							{data ? data.message : null}
+							{data ? data.data.message : null}
 						</span>
 					</div>
 				</div>
