@@ -42,6 +42,7 @@ export default function Register() {
 		});
 		console.log("change1", status, "and", response);
 		document.getElementById("my_modal_3").showModal();
+		return <ModalNotification status={status} data={response} />;
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
@@ -168,7 +169,6 @@ export default function Register() {
 					</Link>
 				</p>
 			</div>
-			<ModalNotification status={status} data={response} />
 		</div>
 	);
 }
