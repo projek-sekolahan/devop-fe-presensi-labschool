@@ -1,4 +1,5 @@
 export default function ModalNotification({ status, data }) {
+	console.log(status);
 	if (status) {
 		return (
 			<dialog id="my_modal_3" className="modal text-gray-600">
