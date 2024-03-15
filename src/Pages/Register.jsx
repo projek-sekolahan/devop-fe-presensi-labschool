@@ -8,7 +8,8 @@ import ModalNotification from "/src/Components/ModalNotification";
 
 export default function Register() {
 	const api_url = import.meta.env.VITE_API_URL;
-	const [response, setResponse] = useState(false);
+	const [response, setResponse] = useState(null);
+	const [status, setStatus] = useState();
 	const [role, setRole] = useState("");
 	const nameRef = useRef();
 	const numberRef = useRef();
@@ -32,9 +33,14 @@ export default function Register() {
 			csrf_token,
 		];
 		register(getFormData(keys, values), (res) => {
+			if (res.status != 200 || res.data.info == "error") {
+				setStatus(false);
+			} else {
+				setStatus(true);
+			}
 			setResponse(res);
 		});
-		console.log("change", response);
+		console.log("change", status, "and", response);
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
