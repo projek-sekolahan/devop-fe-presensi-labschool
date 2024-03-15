@@ -40,7 +40,7 @@ export default function Register() {
 			}
 			setResponse(res.data);
 		});
-		console.log("change3", status, "and", response);
+		console.log("change1", status, "and", response);
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
