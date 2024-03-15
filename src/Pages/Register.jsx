@@ -66,7 +66,7 @@ export default function Register() {
 								/>
 							</svg>
 
-							<span>{response.title}</span>
+							<span>{response ? response.title : null}</span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
