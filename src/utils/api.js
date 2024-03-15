@@ -22,7 +22,7 @@ export const toLogin = (key, formData, callback) => {
 };
 export const register = async (formData) => {
 	const res = axiosInstance.post(`${api_url}/input/register`, formData);
-	return res;
+	return res.data;
 };
 export const sessTime = async () => {
 	const res = axiosInstance.post(`${api_url}/api/client/auth/sessTime`);
@@ -36,7 +36,7 @@ export const verify = async (formData) => {
 	const res = axiosInstance.post(`${api_url}/input/verify`, formData);
 	return res;
 };
-export const setPasswordr = async () => {
+export const setPassword = async () => {
 	const res = axiosInstance.post(`${api_url}/input/setpassword`);
 	return res;
 };

@@ -82,7 +82,8 @@ export default function ModalNotification({ status, data }) {
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
 						<span className="block">
-							File uploaded successfully!
+							Register Error, don't use registered email. If you
+							already use this email, just login with your email.
 						</span>
 					</div>
 				</div>
