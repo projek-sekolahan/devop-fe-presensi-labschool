@@ -34,7 +34,7 @@ export default function Register() {
 		register(getFormData(keys, values), (res) => {
 			setResponse(res);
 		});
-		console.log(response);
+		console.log("change", response);
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
