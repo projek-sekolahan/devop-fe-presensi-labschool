@@ -33,10 +33,10 @@ export default function Register() {
 		];
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
-				setStatus(false);
+				setStatus("false");
 				setResponse(res.data);
 			} else {
-				setStatus(true);
+				setStatus("true");
 				setResponse(res.data.data);
 			}
 		});
@@ -84,7 +84,7 @@ export default function Register() {
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
 						<span className="block">
-							{status
+							{status == "true"
 								? response.message
 								: "Register Error, Harap periksa apakah data yang anda masukkan benar, pastikan tidak menggunakan email yang sudah terdaftar."}
 						</span>
