@@ -66,7 +66,7 @@ export default function Register() {
 								/>
 							</svg>
 
-							<span>data.title</span>
+							<span>{response.title}</span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
@@ -85,7 +85,7 @@ export default function Register() {
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
 						<span className="block">
 							{status
-								? data.message
+								? response.message
 								: "Register Error, Harap periksa apakah data yang anda masukkan benar, pastikan tidak menggunakan email yang sudah terdaftar."}
 						</span>
 					</div>
