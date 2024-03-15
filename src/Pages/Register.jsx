@@ -16,10 +16,6 @@ export default function Register() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		console.log(role);
-		console.log(nameRef.current.value);
-		console.log(numberRef.current.value);
-		console.log(emailRef.current.value);
 		const keys = [
 			"username",
 			"phone",
@@ -37,7 +33,6 @@ export default function Register() {
 		];
 		setResponse(register(getFormData(keys, values)));
 		console.log(response);
-		setResponse(false);
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
