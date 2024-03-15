@@ -40,12 +40,12 @@ export default function Register() {
 			}
 			setResponse(res.data);
 		});
-		console.log("change2", status, "and", response);
+		console.log("change3", status, "and", response);
 		document.getElementById("my_modal_3").showModal();
-		return <ModalNotification status={status} data={response} />;
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
+			<ModalNotification status={status} data={response} />;
 			<h1 className="text-center text-4xl font-bold text-white ">
 				Register
 			</h1>
