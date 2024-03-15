@@ -38,14 +38,14 @@ export default function Register() {
 			} else {
 				setStatus(true);
 			}
-			setResponse(res);
+			setResponse(res.data);
 		});
 		console.log("change", status, "and", response);
 		document.getElementById("my_modal_3").showModal();
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
-			<ModalNotification status={response} data={"hehe"} />
+			<ModalNotification status={status} data={response} />
 			<h1 className="text-center text-4xl font-bold text-white ">
 				Register
 			</h1>

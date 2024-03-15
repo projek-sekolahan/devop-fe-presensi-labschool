@@ -1,5 +1,4 @@
 export default function ModalNotification({ status, data }) {
-	console.log(status);
 	if (status) {
 		return (
 			<dialog id="my_modal_3" className="modal text-gray-600">
@@ -20,7 +19,7 @@ export default function ModalNotification({ status, data }) {
 									d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 								/>
 							</svg>
-							<span>Success</span>
+							<span>{data.title}</span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
@@ -37,9 +36,7 @@ export default function ModalNotification({ status, data }) {
 						</form>
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
-						<span className="block">
-							File uploaded successfully!
-						</span>
+						<span className="block">{data.message}</span>
 					</div>
 				</div>
 			</dialog>
@@ -65,7 +62,7 @@ export default function ModalNotification({ status, data }) {
 								/>
 							</svg>
 
-							<span>Errors</span>
+							<span>{data.title}</span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
@@ -83,8 +80,9 @@ export default function ModalNotification({ status, data }) {
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
 						<span className="block">
-							Register Error, don't use registered email. If you
-							already use this email, just login with your email.
+							Register Error, Harap periksa apakah data yang anda
+							masukkan benar, pastikan tidak menggunakan email
+							yang sudah terdaftar.
 						</span>
 					</div>
 				</div>
