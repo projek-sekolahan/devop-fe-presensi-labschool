@@ -31,7 +31,9 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		setResponse(register(getFormData(keys, values)));
+		register(getFormData(keys, values), (res) => {
+			setResponse(res);
+		});
 		console.log(response);
 		document.getElementById("my_modal_3").showModal();
 	};

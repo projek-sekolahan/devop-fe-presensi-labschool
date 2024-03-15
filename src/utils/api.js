@@ -20,9 +20,15 @@ export const toLogin = (key, formData, callback) => {
 			callback(error);
 		});
 };
-export const register = async (formData) => {
-	const res = axiosInstance.post(`${api_url}/input/register`, formData);
-	return res.data;
+export const register = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/register`, formData)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };
 export const sessTime = async () => {
 	const res = axiosInstance.post(`${api_url}/api/client/auth/sessTime`);
