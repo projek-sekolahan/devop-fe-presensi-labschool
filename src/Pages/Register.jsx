@@ -32,9 +32,17 @@ export default function Register() {
 		];
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
-				console.log("errors : ", res.data);
+				Swal.fire({
+					title: res.data.title,
+					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					icon: "error",
+				});
 			} else {
-				console.log("succes : ", res.data);
+				Swal.fire({
+					title: res.data.data.title,
+					text: res.data.data.message,
+					icon: "success",
+				});
 			}
 		});
 	};
