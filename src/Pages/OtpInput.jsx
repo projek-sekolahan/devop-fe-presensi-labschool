@@ -31,7 +31,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.reload);
+				}).then(() => window.location.replace(`/verify/${status}`));
 			} else {
 				window.location.replace(`/facecam`);
 			}

@@ -39,7 +39,7 @@ export default function Register() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.reload);
+				}).then(() => window.location.replace(`/`));
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
