@@ -36,11 +36,12 @@ export default function Register() {
 					titleText: res.data.title,
 					text: "change1 Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
+					isConfirmed: "popup => {console.log(popup)}",
 				});
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: res.data.data.message,
+					text: "Activation Email Sent \nPlease check your inbox or spam",
 					icon: "success",
 				});
 			}
