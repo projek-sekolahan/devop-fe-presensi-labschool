@@ -49,7 +49,7 @@ export default function Register() {
 					allowEnterKey: false,
 					allowEscapeKey: false,
 				}).then(() =>
-					window.location.replace(`/${res.data.data.location}`)
+					window.location.replace(`/${res.data.data.location}/set`)
 				);
 			}
 		});

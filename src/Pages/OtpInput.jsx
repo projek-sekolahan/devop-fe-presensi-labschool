@@ -22,7 +22,9 @@ export default function OtpInput() {
 		const csrf = Cookies.get("ci_sso_csrf_cookie");
 		formData.append("csrf_token", csrf);
 
-		const response = verify(formData);
+		verify(formData, (res) => {
+			consoe.log(res.data);
+		});
 	};
 
 	const handleChange = (index, e) => {

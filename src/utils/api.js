@@ -38,9 +38,15 @@ export const logout = async () => {
 	const res = axiosInstance.post(`${api_url}/api/client/auth/logout`);
 	return res;
 };
-export const verify = async (formData) => {
-	const res = axiosInstance.post(`${api_url}/input/verify`, formData);
-	return res;
+export const verify = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/verify`, formData)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };
 export const setPassword = async () => {
 	const res = axiosInstance.post(`${api_url}/input/setpassword`);
