@@ -39,7 +39,7 @@ export default function Register() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => console.log("clicked"));
+				}).then(() => redirect(`/${res.data.location}`));
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
@@ -48,7 +48,7 @@ export default function Register() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => console.log("clicked"));
+				}).then(() => redirect(`/${res.data.data.location}`));
 			}
 		});
 	};
