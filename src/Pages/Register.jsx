@@ -31,7 +31,7 @@ export default function Register() {
 			csrf_token,
 		];
 		register(getFormData(keys, values), (res) => {
-			if (res.status != 200 || res.data.info == "error") {
+			if (res.status != 200 || res.data.info == "error" || !res) {
 				Swal.fire({
 					titleText: res.data.title,
 					text: "Harap periksa apakah nomor dan email belum digunakan!",
