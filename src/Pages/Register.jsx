@@ -52,7 +52,7 @@ export default function Register() {
 					window.location.replace(`/${res.data.data.location}/set`)
 				);
 			}
-		});
+		}).catch((error) => console.log(error));
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
