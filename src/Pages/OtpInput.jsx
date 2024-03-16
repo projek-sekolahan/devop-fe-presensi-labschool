@@ -24,19 +24,25 @@ export default function OtpInput() {
 		formData.append("csrf_token", csrf);
 
 		verify(formData, (res) => {
-			// if (res.status == 200) {
-			// 	window.location.replace("/facecam");
-			// } else {
-			// 	Swal.fire({
-			// 		titleText: res.data.title,
-			// 		text: res.data.message,
-			// 		icon: "error",
-			// 		allowOutsideClick: false,
-			// 		allowEnterKey: false,
-			// 		allowEscapeKey: false,
-			// 	}).then(() => window.location.replace(`/verify/${status}`));
-			// }
-			console.log(res);
+			if (res.status == 200 && res.data.data.info == "success") {
+				Swal.fire({
+					titleText: res.data.data.title,
+					text: "Account Activated",
+					icon: "success",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace("/facecam"));
+			} else {
+				Swal.fire({
+					titleText: res.data.title,
+					text: res.data.message,
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/verify/${status}`));
+			}
 		});
 	};
 
