@@ -89,8 +89,7 @@ function App() {
 			) : null}
 			<Suspense fallback={<Loading />}>
 				<Routes>
-					<Route path="/" element={<Navigate to="/register" />} />
-					<Route path="/register" Component={Register} />
+					<Route path="/" Component={Register} />
 					<Route path="/verification/:status" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />

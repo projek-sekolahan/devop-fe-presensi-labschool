@@ -48,9 +48,7 @@ export default function Register() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() =>
-					window.location.replace(`/${res.data.data.location}`)
-				);
+				}).then(() => window.location.replace("/"));
 			}
 		});
 	};
