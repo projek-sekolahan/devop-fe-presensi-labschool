@@ -33,13 +33,13 @@ export default function Register() {
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
-					titleText: res.data.title,
+					title: res.data.title,
 					text: "Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
 				});
 			} else {
 				Swal.fire({
-					titleText: res.data.data.title,
+					title: res.data.data.title,
 					text: res.data.data.message.split("<br />".join("\n")),
 					icon: "success",
 				});
