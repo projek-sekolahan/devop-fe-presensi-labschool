@@ -24,7 +24,7 @@ export default function Login() {
 					Swal.fire({
 						titleText: res.data.data.title,
 						text: res.data.data.message,
-						icon: "error",
+						icon: "success",
 						allowOutsideClick: false,
 						allowEnterKey: false,
 						allowEscapeKey: false,
