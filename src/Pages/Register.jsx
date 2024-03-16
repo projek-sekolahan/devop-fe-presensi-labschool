@@ -31,25 +31,7 @@ export default function Register() {
 			csrf_token,
 		];
 		register(getFormData(keys, values), (res) => {
-			if (!res) {
-				Swal.fire({
-					titleText: "Request error",
-					text: "Harap periksa apakah nomor dan email belum digunakan!",
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/`));
-			} else if (res.status != 200 || res.data.info == "error") {
-				Swal.fire({
-					titleText: res.data.title,
-					text: "Harap periksa apakah nomor dan email belum digunakan!",
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/`));
-			} else {
+			if (res.status == 200) {
 				Swal.fire({
 					titleText: res.data.data.title,
 					html: res.data.data.message,
@@ -60,6 +42,15 @@ export default function Register() {
 				}).then(() =>
 					window.location.replace(`/${res.data.data.location}/set`)
 				);
+			} else {
+				Swal.fire({
+					titleText: "Register Gagal",
+					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/`));
 			}
 		});
 	};
