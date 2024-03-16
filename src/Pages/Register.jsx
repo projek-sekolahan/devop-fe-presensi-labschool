@@ -8,14 +8,10 @@ import Swal from "sweetalert2";
 
 export default function Register() {
 	console.log("nice change");
-	const [response, setResponse] = useState(null);
-	const [status, setStatus] = useState();
 	const [role, setRole] = useState("");
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
-	const messageRef = useRef();
-	const titleRef = useRef();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -36,18 +32,12 @@ export default function Register() {
 		];
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
-				setResponse(res.data);
+				console.log(res.data);
 			} else {
-				setResponse(res.data.data);
+				console.log(res.data.data);
 			}
 		});
 	};
-	Swal.fire({
-		title: 'Error!',
-		text: 'Do you want to continue',
-		icon: 'error',
-		confirmButtonText: 'Cool'
-	  })
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
 			<h1 className="text-center text-4xl font-bold text-white ">
