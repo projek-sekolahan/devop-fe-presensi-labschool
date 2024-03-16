@@ -23,7 +23,18 @@ export default function OtpInput() {
 		formData.append("csrf_token", csrf);
 
 		verify(formData, (res) => {
-			consoe.log(res.data);
+			if (res.status != 200 || res.data.info == "error") {
+				Swal.fire({
+					titleText: res.data.title,
+					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.reload);
+			} else {
+				window.location.replace(`/facecam`);
+			}
 		});
 	};
 
@@ -36,7 +47,7 @@ export default function OtpInput() {
 		newOtp[index] = value.substring(value.length - 1);
 		setOtp(newOtp);
 
-		const combinedOtp = newOtp.join("");
+		// const combinedOtp = newOtp.join("");
 
 		if (value && index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
@@ -59,7 +70,6 @@ export default function OtpInput() {
 			index > 0 &&
 			inputRefs.current[index - 1]
 		) {
-			console.log(inputRefs.current[index].value);
 			inputRefs.current[index - 1].focus();
 		}
 	};

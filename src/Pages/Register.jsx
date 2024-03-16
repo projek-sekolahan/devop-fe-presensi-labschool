@@ -34,16 +34,16 @@ export default function Register() {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "change1 Harap periksa apakah nomor dan email belum digunakan!",
+					text: "Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/`));
+				}).then(() => window.location.reload);
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: "Activation Email Sent \nPlease check your inbox or spam",
+					html: res.data.data.message,
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
