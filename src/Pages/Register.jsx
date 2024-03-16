@@ -1,5 +1,5 @@
 // import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
-import { Link, redirect } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { register } from "../utils/api.js";
 import { getFormData } from "../utils/utils.js";
 import { useRef, useState } from "react";
@@ -34,12 +34,12 @@ export default function Register() {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "change3 Harap periksa apakah nomor dan email belum digunakan!",
+					text: "change1 Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => redirect(`/${res.data.location}`));
+				}).then(() => window.location.replace(`/${res.data.location}`));
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
@@ -48,7 +48,9 @@ export default function Register() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => redirect(`/${res.data.data.location}`));
+				}).then(() =>
+					window.location.replace(`/${res.data.data.location}`)
+				);
 			}
 		});
 	};
