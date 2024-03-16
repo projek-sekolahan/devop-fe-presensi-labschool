@@ -34,7 +34,7 @@ export default function Register() {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "change1 Harap periksa apakah nomor dan email belum digunakan!",
+					text: "change2 Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
 					isConfirmed: "popup => {console.log(popup)}",
 				});
