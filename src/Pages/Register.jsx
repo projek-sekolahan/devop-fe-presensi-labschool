@@ -34,13 +34,13 @@ export default function Register() {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					text: "change1 Harap periksa apakah nomor dan email belum digunakan!",
 					icon: "error",
 				});
 			} else {
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: res.data.data.message.split("<br />".join("")),
+					text: res.data.data.message,
 					icon: "success",
 				});
 			}
