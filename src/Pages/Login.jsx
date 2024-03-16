@@ -38,6 +38,15 @@ export default function Login() {
 						allowEnterKey: false,
 						allowEscapeKey: false,
 					}).then(() => window.location.replace(`/login`));
+				}else{
+					Swal.fire({
+						titleText: "Error",
+						text: "Silahkan Login Ulang",
+						icon: "error",
+						allowOutsideClick: false,
+						allowEnterKey: false,
+						allowEscapeKey: false,
+					}).then(() => window.location.replace(`/login`));
 				}
 			}
 		);
