@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import { verify } from "../utils/api";
+import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const { status } = useParams();
@@ -26,7 +27,7 @@ export default function OtpInput() {
 			if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					text: res.data.message,
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
