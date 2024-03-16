@@ -13,6 +13,8 @@ export default function Register() {
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
+	const messageRef = useRef();
+	const titleRef = useRef();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -35,9 +37,14 @@ export default function Register() {
 			if (res.status != 200 || res.data.info == "error") {
 				setStatus("false");
 				setResponse(res.data);
+				titleRef.current.innerText = res.data.title;
+				messageRef.current.innerText =
+					"Register Error, Harap periksa apakah data yang anda masukkan benar, pastikan tidak menggunakan email yang sudah terdaftar.";
 			} else {
 				setStatus("true");
 				setResponse(res.data.data);
+				titleRef.current.innerText = res.data.data.title;
+				messageRef.current.innerHTML = res.data.data.message;
 			}
 		});
 		response
@@ -66,7 +73,7 @@ export default function Register() {
 								/>
 							</svg>
 
-							<span>{response ? response.title : null}</span>
+							<span ref={titleRef}></span>
 						</div>
 						<form className="relative" method="dialog">
 							<button>
@@ -83,11 +90,7 @@ export default function Register() {
 						</form>
 					</div>
 					<div className="p-3 bg-white border border-gray-300 rounded-b shadow-lg">
-						<span className="block">
-							{status == "true"
-								? response.message
-								: "Register Error, Harap periksa apakah data yang anda masukkan benar, pastikan tidak menggunakan email yang sudah terdaftar."}
-						</span>
+						<span className="block" ref={messageRef}></span>
 					</div>
 				</div>
 			</dialog>
