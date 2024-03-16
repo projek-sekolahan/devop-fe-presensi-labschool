@@ -32,9 +32,9 @@ export default function Register() {
 		];
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
-				console.log(res.data);
+				console.log("errors : ", res.data);
 			} else {
-				console.log(res.data.data);
+				console.log("succes : ", res.data);
 			}
 		});
 	};
