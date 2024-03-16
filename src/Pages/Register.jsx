@@ -31,7 +31,16 @@ export default function Register() {
 			csrf_token,
 		];
 		register(getFormData(keys, values), (res) => {
-			if (res.status != 200 || res.data.info == "error" || !res) {
+			if (!res) {
+				Swal.fire({
+					titleText: "Request error",
+					text: "Harap periksa apakah nomor dan email belum digunakan!",
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/`));
+			} else if (res.status != 200 || res.data.info == "error") {
 				Swal.fire({
 					titleText: res.data.title,
 					text: "Harap periksa apakah nomor dan email belum digunakan!",
@@ -52,7 +61,7 @@ export default function Register() {
 					window.location.replace(`/${res.data.data.location}/set`)
 				);
 			}
-		}).catch((error) => console.log(error));
+		});
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
