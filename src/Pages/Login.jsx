@@ -29,7 +29,7 @@ export default function Login() {
 						allowEnterKey: false,
 						allowEscapeKey: false,
 					}).then(() => window.location.replace(`/home`));
-				} else {
+				} else if (res.status == 200) {
 					Swal.fire({
 						titleText: res.data.title,
 						text: res.data.message,
