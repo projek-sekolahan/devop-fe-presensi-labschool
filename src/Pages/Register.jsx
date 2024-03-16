@@ -1,5 +1,5 @@
 // import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { register } from "../utils/api.js";
 import { getFormData } from "../utils/utils.js";
 import { useRef, useState } from "react";
@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import ModalNotification from "/src/Components/ModalNotification";
 
 export default function Register() {
+	console.log("nice change");
 	const [response, setResponse] = useState(null);
 	const [status, setStatus] = useState();
 	const [role, setRole] = useState("");
@@ -35,22 +36,22 @@ export default function Register() {
 		];
 		register(getFormData(keys, values), (res) => {
 			if (res.status != 200 || res.data.info == "error") {
-				setStatus("false");
+				// setStatus("false");
 				setResponse(res.data);
 				titleRef.current.innerText = res.data.title;
 				messageRef.current.innerText =
 					"Register Error, Harap periksa apakah data yang anda masukkan benar, pastikan tidak menggunakan email yang sudah terdaftar.";
+				document.getElementById("my_modal_3").showModal();
+				redirect(`/${res.data.location}`);
 			} else {
-				setStatus("true");
+				// setStatus("true");
 				setResponse(res.data.data);
 				titleRef.current.innerText = res.data.data.title;
 				messageRef.current.innerHTML = res.data.data.message;
+				document.getElementById("my_modal_3").showModal();
+				redirect(`/${res.data.data.location}`);
 			}
 		});
-		response
-			? console.log("change20", status, "and", response)
-			: "data akan segera masuk";
-		document.getElementById("my_modal_3").showModal();
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
