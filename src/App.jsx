@@ -3,7 +3,7 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	// Navigate,
+	Navigate,
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
@@ -89,7 +89,8 @@ function App() {
 			) : null}
 			<Suspense fallback={<Loading />}>
 				<Routes>
-					<Route path="/" Component={Register} />
+					<Route path="/" Component={<Navigate to="/register" />} />
+					<Route path="/register" Component={Register} />
 					<Route path="/verification/:status" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />

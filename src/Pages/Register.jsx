@@ -1,5 +1,5 @@
 // import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { register } from "../utils/api.js";
 import { getFormData } from "../utils/utils.js";
 import { useRef, useState } from "react";
