@@ -47,7 +47,7 @@ export default function SetPassword() {
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
-					text: res.data.message,
+					text: "Unable to Set Password",
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
