@@ -10,7 +10,7 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
 import { getUserData } from "../utils/api";
-import { getFormData } from "../utils/utils";
+import { getFormData, parseJwt } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
 		localStorage.getItem("AUTH_KEY"),
 		getFormData(key, values),
 		(res) => {
-			console.log(res);
+			console.log(parseJwt(res.data.data.data));
 		}
 	);
 
