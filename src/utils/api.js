@@ -48,6 +48,16 @@ export const verify = async (formData, callback) => {
 			callback(error);
 		});
 };
+export const facecam = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/facecam`, formData)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
+};
 export const setPassword = async () => {
 	const res = axiosInstance.post(`${api_url}/input/setpassword`);
 	return res;
