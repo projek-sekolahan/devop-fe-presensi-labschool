@@ -61,8 +61,10 @@ export default function FaceCam() {
 				if (faceData.detection.score >= 0.8) {
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-					const floatString = Array.from(faceData.descriptor).join(', ');
-					console.log(floatString);
+					const floatString = Array.from(faceData.descriptor).join(
+						", "
+					);
+					alert(floatString);
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
