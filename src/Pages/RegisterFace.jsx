@@ -31,6 +31,8 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
+				setAlert(false);
+				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -68,8 +70,6 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				setAlert(false);
-				Swal.close();
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
