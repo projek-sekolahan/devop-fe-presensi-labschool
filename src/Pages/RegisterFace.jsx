@@ -1,13 +1,18 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { getFormData } from "../utils/utils";
+import { facecam } from "../utils/api";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 export default function RegisterFace() {
-	console.log("app rendered");
-
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	const [alert, setAlert] = useState(true);
+
+	const key = ["param", "devop-sso", "csrf_token"];
 
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -36,14 +41,11 @@ export default function RegisterFace() {
 		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
 		faceapi.nets.faceExpressionNet.loadFromUri("/models"),
 	]).then(() => {
-		console.log("models loaded");
 		startVideo();
 	});
 
 	const faceMyDetect = () => {
-		console.log("run detect");
 		setInterval(async () => {
-			console.log("run loop");
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
@@ -54,18 +56,51 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				console.log(faceData.descriptor);
+				setAlert(false);
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
 				if (faceData.detection.score >= 0.8) {
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-					window.location.replace("/home");
+					// Float 32 Array to String
+					const stringDescriptor = Array.from(
+						faceData.descriptor
+					).join(", ");
+					const values = [
+						stringDescriptor,
+						localStorage.getItem("regist_token"),
+						Cookies.get("ci_sso_csrf_cookie"),
+					];
+					facecam(getFormData(key, values), (res) => {
+						console.log(res);
+					});
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
 				}
+			} else {
+				alert &&
+					Swal.fire({
+						title: "Wait a Second",
+						text: "Loading model...",
+						timer: 2000,
+						didOpen: () => {
+							Swal.showLoading();
+							const timer = Swal.getPopup().querySelector("b");
+							timerInterval = setInterval(() => {
+								timer.textContent = `${Swal.getTimerLeft()}`;
+							}, 100);
+						},
+						willClose: () => {
+							clearInterval(timerInterval);
+						},
+					}).then((result) => {
+						/* Read more about handling dismissals below */
+						if (result.dismiss === Swal.DismissReason.timer) {
+							console.log("I was closed by the timer");
+						}
+					});
 			}
 		}, 1000);
 	};
