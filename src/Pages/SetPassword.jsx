@@ -35,7 +35,6 @@ export default function SetPassword() {
 
 		setPassword(getFormData(key, values), (res) => {
 			if (res.status == 200 && res.data.data) {
-				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
 					text: res.data.data.message,

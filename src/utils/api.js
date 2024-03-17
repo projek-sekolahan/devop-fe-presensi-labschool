@@ -70,7 +70,7 @@ export const getUserData = async (formData, callback) => {
 };
 export const setPassword = async (formData, callback) => {
 	axiosInstance
-		.post(`${api_url}/input/setpassword`)
+		.post(`${api_url}/input/setpassword`, formData)
 		.then((res) => {
 			callback(res);
 		})
