@@ -58,12 +58,12 @@ function decrypt(param, from) {
 	const ivHex = CryptoJS.SHA256(ivEnkrip).toString().substring(0, 16);
 	const key = CryptoJS.enc.Utf8.parse(keyHex);
 	const iv = CryptoJS.enc.Utf8.parse(ivHex);
-	console.log(keyHex, ivHex, key, iv);
 	let cipher = CryptoJS.AES.decrypt(atob(param.data), key, {
 		iv: iv,
 		mode: CryptoJS.mode.CBC,
 		padding: CryptoJS.pad.Pkcs7,
 	});
+	console.log(cipher);
 	var decryptedText = cipher.toString(CryptoJS.enc.Utf8);
 	return JSON.parse(decryptedText);
 }
