@@ -23,6 +23,7 @@ export default function Register() {
 				allowEnterKey: false,
 				allowEscapeKey: false,
 			});
+			return;
 		}
 		const keys = [
 			"username",
