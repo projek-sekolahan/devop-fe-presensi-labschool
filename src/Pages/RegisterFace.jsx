@@ -12,16 +12,17 @@ export default function RegisterFace() {
 	const textRef = useRef();
 	const [alert, setAlert] = useState(true);
 
-	alert && Swal.fire({
-		titleText: "Loading",
-		text: "Wait a second...",
-		allowOutsideClick: false,
-		allowEnterKey: false,
-		allowEscapeKey: false,
-		didOpen: () => {
-			Swal.showLoading()
-		}
-	})
+	alert &&
+		Swal.fire({
+			titleText: "Loading",
+			text: "Wait a second...",
+			allowOutsideClick: false,
+			allowEnterKey: false,
+			allowEscapeKey: false,
+			didOpen: () => {
+				Swal.showLoading();
+			},
+		});
 
 	const key = ["param", "devop-sso", "csrf_token"];
 
@@ -86,10 +87,13 @@ export default function RegisterFace() {
 					];
 					facecam(getFormData(key, values), (res) => {
 						if (res.status == 200 && res.data.data) {
-							localStorage.setItem("regist_token", res.data.data.token)
+							localStorage.setItem(
+								"regist_token",
+								res.data.data.token
+							);
 							Swal.fire({
 								titleText: res.data.data.title,
-								text: re.data.data.message,
+								text: res.data.data.message,
 								icon: "success",
 								allowOutsideClick: false,
 								allowEnterKey: false,
