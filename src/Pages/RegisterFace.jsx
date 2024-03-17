@@ -57,6 +57,7 @@ export default function RegisterFace() {
 
 			if (faceData) {
 				setAlert(false);
+				Swal.close();
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
@@ -82,24 +83,11 @@ export default function RegisterFace() {
 			} else {
 				alert &&
 					Swal.fire({
-						title: "Wait a Second",
-						text: "Loading model...",
-						timer: 2000,
-						didOpen: () => {
+						title: "Loading",
+						allowOutsideClick: false,
+						onBeforeOpen: () => {
 							Swal.showLoading();
-							const timer = Swal.getPopup().querySelector("b");
-							timerInterval = setInterval(() => {
-								timer.textContent = `${Swal.getTimerLeft()}`;
-							}, 100);
 						},
-						willClose: () => {
-							clearInterval(timerInterval);
-						},
-					}).then((result) => {
-						/* Read more about handling dismissals below */
-						if (result.dismiss === Swal.DismissReason.timer) {
-							console.log("I was closed by the timer");
-						}
 					});
 			}
 		}, 1000);
