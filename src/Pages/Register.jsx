@@ -15,6 +15,16 @@ export default function Register() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		if (!role) {
+			Swal.fire({
+				titleText: "Input Error",
+				text: "Harap pilih role",
+				icon: "error",
+				allowOutsideClick: false,
+				allowEnterKey: false,
+				allowEscapeKey: false,
+			});
+		}
 		const keys = [
 			"username",
 			"phone",
