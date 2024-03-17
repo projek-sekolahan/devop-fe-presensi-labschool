@@ -25,6 +25,7 @@ export default function OtpInput() {
 
 		verify(formData, (res) => {
 			if (res.status == 200 && res.data.data) {
+				console.log(res);
 				Swal.fire({
 					titleText: res.data.data.title,
 					text: "Account Activated",

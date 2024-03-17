@@ -29,7 +29,6 @@ export default function Login() {
 			(res) => {
 				if (res.status == 201) {
 					localStorage.setItem("token", res.data.data.Tokenjwt);
-					console.log(parseJwt(localStorage.getItem("token")));
 					Swal.fire({
 						titleText: res.data.data.title,
 						text: res.data.data.message,
