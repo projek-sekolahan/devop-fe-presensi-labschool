@@ -98,7 +98,7 @@ export default function RegisterFace() {
 								allowOutsideClick: false,
 								allowEnterKey: false,
 								allowEscapeKey: false,
-							}).then(() => window.location.replace("/facereg"));
+							}).then(() => window.location.replace("/setpassword"));
 						} else {
 							Swal.fire({
 								titleText: res.data.title,
