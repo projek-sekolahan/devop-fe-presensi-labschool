@@ -12,6 +12,17 @@ export default function RegisterFace() {
 	const textRef = useRef();
 	const [alert, setAlert] = useState(true);
 
+	alert && Swal.fire({
+		titleText: "Loading",
+		text: "Wait a second...",
+		allowOutsideClick: false,
+		allowEnterKey: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading()
+		}
+	})
+
 	const key = ["param", "devop-sso", "csrf_token"];
 
 	const startVideo = () => {
@@ -80,15 +91,6 @@ export default function RegisterFace() {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
 				}
-			} else {
-				alert &&
-					Swal.fire({
-						title: "Loading",
-						allowOutsideClick: false,
-						onBeforeOpen: () => {
-							Swal.showLoading();
-						},
-					});
 			}
 		}, 1000);
 	};

@@ -33,7 +33,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace("/facecam"));
+				}).then(() => window.location.replace("/facereg"));
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
