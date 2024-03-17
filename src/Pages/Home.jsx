@@ -22,8 +22,16 @@ export default function Home() {
 	});
 
 	const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-	const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), Cookies.get("ci_sso_csrf_cookie"), ]
-	
+	const values = [
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("devop-sso"),
+		Cookies.get("ci_sso_csrf_cookie"),
+		localStorage.getItem("token"),
+	];
+
+	getUserData(getFormData(key, values), (res) => {
+		console.log(res);
+	});
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">

@@ -60,7 +60,7 @@ export const facecam = async (formData, callback) => {
 };
 export const getUserData = async (formData, callback) => {
 	axiosInstance
-		.post(`${api_url}/input/facecam`, formData)
+		.post(`${api_url}/api/client/user/profile`, formData)
 		.then((res) => {
 			callback(res);
 		})
