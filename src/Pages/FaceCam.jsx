@@ -1,6 +1,8 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import Cookies from "js-cookie";
+import {facecam} from "../utils/api"
 
 export default function FaceCam() {
 	console.log("app rendered");
@@ -40,6 +42,10 @@ export default function FaceCam() {
 		startVideo();
 	});
 
+	const onComplete = () => {
+
+	}
+
 	const faceMyDetect = () => {
 		console.log("run detect");
 		setInterval(async () => {
@@ -61,10 +67,11 @@ export default function FaceCam() {
 				if (faceData.detection.score >= 0.8) {
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-					const floatString = Array.from(faceData.descriptor).join(
+					// Float 32 Array to String
+					const stringDescriptor = Array.from(faceData.descriptor).join(
 						", "
 					);
-					alert(floatString);
+					facecam()
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;

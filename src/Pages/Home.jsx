@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
+import { getUserData } from "../utils/api";
+import { getFormData } from "../utils/utils";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
@@ -18,6 +20,10 @@ export default function Home() {
 			setShow(false);
 		}
 	});
+
+	const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+	// const values = []
+	console.log(localStorage.getItem(key));
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
