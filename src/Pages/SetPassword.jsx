@@ -29,7 +29,7 @@ export default function SetPassword() {
 		const key = ["password", "devop-sso", "csrf_token"];
 		const values = [
 			getHash(inputRef.current.value),
-			localStorage.getItem("devop-sso"),
+			localStorage.getItem("regist_token"),
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
 
