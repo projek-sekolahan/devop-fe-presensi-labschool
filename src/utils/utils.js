@@ -63,7 +63,6 @@ function decrypt(param, from) {
 		mode: CryptoJS.mode.CBC,
 		padding: CryptoJS.pad.Pkcs7,
 	});
-	console.log(cipher);
 	var decryptedText = cipher.toString(CryptoJS.enc.Utf8);
 	return JSON.parse(decryptedText);
 }
