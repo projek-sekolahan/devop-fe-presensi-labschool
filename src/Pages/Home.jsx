@@ -11,6 +11,7 @@ import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
 import { getUserData } from "../utils/api";
 import { getFormData } from "../utils/utils";
+import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
