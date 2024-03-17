@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { getFormData, getHash } from "../utils/utils";
 import { setPassword } from "../utils/api";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
@@ -37,7 +38,7 @@ export default function SetPassword() {
 			if (res.status == 200 && res.data.data) {
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: res.data.data.message,
+					text: "Set Password Success",
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
