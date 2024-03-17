@@ -23,7 +23,7 @@ export default function Home() {
 
 	const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 	// const values = []
-	console.log(localStorage.getItem(key));
+	console.log(localStorage.getItem("AUTH_KEY"));
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
