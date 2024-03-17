@@ -85,7 +85,26 @@ export default function RegisterFace() {
 						Cookies.get("ci_sso_csrf_cookie"),
 					];
 					facecam(getFormData(key, values), (res) => {
-						console.log(res);
+						if (res.status == 200 && res.data.data) {
+							localStorage.setItem("regist_token", res.data.data.token)
+							Swal.fire({
+								titleText: res.data.data.title,
+								text: re.data.data.message,
+								icon: "success",
+								allowOutsideClick: false,
+								allowEnterKey: false,
+								allowEscapeKey: false,
+							}).then(() => window.location.replace("/facereg"));
+						} else {
+							Swal.fire({
+								titleText: res.data.title,
+								text: res.data.message,
+								icon: "error",
+								allowOutsideClick: false,
+								allowEnterKey: false,
+								allowEscapeKey: false,
+							}).then(() => window.location.replace(`/facereg`));
+						}
 					});
 				} else {
 					barRef.current.style.width = percentage;

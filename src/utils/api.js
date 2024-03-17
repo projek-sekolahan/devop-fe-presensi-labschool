@@ -68,12 +68,17 @@ export const getUserData = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const setPassword = async () => {
-	const res = axiosInstance.post(`${api_url}/input/setpassword`);
-	return res;
+export const setPassword = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/setpassword`)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };
 export const recover = async () => {
 	const res = axiosInstance.post(`${api_url}/input/recover`);
 	return res;
 };
-

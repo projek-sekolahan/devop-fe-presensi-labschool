@@ -1,6 +1,9 @@
-import { useParams, Link, redirect } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { getFormData, getHash } from "../utils/utils";
+import { setPassword } from "../utils/api";
+import Cookies from "js-cookie";
 
 export default function SetPassword() {
 	const { status } = useParams();
@@ -20,6 +23,41 @@ export default function SetPassword() {
 			setWarning("inline");
 		}
 	};
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+
+		const key = ["password", "devop-sso", "csrf_token"];
+		const values = [
+			getHash(inputRef.current.value),
+			localStorage.getItem("devop-sso"),
+			Cookies.get("ci_sso_csrf_cookie"),
+		];
+
+		setPassword(getFormData(key, values), (res) => {
+			if (res.status == 200 && res.data.data) {
+				localStorage.setItem("regist_token", res.data.data.token);
+				Swal.fire({
+					titleText: res.data.data.title,
+					text: res.data.data.message,
+					icon: "success",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace("/login"));
+			} else {
+				Swal.fire({
+					titleText: res.data.title,
+					text: res.data.message,
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/setpassword`));
+			}
+		});
+	};
+
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)]">
 			<Link to="/">
@@ -35,8 +73,7 @@ export default function SetPassword() {
 				<div className="my-6 space-y-4 md:space-y-6">
 					<form
 						className="space-y-4 md:space-y-6 flex flex-col gap-2"
-						action="http://foo.com"
-						method="post"
+						onSubmit={submitHandler}
 					>
 						<div>
 							<label htmlFor="password">Password</label>
@@ -73,10 +110,7 @@ export default function SetPassword() {
 						<button
 							type="submit"
 							disabled={disabled}
-							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-							onSubmit={() => {
-								return redirect("/home");
-							}}
+							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-80"
 						>
 							Set Password
 						</button>

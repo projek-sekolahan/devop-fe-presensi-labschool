@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -6,7 +6,6 @@ import { verify } from "../utils/api";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
-	const { status } = useParams();
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const inputRefs = useRef([]);
 	const formRef = useRef();
@@ -42,7 +41,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/verify/${status}`));
+				}).then(() => window.location.replace(`/verify`));
 			}
 		});
 	};
