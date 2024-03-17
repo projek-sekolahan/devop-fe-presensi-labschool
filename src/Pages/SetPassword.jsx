@@ -6,7 +6,6 @@ import { setPassword } from "../utils/api";
 import Cookies from "js-cookie";
 
 export default function SetPassword() {
-	const { status } = useParams();
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
 	const inputRef = useRef();
