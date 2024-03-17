@@ -25,7 +25,7 @@ export default function OtpInput() {
 
 		verify(formData, (res) => {
 			if (res.status == 200 && res.data.data) {
-				console.log(res);
+				localStorage.setItem("regist_token", res.data.data.token)
 				Swal.fire({
 					titleText: res.data.data.title,
 					text: "Account Activated",
