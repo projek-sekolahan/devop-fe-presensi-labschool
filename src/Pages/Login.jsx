@@ -7,6 +7,11 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function Login() {
+	console.log(
+		parseJwt(
+			"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoiUkZWcE1UbHFialJZVkZJMFVEZFpiemRXWTBvMFNFUjNOM2huVEc1M016TlNZMDlQVUZkbWFqbFplVlJwTURReVEwNU5hbVJoVEZsU2RYUjFhMUEzVDNsTmFFeDFOWE16UlVWSmFXOVFXRkpLUVRCUk1qaFpkaTlHU21WNVlXMUhhVEZ5WTBGbkwweDNlbFp5Tnk5WFJraGxhR3hVUVcxRlJVWTFNMFp1T1drM1FrNXdkVEpVS3pablRtSXhLMlZSUjBOMlFWRldaV1Z4WmtOeGFFNVNLMEV4VFU5eWJHZFFkV3BOVWtWWWFWbFhPRkJEWld4alYwUjVSV1ExUjFodFdtSnBLMDFPWkc5cldtd3JVM05RUTJOaVFqQnljRzVrYzBKUlJFNHhhbGxsZWpSTVVWTTRjUzlRVUVKVFYxcEVUM0UxYmtsNE1YaE1VM1pVYldoSWNXWjFSMnh1VFRoeVRWTnZlRU5aZGtKQloxSlZaak51ZGtGM1VtZFFlakJ6ZVVWV1pIaEpkREJrYVNzM1pFMUpUV1ZoY1VsQk9UaFpWRkpxVkVSbFdqbHJTVTVHVnpSd1l6ZFpOamxVTW01d1ZVUmFhRGRZYWsweU1rcHJRazluWm1wdE5XeExVbGQxWkZwRE1FOUpSWFJtVFROMGVrWTRSa2wwT0hCSllXSkVVemx1THpGVFJGRTBRMWhOTUdsSFIzVnhLMHMwZVZOdlNYTnlVbmxpYUVWaVEzbHpORWhsZWk5V2VqaDJka2xzV2toR0swMXVOazlUVG1Vdk9YUldNbVJoZERkdk1uQXZNM3BTWjNSMVVFRnhaMVpMUm5CcWVYaFZPV2RITkhWa1IzTkNSbUpLZUZWQ1RGRndOSFlyYzJ3elNFMXJVREp5VTNOMWJ6UnZiMWhZU0RFNVZsbFdUR1l6UkV0WE1IaG5WV2h4VW1KRlJXWm9SR0YxVEZwdWMzUnVOMFkyVmpGTFVUUlZVRFkzYVRoSmJ5OVJXRTFuZGpaV1ptMXFNa2d3YjNKRk4zQmFNellyUTFneWNYWXlRVXRxZVVOS01reHVNRFU0U3pCQk1HODJlalpsVkd0TGFubFBjRm95ZERCNlIxWlJOSFpaUmpGYWMzSjNTMUp4YVZwa09Yb3lTMFZpZDI5NVRGSmxRbXBHZEdrMlRuYzlQUT09In0.UTZYTzVeCYQZ5e8G0OWCdBT-aJqmBI1pVugehhQTNc8"
+		)
+	);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const submitHandler = () => {
@@ -38,7 +43,7 @@ export default function Login() {
 						allowEnterKey: false,
 						allowEscapeKey: false,
 					}).then(() => window.location.replace(`/login`));
-				}else{
+				} else {
 					Swal.fire({
 						titleText: "Error",
 						text: "Silahkan Login Ulang",
