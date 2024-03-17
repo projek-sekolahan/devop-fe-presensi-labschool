@@ -86,7 +86,6 @@ export default function Register() {
 								id="siswa"
 								value="4"
 								className="hidden peer"
-								required
 							/>
 							<img
 								src="/Icons/student.svg"
@@ -105,7 +104,6 @@ export default function Register() {
 								id="guru"
 								value="5"
 								className="hidden peer"
-								required
 							/>
 							<img
 								src="/Icons/teacher.svg"
@@ -124,7 +122,6 @@ export default function Register() {
 								id="karyawan"
 								value="6"
 								className="hidden peer"
-								required
 							/>
 							<img
 								src="/Icons/employee.svg"
