@@ -30,9 +30,13 @@ export default function Home() {
 		localStorage.getItem("token"),
 	];
 
-	getUserData(getFormData(key, values), (res) => {
-		console.log(res);
-	});
+	getUserData(
+		localStorage.getItem("AUTH_KEY"),
+		getFormData(key, values),
+		(res) => {
+			console.log(res);
+		}
+	);
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">

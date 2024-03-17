@@ -58,9 +58,13 @@ export const facecam = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const getUserData = async (formData, callback) => {
+export const getUserData = async (key, formData, callback) => {
 	axiosInstance
-		.post(`${api_url}/api/client/user/profile`, formData)
+		.post(`${api_url}/api/client/user/profile`, formData, {
+			headers: {
+				Authorization: `Basic ${key}`,
+			},
+		})
 		.then((res) => {
 			callback(res);
 		})
