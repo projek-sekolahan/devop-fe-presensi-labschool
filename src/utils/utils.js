@@ -37,10 +37,10 @@ export function parseJwt(token) {
 			})
 			.join("")
 	);
-	if (token == localStorage.getItem("token")) {
+	if (token == localStorage.getItem("login_token")) {
 		return decrypt(JSON.parse(jsonPayload), "fromToken");
 	} else {
-		return JSON.parse(jsonPayload);
+		return decrypt(JSON.parse(jsonPayload), "fromData");
 	}
 }
 
@@ -49,7 +49,7 @@ function decrypt(param, from) {
 	if (from == "fromToken") {
 		keyEnkrip = "smalabschoolunesa1";
 		ivEnkrip = "smalabschoolunesa1";
-	} else {
+	} else if (from == "fromData") {
 		var decodeToken = parseJwt(localStorage.getItem("login_token"));
 		keyEnkrip = decodeToken.apikey;
 		ivEnkrip = decodeToken.session_hash;
