@@ -6,8 +6,19 @@ import {
 	ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
+	const clickHandler = () => {
+		Swal.fire({
+			title: "Are you sure?",
+			icon: "warning",
+			showCancelButton: true,
+			cancelButtonColor: "#d33",
+			cancelButtonText: "No",
+			confirmButtonText: "Yes",
+		});
+	};
 	return (
 		<div
 			id="container"
@@ -66,12 +77,12 @@ export default function SideMenu({ show, data }) {
 						<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 					</Link>
 				</div>
-				<Link
-					to="/login"
+				<button
+					onCLick={clickHandler}
 					className="btn border-none w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]"
 				>
 					Keluar
-				</Link>
+				</button>
 			</div>
 		</div>
 	);
