@@ -17,6 +17,12 @@ export default function SideMenu({ show, data }) {
 			cancelButtonColor: "#d33",
 			cancelButtonText: "No",
 			confirmButtonText: "Yes",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				localStorage.removeItem("token");
+				localStorage.removeItem("login_token");
+				window.location.replace("/login");
+			}
 		});
 	};
 	return (

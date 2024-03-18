@@ -13,7 +13,11 @@ import { parseJwt } from "../utils/utils";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	const userData = parseJwt(localStorage.getItem("token"));
+	if (localStorage.getItem("token") && localStorage.getItem("login_token")) {
+		const userData = parseJwt(localStorage.getItem("token"));
+	} else {
+		window.location.replace("/login");
+	}
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
