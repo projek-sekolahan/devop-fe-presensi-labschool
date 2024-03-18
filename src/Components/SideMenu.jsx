@@ -84,7 +84,7 @@ export default function SideMenu({ show, data }) {
 					</Link>
 				</div>
 				<button
-					onCLick={clickHandler}
+					onClick={clickHandler}
 					className="btn border-none w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]"
 				>
 					Keluar
