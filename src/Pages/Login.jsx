@@ -21,7 +21,7 @@ export default function Login() {
 			(res) => {
 				if (res.status == 201) {
 					localStorage.setItem("login_token", res.data.data.Tokenjwt);
-					console.log(res.data.data);
+					console.log(res.data);
 					const key = [
 						"AUTH_KEY",
 						"devop-sso",
