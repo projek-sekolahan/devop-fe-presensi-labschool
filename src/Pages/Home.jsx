@@ -34,7 +34,7 @@ export default function Home() {
 		localStorage.getItem("AUTH_KEY"),
 		getFormData(key, values),
 		(res) => {
-			console.log(parseJwt(res.data.data));
+			console.log(res.data.data);
 		}
 	);
 
