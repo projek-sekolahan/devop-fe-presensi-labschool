@@ -50,7 +50,7 @@ function decrypt(param, from) {
 		keyEnkrip = "smalabschoolunesa1";
 		ivEnkrip = "smalabschoolunesa1";
 	} else {
-		var decodeToken = parseJwt(localStorage.getItem("token"));
+		var decodeToken = parseJwt(localStorage.getItem("login_token"));
 		keyEnkrip = decodeToken.apikey;
 		ivEnkrip = decodeToken.session_hash;
 	}

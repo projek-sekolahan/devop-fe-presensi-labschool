@@ -28,7 +28,7 @@ export default function Login() {
 			getFormData(keys, values),
 			(res) => {
 				if (res.status == 201) {
-					localStorage.setItem("token", res.data.data.Tokenjwt);
+					localStorage.setItem("login_token", res.data.data.Tokenjwt);
 					Swal.fire({
 						titleText: res.data.data.title,
 						text: res.data.data.message,
