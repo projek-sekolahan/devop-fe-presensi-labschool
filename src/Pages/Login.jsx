@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { toLogin } from "../utils/api.js";
+import { toLogin, getUserData } from "../utils/api.js";
 import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
@@ -13,14 +13,6 @@ export default function Login() {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		localStorage.setItem(
-			"AUTH_KEY",
-			getKey(emailRef.current.value, hash)[0]
-		);
-		localStorage.setItem(
-			"devop-sso",
-			getKey(emailRef.current.value, hash)[1]
-		);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
@@ -29,6 +21,26 @@ export default function Login() {
 			(res) => {
 				if (res.status == 201) {
 					localStorage.setItem("login_token", res.data.data.Tokenjwt);
+					const key = [
+						"AUTH_KEY",
+						"devop-sso",
+						"csrf_token",
+						"token",
+					];
+					const values = [
+						getKey(emailRef.current.value, hash)[0],
+						getKey(emailRef.current.value, hash)[1],
+						Cookies.get("ci_sso_csrf_cookie"),
+						res.data.data.Tokenjwt,
+					];
+
+					getUserData(
+						getKey(emailRef.current.value, hash)[0],
+						getFormData(key, values),
+						(res) => {
+							localStorage.setItem("token", res.data.data);
+						}
+					);
 					Swal.fire({
 						titleText: res.data.data.title,
 						text: res.data.data.message,

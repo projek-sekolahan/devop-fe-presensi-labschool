@@ -9,8 +9,7 @@ import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
-import { getUserData } from "../utils/api";
-import { getFormData, parseJwt } from "../utils/utils";
+import { parseJwt } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function Home() {
@@ -23,21 +22,6 @@ export default function Home() {
 		}
 	});
 
-	const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-	const values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("devop-sso"),
-		Cookies.get("ci_sso_csrf_cookie"),
-		localStorage.getItem("token"),
-	];
-
-	getUserData(
-		localStorage.getItem("AUTH_KEY"),
-		getFormData(key, values),
-		(res) => {
-			localStorage.setItem("token", res.data.data);
-		}
-	);
 	setUserData(parseJwt(localStorage.getItem("token")));
 
 	return (
@@ -167,7 +151,7 @@ export default function Home() {
 					</Link>
 				</div>
 			</div>
-			<SideMenu show={show} data={userData}/>
+			<SideMenu show={show} data={userData} />
 		</div>
 	);
 }
