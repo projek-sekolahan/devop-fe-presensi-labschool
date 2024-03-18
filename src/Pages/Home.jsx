@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
+	const [userData, setUserData] = useState(null);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
@@ -35,9 +36,9 @@ export default function Home() {
 		getFormData(key, values),
 		(res) => {
 			localStorage.setItem("token", res.data.data);
-			console.log(parseJwt(res.data.data));
 		}
 	);
+	setUserData(parseJwt(localStorage.getItem("token")));
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
@@ -62,7 +63,7 @@ export default function Home() {
 							className="size-12 rounded-full bg-white"
 						/>
 						<p className="font-semibold text-sm ">
-							Fata Nadhira Putri
+							{userData.nama_lengkap}
 						</p>
 					</div>
 					<Link to="/notifikasi">
@@ -166,7 +167,7 @@ export default function Home() {
 					</Link>
 				</div>
 			</div>
-			<SideMenu show={show} />
+			<SideMenu show={show} data={userData}/>
 		</div>
 	);
 }

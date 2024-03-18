@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
-export default function SideMenu({ show }) {
+export default function SideMenu({ show, data }) {
 	return (
 		<div
 			id="container"
@@ -34,7 +34,7 @@ export default function SideMenu({ show }) {
 					/>
 					<div className="font-normal text-base text-bg-2">
 						<h4>Halo!</h4>
-						<p>Fata Nadhira Putri</p>
+						<p>{data.nama_lengkap}</p>
 					</div>
 				</div>
 				<div
