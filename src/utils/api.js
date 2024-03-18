@@ -30,13 +30,33 @@ export const register = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const sessTime = async () => {
-	const res = axiosInstance.post(`${api_url}/api/client/auth/sessTime`);
-	return res;
+export const sessTime = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/api/client/auth/sessTime`, formData, {
+			headers: {
+				Authorization: `Basic ${key}`,
+			},
+		})
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };
-export const logout = async () => {
-	const res = axiosInstance.post(`${api_url}/api/client/auth/logout`);
-	return res;
+export const logout = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/api/client/auth/logout`, formData, {
+			headers: {
+				Authorization: `Basic ${key}`,
+			},
+		})
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };
 export const verify = async (formData, callback) => {
 	axiosInstance
@@ -82,7 +102,13 @@ export const setPassword = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const recover = async () => {
-	const res = axiosInstance.post(`${api_url}/input/recover`);
-	return res;
+export const recover = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/recover`, formData)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
 };

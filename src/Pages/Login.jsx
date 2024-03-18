@@ -12,9 +12,13 @@ export default function Login() {
 	const submitHandler = () => {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
-		const token_key = getKey(emailRef.current.value, hash)[1];
+		const token_key = getKey(emailRef.current.value, hash);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-		const values = [emailRef.current.value, hash, token_key, csrf_token];
+		const values = [emailRef.current.value, hash, token_key[1], csrf_token];
+
+		localStorage.setItem("AUTH_KEY", token_key[0])
+		localStorage.setItem("devop-sso", token_key[1])
+		
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values),
