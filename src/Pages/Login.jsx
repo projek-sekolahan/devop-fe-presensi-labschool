@@ -21,6 +21,7 @@ export default function Login() {
 			(res) => {
 				if (res.status == 201) {
 					localStorage.setItem("login_token", res.data.data.Tokenjwt);
+					console.log(res.data.data);
 					const key = [
 						"AUTH_KEY",
 						"devop-sso",
@@ -30,7 +31,7 @@ export default function Login() {
 					const values = [
 						getKey(emailRef.current.value, hash)[0],
 						getKey(emailRef.current.value, hash)[1],
-						Cookies.get("ci_sso_csrf_cookie"),
+						res.data.data.csrfHash,
 						res.data.data.Tokenjwt,
 					];
 
