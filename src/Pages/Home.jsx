@@ -10,19 +10,16 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
 import { parseJwt } from "../utils/utils";
-import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	const [userData, setUserData] = useState(null);
+	const userData = parseJwt(localStorage.getItem("token"));
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
 			setShow(false);
 		}
 	});
-
-	setUserData(parseJwt(localStorage.getItem("token")));
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
