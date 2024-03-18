@@ -13,9 +13,9 @@ import { parseJwt } from "../utils/utils";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	let userData;
+	const [userData, setUserData] = useState(null);
 	if (localStorage.getItem("token") && localStorage.getItem("login_token")) {
-		userData = parseJwt(localStorage.getItem("token"));
+		setUserData(parseJwt(localStorage.getItem("token")));
 	} else {
 		window.location.replace("/login");
 	}
