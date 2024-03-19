@@ -24,13 +24,15 @@ export default function Home() {
 		Cookies.get("ci_sso_csrf_cookie"),
 	];
 
-	sessTime(
-		localStorage.getItem("AUTH_KEY"),
-		getFormData(key, values),
-		(res) => {
-			console.log(res);
-		}
-	);
+	setInterval(() => {
+		sessTime(
+			localStorage.getItem("AUTH_KEY"),
+			getFormData(key, values),
+			(res) => {
+				console.log(res);
+			}
+		);
+	}, 2000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
