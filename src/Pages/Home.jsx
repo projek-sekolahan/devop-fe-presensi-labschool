@@ -15,13 +15,14 @@ import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
+	const [csrf, setCsrf] = useState(Cookies.get("ci_sso_csrf_cookie"));
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 	let values = [
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("AUTH_KEY"),
-		Cookies.get("ci_sso_csrf_cookie"),
+		csrf,
 	];
 
 	setInterval(() => {
@@ -30,7 +31,7 @@ export default function Home() {
 			getFormData(key, values),
 			(res) => {
 				console.log(res);
-				Cookies.set("ci_sso_csrf_cookie", res.data.csrfHash);
+				setCsrf(res.data.csrfHash);
 			}
 		);
 	}, 5000);
