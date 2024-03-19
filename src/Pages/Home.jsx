@@ -15,13 +15,14 @@ import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
+	const [csrf, setCsrf] = useState(Cookies.get("ci_sso_csrf_cookie"));
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 	const values = [
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("AUTH_KEY"),
-		Cookies.get("ci_sso_csrf_cookie"),
+		csrf,
 	];
 
 	setInterval(() => {
@@ -29,10 +30,11 @@ export default function Home() {
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
 			(res) => {
+				setCsrf(res.data.csrfHash);
 				console.log(res);
 			}
 		);
-	}, 2000);
+	}, 5000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
