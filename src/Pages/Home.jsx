@@ -18,7 +18,7 @@ export default function Home() {
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-	const values = [
+	let values = [
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("AUTH_KEY"),
 		Cookies.get("ci_sso_csrf_cookie"),
