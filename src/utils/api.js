@@ -30,7 +30,7 @@ export const register = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const sessTime = async (formData, callback) => {
+export const sessTime = async (key, formData, callback) => {
 	axiosInstance
 		.post(`${api_url}/api/client/auth/sessTime`, formData, {
 			headers: {
@@ -44,7 +44,7 @@ export const sessTime = async (formData, callback) => {
 			callback(error);
 		});
 };
-export const logout = async (formData, callback) => {
+export const logout = async (key, formData, callback) => {
 	axiosInstance
 		.post(`${api_url}/api/client/auth/logout`, formData, {
 			headers: {

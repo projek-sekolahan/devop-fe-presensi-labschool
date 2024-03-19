@@ -9,11 +9,28 @@ import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
-import { parseJwt } from "../utils/utils";
+import { parseJwt, getFormData } from "../utils/utils";
+import { sessTime } from "../utils/api";
+import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
 	const userData = parseJwt(localStorage.getItem("token"));
+
+	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
+	const values = [
+		localStorage.getItem("devop-sso"),
+		localStorage.getItem("AUTH_KEY"),
+		Cookies.get("ci_sso_csrf_cookie"),
+	];
+
+	sessTime(
+		localStorage.getItem("AUTH_KEY"),
+		getFormData(key, values),
+		(res) => {
+			console.log(res);
+		}
+	);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
@@ -74,7 +91,7 @@ export default function Home() {
 								<div id="hadir" className="w-24">
 									<div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
 										<p className="text-center text-lg font-bold">
-											15
+											0
 										</p>
 									</div>
 									<h4 className="text-center text-xs font-bold text-primary-md">
@@ -84,7 +101,7 @@ export default function Home() {
 								<div id="izin" className="w-24">
 									<div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
 										<p className="text-center text-lg font-bold">
-											2
+											0
 										</p>
 									</div>
 									<h4 className="text-center text-xs font-bold text-primary-md">

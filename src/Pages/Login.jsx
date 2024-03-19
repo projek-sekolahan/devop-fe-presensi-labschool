@@ -20,7 +20,7 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1])
 		
 		toLogin(
-			getKey(emailRef.current.value, hash)[0],
+			token_key[0],
 			getFormData(keys, values),
 			(res) => {
 				if (res.status == 201) {
