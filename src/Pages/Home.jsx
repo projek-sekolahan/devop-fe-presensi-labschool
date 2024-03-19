@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 export default function Home() {
 	const [show, setShow] = useState(false);
 	const [csrf, setCsrf] = useState(Cookies.get("ci_sso_csrf_cookie"));
+	console.log(csrf);
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
