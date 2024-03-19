@@ -9,29 +9,30 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
-	const [logout, setLogout] = useState(false)
+	const [logout, setLogout] = useState(false);
 	const clickHandler = () => {
 		setLogout(true);
 	};
 	useEffect(() => {
-		Swal.fire({
-			title: "Logout",
-			text: "Are you sure to logout ?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, logout!",
-		}).then((result) => {
-			if (result.isConfirmed) {
-				Swal.fire({
-					title: "Logout Succesfully",
-					text: "You has been loged out!",
-					icon: "success",
-				}).then(() => window.location.replace("/login"));
-			}
-		});
-	}, [logout])
+		logout &&
+			Swal.fire({
+				title: "Logout",
+				text: "Are you sure to logout ?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Yes, logout!",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: "Logout Succesfully",
+						text: "You has been loged out!",
+						icon: "success",
+					}).then(() => window.location.replace("/login"));
+				}
+			});
+	}, [logout]);
 	return (
 		<div
 			id="container"
