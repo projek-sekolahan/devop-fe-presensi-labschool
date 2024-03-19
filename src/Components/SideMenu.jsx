@@ -30,7 +30,7 @@ export default function SideMenu({ show, data }) {
 						text: "You has been loged out!",
 						icon: "success",
 					}).then(() => window.location.replace("/login"));
-				}
+				}else{setLogout(false)}
 			});
 	}, [logout]);
 	return (
