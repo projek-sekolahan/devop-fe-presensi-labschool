@@ -9,11 +9,9 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
-	const [logout, setLogout] = useState(false);
+	let logout = false;
 	const clickHandler = () => {
-		setLogout(true);
-	};
-	useEffect(() => {
+		logout = true;
 		logout &&
 			Swal.fire({
 				title: "Logout",
@@ -30,9 +28,11 @@ export default function SideMenu({ show, data }) {
 						text: "You has been loged out!",
 						icon: "success",
 					}).then(() => window.location.replace("/login"));
-				}else{setLogout(false)}
+				} else {
+					logout = false;
+				}
 			});
-	}, [logout]);
+	};
 	return (
 		<div
 			id="container"
