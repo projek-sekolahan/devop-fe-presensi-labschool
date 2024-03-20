@@ -23,6 +23,9 @@ export default function SideMenu({ show, data, csrf }) {
 				confirmButtonColor: "#3085d6",
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Yes, logout!",
+				allowOutsideClick: false,
+				allowEnterKey: false,
+				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
 					const key = [
@@ -45,6 +48,9 @@ export default function SideMenu({ show, data, csrf }) {
 								title: "Logout Succesfully",
 								text: "You has been loged out!",
 								icon: "success",
+								allowOutsideClick: false,
+								allowEnterKey: false,
+								allowEscapeKey: false,
 							}).then(() => window.location.replace("/login"));
 						}
 					);
