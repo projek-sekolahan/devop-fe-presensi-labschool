@@ -2,8 +2,9 @@ import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
-import {facecam} from "../utils/api"
-import {getFormData} from "../utils/utils"
+import { facecam } from "../utils/api";
+import { getFormData } from "../utils/utils";
+import Swal from "sweetalert2";
 
 export default function FaceCam() {
 	const videoRef = useRef();
@@ -41,9 +42,7 @@ export default function FaceCam() {
 		startVideo();
 	});
 
-	const onComplete = () => {
-
-	}
+	const onComplete = () => {};
 
 	const faceMyDetect = () => {
 		console.log("run detect");
@@ -66,7 +65,14 @@ export default function FaceCam() {
 				if (faceData.detection.score >= 0.8) {
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-					
+					Swal.fire({
+						titleText: "Wajah Terdeteksi",
+						text: "Data telah direkam",
+						icon: "success",
+						allowOutsideClick: false,
+						allowEnterKey: false,
+						allowEscapeKey: false,
+					}).then(() => window.location.replace("/home"));
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
