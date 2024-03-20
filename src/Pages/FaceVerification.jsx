@@ -32,12 +32,12 @@ export default function FaceVerification() {
 	}
 
 	const coordinat = {
-		min_longitude: 112.6640,
+		min_longitude: 112.665,
 		longitude: 112.6645,
-		max_longitude: 112.6650,
-		min_latitude: -7.3003,
+		max_longitude: 112.664,
+		min_latitude: -7.3008,
 		latitude: -7.2998,
-		max_latitude: -7.2994,
+		max_latitude: -7.2988,
 	};
 
 	const click = () => {
