@@ -15,7 +15,7 @@ import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	const [csrf, setCsrf] = useState(Cookies.get("ci_sso_csrf_cookie"));
+	let csrf = Cookies.get("ci_sso_csrf_cookie");
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	setInterval(() => {
@@ -23,14 +23,14 @@ export default function Home() {
 		const values = [
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("AUTH_KEY"),
-			csrf,
 		];
+		values[2] = csrf;
 		sessTime(
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
 			(res) => {
 				console.log(res);
-				setCsrf(res.data.csrfHash);
+				csrf = res.data.csrfHash;
 			}
 		);
 	}, 5000);
