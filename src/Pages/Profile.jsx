@@ -1,14 +1,15 @@
-import {
-	ArrowLeftIcon,
-	PencilSquareIcon,
-	CheckIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
 	const userData = parseJwt(localStorage.getItem("token"));
+	// const userData = {
+	// 	nama_lengkap: "Afrizal",
+	// 	email: "adfsfdsf,",
+	// 	phone: "2345678",
+	// };
 
 	return (
 		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
@@ -29,56 +30,25 @@ export default function Profile() {
 					{userData.nama_lengkap}
 				</p>
 			</div>
-			<div id="bio" className="text-bg-3 mt-64 flex flex-col gap-4">
-				<form>
-					<label
-						htmlFor="name"
-						className="text-base font-medium text-black"
-					>
-						Name
-					</label>
-					<input
-						className="w-full flex border-[1px] border-bg-3 p-3 text-gray-300 items-center rounded-2xl mt-2"
-						id="name"
-						name="name"
-						type="text"
-						defaultValue={userData.nama_lengkap}
-						required
-						disabled={+true}
-					/>
-
-					<label
-						htmlFor="email"
-						className="text-base font-medium text-black mt-4"
-					>
+			<div id="bio" className="text-bg-3 mt-64 flex flex-col gap-2">
+				<div className="pb-4 border-b-[0.5px]">
+					<h4 className="text-sm font-medium text-gray-400">Name</h4>
+					<p className="w-full text-gray-800">
+						{userData.nama_lengkap}
+					</p>
+				</div>
+				<div className="pb-4 border-b-[0.5px]">
+					<h4 className="text-sm font-medium text-gray-400 mt-3">
 						Account Email
-					</label>
-					<input
-						className="w-full flex border-[1px] border-bg-3 p-3 text-gray-300 items-center rounded-2xl mt-2"
-						id="email"
-						name="email"
-						type="text"
-						defaultValue={userData.email}
-						required
-						disabled={+true}
-					/>
-
-					<label
-						htmlFor="number"
-						className="text-base font-medium text-black mt-4"
-					>
+					</h4>
+					<p className="w-full text-gray-800">{userData.email}</p>
+				</div>
+				<div>
+					<h4 className="text-sm font-medium text-gray-400 mt-3">
 						Phone Number
-					</label>
-					<input
-						className="w-full flex border-[1px] border-bg-3 p-3 text-gray-300 items-center rounded-2xl mt-2"
-						id="number"
-						name="number"
-						type="text"
-						defaultValue={userData.phone}
-						required
-						disabled={+true}
-					/>
-				</form>
+					</h4>
+					<p className="w-full text-gray-800">{userData.phone}</p>
+				</div>
 			</div>
 		</div>
 	);
