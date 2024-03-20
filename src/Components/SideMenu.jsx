@@ -24,28 +24,34 @@ export default function SideMenu({ show, data, csrf }) {
 				confirmButtonText: "Yes, logout!",
 			}).then((result) => {
 				if (result.isConfirmed) {
+					const key = [
+						"devop-sso",
+						"AUTH_KEY",
+						"csrf_token",
+						"token",
+					];
+					const values = [
+						localStorage.getItem("devop-sso"),
+						localStorage.getItem("AUTH_KEY"),
+						localStorage.getItem("csrf"),
+						localStorage.getItem("login_token"),
+					];
+					logout(
+						localStorage.getItem("AUTH_KEY"),
+						getFormData(key, values),
+						(res) => {
+							console.log(res);
+							// if (res.data.data.title == "Your Session OK") {
+							// 	csrf = res.data.csrfHash;
+							// } else {
+							// 	window.location.replace("/login");
+							// }
+						}
+					);
 					Swal.fire({
 						title: "Logout Succesfully",
 						text: "You has been loged out!",
 						icon: "success",
-					}).then(() => {
-						const key = ["devop-sso", "AUTH_KEY", "csrf_token", "token"];
-						const values = [
-							localStorage.getItem("devop-sso"),
-							localStorage.getItem("AUTH_KEY"),
-						];
-						values[2] = csrf;
-						sessTime(
-							localStorage.getItem("AUTH_KEY"),
-							getFormData(key, values),
-							(res) => {
-								if (res.data.data.title == "Your Session OK") {
-									csrf = res.data.csrfHash;
-								} else {
-									window.location.replace("/login");
-								}
-							}
-						);
 					});
 				} else {
 					logout = false;
