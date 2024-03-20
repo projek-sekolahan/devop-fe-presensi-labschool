@@ -42,7 +42,6 @@ export default function SideMenu({ show, data, csrf }) {
 						getFormData(key, values),
 						(res) => {
 							console.log(res);
-							localStorage.clear();
 							// if (res.data.data.title == "Your Session OK") {
 							// 	csrf = res.data.csrfHash;
 							// } else {

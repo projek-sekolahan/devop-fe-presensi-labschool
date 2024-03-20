@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function Login() {
+	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const submitHandler = () => {
