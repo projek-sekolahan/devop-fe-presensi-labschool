@@ -13,9 +13,10 @@ import { parseJwt, getFormData } from "../utils/utils";
 import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
+let csrf = Cookies.get("ci_sso_csrf_cookie");
+
 export default function Home() {
 	const [show, setShow] = useState(false);
-	let csrf = Cookies.get("ci_sso_csrf_cookie");
 	const userData = parseJwt(localStorage.getItem("token"));
 
 	const checkSession = () => {
@@ -42,9 +43,7 @@ export default function Home() {
 	};
 
 	checkSession();
-	setInterval(
-		checkSession()
-	, 1200000);
+	setInterval(checkSession(), 1200000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
