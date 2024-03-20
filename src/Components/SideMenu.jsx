@@ -11,10 +11,10 @@ import { getFormData } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data, csrf }) {
-	let logout = false;
+	let isLogout = false;
 	const clickHandler = () => {
-		logout = true;
-		logout &&
+		isLogout = true;
+		isLogout &&
 			Swal.fire({
 				title: "Logout",
 				text: "Are you sure to logout ?",
@@ -55,7 +55,7 @@ export default function SideMenu({ show, data, csrf }) {
 						icon: "success",
 					});
 				} else {
-					logout = false;
+					isLogout = false;
 				}
 			});
 	};
