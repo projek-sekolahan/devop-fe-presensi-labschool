@@ -8,13 +8,13 @@ import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { parseJwt, getFormData } from "../utils/utils";
 import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 export default function Home() {
-	const show = useRef(false)
+	const show = useRef(false);
 	let csrf = Cookies.get("ci_sso_csrf_cookie");
 	const userData = parseJwt(localStorage.getItem("token"));
 
@@ -42,13 +42,11 @@ export default function Home() {
 	};
 
 	checkSession();
-	setInterval(
-		checkSession()
-	, 1200000);
+	setInterval(checkSession(), 1200000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
-			showRef.current = false
+			showRef.current = false;
 		}
 	});
 
