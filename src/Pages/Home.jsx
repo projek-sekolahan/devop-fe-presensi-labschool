@@ -14,8 +14,7 @@ import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 let csrf = Cookies.get("ci_sso_csrf_cookie");
-setInterva;
-console.log(csrf);
+setInterval(() => console.log(csrf), 1000);
 
 export default function Home() {
 	const [show, setShow] = useState(false);
