@@ -41,7 +41,7 @@ export default function SideMenu({ show, data, csrf }) {
 						localStorage.getItem("AUTH_KEY"),
 						getFormData(key, values),
 						(res) => {
-							console.log(res);
+							window.location.replace("/login");
 							// if (res.data.data.title == "Your Session OK") {
 							// 	csrf = res.data.csrfHash;
 							// } else {
