@@ -55,24 +55,24 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		// getCsrf().then((result) => {
-		// 	// Data cookie yang diberikan
+		getCsrf().then((result) => {
+			// Data cookie yang diberikan
 
-		// 	const cookieData = {
-		// 		ci_sso_csrf_cookie: result.data.csrfHash,
-		// 		"Max-Age": 1 / 12,
-		// 	};
-		// 	// if (Cookies.get("ci_sso_csrf_cookie")) {
-		// 	// 	Cookies.remove("ci_sso_csrf_cookie");
-		// 	// }
-		// 	// Set cookie menggunakan js-cookies
-		// 	Object.keys(cookieData).forEach((key) => {
-		// 		const cookieValue = cookieData[key];
-		// 		Cookies.set(key, cookieValue, {
-		// 			expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
-		// 		});
-		// 	});
-		// });
+			const cookieData = {
+				ci_sso_csrf_cookie: result.data.csrfHash,
+				"Max-Age": 1 / 12,
+			};
+			// if (Cookies.get("ci_sso_csrf_cookie")) {
+			// 	Cookies.remove("ci_sso_csrf_cookie");
+			// }
+			// Set cookie menggunakan js-cookies
+			Object.keys(cookieData).forEach((key) => {
+				const cookieValue = cookieData[key];
+				Cookies.set(key, cookieValue, {
+					expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
+				});
+			});
+		});
 	}, []);
 
 	return (
@@ -109,10 +109,7 @@ function App() {
 					<Route path="/presensi/keterangan" Component={Ijin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
-					<Route
-						path="/setpassword"
-						Component={SetPassword}
-					/>
+					<Route path="/setpassword" Component={SetPassword} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>
