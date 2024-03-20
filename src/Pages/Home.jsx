@@ -19,7 +19,7 @@ export default function Home() {
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
 	} else {
-		// window.location.replace("/login");
+		window.location.replace("/login");
 	}
 
 	const checkSession = () => {
@@ -32,18 +32,18 @@ export default function Home() {
 			localStorage.getItem("AUTH_KEY"),
 		];
 		values[2] = localStorage.getItem("csrf");
-		sessTime(
-			localStorage.getItem("AUTH_KEY"),
-			getFormData(key, values),
-			(res) => {
-				console.log(res);
-				if (res.data.data.title == "Your Session OK") {
-					localStorage.setItem("csrf", res.data.csrfHash);
-				} else {
-					// window.location.replace("/login");
-				}
-			}
-		);
+		// sessTime(
+		// 	localStorage.getItem("AUTH_KEY"),
+		// 	getFormData(key, values),
+		// 	(res) => {
+		// 		console.log(res);
+		// 		if (res.data.data.title == "Your Session OK") {
+		// 			localStorage.setItem("csrf", res.data.csrfHash);
+		// 		} else {
+		// window.location.replace("/login");
+		// 		}
+		// 	}
+		// );
 	};
 
 	checkSession();
