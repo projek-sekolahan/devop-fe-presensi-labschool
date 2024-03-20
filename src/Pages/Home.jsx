@@ -8,15 +8,15 @@ import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { parseJwt, getFormData } from "../utils/utils";
 import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 export default function Home() {
-	const show = useRef(false);
-	let csrf = Cookies.get("ci_sso_csrf_cookie");
-	const userData = parseJwt(localStorage.getItem("token"));
+	const [show, setShow] = useState(false);
+	const csrfRef = useRef(Cookies.get("ci_sso_csrf_cookie"));
+	const userData = useRef(parseJwt(localStorage.getItem("token")));
 
 	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
@@ -24,7 +24,7 @@ export default function Home() {
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("AUTH_KEY"),
 		];
-		values[2] = csrf;
+		values[2] = csrfRef.current;
 		sessTime(
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
@@ -35,20 +35,28 @@ export default function Home() {
 				) {
 					window.location.replace("/login");
 				} else {
-					csrf = res.data.csrfHash;
+					csrfRef.current = res.data.csrfHash;
 				}
 			}
 		);
 	};
 
-	checkSession();
-	setInterval(checkSession(), 1200000);
+	useEffect(() => {
+		checkSession();
+		const intervalId = setInterval(checkSession, 1200000);
+		return () => clearInterval(intervalId);
+	}, []);
 
-	window.addEventListener("click", (e) => {
+	const handleClickOutside = (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
-			showRef.current = false;
+			setShow(false);
 		}
-	});
+	};
+
+	useEffect(() => {
+		window.addEventListener("click", handleClickOutside);
+		// Jangan lakukan re-render
+	}, []);
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
@@ -177,7 +185,7 @@ export default function Home() {
 					</Link>
 				</div>
 			</div>
-			<SideMenu show={show.current} data={userData} />
+			<SideMenu show={show.current} data={userData.current} />
 		</div>
 	);
 }
