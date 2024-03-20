@@ -38,6 +38,7 @@ export default function Home() {
 			(res) => {
 				if (res.data.data.title == "Your Session Ok") {
 					csrf = res.data.csrfHash;
+					console.log(csrf);
 				} else {
 					window.location.replace("/login");
 				}
