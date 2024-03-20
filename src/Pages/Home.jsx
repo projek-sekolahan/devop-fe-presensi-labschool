@@ -24,7 +24,7 @@ export default function Home() {
 
 	const checkSession = () => {
 		if (!localStorage.getItem("csrf")) {
-			localStorage.setItem(Cookies.get("ci_sso_csrf_cookie"));
+			localStorage.setItem("csrf", Cookies.get("ci_sso_csrf_cookie"));
 		}
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 		const values = [
