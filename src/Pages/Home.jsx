@@ -19,7 +19,7 @@ export default function Home() {
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
 	} else {
-		window.location.replace("/login");
+		// window.location.replace("/login");
 	}
 
 	const checkSession = () => {
@@ -40,7 +40,7 @@ export default function Home() {
 				if (res.data.data.title == "Your Session OK") {
 					localStorage.setItem("csrf", res.data.csrfHash);
 				} else {
-					window.location.replace("/login");
+					// window.location.replace("/login");
 				}
 			}
 		);
