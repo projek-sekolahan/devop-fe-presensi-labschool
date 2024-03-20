@@ -14,7 +14,7 @@ import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 export default function Home() {
-	const [show, setShow] = useState(false);
+	let show = false
 	let csrf = Cookies.get("ci_sso_csrf_cookie");
 	const userData = parseJwt(localStorage.getItem("token"));
 
@@ -46,7 +46,7 @@ export default function Home() {
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
-			setShow(false);
+			show = false;
 		}
 	});
 
@@ -61,7 +61,7 @@ export default function Home() {
 				<nav className="flex items-center justify-between">
 					<button
 						onClick={() => {
-							setShow(true);
+							show = true;
 						}}
 					>
 						<Bars3Icon className="fill-white size-8" />
