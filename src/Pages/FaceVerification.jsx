@@ -52,6 +52,7 @@ export default function FaceVerification() {
 				longitude >= coordinat.max_longitude
 			) {
 				alert("Anda berada di area sekolah");
+				window.location.replace("/facecam");
 			} else {
 				const distance = calculateDistance(
 					latitude,
