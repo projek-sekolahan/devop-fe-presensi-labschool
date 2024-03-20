@@ -29,11 +29,17 @@ export default function Home() {
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
 			(res) => {
-				console.log(res);
-				csrf = res.data.csrfHash;
+				if (
+					res.data.data.tittle == "Your Session Timeout" ||
+					!res.data.data
+				) {
+					window.location.replace("/login");
+				} else {
+					csrf = res.data.csrfHash;
+				}
 			}
 		);
-	}, 5000);
+	}, 1200000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
