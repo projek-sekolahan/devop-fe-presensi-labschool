@@ -13,8 +13,6 @@ import { parseJwt, getFormData } from "../utils/utils";
 import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
-let csrf = Cookies.get("ci_sso_csrf_cookie");
-
 export default function Home() {
 	const [show, setShow] = useState(false);
 	let userData = {};
@@ -25,19 +23,22 @@ export default function Home() {
 	}
 
 	const checkSession = () => {
+		if (!localStorage.getItem("csrf")) {
+			localStorage.setItem(Cookies.get("ci_sso_csrf_cookie"));
+		}
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 		const values = [
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("AUTH_KEY"),
 		];
-		values[2] = csrf;
+		values[2] = localStorage.getItem("csrf");
 		sessTime(
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
 			(res) => {
-				console.log(res)
+				console.log(res);
 				if (res.data.data.title == "Your Session OK") {
-					csrf = res.data.csrfHash;
+					localStorage.setItem("csrf", res.data.csrfHash);
 				} else {
 					window.location.replace("/login");
 				}
