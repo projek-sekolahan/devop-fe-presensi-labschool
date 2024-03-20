@@ -41,7 +41,7 @@ export const sessTime = async (key, formData, callback) => {
 			callback(res);
 		})
 		.catch((error) => {
-			callback(error);
+			window.location.replace("/login");
 		});
 };
 export const logout = async (key, formData, callback) => {
