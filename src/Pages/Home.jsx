@@ -18,7 +18,7 @@ export default function Home() {
 	let csrf = Cookies.get("ci_sso_csrf_cookie");
 	const userData = parseJwt(localStorage.getItem("token"));
 
-	setInterval(() => {
+	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 		const values = [
 			localStorage.getItem("devop-sso"),
@@ -39,7 +39,10 @@ export default function Home() {
 				}
 			}
 		);
-	}, 1200000);
+	};
+
+	checkSession();
+	setInterval(checkSession(), 1200000);
 
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
