@@ -41,19 +41,13 @@ export default function SideMenu({ show, data, csrf }) {
 						localStorage.getItem("AUTH_KEY"),
 						getFormData(key, values),
 						(res) => {
-							window.location.replace("/login");
-							// if (res.data.data.title == "Your Session OK") {
-							// 	csrf = res.data.csrfHash;
-							// } else {
-							// 	window.location.replace("/login");
-							// }
+							Swal.fire({
+								title: "Logout Succesfully",
+								text: "You has been loged out!",
+								icon: "success",
+							}).then(() => window.location.replace("/login"));
 						}
 					);
-					Swal.fire({
-						title: "Logout Succesfully",
-						text: "You has been loged out!",
-						icon: "success",
-					});
 				} else {
 					isLogout = false;
 				}
