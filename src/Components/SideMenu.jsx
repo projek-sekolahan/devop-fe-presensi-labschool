@@ -42,11 +42,7 @@ export default function SideMenu({ show, data, csrf }) {
 						getFormData(key, values),
 						(res) => {
 							console.log(res);
-							localStorage.removeItem("token");
-							localStorage.removeItem("login_token");
-							localStorage.removeItem("devop-sso");
-							localStorage.removeItem("AUTH_KEY");
-							localStorage.removeItem("csrf");
+							localStorage.clear();
 							// if (res.data.data.title == "Your Session OK") {
 							// 	csrf = res.data.csrfHash;
 							// } else {
