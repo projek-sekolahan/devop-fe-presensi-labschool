@@ -6,9 +6,10 @@ import {
 	ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { logout } from "../utils/api";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, data }) {
+export default function SideMenu({ show, data, csrf }) {
 	let logout = false;
 	const clickHandler = () => {
 		logout = true;
@@ -27,7 +28,25 @@ export default function SideMenu({ show, data }) {
 						title: "Logout Succesfully",
 						text: "You has been loged out!",
 						icon: "success",
-					}).then(() => window.location.replace("/login"));
+					}).then(() => {
+						const key = ["devop-sso", "AUTH_KEY", "csrf_token", "token"];
+						const values = [
+							localStorage.getItem("devop-sso"),
+							localStorage.getItem("AUTH_KEY"),
+						];
+						values[2] = csrf;
+						sessTime(
+							localStorage.getItem("AUTH_KEY"),
+							getFormData(key, values),
+							(res) => {
+								if (res.data.data.title == "Your Session OK") {
+									csrf = res.data.csrfHash;
+								} else {
+									window.location.replace("/login");
+								}
+							}
+						);
+					});
 				} else {
 					logout = false;
 				}
