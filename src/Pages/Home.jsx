@@ -8,15 +8,15 @@ import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { parseJwt, getFormData } from "../utils/utils";
 import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	const csrfRef = useRef(Cookies.get("ci_sso_csrf_cookie"));
-	const userData = useRef(parseJwt(localStorage.getItem("token")));
+	let csrf = Cookies.get("ci_sso_csrf_cookie");
+	const userData = parseJwt(localStorage.getItem("token"));
 
 	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
@@ -24,7 +24,7 @@ export default function Home() {
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("AUTH_KEY"),
 		];
-		values[2] = csrfRef.current;
+		values[2] = csrf;
 		sessTime(
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
@@ -35,28 +35,22 @@ export default function Home() {
 				) {
 					window.location.replace("/login");
 				} else {
-					csrfRef.current = res.data.csrfHash;
+					csrf = res.data.csrfHash;
 				}
 			}
 		);
 	};
 
-	useEffect(() => {
-		checkSession();
-		const intervalId = setInterval(checkSession, 1200000);
-		return () => clearInterval(intervalId);
-	}, []);
+	checkSession();
+	setInterval(
+		checkSession()
+	, 1200000);
 
-	const handleClickOutside = (e) => {
+	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
 			setShow(false);
 		}
-	};
-
-	useEffect(() => {
-		window.addEventListener("click", handleClickOutside);
-		// Jangan lakukan re-render
-	}, []);
+	});
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
@@ -69,7 +63,7 @@ export default function Home() {
 				<nav className="flex items-center justify-between">
 					<button
 						onClick={() => {
-							show.current = true;
+							setShow(true);
 						}}
 					>
 						<Bars3Icon className="fill-white size-8" />
@@ -185,7 +179,7 @@ export default function Home() {
 					</Link>
 				</div>
 			</div>
-			<SideMenu show={show.current} data={userData.current} />
+			<SideMenu show={show} data={userData} />
 		</div>
 	);
 }
