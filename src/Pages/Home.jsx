@@ -14,6 +14,7 @@ import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 let csrf = Cookies.get("ci_sso_csrf_cookie");
+console.log(csrf);
 
 export default function Home() {
 	const [show, setShow] = useState(false);
@@ -30,13 +31,10 @@ export default function Home() {
 			localStorage.getItem("AUTH_KEY"),
 			getFormData(key, values),
 			(res) => {
-				if (
-					res.data.data.tittle == "Your Session Timeout" ||
-					!res.data.data
-				) {
-					window.location.replace("/login");
-				} else {
+				if (res.data.data.title == "Your Session Ok") {
 					csrf = res.data.csrfHash;
+				} else {
+					window.location.replace("/login");
 				}
 			}
 		);
