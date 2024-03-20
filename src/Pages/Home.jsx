@@ -14,11 +14,17 @@ import { sessTime } from "../utils/api";
 import Cookies from "js-cookie";
 
 let csrf = Cookies.get("ci_sso_csrf_cookie");
+setInterva;
 console.log(csrf);
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	const userData = parseJwt(localStorage.getItem("token"));
+	let userData = {};
+	if (localStorage.getItem("token")) {
+		userData = parseJwt(localStorage.getItem("token"));
+	} else {
+		window.location.replace("/login");
+	}
 
 	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
