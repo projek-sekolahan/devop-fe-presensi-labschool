@@ -83,7 +83,7 @@ export default function OtpInput() {
 			inputRefs.current[index - 1].focus();
 		}
 	};
-	const sendOtpAgain = () => {
+	const sendOtpAgain = (e) => {
 		const key = ["email", "csrf_token"];
 		const values = [
 			localStorage.getItem("email"),
@@ -91,7 +91,9 @@ export default function OtpInput() {
 		];
 
 		sendOTP(getFormData(key, values), (res) => {
+			e.preventDefault();
 			console.log(res);
+
 			if (res.status == 200 && res.data) {
 				Swal.fire({
 					titleText: res.data.title,
@@ -152,6 +154,7 @@ export default function OtpInput() {
 					</p>
 					<button
 						onClick={onOtpSubmit}
+						type="submit"
 						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
 					>
 						Verifikasi
