@@ -145,12 +145,12 @@ export default function OtpInput() {
 					</div>
 					<p className="text-center font-thin text-xs">
 						Didn&apos;t receive the verification code?{" "}
-						<button
+						<span
 							className="text-center font-bold"
 							onClick={sendOtpAgain}
 						>
 							Click Here
-						</button>
+						</span>
 					</p>
 					<button
 						onClick={onOtpSubmit}
