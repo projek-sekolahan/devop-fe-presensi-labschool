@@ -94,7 +94,7 @@ export default function OtpInput() {
 			e.preventDefault();
 			console.log(res);
 
-			if (res.status == 200 && res.data) {
+			if (res.status == 200 && res.data.success == "Success") {
 				Swal.fire({
 					titleText: res.data.title,
 					text: "Kode OTP berhasil dikirim",
