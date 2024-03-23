@@ -91,9 +91,6 @@ export default function OtpInput() {
 		];
 
 		sendOTP(getFormData(key, values), (res) => {
-			e.preventDefault();
-			console.log(res);
-
 			if (res.status == 200 && res.data.success == "Success") {
 				Swal.fire({
 					titleText: res.data.title,
