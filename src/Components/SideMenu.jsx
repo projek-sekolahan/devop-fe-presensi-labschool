@@ -64,7 +64,7 @@ export default function SideMenu({ show, data, csrf }) {
 			id="container"
 			className={`${
 				show ? "translate-x-[100vw]" : "translate-x-0"
-			} size-screen absolute bg-[rgba(0,0,0,0.2)] z-10 left-[-100vw] top-0 duration-500`}
+			} size-screen relative bg-[rgba(0,0,0,0.2)] z-10 left-[-100vw] top-0 duration-500`}
 		>
 			<div className="w-3/4 h-full bg-white">
 				<div className="size-full relative px-4">
