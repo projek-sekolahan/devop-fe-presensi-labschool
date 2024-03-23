@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
-	
+
 	const inputRefs = useRef([]);
 	const formRef = useRef();
 
@@ -91,6 +91,7 @@ export default function OtpInput() {
 		];
 
 		sendOTP(getFormData(key, values), (res) => {
+			console.log(res);
 			if (res.status == 200 && res.data) {
 				Swal.fire({
 					titleText: res.data.title,
