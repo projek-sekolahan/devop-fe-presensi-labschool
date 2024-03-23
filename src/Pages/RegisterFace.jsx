@@ -10,12 +10,12 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
-	const [alert, setAlert] = useState(true);
+	const [alert, setAlert] = useState("Getting Camera Access...");
 
 	alert &&
 		Swal.fire({
 			titleText: "Loading",
-			text: "Wait a second...",
+			text: alert,
 			allowOutsideClick: false,
 			allowEnterKey: false,
 			allowEscapeKey: false,
@@ -31,7 +31,7 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				setAlert(false);
+				setAlert("Loading Models...");
 				Swal.close();
 			})
 			.catch(function (err) {
@@ -70,6 +70,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
+				setAlert("");
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
@@ -98,7 +99,9 @@ export default function RegisterFace() {
 								allowOutsideClick: false,
 								allowEnterKey: false,
 								allowEscapeKey: false,
-							}).then(() => window.location.replace("/setpassword"));
+							}).then(() =>
+								window.location.replace("/setpassword")
+							);
 						} else {
 							Swal.fire({
 								titleText: res.data.title,
