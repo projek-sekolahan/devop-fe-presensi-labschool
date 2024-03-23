@@ -112,3 +112,13 @@ export const recover = async (formData, callback) => {
 			callback(error);
 		});
 };
+export const sendOTP = async (formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/input/sendOTP`, formData)
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
+};

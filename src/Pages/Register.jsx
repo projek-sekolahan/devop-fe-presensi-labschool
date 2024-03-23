@@ -25,6 +25,7 @@ export default function Register() {
 			});
 			return;
 		}
+		localStorage.setItem("email", emailRef.current)
 		const keys = [
 			"username",
 			"phone",

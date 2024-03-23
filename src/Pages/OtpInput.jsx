@@ -1,12 +1,14 @@
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
-import { verify } from "../utils/api";
+import { verify, sendOTP } from "../utils/api";
+import { getFormData } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
+	
 	const inputRefs = useRef([]);
 	const formRef = useRef();
 
@@ -24,7 +26,7 @@ export default function OtpInput() {
 
 		verify(formData, (res) => {
 			if (res.status == 200 && res.data.data) {
-				localStorage.setItem("regist_token", res.data.data.token)
+				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
 					text: "Account Activated",
@@ -81,6 +83,26 @@ export default function OtpInput() {
 			inputRefs.current[index - 1].focus();
 		}
 	};
+	const sendOtpAgain = () => {
+		const key = ["email", "csrf_token"];
+		const values = [
+			localStorage.getItem("email"),
+			Cookies.get("ci_sso_csrf_cookie"),
+		];
+
+		sendOTP(getFormData(key, values), (res) => {
+			if (res.status == 200 && res.data) {
+				Swal.fire({
+					titleText: res.data.title,
+					text: "Kode OTP berhasil dikirim",
+					icon: "success",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace("/verify"));
+			}
+		});
+	};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">
@@ -98,7 +120,7 @@ export default function OtpInput() {
 					Enter the verification code that was sended to your email
 					addreas
 				</p>
-				<form onSubmit={onOtpSubmit} ref={formRef}>
+				<form ref={formRef}>
 					<div className="flex justify-between my-8">
 						{otp.map((value, index) => {
 							return (
@@ -119,14 +141,16 @@ export default function OtpInput() {
 						})}
 					</div>
 					<p className="text-center font-thin text-xs">
-						Didn&apos;t receive the verification code?
-						<Link className="text-center font-bold">
-							{" "}
+						Didn&apos;t receive the verification code?{" "}
+						<button
+							className="text-center font-bold"
+							onClick={sendOtpAgain}
+						>
 							Click Here
-						</Link>
+						</button>
 					</p>
 					<button
-						type="submit"
+						onClick={onOtpSubmit}
 						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
 					>
 						Verifikasi

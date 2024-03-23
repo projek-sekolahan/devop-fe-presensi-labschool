@@ -57,7 +57,7 @@ function App() {
 		});
 		getCsrf().then((result) => {
 			// Data cookie yang diberikan
-
+			localStorage.setItem("csrf", result.data.csrfHash)
 			const cookieData = {
 				ci_sso_csrf_cookie: result.data.csrfHash,
 				"Max-Age": 1 / 12,
