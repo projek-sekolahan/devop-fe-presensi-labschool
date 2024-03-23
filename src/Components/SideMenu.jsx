@@ -64,7 +64,7 @@ export default function SideMenu({ show, data, csrf }) {
 			id="container"
 			className={`${
 				show ? "translate-x-[100vw]" : "translate-x-0"
-			} absolute w-3/4 h-screen bg-white z-10 left-[-100vw] top-0 duration-500 before:size-screen before:bg-gray-500 before:opacity-30 before:blur-xl`}
+			} absolute w-3/4 h-screen bg-white z-10 left-[-100vw] top-0 duration-500 before:size-screen before:bg-gray-500 before:opacity-30 before:blur-xl before:absolute before:top-0 before:left-0 before:z-[9]`}
 		>
 			<div className="size-full relative px-4">
 				<img
