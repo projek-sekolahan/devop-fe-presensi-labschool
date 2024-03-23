@@ -72,7 +72,6 @@ export default function SetPassword() {
 				<div className="my-6 space-y-4 md:space-y-6">
 					<form
 						className="space-y-4 md:space-y-6 flex flex-col gap-2"
-						onSubmit={submitHandler}
 					>
 						<div>
 							<label htmlFor="password">Password</label>
@@ -107,7 +106,7 @@ export default function SetPassword() {
 						</div>
 
 						<button
-							type="submit"
+							onClick={submitHandler}
 							disabled={disabled}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-80"
 						>

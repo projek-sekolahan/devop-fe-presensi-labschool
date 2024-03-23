@@ -151,7 +151,6 @@ export default function OtpInput() {
 					</p>
 					<button
 						onClick={onOtpSubmit}
-						type="submit"
 						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
 					>
 						Verifikasi

@@ -32,7 +32,6 @@ export default function RegisterFace() {
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
 				setAlert("Loading Models...");
-				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {

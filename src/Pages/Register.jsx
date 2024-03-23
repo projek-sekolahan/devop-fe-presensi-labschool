@@ -76,7 +76,6 @@ export default function Register() {
 			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
 				<form
 					className="p-6 space-y-4 md:space-y-6 sm:p-8"
-					onSubmit={submitHandler}
 				>
 					<div className="flex justify-center gap-8">
 						<label className="flex flex-col items-center gap-1">
@@ -162,7 +161,7 @@ export default function Register() {
 							required=""
 						/>
 						<button
-							type="submit"
+							onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
 							Create my account
