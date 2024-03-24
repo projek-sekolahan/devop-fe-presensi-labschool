@@ -6,13 +6,12 @@ import { facecam } from "../utils/api";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-let alert = "Getting Camera Access...";
-
 export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
 	const canvasRef = useRef();
+	const [alert, setAlert] = useState("Getting camera access...")
 
 	alert &&
 		Swal.fire({
@@ -33,7 +32,7 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				alert = "Loading Models...";
+				setAlert("Loading Models...");
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -73,7 +72,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				alert = "";
+				setAlert("")
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
