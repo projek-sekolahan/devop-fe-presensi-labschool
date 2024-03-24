@@ -12,6 +12,7 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	const canvasRef = useRef();
 
 	alert &&
 		Swal.fire({
