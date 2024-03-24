@@ -11,7 +11,7 @@ export default function RegisterFace() {
 	const barRef = useRef();
 	const textRef = useRef();
 	const canvasRef = useRef();
-	const [alert, setAlert] = useState("Getting camera access...")
+	const [alert, setAlert] = useState("Getting camera access...");
 
 	alert &&
 		Swal.fire({
@@ -31,8 +31,10 @@ export default function RegisterFace() {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
 			.then((stream) => {
-				videoRef.current.srcObject = stream;
-				setAlert("Loading Models...");
+				if (ideoRef.current) {
+					videoRef.current.srcObject = stream;
+					setAlert("Loading Models...");
+				}
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -72,7 +74,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				setAlert("")
+				setAlert("");
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
