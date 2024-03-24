@@ -72,7 +72,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				setAlert("");
+				setAlert(null);
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
