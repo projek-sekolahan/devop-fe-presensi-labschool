@@ -58,6 +58,8 @@ export default function RegisterFace() {
 		startVideo();
 	});
 
+	console.log(videoRef.current);
+
 	const faceMyDetect = () => {
 		setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
@@ -130,6 +132,7 @@ export default function RegisterFace() {
 				onPlay={faceMyDetect}
 				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
+			<canvas ref={canvasRef} width="640" height="640"></canvas>
 			<div
 				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
 			>
