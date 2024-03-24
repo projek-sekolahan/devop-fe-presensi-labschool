@@ -31,10 +31,8 @@ export default function RegisterFace() {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
 			.then((stream) => {
-				if (ideoRef.current) {
-					videoRef.current.srcObject = stream;
-					setAlert("Loading Models...");
-				}
+				videoRef.current.srcObject = stream;
+				setAlert("Loading Models...");
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
