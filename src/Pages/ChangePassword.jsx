@@ -10,7 +10,7 @@ export default function ChangePassword() {
 			<img
 				src="/img/reset_pwd.png"
 				alt="reset"
-				className="size-[calc(100vh/2+30px)] absolute top-0 left-0 z-0"
+				className="w-screen absolute top-0 left-0 z-0"
 			/>
 			<div className="w-full h-1/2 mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 relative z-10">
 				<h2 className="font-bold text-4xl">Ganti Password</h2>
