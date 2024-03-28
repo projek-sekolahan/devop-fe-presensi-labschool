@@ -57,7 +57,7 @@ function App() {
 		});
 		getCsrf().then((result) => {
 			// Data cookie yang diberikan
-			localStorage.setItem("csrf", result.data.csrfHash)
+			localStorage.setItem("csrf", result.data.csrfHash);
 			const cookieData = {
 				ci_sso_csrf_cookie: result.data.csrfHash,
 				"Max-Age": 1 / 12,
@@ -109,7 +109,7 @@ function App() {
 					<Route path="/presensi/keterangan" Component={Ijin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
-					<Route path="/setpassword/:to" Component={SetPassword} />
+					<Route path="/setpassword" Component={SetPassword} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>
