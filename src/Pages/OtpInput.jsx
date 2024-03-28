@@ -31,7 +31,7 @@ export default function OtpInput() {
 				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: res.data.data.message,
+					html: res.data.data.message,
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
@@ -40,7 +40,7 @@ export default function OtpInput() {
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
-					text: res.data.message,
+					html: res.data.message,
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
