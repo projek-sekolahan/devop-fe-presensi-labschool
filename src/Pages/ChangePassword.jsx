@@ -35,7 +35,7 @@ export default function ChangePassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then((res) => window.location.replace("recover"));
+				}).then(() => window.location.replace("recover"));
 			}
 		});
 	};
