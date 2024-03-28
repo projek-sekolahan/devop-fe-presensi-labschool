@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { recover } from "../utils/api";
 import { getFormData } from "../utils/utils";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 export default function ChangePassword() {
 	const emailRef = useRef();
@@ -15,7 +16,27 @@ export default function ChangePassword() {
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
 		recover(getFormData(key, values), (res) => {
-			console.log(res);
+			if (res.status == 200) {
+				Swal.fire({
+					titleText: res.data.data.title,
+					html: res.data.data.message,
+					icon: res.data.data.info,
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then((res) =>
+					window.location.replace(res.data.data.location)
+				);
+			} else {
+				Swal.fire({
+					titleText: "Something Error",
+					text: "Wait for a second and reload page",
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then((res) => window.location.replace("recover"));
+			}
 		});
 	};
 

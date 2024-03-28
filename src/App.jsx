@@ -93,7 +93,7 @@ function App() {
 					<Route path="/verify" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />
-					<Route path="/password/reset" Component={ChangePassword} />
+					<Route path="/recover" Component={ChangePassword} />
 					<Route path="/home" Component={Home} />
 					<Route path="/profile" Component={Profile} />
 					<Route path="/presensi" Component={Presensi} />
