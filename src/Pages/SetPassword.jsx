@@ -35,7 +35,7 @@ export default function SetPassword() {
 		];
 
 		setPassword(getFormData(key, values), (res) => {
-			if (res.status == 200) {
+			if (res.status == 200 && res.data.data) {
 				Swal.fire({
 					titleText: res.data.data.title,
 					html: res.data.data.message,
@@ -47,7 +47,7 @@ export default function SetPassword() {
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
-					text: "Unable to Set Password",
+					html: res.data.message,
 					icon: "error",
 					allowOutsideClick: false,
 					allowEnterKey: false,
