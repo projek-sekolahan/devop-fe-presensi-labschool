@@ -17,65 +17,56 @@ export default function Login() {
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key[1], csrf_token];
 
-		localStorage.setItem("AUTH_KEY", token_key[0])
-		localStorage.setItem("devop-sso", token_key[1])
-		
-		toLogin(
-			token_key[0],
-			getFormData(keys, values),
-			(res) => {
-				if (res.status == 201) {
-					localStorage.setItem("login_token", res.data.data.Tokenjwt);
-	
-					const key = [
-						"AUTH_KEY",
-						"devop-sso",
-						"csrf_token",
-						"token",
-					];
-					const values = [
-						getKey(emailRef.current.value, hash)[0],
-						getKey(emailRef.current.value, hash)[1],
-						res.data.csrfHash,
-						res.data.data.Tokenjwt,
-					];
+		localStorage.setItem("AUTH_KEY", token_key[0]);
+		localStorage.setItem("devop-sso", token_key[1]);
 
-					getUserData(
-						getKey(emailRef.current.value, hash)[0],
-						getFormData(key, values),
-						(res) => {
-							localStorage.setItem("token", res.data.data);
-						}
-					);
-					Swal.fire({
-						titleText: res.data.data.title,
-						text: res.data.data.message,
-						icon: "success",
-						allowOutsideClick: false,
-						allowEnterKey: false,
-						allowEscapeKey: false,
-					}).then(() => window.location.replace(`/home`));
-				} else if (res.status == 200) {
-					Swal.fire({
-						titleText: res.data.title,
-						text: res.data.message,
-						icon: "error",
-						allowOutsideClick: false,
-						allowEnterKey: false,
-						allowEscapeKey: false,
-					}).then(() => window.location.replace(`/login`));
-				} else {
-					Swal.fire({
-						titleText: "Error",
-						text: "Silahkan Login Ulang",
-						icon: "error",
-						allowOutsideClick: false,
-						allowEnterKey: false,
-						allowEscapeKey: false,
-					}).then(() => window.location.replace(`/login`));
-				}
+		toLogin(token_key[0], getFormData(keys, values), (res) => {
+			if (res.status == 201) {
+				localStorage.setItem("login_token", res.data.data.Tokenjwt);
+
+				const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+				const values = [
+					getKey(emailRef.current.value, hash)[0],
+					getKey(emailRef.current.value, hash)[1],
+					res.data.csrfHash,
+					res.data.data.Tokenjwt,
+				];
+
+				getUserData(
+					getKey(emailRef.current.value, hash)[0],
+					getFormData(key, values),
+					(res) => {
+						localStorage.setItem("token", res.data.data);
+					}
+				);
+				Swal.fire({
+					titleText: res.data.data.title,
+					text: res.data.data.message,
+					icon: "success",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/home`));
+			} else if (res.status == 200) {
+				Swal.fire({
+					titleText: res.data.title,
+					text: res.data.message,
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/login`));
+			} else {
+				Swal.fire({
+					titleText: "Error",
+					text: "Silahkan Login Ulang",
+					icon: "error",
+					allowOutsideClick: false,
+					allowEnterKey: false,
+					allowEscapeKey: false,
+				}).then(() => window.location.replace(`/login`));
 			}
-		);
+		});
 	};
 
 	return (
@@ -130,7 +121,7 @@ export default function Login() {
 						</div>
 
 						<Link
-							to="/password/reset"
+							to="/recover"
 							className="text-sm font-light text-end"
 						>
 							Lupa password?
