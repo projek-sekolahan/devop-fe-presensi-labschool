@@ -53,7 +53,7 @@ export default function SetPassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/setpassword`));
+				}).then(() => window.location.replace(`/setpassword/${to}`));
 			}
 		});
 	};
