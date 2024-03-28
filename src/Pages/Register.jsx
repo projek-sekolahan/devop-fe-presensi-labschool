@@ -25,7 +25,7 @@ export default function Register() {
 			});
 			return;
 		}
-		localStorage.setItem("email", emailRef.current)
+		localStorage.setItem("email", emailRef.current.value);
 		const keys = [
 			"username",
 			"phone",
@@ -74,9 +74,7 @@ export default function Register() {
 				Selamat datang!
 			</small>
 			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
-				<form
-					className="p-6 space-y-4 md:space-y-6 sm:p-8"
-				>
+				<form className="p-6 space-y-4 md:space-y-6 sm:p-8">
 					<div className="flex justify-center gap-8">
 						<label className="flex flex-col items-center gap-1">
 							<input
