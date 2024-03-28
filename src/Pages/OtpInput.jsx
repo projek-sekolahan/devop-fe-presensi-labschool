@@ -26,11 +26,12 @@ export default function OtpInput() {
 		formData.append("csrf_token", csrf);
 
 		verify(formData, (res) => {
+			console.log(res);
 			if (res.status == 200 && res.data.data) {
 				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: "Account Activated",
+					text: res.data.data.message,
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
