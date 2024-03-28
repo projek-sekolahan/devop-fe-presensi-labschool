@@ -16,6 +16,7 @@ export default function ChangePassword() {
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
 		recover(getFormData(key, values), (res) => {
+			console.log(res);
 			if (res.status == 200) {
 				Swal.fire({
 					titleText: res.data.data.title,
@@ -24,9 +25,7 @@ export default function ChangePassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then((res) =>
-					window.location.replace(res.data.data.location)
-				);
+				}).then(() => window.location.replace(res.data.data.location));
 			} else {
 				Swal.fire({
 					titleText: "Something Error",
