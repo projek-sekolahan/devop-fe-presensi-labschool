@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -7,6 +7,7 @@ import { getFormData } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
+	const { to } = useParams();
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 
 	const inputRefs = useRef([]);
@@ -34,7 +35,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace("/facereg"));
+				}).then(() => window.location.replace(to));
 			} else {
 				Swal.fire({
 					titleText: res.data.title,

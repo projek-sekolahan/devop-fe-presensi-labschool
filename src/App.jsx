@@ -90,7 +90,7 @@ function App() {
 			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route path="/" Component={Register} />
-					<Route path="/verify" Component={OtpInput} />
+					<Route path="/verify/:to" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />
 					<Route path="/recover" Component={ChangePassword} />

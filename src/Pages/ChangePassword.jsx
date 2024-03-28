@@ -25,7 +25,7 @@ export default function ChangePassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(res.data.data.location));
+				}).then(() => window.location.replace(`${res.data.data.location}/setpassword`));
 			} else {
 				Swal.fire({
 					titleText: "Something Error",
