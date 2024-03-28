@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const { to } = useParams();
+	console.log(to);
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 
 	const inputRefs = useRef([]);
