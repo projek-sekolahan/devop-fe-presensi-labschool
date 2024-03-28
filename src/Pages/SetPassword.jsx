@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function SetPassword() {
+	const { to } = useParams();
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
 	const inputRef = useRef();
@@ -43,7 +44,7 @@ export default function SetPassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace("/login"));
+				}).then(() => window.location.replace(to));
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
@@ -70,9 +71,7 @@ export default function SetPassword() {
 			<div className="w-full h-fit mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 relative z-10">
 				<h2 className="font-bold text-4xl">Set Password</h2>
 				<div className="my-6 space-y-4 md:space-y-6">
-					<form
-						className="space-y-4 md:space-y-6 flex flex-col gap-2"
-					>
+					<form className="space-y-4 md:space-y-6 flex flex-col gap-2">
 						<div>
 							<label htmlFor="password">Password</label>
 							<input

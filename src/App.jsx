@@ -109,7 +109,7 @@ function App() {
 					<Route path="/presensi/keterangan" Component={Ijin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
-					<Route path="/setpassword" Component={SetPassword} />
+					<Route path="/setpassword/:to" Component={SetPassword} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>

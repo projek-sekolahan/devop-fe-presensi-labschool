@@ -102,7 +102,7 @@ export default function RegisterFace() {
 								allowEnterKey: false,
 								allowEscapeKey: false,
 							}).then(() =>
-								window.location.replace("/setpassword")
+								window.location.replace("/setpassword/login")
 							);
 						} else {
 							Swal.fire({
