@@ -102,7 +102,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace("/verify"));
+				}).then(() => window.location.replace(`/verify/${to}`));
 			}
 		});
 	};
