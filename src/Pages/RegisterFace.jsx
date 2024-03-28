@@ -12,6 +12,7 @@ export default function RegisterFace() {
 	const textRef = useRef();
 	const canvasRef = useRef();
 	const [alert, setAlert] = useState("Getting camera access...");
+	alert(alert);
 
 	alert &&
 		Swal.fire({
