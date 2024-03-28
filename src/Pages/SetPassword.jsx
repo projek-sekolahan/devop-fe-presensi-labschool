@@ -35,10 +35,10 @@ export default function SetPassword() {
 		];
 
 		setPassword(getFormData(key, values), (res) => {
-			if (res.status == 200 && res.data.data) {
+			if (res.status == 200) {
 				Swal.fire({
 					titleText: res.data.data.title,
-					text: "Set Password Success",
+					html: res.data.data.message,
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
