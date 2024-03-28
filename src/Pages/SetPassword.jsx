@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function SetPassword() {
-	const { to } = useParams();
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
 	const inputRef = useRef();
@@ -44,7 +43,7 @@ export default function SetPassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(to));
+				}).then(() => window.location.replace("/login"));
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
@@ -53,7 +52,7 @@ export default function SetPassword() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/setpassword/${to}`));
+				}).then(() => window.location.replace(`/setpassword`));
 			}
 		});
 	};
