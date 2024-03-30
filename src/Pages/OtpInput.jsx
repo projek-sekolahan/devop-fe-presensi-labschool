@@ -28,7 +28,7 @@ export default function OtpInput() {
 
 		verify(formData, (res) => {
 			console.log(res);
-			if (res.status == 200 && res.data.data) {
+			if (res.status == 200) {
 				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
@@ -102,7 +102,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/verify/${to}`));
+				}).then(() => window.location.replace(` /verify/${to}`));
 			}
 		});
 	};
