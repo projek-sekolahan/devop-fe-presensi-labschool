@@ -37,7 +37,7 @@ export default function OtpInput() {
 					allowOutsideClick: false,
 					allowEnterKey: false,
 					allowEscapeKey: false,
-				}).then(() => window.location.replace(to));
+				}).then(() => window.location.replace(`/${to}`));
 			} else {
 				Swal.fire({
 					titleText: res.data.title,
