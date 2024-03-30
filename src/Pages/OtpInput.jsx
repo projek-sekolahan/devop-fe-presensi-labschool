@@ -28,7 +28,7 @@ export default function OtpInput() {
 
 		verify(formData, (res) => {
 			console.log(res);
-			if (res.status == 200) {
+			if (res.status == 200 && res.data.data) {
 				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
