@@ -80,7 +80,7 @@ export const facecam = async (formData, callback) => {
 };
 export const getUserData = async (key, formData, callback) => {
 	axiosInstance
-		.post(`${api_url}/api/client/user/profile`, formData, {
+		.post(`${api_url}/api/client/users/profile`, formData, {
 			headers: {
 				Authorization: `Basic ${key}`,
 			},
