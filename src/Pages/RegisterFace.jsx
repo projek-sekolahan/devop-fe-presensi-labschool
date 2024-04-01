@@ -11,20 +11,18 @@ export default function RegisterFace() {
 	const barRef = useRef();
 	const textRef = useRef();
 	const canvasRef = useRef();
-	const [alert, setAlert] = useState("Getting camera access...");
-	alert(alert);
+	const [message, setMessage] = useState("Getting camera access...");
 
-	alert &&
-		Swal.fire({
-			titleText: "Loading",
-			text: alert,
-			allowOutsideClick: false,
-			allowEnterKey: false,
-			allowEscapeKey: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
+	Swal.fire({
+		titleText: "Loading",
+		text: message,
+		allowOutsideClick: false,
+		allowEnterKey: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
+	});
 
 	const key = ["param", "devop-sso", "csrf_token"];
 
@@ -33,7 +31,7 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				setAlert("Loading Models...");
+				setMessage("Loading Models...")
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -59,8 +57,6 @@ export default function RegisterFace() {
 		startVideo();
 	});
 
-	console.log(videoRef.current);
-
 	const faceMyDetect = () => {
 		setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
@@ -73,7 +69,7 @@ export default function RegisterFace() {
 				.withFaceDescriptor();
 
 			if (faceData) {
-				setAlert(null);
+				Swal.close()
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
