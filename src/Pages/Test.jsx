@@ -1,15 +1,12 @@
 import * as faceapi from "face-api.js";
-import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { getFormData, getImageUrl } from "../utils/utils";
-import { facecam } from "../utils/api";
-import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-export default function RegisterFace() {
+export default function Test() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	const imgRef = useRef();
 
 	Swal.fire({
 		titleText: "Loading",
@@ -22,7 +19,16 @@ export default function RegisterFace() {
 		},
 	});
 
-	const key = ["param", "img", "devop-sso", "csrf_token"];
+	const renderFace = (asal, akhir, x, y, size) => {
+    	const canvas = document.createElement("canvas");
+    	canvas.width = size;
+    	canvas.height = size;
+    	const context = canvas.getContext("2d");
+
+    	context?.drawImage(asal, x, y, size, size, 0, 0, size, size);
+    	const url = canvas.toDataURL("image/jpeg")
+    	akhir.src = url
+  	};
 
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -81,49 +87,13 @@ export default function RegisterFace() {
 					(faceData.detection.score / 0.8) * 100
 				)}%`;
 				if (faceData.detection.score >= 0.8) {
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-        			const url = getImageUrl(videoRef.current, imgRef.current, x-50, y-75, height+125);
+        			renderFace(videoRef.current, imgRef.current, x-50, y-75, height+125);
 
-					// Float 32 Array to String
-					const stringDescriptor = Array.from(
-						faceData.descriptor
-					).join(", ");
-					const values = [
-						stringDescriptor,
-						url,
-						localStorage.getItem("regist_token"),
-						Cookies.get("ci_sso_csrf_cookie"),
-					];
-					facecam(getFormData(key, values), (res) => {
-						if (res.status == 200 && res.data.data) {
-							localStorage.setItem(
-								"regist_token",
-								res.data.data.token
-							);
-							Swal.fire({
-								titleText: res.data.data.title,
-								text: res.data.data.message,
-								icon: "success",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() =>
-								window.location.replace("/setpassword")
-							);
-						} else {
-							Swal.fire({
-								titleText: res.data.title,
-								text: res.data.message,
-								icon: "error",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() => window.location.replace(`/facereg`));
-						}
-					});
+					barRef.current.style.width = "100%";
+					textRef.current.innerText = "100%";
+					
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
@@ -156,6 +126,7 @@ export default function RegisterFace() {
 					<p className="font-bold text-4xl" ref={textRef}>
 						0%
 					</p>
+					<img className="size-[100px]" ref={imgRef}/>
 					<p className="font-medium text-base">
 						Melakukan Registrasi Wajah Anda...
 					</p>

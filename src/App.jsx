@@ -47,6 +47,7 @@ const FaceCam = lazy(() => import("./Pages/FaceCam"));
 const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
+const Test = lazy(() => import("./Pages/Test"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
@@ -110,6 +111,7 @@ function App() {
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
 					<Route path="/setpassword" Component={SetPassword} />
+					<Route path="/test" Component={Test} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>

@@ -15,6 +15,17 @@ export const getKey = (email, hash) => {
 	return [key, tokenkey];
 };
 
+export const getImageUrl = (source, x, y, size) => {
+    	const canvas = document.createElement("canvas");
+    	canvas.width = size;
+    	canvas.height = size;
+    	const context = canvas.getContext("2d");
+
+    	context?.drawImage(source, x, y, size, size, 0, 0, size, size);
+    	const url = canvas.toDataURL("image/jpeg")
+    	return url
+  	};
+
 export const getFormData = (keys, values) => {
 	return keys
 		.map(
