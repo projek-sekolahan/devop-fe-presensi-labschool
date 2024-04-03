@@ -85,7 +85,7 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-        			const url = getImageUrl(videoRef.current, imgRef.current, x-50, y-75, height+125);
+        			const url = getImageUrl(videoRef.current, x-50, y-75, height+125);
 
 					// Float 32 Array to String
 					const stringDescriptor = Array.from(
