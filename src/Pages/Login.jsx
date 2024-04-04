@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { toLogin, getUserData } from "../utils/api.js";
 import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
+import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
@@ -103,21 +103,7 @@ export default function Login() {
 								className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 								required=""
 							/>
-							<label className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg">
-								<input
-									type="checkbox"
-									className="invisible absolute"
-									onChange={() => {
-										passwordRef.current.type == "password"
-											? (passwordRef.current.type =
-													"text")
-											: (passwordRef.current.type =
-													"password");
-									}}
-								/>
-								<EyeIcon className="size-6 stroke-2 swap-off absolute" />
-								<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
-							</label>
+							<PasswordShow ref={passwordRef}/>
 						</div>
 
 						<Link

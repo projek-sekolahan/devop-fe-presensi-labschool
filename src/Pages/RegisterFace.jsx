@@ -93,7 +93,7 @@ export default function RegisterFace() {
 					).join(", ");
 					const values = [
 						stringDescriptor,
-						url,
+						`["${url}"]`,
 						localStorage.getItem("regist_token"),
 						Cookies.get("ci_sso_csrf_cookie"),
 					];
