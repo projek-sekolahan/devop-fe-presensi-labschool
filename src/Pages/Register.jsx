@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function Register() {
+	localStorage.clear()
 	const [role, setRole] = useState("");
 	const nameRef = useRef();
 	const numberRef = useRef();

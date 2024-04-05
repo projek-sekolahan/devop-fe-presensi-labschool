@@ -65,7 +65,7 @@ export default function RegisterFace() {
 				Swal.showLoading();
 			},
 		});	
-		setInterval(async () => {
+		const registerFace = setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
@@ -99,10 +99,6 @@ export default function RegisterFace() {
 					];
 					facecam(getFormData(key, values), (res) => {
 						if (res.status == 200 && res.data.data) {
-							localStorage.setItem(
-								"regist_token",
-								res.data.data.token
-							);
 							Swal.fire({
 								titleText: res.data.data.title,
 								text: res.data.data.message,
@@ -124,6 +120,7 @@ export default function RegisterFace() {
 							}).then(() => window.location.replace(`/facereg`));
 						}
 					});
+					clearInterval(registerFace);
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
