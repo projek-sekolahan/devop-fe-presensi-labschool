@@ -67,6 +67,7 @@ export default function RegisterFace() {
 		});	
 		const registerFace = setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
+			clearInterval(registerFace);
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
@@ -120,7 +121,6 @@ export default function RegisterFace() {
 							}).then(() => window.location.replace(`/facereg`));
 						}
 					});
-					clearInterval(registerFace);
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
