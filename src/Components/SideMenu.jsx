@@ -80,7 +80,7 @@ export default function SideMenu({ show, data, csrf }) {
 					</div>
 					<div id="bio" className="absolute top-9 left-4 flex gap-2">
 						<img
-							src="https://source.unsplash.com/woman-in-white-shirt-holding-green-plant-6l2SLnzdF-A/600x600"
+							src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.img_location}`}
 							alt="photo_profile"
 							className="size-12 rounded-full bg-white"
 						/>
