@@ -32,7 +32,7 @@ export default function OtpInput() {
 				localStorage.setItem("regist_token", res.data.data.token);
 				Swal.fire({
 					titleText: res.data.data.title,
-					html: res.data.data.message,
+					text: "Code Verificated",
 					icon: "success",
 					allowOutsideClick: false,
 					allowEnterKey: false,
