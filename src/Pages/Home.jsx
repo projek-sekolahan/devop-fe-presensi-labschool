@@ -74,7 +74,7 @@ export default function Home() {
 					</button>
 					<div id="profile" className="flex items-center gap-2">
 						<img
-							src="https://source.unsplash.com/woman-in-white-shirt-holding-green-plant-6l2SLnzdF-A/600x600"
+							src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
 							alt="photo_profile"
 							className="size-12 rounded-full bg-white"
 						/>
