@@ -1,6 +1,7 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { forwardRef } from 'react';
 
-export default function PasswordShow({ref}){
+const PasswordShow = forwardRef(function PasswordShow(ref){
 	return(
 		<label className="swap flex justify-center items-center border-[1px] border-white relative z-[5] w-10 rounded-lg">
 			<input
@@ -19,4 +20,5 @@ export default function PasswordShow({ref}){
 			<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
 		</label>
 	)
-}
+})
+export default PasswordShow;
