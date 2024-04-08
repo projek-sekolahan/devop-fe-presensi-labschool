@@ -29,14 +29,14 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				Swal.close()
+				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
 					console.log("Izin akses kamera ditolak oleh pengguna");
 				} else if (err.name === "NotFoundError") {
 					console.log(
-						"Tidak ada kamera yang tersedia pada perangkat"
+						"Tidak ada kamera yang tersedia pada perangkat",
 					);
 				} else {
 					console.log("Gagal mengakses webcam!", err);
@@ -64,21 +64,21 @@ export default function RegisterFace() {
 			didOpen: () => {
 				Swal.showLoading();
 			},
-		});	
+		});
 		const registerFace = setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
-					new faceapi.TinyFaceDetectorOptions()
+					new faceapi.TinyFaceDetectorOptions(),
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
 
 			if (faceData) {
-				Swal.close()
+				Swal.close();
 				const percentage = `${Math.round(
-					(faceData.detection.score / 0.8) * 100
+					(faceData.detection.score / 0.8) * 100,
 				)}%`;
 				if (faceData.detection.score >= 0.8) {
 					clearInterval(registerFace);
@@ -86,11 +86,16 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-        			const url = getImageUrl(videoRef.current, x-50, y-75, height+125);
+					const url = getImageUrl(
+						videoRef.current,
+						x - 50,
+						y - 75,
+						height + 125,
+					);
 
 					// Float 32 Array to String
 					const stringDescriptor = Array.from(
-						faceData.descriptor
+						faceData.descriptor,
 					).join(", ");
 					const values = [
 						stringDescriptor,
@@ -108,7 +113,7 @@ export default function RegisterFace() {
 								allowEnterKey: false,
 								allowEscapeKey: false,
 							}).then(() =>
-								window.location.replace("/setpassword")
+								window.location.replace("/setpassword"),
 							);
 						} else {
 							Swal.fire({
