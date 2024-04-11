@@ -4,16 +4,14 @@ import {
 } from "@heroicons/react/24/outline";
 import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
 import { DoctorRegular } from "@fluentui/react-icons";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export default function Presensi() {
-	const [time, setTime] = useState(
-		new Date().toLocaleTimeString().split(".").join(":")
-	);
-	const [date, setDate] = useState(
-		new Date().toLocaleDateString().split("/").join("-")
-	);
+	const timeRef = useRef();
+	const dateRef = useRef();
+	const { state } = useLocation();
+	console.log(state);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -25,8 +23,10 @@ export default function Presensi() {
 				.toLocaleDateString()
 				.split("/")
 				.join("-");
-			setTime(currentTime);
-			setDate(currentDate);
+			if (timeRef && dateRef) {
+				timeRef.current.innerText = `${currentTime} WIB`;
+				dateRef.current.innerText = `Tanggal : ${currentDate}`;
+			}
 		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
@@ -43,8 +43,12 @@ export default function Presensi() {
 			</header>
 			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-primary-md">
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
-					<p>{`${time} WIB`}</p>
-					<small>{`Tanggal : ${date}`}</small>
+					<p
+						ref={timeRef}
+					>{`${new Date().toLocaleTimeString().split(".").join(":")} WIB`}</p>
+					<small
+						ref={dateRef}
+					>{`Tanggal : ${new Date().toLocaleDateString().split("/").join("-")}`}</small>
 					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link
 							to="/presensi/verif"
@@ -69,7 +73,7 @@ export default function Presensi() {
 						>
 							<DoctorRegular
 								className="size-20"
-								stroke-width="1.5"
+								strokeWidth="1.5"
 							/>
 							<p className="text-center font-semibold">Sakit</p>
 						</Link>

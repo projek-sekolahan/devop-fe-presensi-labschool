@@ -18,7 +18,7 @@ export default function Home() {
 	let userData = {};
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
-		console.log(userData)
+		console.log(userData);
 	} else {
 		window.location.replace("/login");
 	}
@@ -57,7 +57,7 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6 mb-32">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
@@ -166,7 +166,7 @@ export default function Home() {
 						</Link>
 					</div>
 				</main>
-				<div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
+				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
 					<Link
 						to="/home"
 						className="flex flex-col justify-center items-center text-primary-md"
