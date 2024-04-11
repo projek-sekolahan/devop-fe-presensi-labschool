@@ -57,7 +57,7 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6 pb-32">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
@@ -154,7 +154,7 @@ export default function Home() {
 						<Link
 							id="riwayat_presensi"
 							to="/riwayat"
-							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center mb-32"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
 								<ClockIcon className="size-6" />
