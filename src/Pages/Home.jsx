@@ -57,7 +57,7 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6 mb-32">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6 pb-32">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
