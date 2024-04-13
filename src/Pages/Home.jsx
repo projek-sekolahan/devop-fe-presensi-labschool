@@ -18,7 +18,7 @@ export default function Home() {
 	let userData = {};
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
-		console.log(userData);
+		localStorage.setItem("group_id", userData.group_id);
 	} else {
 		window.location.replace("/login");
 	}
@@ -86,7 +86,7 @@ export default function Home() {
 						<BellIcon className="fill-white size-8" />
 					</Link>
 				</nav>
-				<main className="mt-8 h-56 sm:h-52">
+				<main className="mt-8 h-full sm:h-52">
 					<div id="news" className="size-full">
 						<Carousel
 							leftControl=" "
@@ -140,7 +140,11 @@ export default function Home() {
 						</div>
 						<Link
 							id="presensi"
-							to="/presensi/staff"
+							to={
+								localStorage.getItem("group_id") == "4"
+									? "/presensi"
+									: "/presensi/staff"
+							}
 							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
@@ -154,7 +158,7 @@ export default function Home() {
 						<Link
 							id="riwayat_presensi"
 							to="/riwayat"
-							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center mb-32"
+							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
 						>
 							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
 								<ClockIcon className="size-6" />

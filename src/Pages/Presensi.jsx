@@ -33,7 +33,14 @@ export default function Presensi() {
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
 			<header className="h-1/5 bg-primary-md relative p-6">
-				<Link to="/presensi/staff" className="absolute top-5">
+				<Link
+					to={
+						localStorage.getItem("group_id") == "4"
+							? "/home"
+							: "/presensi/staff"
+					}
+					className="absolute top-5"
+				>
 					<ArrowLeftIcon className="size-7" />
 				</Link>
 
