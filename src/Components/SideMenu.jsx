@@ -52,7 +52,7 @@ export default function SideMenu({ show, data, csrf }) {
 								allowEnterKey: false,
 								allowEscapeKey: false,
 							}).then(() => window.location.replace("/login"));
-						}
+						},
 					);
 				} else {
 					isLogout = false;
@@ -66,17 +66,29 @@ export default function SideMenu({ show, data, csrf }) {
 				show ? "translate-x-[100vw]" : "translate-x-0"
 			} w-screen h-screen absolute bg-transparent z-10 left-[-100vw] top-0 duration-500`}
 		>
-			<div className="w-3/4 h-full bg-white">
-				<div className="size-full relative px-4">
+			<div className="relative w-3/4 h-full bg-white">
+				<div className="size-full px-4">
 					<img
 						src="/Icons/Ellipse 190.svg"
 						alt=""
 						className="w-full absolute left-0 top-0"
 					/>
 					<div className="flex absolute top-0 left-0 justify-between w-full">
-						<img src="/Icons/Group 117.svg" alt="" />
-						<img src="/Icons/Group 116.svg" alt="" />
-						<img src="/Icons/Group 115.svg" alt="" />
+						<img
+							src="/Icons/Group 117.svg"
+							alt=""
+							className="w-1/3"
+						/>
+						<img
+							src="/Icons/Group 116.svg"
+							alt=""
+							className="w-1/3"
+						/>
+						<img
+							src="/Icons/Group 115.svg"
+							alt=""
+							className="w-1/3"
+						/>
 					</div>
 					<div id="bio" className="absolute top-9 left-4 flex gap-2">
 						<img
