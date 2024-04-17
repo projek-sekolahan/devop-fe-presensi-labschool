@@ -57,46 +57,49 @@ export default function Home() {
 	});
 
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
+		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
 			<img
 				src="/Icons/elipse.svg"
 				alt="elipse"
 				className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
 			/>
-			<div id="core" className="relative z-[2] size-full">
-				<nav className="flex items-center justify-between">
-					<button
-						onClick={() => {
-							setShow(true);
-						}}
-					>
-						<Bars3Icon className="fill-white size-8" />
-					</button>
-					<div id="profile" className="flex items-center gap-2">
-						<img
-							src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
-							alt="photo_profile"
-							className="size-12 rounded-full bg-white"
-						/>
-						<p className="font-semibold text-sm ">
-							{userData.nama_lengkap}
-						</p>
-					</div>
-					<Link to="/notifikasi">
-						<BellIcon className="fill-white size-8" />
-					</Link>
-				</nav>
-				<main className="mt-8 h-full sm:h-52">
+			<nav className="relative z-[2] flex items-center justify-between">
+				<button
+					onClick={() => {
+						setShow(true);
+					}}
+				>
+					<Bars3Icon className="fill-white size-8" />
+				</button>
+				<div id="profile" className="flex items-center gap-2">
+					<img
+						src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
+						alt="photo_profile"
+						className="size-12 rounded-full bg-white"
+					/>
+					<p className="font-semibold text-sm ">
+						{userData.nama_lengkap}
+					</p>
+				</div>
+				<Link to="/notifikasi">
+					<BellIcon className="fill-white size-8" />
+				</Link>
+			</nav>
+			<div
+				id="core"
+				className="z-[2] size-full relative pb-24 overflow-y-auto"
+			>
+				<main className="mt-8 h-fit sm:h-52">
 					<div id="news" className="size-full">
 						<Carousel
 							leftControl=" "
 							rightControl=" "
-							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
+							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] min-h-48"
 						>
-							<img src="/img/news.png" className="" />
-							<img src="/img/news.png" className="" />
-							<img src="/img/news.png" className="" />
-							<img src="/img/news.png" className="" />
+							<img src="/img/news.png" className="h-full" />
+							<img src="/img/news.png" className="h-full" />
+							<img src="/img/news.png" className="h-full" />
+							<img src="/img/news.png" className="h-full" />
 						</Carousel>
 						<div
 							id="rekap"
@@ -170,7 +173,7 @@ export default function Home() {
 						</Link>
 					</div>
 				</main>
-				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
+				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-14 py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
 					<Link
 						to="/home"
 						className="flex flex-col justify-center items-center text-primary-md"
