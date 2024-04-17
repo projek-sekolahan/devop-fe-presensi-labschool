@@ -94,84 +94,84 @@ export default function Home() {
 						<Carousel
 							leftControl=" "
 							rightControl=" "
-							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] min-h-48"
+							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] min-h-48 h-48"
 						>
 							<img src="/img/news.png" className="h-full" />
 							<img src="/img/news.png" className="h-full" />
 							<img src="/img/news.png" className="h-full" />
 							<img src="/img/news.png" className="h-full" />
 						</Carousel>
-						<div
-							id="rekap"
-							className="bg-white h-3/5 mt-5 rounded-2xl px-3 py-2"
-						>
-							<h3 className="text-primary-md font-bold text-base">
-								{"Rekapan Presensi (Bulan Ini)"}
-							</h3>
-							<div className="flex justify-between mt-2">
-								<div id="hadir" className="w-24">
-									<div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
-										<p className="text-center text-lg font-bold">
-											0
-										</p>
-									</div>
-									<h4 className="text-center text-xs font-bold text-primary-md">
-										Hadir
-									</h4>
+					</div>
+					<div
+						id="rekap"
+						className="bg-white h-3/5 mt-5 rounded-2xl px-3 py-2"
+					>
+						<h3 className="text-primary-md font-bold text-base">
+							{"Rekapan Presensi (Bulan Ini)"}
+						</h3>
+						<div className="flex justify-between mt-2">
+							<div id="hadir" className="w-24">
+								<div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
+									<p className="text-center text-lg font-bold">
+										0
+									</p>
 								</div>
-								<div id="izin" className="w-24">
-									<div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
-										<p className="text-center text-lg font-bold">
-											0
-										</p>
-									</div>
-									<h4 className="text-center text-xs font-bold text-primary-md">
-										Izin / Sakit
-									</h4>
+								<h4 className="text-center text-xs font-bold text-primary-md">
+									Hadir
+								</h4>
+							</div>
+							<div id="izin" className="w-24">
+								<div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
+									<p className="text-center text-lg font-bold">
+										0
+									</p>
 								</div>
-								<div id="terlambat" className="w-24">
-									<div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
-										<p className="text-center text-lg font-bold">
-											0
-										</p>
-									</div>
-									<h4 className="text-center text-xs font-bold text-primary-md">
-										Terlambat
-									</h4>
+								<h4 className="text-center text-xs font-bold text-primary-md">
+									Izin / Sakit
+								</h4>
+							</div>
+							<div id="terlambat" className="w-24">
+								<div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
+									<p className="text-center text-lg font-bold">
+										0
+									</p>
 								</div>
+								<h4 className="text-center text-xs font-bold text-primary-md">
+									Terlambat
+								</h4>
 							</div>
 						</div>
-						<Link
-							id="presensi"
-							to={
-								localStorage.getItem("group_id") == "4"
-									? "/presensi"
-									: "/presensi/staff"
-							}
-							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-						>
-							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-								<CheckCircleIcon className="size-6" />
-							</div>
-							<p className="text-primary-md text-center font-bold text-sm">
-								Presensi
-							</p>
-							<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-						</Link>
-						<Link
-							id="riwayat_presensi"
-							to="/riwayat"
-							className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-						>
-							<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-								<ClockIcon className="size-6" />
-							</div>
-							<p className="text-primary-md text-center font-bold text-sm">
-								Riwayat Presensi
-							</p>
-							<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-						</Link>
 					</div>
+					<Link
+						id="presensi"
+						to={
+							localStorage.getItem("group_id") == "4"
+								? "/presensi"
+								: "/presensi/staff"
+						}
+						className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+					>
+						<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+							<CheckCircleIcon className="size-6" />
+						</div>
+						<p className="text-primary-md text-center font-bold text-sm">
+							Presensi
+						</p>
+						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+					</Link>
+					<Link
+						id="riwayat_presensi"
+						to="/riwayat"
+						className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+					>
+						<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+							<ClockIcon className="size-6" />
+						</div>
+						<p className="text-primary-md text-center font-bold text-sm">
+							Riwayat Presensi
+						</p>
+						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+					</Link>
 				</main>
 				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-14 py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
 					<Link
