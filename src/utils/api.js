@@ -122,3 +122,17 @@ export const sendOTP = async (formData, callback) => {
 			callback(error);
 		});
 };
+export const reports = async (key, formData, callback) => {
+	axiosInstance
+		.post(`${api_url}/api/client/presensi/reports`, formData, {
+			headers: {
+				Authorization: `Basic ${key}`,
+			},
+		})
+		.then((res) => {
+			callback(res);
+		})
+		.catch((error) => {
+			callback(error);
+		});
+};
