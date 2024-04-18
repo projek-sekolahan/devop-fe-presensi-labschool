@@ -24,7 +24,7 @@ export default function Login() {
 		apiServices
 			.toLogin(token_key[0], getFormData(keys, values))
 			.then((response) => {
-				console.log(response.data.data.Tokenjwt);
+				console.log(response);
 				localStorage.setItem("login_token", response.data.data.Tokenjwt);
 				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 				const values = [
