@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function Register() {
-	localStorage.clear()
+	localStorage.clear();
 	const [role, setRole] = useState("");
 	const nameRef = useRef();
 	const numberRef = useRef();
@@ -52,7 +52,9 @@ export default function Register() {
 					allowEnterKey: false,
 					allowEscapeKey: false,
 				}).then(() =>
-					window.location.replace(`${res.data.data.location}/facereg`)
+					window.location.replace(
+						`${res.data.data.location}/facereg`,
+					),
 				);
 			} else {
 				Swal.fire({
@@ -74,10 +76,10 @@ export default function Register() {
 			<small className="text-center text-xs font-medium text-white mt-1">
 				Selamat datang!
 			</small>
-			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
-				<form className="p-6 space-y-4 md:space-y-6 sm:p-8">
-					<div className="flex justify-center gap-8">
-						<label className="flex flex-col items-center gap-1">
+			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] relative bottom-0 lef-0 p-4 pb-8">
+				<form className="w-full p-6 flex flex-col gap-2">
+					<div className="w-full flex justify-between gap-8">
+						<label className="flex flex-col items-center">
 							<input
 								type="radio"
 								name="sebagai"
@@ -95,7 +97,7 @@ export default function Register() {
 								Siswa
 							</label>
 						</label>
-						<label className="flex flex-col items-center gap-1">
+						<label className="flex flex-col items-center">
 							<input
 								type="radio"
 								name="sebagai"
@@ -106,14 +108,14 @@ export default function Register() {
 							/>
 							<img
 								src="/Icons/teacher.svg"
-								className="w-[80px] h-[80px] bg-white rounded-[20px] peer-checked:ring-4 peer-checked:ring-blue-400"
+								className="size-[80px] bg-white rounded-[20px] peer-checked:ring-4 peer-checked:ring-blue-400"
 								alt="teacher-icon"
 							></img>
 							<label htmlFor="guru" className="text-base">
 								Guru
 							</label>
 						</label>
-						<label className="flex flex-col items-center gap-1">
+						<label className="flex flex-col items-center">
 							<input
 								type="radio"
 								name="sebagai"
@@ -124,7 +126,7 @@ export default function Register() {
 							/>
 							<img
 								src="/Icons/employee.svg"
-								className="w-[80px] h-[80px] bg-white rounded-[20px] peer-checked:ring-4 peer-checked:ring-blue-400"
+								className="size-[80px] bg-white rounded-[20px] peer-checked:ring-4 peer-checked:ring-blue-400"
 								alt="employee-icon"
 							></img>
 							<label htmlFor="karyawan" className="text-base">
