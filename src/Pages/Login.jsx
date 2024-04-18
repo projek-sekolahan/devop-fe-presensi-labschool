@@ -27,7 +27,7 @@ export default function Login() {
 		// alert("Harap tunggu", "Silakan tunggu", "info", "/login");
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-try {
+/* try {
     const response = await fetch(`${api_url}/api/client/auth/login`, {
         method: 'POST',
         headers: {
@@ -66,9 +66,9 @@ try {
     localStorage.setItem("token", userData.data.data);
 } catch (error) {
     alert(error.message);
-}
+} */
 
-		/* toLogin(token_key[0], getFormData(key, value), (response) => {
+		toLogin(token_key[0], getFormData(key, value), (response) => {
 			localStorage.setItem("login_token", response.data.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
@@ -82,7 +82,7 @@ try {
 			getUserData(getFormData(keys, values), (res) => {
 				localStorage.setItem("token", res.data.data);
 			})
-		}); */
+		});
 	}	  
 
 	return (
