@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const getHash = (pass) => {
 	const keycode = CryptoJS.enc.Hex.parse(
 		CryptoJS.SHA1(btoa(pass)).toString()

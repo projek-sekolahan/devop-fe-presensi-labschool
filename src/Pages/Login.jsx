@@ -5,7 +5,6 @@ import { getHash, getKey, getFormData, parseJwt, alert } from "../utils/utils.js
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 export default function Login() {
 	localStorage.clear();
