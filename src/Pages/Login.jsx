@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
-import apiServices from "../utils/apiServices.js";
+// import apiServices from "../utils/apiServices.js";
 // import axios from 'axios';
+import axiosInstance from "./axiosInstance";
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -15,7 +16,6 @@ export default function Login() {
 const onSubmit = async () => {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
-
     const hash = getHash(passwordValue);
     const token_key = getKey(emailValue, hash);
     const csrf_token = Cookies.get("ci_sso_csrf_cookie");
@@ -23,30 +23,38 @@ const onSubmit = async () => {
 	const value = [emailValue, hash, token_key[1], csrf_token];
 	localStorage.setItem("AUTH_KEY", token_key[0]);
 	localStorage.setItem("devop-sso", token_key[1]);
-	
-	apiServices
-		.toLogin(token_key[0], getFormData(key, value))
-		.then((response) => {
-			localStorage.setItem("login_token", response.data.data.Tokenjwt);
+	try {
+		const loginResponse = await axiosInstance.post(`${api_url}/api/client/auth/login`, getFormData(key, value), {
+			headers: {
+				Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
+			},
+		});
+		if (loginResponse.status === 201) {
+			localStorage.setItem("login_token", loginResponse.data.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
 				localStorage.getItem("AUTH_KEY"),
 				localStorage.getItem("devop-sso"),
-				response.data.csrfHash,
+				loginResponse.data.csrfHash,
 				localStorage.getItem("login_token"),
 			];
-			alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
-			apiServices
-				.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-				.then((res) => {
-					localStorage.setItem("token", res.data.data);
-				}).catch((err) => {
-					console.log(err);
-				});
-		})
-		.catch((error) => {
-			alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
-		});
+			alert(loginResponse.data.data.info, loginResponse.data.data.title, loginResponse.data.data.message, loginResponse.data.data.location);
+			const getUserDataResponse = await axiosInstance.post(`${api_url}/api/client/users/profile`, getFormData(keys, values), {
+				headers: {
+					Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
+				},
+			});
+			if (getUserDataResponse.status === 201) {
+				localStorage.setItem("token", getUserDataResponse.data.data);
+			} else {
+				alert(getUserDataResponse.data.data.info, getUserDataResponse.data.data.title, getUserDataResponse.data.data.message, getUserDataResponse.data.data.location);
+			}
+		} else {
+			alert(loginResponse.data.data.info, loginResponse.data.data.title, loginResponse.data.data.message, loginResponse.data.data.location);
+		}
+	} catch (error) {
+		console.log(error);
+	}
 }
 			
 
