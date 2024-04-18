@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
 // import apiServices from "../utils/apiServices.js";
 // import axios from 'axios';
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../utils/axiosInstance.js";
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
