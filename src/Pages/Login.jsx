@@ -17,7 +17,7 @@ export default function Login() {
 		const token_key = getKey(emailRef.current.value, hash);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const value = [emailRef.current.value, hash, token_key[1], csrf_token];
-
+		alert("info", "Harap tungng tungng", "Silahkan tungng tungng", "https://devop-sso.smalabschoolunesa1.sch.id/");
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
 		try {
