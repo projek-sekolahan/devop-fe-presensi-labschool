@@ -24,14 +24,14 @@ export default function Login() {
 		apiServices
 			.toLogin(token_key[0], getFormData(keys, values))
 			.then((response) => {
-				console.log(parseJwt(response.data.data.Tokenjwt, "fromToken"));
+				console.log(parseJwt(response.data.data.Tokenjwt));
 				localStorage.setItem("login_token", response.data.data.Tokenjwt);
 				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 				const values = [
 					localStorage.getItem("AUTH_KEY"),
 					localStorage.getItem("devop-sso"),
 					response.data.csrfHash,
-					parseJwt(response.data.data.Tokenjwt, "fromToken"),
+					parseJwt(response.data.data.Tokenjwt),
 					// localStorage.getItem("login_token"),
 				];
 				apiServices
