@@ -23,7 +23,7 @@ export default function Login() {
 		const value = [emailValue, hash, token_key[1], csrf_token];
 	  
 		// pemanggilan alert dengan format yang lebih umum
-		alert("Harap tunggu", "Silakan tunggu", "info", "/login");
+		// alert("Harap tunggu", "Silakan tunggu", "info", "/login");
 	  
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
