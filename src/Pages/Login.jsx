@@ -31,7 +31,7 @@ const onSubmit = () => {
     const loginRequest = new XMLHttpRequest();
     loginRequest.onreadystatechange = function () {
         if (loginRequest.readyState === XMLHttpRequest.DONE) {
-            if (loginRequest.status === 200) {
+            if (loginRequest.status === 201) {
                 const responseData = JSON.parse(loginRequest.responseText);
                 localStorage.setItem("login_token", responseData.data.Tokenjwt);
 
@@ -45,13 +45,13 @@ const onSubmit = () => {
                 const userDataFormData = new URLSearchParams();
                 userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
                 userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
-                userDataFormData.append('csrf_token', responseData.data.csrfHash);
+                userDataFormData.append('csrf_token', csrf_token);
                 userDataFormData.append('token', localStorage.getItem("login_token"));
 
                 const profileRequest = new XMLHttpRequest();
                 profileRequest.onreadystatechange = function () {
                     if (profileRequest.readyState === XMLHttpRequest.DONE) {
-                        if (profileRequest.status === 200) {
+                        if (profileRequest.status === 201) {
                             const userData = JSON.parse(profileRequest.responseText);
                             localStorage.setItem("token", userData.data.data);
                         } else {
@@ -63,7 +63,7 @@ const onSubmit = () => {
                 profileRequest.open("POST", `${api_url}/api/client/users/profile`);
                 profileRequest.setRequestHeader(
                     "Content-Type",
-                    "application/x-www-form-urlencoded"
+                    "multipart/form-data"
                 );
                 profileRequest.setRequestHeader(
                     "Authorization",
@@ -80,7 +80,7 @@ const onSubmit = () => {
     loginRequest.open("POST", `${api_url}/api/client/auth/login`);
     loginRequest.setRequestHeader(
         "Content-Type",
-        "application/x-www-form-urlencoded"
+        "multipart/form-data"
     );
     loginRequest.setRequestHeader(
         "Authorization",
