@@ -20,15 +20,16 @@ export default function Login() {
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		console.log(keys,values,hash,token_key,csrf_token);
-		return new Promise((resolve, reject) => {
-			toLogin(token_key[0], getFormData(keys, values)).then((response) => {
-				console.log(response);
-				resolve(response);
-			}).catch((error) => {
-				console.log(error);
-				reject(error);
-			});
+		// console.log(keys,values,hash,token_key,csrf_token);
+		/* return new Promise((resolve, reject) => {
+			
+		}); */
+		toLogin(token_key[0], getFormData(keys, values)).then((response) => {
+			console.log(response);
+			// resolve(response);
+		}).catch((error) => {
+			console.log(error);
+			// reject(error);
 		});
 		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
 			if (res.status == 201) {
