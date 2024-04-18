@@ -11,31 +11,45 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const onSubmit = async () => {
-		const key = ["username", "password", "devop-sso", "csrf_token"];
-		const hash = getHash(passwordRef.current.value);
-		const token_key = getKey(emailRef.current.value, hash);
+		// Pastikan emailRef dan passwordRef telah diinisialisasi dengan benar sebelum digunakan
+		const emailValue = emailRef.current.value;
+		const passwordValue = passwordRef.current.value;
+	  
+		// Pastikan fungsi getHash, getKey, dan getFormData telah didefinisikan dan berfungsi dengan benar
+		const hash = getHash(passwordValue);
+		const token_key = getKey(emailValue, hash);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-		const value = [emailRef.current.value, hash, token_key[1], csrf_token];
-		alert("info", "Harap tungng tungng", "Silahkan tungng tungng", "/login");
+		const key = ["username", "password", "devop-sso", "csrf_token"];
+		const value = [emailValue, hash, token_key[1], csrf_token];
+	  
+		// pemanggilan alert dengan format yang lebih umum
+		alert("Harap tunggu", "Silakan tunggu", "info", "/login");
+	  
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
+	  
 		try {
-			const response = await apiServices.toLogin(token_key[0], getFormData(key, value));
-			localStorage.setItem("login_token", response.data.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("devop-sso"),
-				response.data.csrfHash,
-				localStorage.getItem("login_token"),
-			];
-			alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
-			const res = await apiServices.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-			localStorage.setItem("token", res.data.data);
+		  // Pastikan bahwa apiServices digunakan dengan benar dan mengembalikan respons yang diharapkan
+		  const response = await apiServices.toLogin(token_key[0], getFormData(key, value));
+		  localStorage.setItem("login_token", response.data.data.Tokenjwt);
+		  const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+		  const values = [
+			localStorage.getItem("AUTH_KEY"),
+			localStorage.getItem("devop-sso"),
+			response.data.csrfHash,
+			localStorage.getItem("login_token"),
+		  ];
+	  
+		  // pemanggilan alert dengan format yang lebih umum
+		  alert(response.data.data.title, response.data.data.message, response.data.data.info, response.data.data.location);
+	  
+		  const res = await apiServices.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+		  localStorage.setItem("token", res.data.data);
 		} catch (error) {
-			alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
+		  // pemanggilan alert dengan format yang lebih umum
+		  alert(error.response.data.data.title, error.response.data.data.message, error.response.data.data.info, error.response.data.data.location);
 		}
-	}
+	  }	  
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
