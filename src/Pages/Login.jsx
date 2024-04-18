@@ -37,7 +37,7 @@ try {
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: JSON.stringify(getFormData(key, value))
+        body: JSON.parse(getFormData(key, value))
     });
     const responseData = await response.json();
 	console.log(responseData);
