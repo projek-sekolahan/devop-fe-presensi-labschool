@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
 // import apiServices from "../utils/apiServices.js";
-// import axios from 'axios';
-import axiosInstance from "../utils/axiosInstance.js";
+// import axiosInstance from "../utils/axiosInstance.js";
+import axios from 'axios';
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -13,6 +13,20 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
+	// Membuat instance Axios
+	const axiosInstance = axios.create();
+	// Menambahkan interceptor untuk mengatur header cookies pada setiap permintaan
+	axiosInstance
+		.interceptors
+		.request
+		.use(config => {
+			// Mengatur opsi withCredentials ke true untuk mengizinkan pengiriman cookie
+			// lintas domain
+			config.withCredentials = true;
+			return config;
+		}, error => {
+			return Promise.reject(error);
+		});
 const onSubmit = async () => {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
