@@ -31,8 +31,8 @@ export default function Login() {
 					localStorage.getItem("AUTH_KEY"),
 					localStorage.getItem("devop-sso"),
 					response.data.csrfHash,
-					parseJwt(localStorage.getItem("login_token")),
-					// localStorage.getItem("login_token"),
+					// parseJwt(localStorage.getItem("login_token")),
+					localStorage.getItem("login_token"),
 				];
 				apiServices
 					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))

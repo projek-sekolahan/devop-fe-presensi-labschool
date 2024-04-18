@@ -13,7 +13,7 @@ export default class apiServices {
 		});
     }
     static async getUserData(key, formData) {
-        return axiosInstance.post(`${api_url}/api/server/users/profile`, formData, {
+        return axiosInstance.post(`${api_url}/api/client/users/profile`, formData, {
 			headers: {
 				Authorization: `Basic ${key}`,
 			},
