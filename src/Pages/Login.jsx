@@ -10,7 +10,8 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	async function onSubmit() {
+	// async function onSubmit() {
+	const onSubmit = () => {
 		const hash = getHash(passwordRef.current.value);
 		alert("success", "Loading...", hash, "/login");
 	}
