@@ -37,7 +37,7 @@ export default function Login() {
 				apiServices
 					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
 					.then((res) => {
-						console.log(res);
+						console.log(parseJwt(res.data.data));
 					}).catch((err) => {
 						console.log(err);
 					});
