@@ -40,16 +40,16 @@ try {
         body: JSON.stringify(getFormData(key, value))
     });
     const responseData = await response.json();
-
-    localStorage.setItem("login_token", responseData.data.Tokenjwt);
+	console.log(responseData);
+    localStorage.setItem("login_token", responseData.data.data.Tokenjwt);
     const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-    const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), responseData.csrfHash, localStorage.getItem("login_token")];
+    const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), responseData.data.csrfHash, localStorage.getItem("login_token")];
 
     alert(
-        responseData.data.title,
-        responseData.data.message,
-        responseData.data.info,
-        responseData.data.location
+        responseData.data.data.title,
+        responseData.data.data.message,
+        responseData.data.data.info,
+        responseData.data.data.location
     );
 
     const res = await fetch(`${api_url}/api/client/users/profile`, {
@@ -63,7 +63,7 @@ try {
     });
     const userData = await res.json();
 
-    localStorage.setItem("token", userData.data);
+    localStorage.setItem("token", userData.data.data);
 } catch (error) {
     alert(error.message);
 }
