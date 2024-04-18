@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
 import apiServices from "../utils/apiServices.js";
-import { getHash, getKey, getFormData, parseJwt, decrypt } from "../utils/utils.js";
+import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -24,14 +24,14 @@ export default function Login() {
 		apiServices
 			.toLogin(token_key[0], getFormData(keys, values))
 			.then((response) => {
-				console.log(decrypt(response.data.data.Tokenjwt, "fromToken"));
+				console.log(parseJwt(response.data.data.Tokenjwt, "fromToken"));
 				localStorage.setItem("login_token", response.data.data.Tokenjwt);
 				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 				const values = [
 					localStorage.getItem("AUTH_KEY"),
 					localStorage.getItem("devop-sso"),
 					response.data.csrfHash,
-					decrypt(response.data.data.Tokenjwt, "fromToken"),
+					parseJwt(response.data.data.Tokenjwt, "fromToken"),
 					// localStorage.getItem("login_token"),
 				];
 				apiServices
