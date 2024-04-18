@@ -37,6 +37,8 @@ const onSubmit = async () => {
 	const value = [emailValue, hash, token_key[1], csrf_token];
 	localStorage.setItem("AUTH_KEY", token_key[0]);
 	localStorage.setItem("devop-sso", token_key[1]);
+	alert("info", "Login", "Login Berhasil", "login");
+	return false;
 	try {
 		const loginResponse = await axiosInstance.post(`${api_url}/api/client/auth/login`, getFormData(key, value), {
 			headers: {
