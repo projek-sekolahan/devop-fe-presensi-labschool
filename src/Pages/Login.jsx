@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { toLogin, getUserData } from "../utils/api.js";
+// import { toLogin, getUserData } from "../utils/api.js";
+import { toLogin, getUserData } from "../utils/apiServices.js";
 import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -19,8 +20,9 @@ export default function Login() {
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-
-		toLogin(token_key[0], getFormData(keys, values), (res) => {
+		console.log(keys,values,hash,token_key,csrf_token);
+		
+		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
 			if (res.status == 201) {
 				localStorage.setItem("login_token", res.data.data.Tokenjwt);
 
@@ -66,7 +68,7 @@ export default function Login() {
 					allowEscapeKey: false,
 				}).then(() => window.location.replace(`/login`));
 			}
-		});
+		}); */
 	};
 
 	return (
