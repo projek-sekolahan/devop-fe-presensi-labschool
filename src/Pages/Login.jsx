@@ -41,7 +41,7 @@ export default function Login() {
 					});
 			})
 			.catch((error) => {
-				console.log(error);
+				alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
 			});
 		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
 			if (res.status == 201) {
