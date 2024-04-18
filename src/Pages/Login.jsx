@@ -63,12 +63,13 @@ const onSubmit = () => {
                 profileRequest.open("POST", `${api_url}/api/client/users/profile`);
                 profileRequest.setRequestHeader(
                     "Content-Type",
-                    "multipart/form-data"
+                    "application/x-www-form-urlencoded"
                 );
                 profileRequest.setRequestHeader(
                     "Authorization",
                     `Basic ${localStorage.getItem("AUTH_KEY")}`
                 );
+				profileRequest.setRequestHeader("csrf_token", csrf_token);
                 profileRequest.send(userDataFormData.toString());
 
             } else {
@@ -80,12 +81,13 @@ const onSubmit = () => {
     loginRequest.open("POST", `${api_url}/api/client/auth/login`);
     loginRequest.setRequestHeader(
         "Content-Type",
-        "multipart/form-data"
+        "application/x-www-form-urlencoded"
     );
     loginRequest.setRequestHeader(
         "Authorization",
         `Basic ${localStorage.getItem("AUTH_KEY")}`
     );
+	loginRequest.setRequestHeader("csrf_token", csrf_token);
     loginRequest.send(formData.toString());
 }	  
 
