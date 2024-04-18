@@ -29,15 +29,22 @@ export default function Login() {
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
 
+		const formData = new FormData();
+		formData.append("username", emailValue);
+		formData.append("password", hash);
+		formData.append("devop-sso", token_key[1]);
+		formData.append("csrf_token", csrf_token);
+
+
 try {
     const response = await fetch(`${api_url}/api/client/auth/login`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: JSON.parse(getFormData(key, value))
+        body: getFormData(key, value)
     });
     const responseData = await response.json();
 	console.log(responseData);
