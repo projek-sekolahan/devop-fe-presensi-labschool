@@ -20,19 +20,28 @@ export default function Login() {
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		// console.log(keys,values,hash,token_key,csrf_token);
-		/* return new Promise((resolve, reject) => {
-			
-		}); */
+		
 		apiServices
 			.toLogin(token_key[0], getFormData(keys, values))
 			.then((response) => {
-				console.log(response);
-				// resolve(response);
+				localStorage.setItem("login_token", response.data.data.Tokenjwt);
+				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+				const values = [
+					localStorage.getItem("AUTH_KEY"),
+					localStorage.getItem("devop-sso"),
+					response.data.csrfHash,
+					localStorage.getItem("login_token"),
+				];
+				apiServices
+					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
+					.then((res) => {
+						console.log(res);
+					}).catch((err) => {
+						console.log(err);
+					});
 			})
 			.catch((error) => {
 				console.log(error);
-				// reject(error);
 			});
 		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
 			if (res.status == 201) {
