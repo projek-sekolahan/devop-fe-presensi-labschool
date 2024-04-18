@@ -28,6 +28,14 @@ export const getImageUrl = (source, x, y, size) => {
     	return url
   	};
 
+export const createFormData = (keys, values) => {
+    const formData = new FormData();
+    keys.forEach((key, index) => {
+        formData.append(key, values[index]);
+    });
+    return formData;
+}
+
 export const getFormData = (keys, values) => {
 	return keys
 		.map(

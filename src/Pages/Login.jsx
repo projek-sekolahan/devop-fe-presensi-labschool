@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { toLogin, getUserData } from "../utils/api.js";
 import apiServices from "../utils/apiServices.js";
-import { getHash, getKey, getFormData, parseJwt, alert } from "../utils/utils.js";
+import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -22,20 +22,11 @@ export default function Login() {
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [emailValue, hash, token_key[1], csrf_token];
-	  
+		const formData = createFormData(key, value);
 		// pemanggilan alert dengan format yang lebih umum
 		// alert("Harap tunggu", "Silakan tunggu", "info", "/login");
-	  
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-
-		const formData = new FormData();
-		formData.append("username", emailValue);
-		formData.append("password", hash);
-		formData.append("devop-sso", token_key[1]);
-		formData.append("csrf_token", csrf_token);
-
-
 try {
     const response = await fetch(`${api_url}/api/client/auth/login`, {
         method: 'POST',
@@ -44,14 +35,14 @@ try {
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: getFormData(key, value)
+        body: formData,
     });
     const responseData = await response.json();
 	console.log(responseData);
     localStorage.setItem("login_token", responseData.data.data.Tokenjwt);
     const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
     const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), responseData.data.csrfHash, localStorage.getItem("login_token")];
-
+	const userDataFormData = createFormData(keys, values);
     alert(
         responseData.data.data.title,
         responseData.data.data.message,
@@ -62,11 +53,11 @@ try {
     const res = await fetch(`${api_url}/api/client/users/profile`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: JSON.stringify(getFormData(keys, values))
+        body: userDataFormData,
     });
     const userData = await res.json();
 
