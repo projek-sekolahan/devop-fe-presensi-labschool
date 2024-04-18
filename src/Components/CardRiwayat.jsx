@@ -9,26 +9,26 @@ export default function CardRiwayat({ history, biodata }) {
 			<p className="font-bold text-base">{biodata.nama_lengkap}</p>
 			<div className="w-full flex gap-2 justify-between">
 				<div className="flex flex-col">
-					<p className="font-medium text-xs">{data.date}</p>
+					<p className="font-medium text-xs">{history.date}</p>
 					<p className="text-xs font-normal">
 						<span className="text-secondary-green">Masuk : </span>
-						{data.checkIn}
+						{history.checkIn}
 					</p>
 					<p className="text-xs font-normal">
 						<span className="text-secondary-red">Keluar : </span>
-						{data.checkOut}
+						{history.checkOut}
 					</p>
 				</div>
 				<div
 					className={`${
-						data.status == "Masuk"
+						history.status == "Masuk"
 							? "bg-secondary-green"
-							: data.status == "Izin"
+							: history.status == "Izin"
 								? "bg-secondary-yellow"
 								: "bg-secondary-red"
 					} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 				>
-					{data.status}
+					{history.status}
 				</div>
 			</div>
 		</div>
