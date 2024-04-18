@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
-import { toLogin, getUserData } from "../utils/apiServices.js";
+import apiServices from "../utils/apiServices.js";
 import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -24,13 +24,16 @@ export default function Login() {
 		/* return new Promise((resolve, reject) => {
 			
 		}); */
-		toLogin(token_key[0], getFormData(keys, values)).then((response) => {
-			console.log(response);
-			// resolve(response);
-		}).catch((error) => {
-			console.log(error);
-			// reject(error);
-		});
+		apiServices
+			.toLogin(token_key[0], getFormData(keys, values))
+			.then((response) => {
+				console.log(response);
+				// resolve(response);
+			})
+			.catch((error) => {
+				console.log(error);
+				// reject(error);
+			});
 		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
 			if (res.status == 201) {
 				localStorage.setItem("login_token", res.data.data.Tokenjwt);
@@ -114,7 +117,7 @@ export default function Login() {
 								className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 								required=""
 							/>
-							<PasswordShow ref={passwordRef}/>
+							<PasswordShow ref={passwordRef} />
 						</div>
 
 						<Link
