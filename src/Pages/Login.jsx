@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-// import { toLogin, getUserData } from "../utils/api.js";
+import { toLogin, getUserData } from "../utils/api.js";
 import apiServices from "../utils/apiServices.js";
 import { getHash, getKey, getFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
@@ -27,29 +27,22 @@ export default function Login() {
 	  
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-	  
-		try {
-		  // Pastikan bahwa apiServices digunakan dengan benar dan mengembalikan respons yang diharapkan
-		  const response = await apiServices.toLogin(token_key[0], getFormData(key, value));
-		  localStorage.setItem("login_token", response.data.data.Tokenjwt);
-		  const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-		  const values = [
-			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("devop-sso"),
-			response.data.csrfHash,
-			localStorage.getItem("login_token"),
-		  ];
-	  
-		  // pemanggilan alert dengan format yang lebih umum
-		  alert(response.data.data.title, response.data.data.message, response.data.data.info, response.data.data.location);
-	  
-		  const res = await apiServices.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-		  localStorage.setItem("token", res.data.data);
-		} catch (error) {
-		  // pemanggilan alert dengan format yang lebih umum
-		  alert(error.response.data.data.title, error.response.data.data.message, error.response.data.data.info, error.response.data.data.location);
-		}
-	  }	  
+		toLogin(token_key[0], getFormData(key, value), (response) => {
+			localStorage.setItem("login_token", response.data.data.Tokenjwt);
+			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+			const values = [
+			  localStorage.getItem("AUTH_KEY"),
+			  localStorage.getItem("devop-sso"),
+			  response.data.csrfHash,
+			  localStorage.getItem("login_token"),
+			];
+			// pemanggilan alert dengan format yang lebih umum
+			alert(response.data.data.title, response.data.data.message, response.data.data.info, response.data.data.location);
+			getUserData(getFormData(keys, values), (res) => {
+				localStorage.setItem("token", res.data.data);
+			})
+		});
+	}	  
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
