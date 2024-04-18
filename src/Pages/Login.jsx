@@ -12,16 +12,16 @@ export default function Login() {
 	const passwordRef = useRef(null);
 	const onSubmit = async () => {
 	// const onSubmit = () => {
-		const keys = ["username", "password", "devop-sso", "csrf_token"];
+		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-		const values = [emailRef.current.value, hash, token_key[1], csrf_token];
+		const value = [emailRef.current.value, hash, token_key[1], csrf_token];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
 		try {
-			const response = await apiServices.toLogin(token_key[0], getFormData(keys, values));
+			const response = await apiServices.toLogin(token_key[0], getFormData(key, value));
 			localStorage.setItem("login_token", response.data.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
