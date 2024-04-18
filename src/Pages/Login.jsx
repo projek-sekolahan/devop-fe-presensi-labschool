@@ -10,87 +10,10 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const submitHandler = () => {
-		const keys = ["username", "password", "devop-sso", "csrf_token"];
+	async function onSubmit() {
 		const hash = getHash(passwordRef.current.value);
-		const token_key = getKey(emailRef.current.value, hash);
-		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-		const values = [emailRef.current.value, hash, token_key[1], csrf_token];
-
-		localStorage.setItem("AUTH_KEY", token_key[0]);
-		localStorage.setItem("devop-sso", token_key[1]);
-		
-		apiServices
-			.toLogin(token_key[0], getFormData(keys, values))
-			.then((response) => {
-				localStorage.setItem("login_token", response.data.data.Tokenjwt);
-				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-				const values = [
-					localStorage.getItem("AUTH_KEY"),
-					localStorage.getItem("devop-sso"),
-					response.data.csrfHash,
-					localStorage.getItem("login_token"),
-				];
-				alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
-				apiServices
-					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-					.then((res) => {
-						localStorage.setItem("token", res.data.data);
-					}).catch((err) => {
-						console.log(err);
-					});
-			})
-			.catch((error) => {
-				alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
-			});
-		/* toLogin(token_key[0], getFormData(keys, values), (res) => {
-			if (res.status == 201) {
-				localStorage.setItem("login_token", res.data.data.Tokenjwt);
-
-				const key = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-				const values = [
-					getKey(emailRef.current.value, hash)[0],
-					getKey(emailRef.current.value, hash)[1],
-					res.data.csrfHash,
-					res.data.data.Tokenjwt,
-				];
-
-				getUserData(
-					getKey(emailRef.current.value, hash)[0],
-					getFormData(key, values),
-					(res) => {
-						localStorage.setItem("token", res.data.data);
-					}
-				);
-				Swal.fire({
-					titleText: res.data.data.title,
-					text: res.data.data.message,
-					icon: "success",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/home`));
-			} else if (res.status == 200) {
-				Swal.fire({
-					titleText: res.data.title,
-					text: res.data.message,
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/login`));
-			} else {
-				Swal.fire({
-					titleText: "Error",
-					text: "Silahkan Login Ulang",
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/login`));
-			}
-		}); */
-	};
+		alert("success", "Loading...", hash, "/login");
+	}
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
@@ -137,7 +60,8 @@ export default function Login() {
 						</Link>
 
 						<button
-							onClick={submitHandler}
+							onClick="onSubmit"
+							// onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
 							Login
