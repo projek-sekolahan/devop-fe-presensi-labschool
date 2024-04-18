@@ -10,6 +10,7 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
+	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 	const onSubmit = async () => {
 		// Pastikan emailRef dan passwordRef telah diinisialisasi dengan benar sebelum digunakan
 		const emailValue = emailRef.current.value;
@@ -27,7 +28,47 @@ export default function Login() {
 	  
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		toLogin(token_key[0], getFormData(key, value), (response) => {
+
+try {
+    const response = await fetch(`${api_url}/api/client/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Tambahkan header lain jika diperlukan
+			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
+        },
+        body: JSON.stringify(getFormData(key, value))
+    });
+    const responseData = await response.json();
+
+    localStorage.setItem("login_token", responseData.data.Tokenjwt);
+    const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+    const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), responseData.csrfHash, localStorage.getItem("login_token")];
+
+    alert(
+        responseData.data.title,
+        responseData.data.message,
+        responseData.data.info,
+        responseData.data.location
+    );
+
+    const res = await fetch(`${api_url}/api/client/users/profile`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Tambahkan header lain jika diperlukan
+			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
+        },
+        body: JSON.stringify(getFormData(keys, values))
+    });
+    const userData = await res.json();
+
+    localStorage.setItem("token", userData.data);
+} catch (error) {
+    alert(error.message);
+}
+
+		/* toLogin(token_key[0], getFormData(key, value), (response) => {
 			localStorage.setItem("login_token", response.data.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
@@ -41,7 +82,7 @@ export default function Login() {
 			getUserData(getFormData(keys, values), (res) => {
 				localStorage.setItem("token", res.data.data);
 			})
-		});
+		}); */
 	}	  
 
 	return (
