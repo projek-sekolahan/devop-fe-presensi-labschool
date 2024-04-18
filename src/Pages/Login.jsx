@@ -32,11 +32,11 @@ try {
         method: 'POST',
         headers: {
             // 'Content-Type': 'application/json',
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'multipart/form-data',
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: formData.toString(),
+        body: formData,
     });
     const responseData = await response.json();
 	console.log(responseData);
@@ -55,11 +55,11 @@ try {
         method: 'POST',
         headers: {
             // 'Content-Type': 'application/json',
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'multipart/form-data',
             // Tambahkan header lain jika diperlukan
 			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
         },
-        body: userDataFormData.toString(),
+        body: userDataFormData,
     });
     const userData = await res.json();
 
