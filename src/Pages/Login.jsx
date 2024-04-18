@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
 import apiServices from "../utils/apiServices.js";
-import { getHash, getKey, getFormData, parseJwt } from "../utils/utils.js";
+import { getHash, getKey, getFormData, parseJwt, decrypt } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
