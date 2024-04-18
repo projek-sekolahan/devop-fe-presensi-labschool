@@ -78,13 +78,16 @@ function decrypt(param, from) {
 	return JSON.parse(decryptedText);
 }
 
-export const alert = (res) => {
+export const alert = (type, title, message, location) => {
+	if (location=="dashboard") {
+		location = "/home";
+	}
 	Swal.fire({
-		titleText: res.data.data.title,
-		text: res.data.data.message,
-		icon: "success",
+		titleText: title,
+		text: message,
+		icon: type,
 		allowOutsideClick: false,
 		allowEnterKey: false,
 		allowEscapeKey: false,
-	}).then(() => window.location.replace(`/home`));
+	}).then(() => window.location.replace(location));
 }

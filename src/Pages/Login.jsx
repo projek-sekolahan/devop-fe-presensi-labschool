@@ -33,12 +33,11 @@ export default function Login() {
 					response.data.csrfHash,
 					localStorage.getItem("login_token"),
 				];
+				alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
 				apiServices
 					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
 					.then((res) => {
 						localStorage.setItem("token", res.data.data);
-						console.log(res);
-						// alert(res);
 					}).catch((err) => {
 						console.log(err);
 					});
