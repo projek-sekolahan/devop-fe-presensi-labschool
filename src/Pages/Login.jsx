@@ -69,7 +69,7 @@ const onSubmit = () => {
                     "Authorization",
                     `Basic ${localStorage.getItem("AUTH_KEY")}`
                 );
-				profileRequest.setRequestHeader("csrf_token", csrf_token);
+				// profileRequest.setRequestHeader("csrf_token", csrf_token);
                 profileRequest.send(userDataFormData);
 
             } else {
@@ -87,7 +87,7 @@ const onSubmit = () => {
         "Authorization",
         `Basic ${localStorage.getItem("AUTH_KEY")}`
     );
-	loginRequest.setRequestHeader("csrf_token", csrf_token);
+	// loginRequest.setRequestHeader("csrf_token", csrf_token);
     loginRequest.send(formData);
 }	  
 
