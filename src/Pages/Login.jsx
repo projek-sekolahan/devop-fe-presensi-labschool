@@ -10,7 +10,8 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const onSubmit = () => {
+	const onSubmit = async () => {
+	// const onSubmit = () => {
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash);
@@ -19,8 +20,23 @@ export default function Login() {
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		
-		apiServices
+		try {
+			const response = await apiServices.toLogin(token_key[0], getFormData(keys, values));
+			localStorage.setItem("login_token", response.data.data.Tokenjwt);
+			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+			const values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				response.data.csrfHash,
+				localStorage.getItem("login_token"),
+			];
+			alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
+			const res = await apiServices.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+			localStorage.setItem("token", res.data.data);
+		} catch (error) {
+			alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
+		}
+		/* apiServices
 			.toLogin(token_key[0], getFormData(keys, values))
 			.then((response) => {
 				localStorage.setItem("login_token", response.data.data.Tokenjwt);
@@ -42,7 +58,7 @@ export default function Login() {
 			})
 			.catch((error) => {
 				alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
-			});
+			}); */
 	}
 
 	return (
