@@ -77,3 +77,14 @@ function decrypt(param, from) {
 	var decryptedText = cipher.toString(CryptoJS.enc.Utf8);
 	return JSON.parse(decryptedText);
 }
+
+export const alert = (res) => {
+	Swal.fire({
+		titleText: res.data.data.title,
+		text: res.data.data.message,
+		icon: "success",
+		allowOutsideClick: false,
+		allowEnterKey: false,
+		allowEscapeKey: false,
+	}).then(() => window.location.replace(`/home`));
+}
