@@ -19,7 +19,7 @@ const onSubmit = () => {
     const token_key = getKey(emailValue, hash);
     const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 
-    const formData = new URLSearchParams();
+    const formData = new FormData();
     formData.append('username', emailValue);
     formData.append('password', hash);
     formData.append('devop-sso', token_key[1]);
@@ -42,7 +42,7 @@ const onSubmit = () => {
                     responseData.data.data.location
                 );
 
-                const userDataFormData = new URLSearchParams();
+                const userDataFormData = new FormData();
                 userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
                 userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
                 userDataFormData.append('csrf_token', csrf_token);
@@ -70,7 +70,7 @@ const onSubmit = () => {
                     `Basic ${localStorage.getItem("AUTH_KEY")}`
                 );
 				profileRequest.setRequestHeader("csrf_token", csrf_token);
-                profileRequest.send(userDataFormData.toString());
+                profileRequest.send(userDataFormData);
 
             } else {
                 alert("Error: " + loginRequest.status);
@@ -88,7 +88,7 @@ const onSubmit = () => {
         `Basic ${localStorage.getItem("AUTH_KEY")}`
     );
 	loginRequest.setRequestHeader("csrf_token", csrf_token);
-    loginRequest.send(formData.toString());
+    loginRequest.send(formData);
 }	  
 
 	return (
