@@ -51,6 +51,7 @@ export default function Riwayat() {
 		getFormData(keys, values),
 		(res) => {
 			console.log(res);
+			console.log(parseJwt(res.data.data));
 		},
 	);
 
