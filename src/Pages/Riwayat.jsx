@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
+import { parseJwt } from "../utils/utils";
 
 export default function Riwayat() {
 	const [filter, setFilter] = useState("Pilih Durasi Hari");
