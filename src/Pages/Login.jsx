@@ -11,79 +11,83 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
-	const onSubmit = async () => {
-		// Pastikan emailRef dan passwordRef telah diinisialisasi dengan benar sebelum digunakan
-		const emailValue = emailRef.current.value;
-		const passwordValue = passwordRef.current.value;
-	  
-		// Pastikan fungsi getHash, getKey, dan getFormData telah didefinisikan dan berfungsi dengan benar
-		const hash = getHash(passwordValue);
-		const token_key = getKey(emailValue, hash);
-		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-		const key = ["username", "password", "devop-sso", "csrf_token"];
-		const value = [emailValue, hash, token_key[1], csrf_token];
-		const formData = createFormData(key, value);
-		// pemanggilan alert dengan format yang lebih umum
-		// alert("Harap tunggu", "Silakan tunggu", "info", "/login");
-		localStorage.setItem("AUTH_KEY", token_key[0]);
-		localStorage.setItem("devop-sso", token_key[1]);
-/* try {
-    const response = await fetch(`${api_url}/api/client/auth/login`, {
-        method: 'POST',
-        headers: {
-            // 'Content-Type': 'application/json',
-			'Content-Type': 'multipart/form-data',
-            // Tambahkan header lain jika diperlukan
-			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
-        },
-        body: formData,
-    });
-    const responseData = await response.json();
-	console.log(responseData);
-    localStorage.setItem("login_token", responseData.data.data.Tokenjwt);
-    const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-    const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), responseData.data.csrfHash, localStorage.getItem("login_token")];
-	const userDataFormData = createFormData(keys, values);
-    alert(
-        responseData.data.data.title,
-        responseData.data.data.message,
-        responseData.data.data.info,
-        responseData.data.data.location
+const onSubmit = () => {
+    const emailValue = emailRef.current.value;
+    const passwordValue = passwordRef.current.value;
+
+    const hash = getHash(passwordValue);
+    const token_key = getKey(emailValue, hash);
+    const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+
+    const formData = new URLSearchParams();
+    formData.append('username', emailValue);
+    formData.append('password', hash);
+    formData.append('devop-sso', token_key[1]);
+    formData.append('csrf_token', csrf_token);
+
+    localStorage.setItem("AUTH_KEY", token_key[0]);
+    localStorage.setItem("devop-sso", token_key[1]);
+
+    const loginRequest = new XMLHttpRequest();
+    loginRequest.onreadystatechange = function () {
+        if (loginRequest.readyState === XMLHttpRequest.DONE) {
+            if (loginRequest.status === 200) {
+                const responseData = JSON.parse(loginRequest.responseText);
+                localStorage.setItem("login_token", responseData.data.Tokenjwt);
+
+                alert(
+                    responseData.data.data.title,
+                    responseData.data.data.message,
+                    responseData.data.data.info,
+                    responseData.data.data.location
+                );
+
+                const userDataFormData = new URLSearchParams();
+                userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
+                userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
+                userDataFormData.append('csrf_token', responseData.data.csrfHash);
+                userDataFormData.append('token', localStorage.getItem("login_token"));
+
+                const profileRequest = new XMLHttpRequest();
+                profileRequest.onreadystatechange = function () {
+                    if (profileRequest.readyState === XMLHttpRequest.DONE) {
+                        if (profileRequest.status === 200) {
+                            const userData = JSON.parse(profileRequest.responseText);
+                            localStorage.setItem("token", userData.data.data);
+                        } else {
+                            alert("Error: " + profileRequest.status);
+                        }
+                    }
+                };
+
+                profileRequest.open("POST", `${api_url}/api/client/users/profile`);
+                profileRequest.setRequestHeader(
+                    "Content-Type",
+                    "application/x-www-form-urlencoded"
+                );
+                profileRequest.setRequestHeader(
+                    "Authorization",
+                    `Basic ${localStorage.getItem("AUTH_KEY")}`
+                );
+                profileRequest.send(userDataFormData.toString());
+
+            } else {
+                alert("Error: " + loginRequest.status);
+            }
+        }
+    };
+
+    loginRequest.open("POST", `${api_url}/api/client/auth/login`);
+    loginRequest.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded"
     );
-
-    const res = await fetch(`${api_url}/api/client/users/profile`, {
-        method: 'POST',
-        headers: {
-            // 'Content-Type': 'application/json',
-			'Content-Type': 'multipart/form-data',
-            // Tambahkan header lain jika diperlukan
-			Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
-        },
-        body: userDataFormData,
-    });
-    const userData = await res.json();
-
-    localStorage.setItem("token", userData.data.data);
-} catch (error) {
-    alert(error.message);
-} */
-
-		toLogin(token_key[0], getFormData(key, value), (response) => {
-			localStorage.setItem("login_token", response.data.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-			  localStorage.getItem("AUTH_KEY"),
-			  localStorage.getItem("devop-sso"),
-			  response.data.csrfHash,
-			  localStorage.getItem("login_token"),
-			];
-			// pemanggilan alert dengan format yang lebih umum
-			alert(response.data.data.title, response.data.data.message, response.data.data.info, response.data.data.location);
-			getUserData(getFormData(keys, values), (res) => {
-				localStorage.setItem("token", res.data.data);
-			})
-		});
-	}	  
+    loginRequest.setRequestHeader(
+        "Authorization",
+        `Basic ${localStorage.getItem("AUTH_KEY")}`
+    );
+    loginRequest.send(formData.toString());
+}	  
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
