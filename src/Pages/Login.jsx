@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 // import { toLogin, getUserData } from "../utils/api.js";
-// import apiServices from "../utils/apiServices.js";
-import axios from 'axios';
+import apiServices from "../utils/apiServices.js";
+// import axios from 'axios';
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -19,72 +19,34 @@ const onSubmit = async () => {
     const hash = getHash(passwordValue);
     const token_key = getKey(emailValue, hash);
     const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-
-    const formData = new FormData();
-    formData.append('username', emailValue);
-    formData.append('password', hash);
-    formData.append('devop-sso', token_key[1]);
-    formData.append('csrf_token', csrf_token);
-
-    localStorage.setItem("AUTH_KEY", token_key[0]);
-    localStorage.setItem("devop-sso", token_key[1]);
-
-    try {
-        const loginResponse = await axios.post(
-            `${api_url}/api/client/auth/login`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
-                    // 'csrf_token': csrf_token  Jika Anda perlu, Anda dapat menambahkan header
-                    // csrf_token di sini
-                }
-            }
-        );
-
-        if (loginResponse.status === 201) {
-            const responseData = loginResponse.data;
-            localStorage.setItem("login_token", responseData.data.Tokenjwt);
-
-            alert(
-                responseData.data.data.title,
-                responseData.data.data.message,
-                responseData.data.data.info,
-                responseData.data.data.location
-            );
-
-            const userDataFormData = new FormData();
-            userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
-            userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
-            userDataFormData.append('csrf_token', csrf_token);
-            userDataFormData.append('token', localStorage.getItem("login_token"));
-
-            const profileResponse = await axios.post(
-                `${api_url}/api/client/users/profile`,
-                userDataFormData,
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
-                        // 'csrf_token': csrf_token  Jika Anda perlu, Anda dapat menambahkan header
-                        // csrf_token di sini
-                    }
-                }
-            );
-
-            if (profileResponse.status === 201) {
-                const userData = profileResponse.data;
-                localStorage.setItem("token", userData.data.data);
-            } else {
-                alert("Error: " + profileResponse.status);
-            }
-        } else {
-            alert("Error: " + loginResponse.status);
-        }
-    } catch (error) {
-        alert(error.message);
-    }
+	const key = ["username", "password", "devop-sso", "csrf_token"];
+	const value = [emailValue, hash, token_key[1], csrf_token];
+	localStorage.setItem("AUTH_KEY", token_key[0]);
+	localStorage.setItem("devop-sso", token_key[1]);
+	
+	apiServices
+		.toLogin(token_key[0], getFormData(key, value))
+		.then((response) => {
+			localStorage.setItem("login_token", response.data.data.Tokenjwt);
+			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+			const values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				response.data.csrfHash,
+				localStorage.getItem("login_token"),
+			];
+			alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
+			apiServices
+				.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
+				.then((res) => {
+					localStorage.setItem("token", res.data.data);
+				}).catch((err) => {
+					console.log(err);
+				});
+		})
+		.catch((error) => {
+			alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
+		});
 }
 			
 
