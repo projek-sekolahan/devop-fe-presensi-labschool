@@ -2,7 +2,7 @@ export default function CardRiwayat({ history, biodata }) {
 	return (
 		<div className="w-full h-fit bg-white rounded-xl text-black flex flex-col justify-center items-center p-4 gap-2">
 			<img
-				src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
+				src={`https://devop-sso.smalabschoolunesa1.sch.id/${biodata.img_location}`}
 				alt="photo_profile"
 				className="size-12 rounded-full bg-white"
 			/>
