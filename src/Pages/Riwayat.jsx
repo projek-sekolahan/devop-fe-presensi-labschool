@@ -11,6 +11,13 @@ export default function Riwayat() {
 	const [filter, setFilter] = useState("Pilih Durasi Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
 
+	let userData = {};
+	if (localStorage.getItem("token")) {
+		userData = parseJwt(localStorage.getItem("token"));
+	} else {
+		window.location.replace("/login");
+	}
+
 	window.addEventListener("click", (e) => {
 		const dropdown = document.getElementById("dropdown");
 		const dropdownContent = document.getElementById("dropdown-content");
@@ -23,28 +30,25 @@ export default function Riwayat() {
 	const historys = [
 		{
 			date: "Rabu, 23 Februari 2024",
-            status: "Terlambat",
+			status: "Terlambat",
 			checkIn: "07:15:00 WIB",
 			checkOut: "15:00:00 WIB",
-            
 		},
 		{
 			date: "Kamis, 24 Februari 2024",
-            status: "Masuk",
+			status: "Masuk",
 			checkIn: "06:59:00 WIB",
 			checkOut: "15:00:00 WIB",
-            
 		},
 		{
 			date: "Jumat, 25 Februari 2024",
-            status: "Masuk",
+			status: "Masuk",
 			checkIn: "06:45:00 WIB",
 			checkOut: "15:00:00 WIB",
-            
 		},
 		{
 			date: "Senin, 28 Februari 2024",
-            status: "Izin",
+			status: "Izin",
 			checkIn: "",
 			checkOut: "",
 		},
@@ -113,7 +117,13 @@ export default function Riwayat() {
 					</ul>
 				</div>
 				{historys.map((history, i) => {
-					return <CardRiwayat key={i} data={history} />;
+					return (
+						<CardRiwayat
+							key={i}
+							history={history}
+							biodata={userData}
+						/>
+					);
 				})}
 			</main>
 		</div>
