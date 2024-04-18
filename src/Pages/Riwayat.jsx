@@ -6,10 +6,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt } from "../utils/utils";
+import { parseJwt, getFormData } from "../utils/utils";
+import { reports } from "../utils/api";
 
 export default function Riwayat() {
-	const [filter, setFilter] = useState("Pilih Durasi Hari");
+	const [filter, setFilter] = useState("7 DAY");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
 
 	let userData = {};
@@ -27,6 +28,32 @@ export default function Riwayat() {
 			setSwapButton(["on", "off"]);
 		}
 	});
+
+	const keys = [
+		"AUTH_KEY",
+		"devop-sso",
+		"csrf_token",
+		"token",
+		"table",
+		"key",
+	];
+	const values = [
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("devop-sso"),
+		localStorage.getItem("csrf"),
+		localStorage.getItem("token"),
+		"tab-presensi",
+		filter,
+	];
+
+	reports(
+		localStorage.getItem("AUTH_KEY"),
+		getFormData(keys, values),
+		(res) => {
+			console.log(res);
+			console.log(parseJwt(res.data.data));
+		},
+	);
 
 	const historys = [
 		{
@@ -98,7 +125,7 @@ export default function Riwayat() {
 						<li>
 							<button
 								onClick={() => {
-									setFilter("7 Hari");
+									setFilter("7 DAY");
 									setSwapButton(["on", "off"]);
 								}}
 							>
@@ -108,7 +135,7 @@ export default function Riwayat() {
 						<li>
 							<button
 								onClick={() => {
-									setFilter("14 Hari");
+									setFilter("14 DAY");
 									setSwapButton(["on", "off"]);
 								}}
 							>
