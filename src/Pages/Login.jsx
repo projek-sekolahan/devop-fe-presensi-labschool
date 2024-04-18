@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { toLogin, getUserData } from "../utils/api.js";
-import apiServices from "../utils/apiServices.js";
+// import { toLogin, getUserData } from "../utils/api.js";
+// import apiServices from "../utils/apiServices.js";
+import axios from 'axios';
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -11,7 +12,7 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
-const onSubmit = () => {
+const onSubmit = async () => {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
 
@@ -28,68 +29,64 @@ const onSubmit = () => {
     localStorage.setItem("AUTH_KEY", token_key[0]);
     localStorage.setItem("devop-sso", token_key[1]);
 
-    const loginRequest = new XMLHttpRequest();
-    loginRequest.onreadystatechange = function () {
-        if (loginRequest.readyState === XMLHttpRequest.DONE) {
-            if (loginRequest.status === 201) {
-                const responseData = JSON.parse(loginRequest.responseText);
-                localStorage.setItem("login_token", responseData.data.Tokenjwt);
-
-                alert(
-                    responseData.data.data.title,
-                    responseData.data.data.message,
-                    responseData.data.data.info,
-                    responseData.data.data.location
-                );
-
-                const userDataFormData = new FormData();
-                userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
-                userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
-                userDataFormData.append('csrf_token', csrf_token);
-                userDataFormData.append('token', localStorage.getItem("login_token"));
-
-                const profileRequest = new XMLHttpRequest();
-                profileRequest.onreadystatechange = function () {
-                    if (profileRequest.readyState === XMLHttpRequest.DONE) {
-                        if (profileRequest.status === 201) {
-                            const userData = JSON.parse(profileRequest.responseText);
-                            localStorage.setItem("token", userData.data.data);
-                        } else {
-                            alert("Error: " + profileRequest.status);
-                        }
-                    }
-                };
-
-                profileRequest.open("POST", `${api_url}/api/client/users/profile`);
-                profileRequest.setRequestHeader(
-                    "Content-Type",
-                    "application/x-www-form-urlencoded"
-                );
-                profileRequest.setRequestHeader(
-                    "Authorization",
-                    `Basic ${localStorage.getItem("AUTH_KEY")}`
-                );
-				// profileRequest.setRequestHeader("csrf_token", csrf_token);
-                profileRequest.send(userDataFormData.toString());
-
-            } else {
-                alert("Error: " + loginRequest.status);
+    try {
+        const loginResponse = await axios.post(
+            `${api_url}/api/client/auth/login`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
+                    // 'csrf_token': csrf_token  Jika Anda perlu, Anda dapat menambahkan header
+                    // csrf_token di sini
+                }
             }
-        }
-    };
+        );
 
-    loginRequest.open("POST", `${api_url}/api/client/auth/login`);
-    loginRequest.setRequestHeader(
-        "Content-Type",
-        "application/x-www-form-urlencoded"
-    );
-    loginRequest.setRequestHeader(
-        "Authorization",
-        `Basic ${localStorage.getItem("AUTH_KEY")}`
-    );
-	// loginRequest.setRequestHeader("csrf_token", csrf_token);
-    loginRequest.send(formData.toString());
-}	  
+        if (loginResponse.status === 201) {
+            const responseData = loginResponse.data;
+            localStorage.setItem("login_token", responseData.data.Tokenjwt);
+
+            alert(
+                responseData.data.data.title,
+                responseData.data.data.message,
+                responseData.data.data.info,
+                responseData.data.data.location
+            );
+
+            const userDataFormData = new FormData();
+            userDataFormData.append('AUTH_KEY', localStorage.getItem("AUTH_KEY"));
+            userDataFormData.append('devop-sso', localStorage.getItem("devop-sso"));
+            userDataFormData.append('csrf_token', csrf_token);
+            userDataFormData.append('token', localStorage.getItem("login_token"));
+
+            const profileResponse = await axios.post(
+                `${api_url}/api/client/users/profile`,
+                userDataFormData,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
+                        // 'csrf_token': csrf_token  Jika Anda perlu, Anda dapat menambahkan header
+                        // csrf_token di sini
+                    }
+                }
+            );
+
+            if (profileResponse.status === 201) {
+                const userData = profileResponse.data;
+                localStorage.setItem("token", userData.data.data);
+            } else {
+                alert("Error: " + profileResponse.status);
+            }
+        } else {
+            alert("Error: " + loginResponse.status);
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+}
+			
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
