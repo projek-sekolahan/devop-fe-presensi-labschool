@@ -10,10 +10,39 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	// async function onSubmit() {
 	const onSubmit = () => {
+		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
-		alert("success", "Loading...", hash, "/login");
+		const token_key = getKey(emailRef.current.value, hash);
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+		const values = [emailRef.current.value, hash, token_key[1], csrf_token];
+
+		localStorage.setItem("AUTH_KEY", token_key[0]);
+		localStorage.setItem("devop-sso", token_key[1]);
+		
+		apiServices
+			.toLogin(token_key[0], getFormData(keys, values))
+			.then((response) => {
+				localStorage.setItem("login_token", response.data.data.Tokenjwt);
+				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+				const values = [
+					localStorage.getItem("AUTH_KEY"),
+					localStorage.getItem("devop-sso"),
+					response.data.csrfHash,
+					localStorage.getItem("login_token"),
+				];
+				alert(response.data.data.info, response.data.data.title, response.data.data.message, response.data.data.location);
+				apiServices
+					.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
+					.then((res) => {
+						localStorage.setItem("token", res.data.data);
+					}).catch((err) => {
+						console.log(err);
+					});
+			})
+			.catch((error) => {
+				alert(error.response.data.data.info, error.response.data.data.title, error.response.data.data.message, error.response.data.data.location);
+			});
 	}
 
 	return (
@@ -62,7 +91,6 @@ export default function Login() {
 
 						<button
 							onClick={onSubmit}
-							// onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
 							Login
