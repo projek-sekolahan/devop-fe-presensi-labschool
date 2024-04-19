@@ -22,7 +22,7 @@ export default function Login() {
 	
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
-			console.log(loginResponse); return false;
+			console.log(loginResponse);
 			if (loginResponse.status === 201) {
 				// return loginResponse.json();
 				return JSON.parse(loginResponse.responseText);
@@ -36,6 +36,7 @@ export default function Login() {
 			}
 		})
 		.then(responseData => {
+			console.log(responseData);
 			localStorage.setItem("login_token", responseData.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
