@@ -35,8 +35,7 @@ export default function Login() {
 					const getUserDataResponse = await apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 					if (getUserDataResponse.status === 201) {
 						const userData = await getUserDataResponse.json();
-						console.log(userData);
-						localStorage.setItem("token", userData.data.data);
+						localStorage.setItem("token", userData.data);
 					} else {
 						const errorData = await getUserDataResponse.json();
 						alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
