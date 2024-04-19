@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import apiFetch from "../utils/apiXML.js";
+import apiXML from "../utils/apiXML.js";
 import { getHash, getKey, getFormData, alert } from "../utils/utils.js";
 import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -20,7 +20,7 @@ export default function Login() {
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
 	
-		apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
 			if (loginResponse.status === 201) {
 				return loginResponse.json();
@@ -42,7 +42,7 @@ export default function Login() {
 				localStorage.getItem("login_token"),
 			];
 			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-			return apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 		})
 		.then(getUserDataResponse => {
 			if (getUserDataResponse.status === 201) {

@@ -4,7 +4,7 @@ const createRequestBody = (formData) => {
     return formData.toString();
 };
 
-export default class apiFetch {
+export default class apiXML {
     static getCsrf() {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -41,22 +41,22 @@ export default class apiFetch {
     }
 
     static toLogin(key, formData) {
-        return apiFetch.post("/api/client/auth/login", key, formData);
+        return apiXML.post("/api/client/auth/login", key, formData);
     }
 
     static getUserData(key, formData) {
-        return apiFetch.post("/api/client/users/profile", key, formData);
+        return apiXML.post("/api/client/users/profile", key, formData);
     }
 
     static logout(key, formData) {
-        return apiFetch.post("/api/client/auth/logout", key, formData);
+        return apiXML.post("/api/client/auth/logout", key, formData);
     }
 
     static sessTime(key, formData) {
-        return apiFetch.post("/api/client/auth/sessTime", key, formData);
+        return apiXML.post("/api/client/auth/sessTime", key, formData);
     }
 
     static reports(key, formData) {
-        return apiFetch.post("/api/client/presensi/reports", key, formData);
+        return apiXML.post("/api/client/presensi/reports", key, formData);
     }
 }
