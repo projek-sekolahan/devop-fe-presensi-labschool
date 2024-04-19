@@ -21,7 +21,7 @@ export default function Login() {
 			xhr.open("POST", `${api_url}${endpoint}`);
 			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			xhr.setRequestHeader("Authorization", `Basic ${key}`);
-			xhr.withCredentials = true;
+			// xhr.withCredentials = true;
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
@@ -49,6 +49,10 @@ export default function Login() {
 			console.log(JSON.parse(loginResponse));
 			const responseData = JSON.parse(loginResponse);
 			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+		})
+		.catch(errorData => {
+			console.log(errorData);
+			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
 		});
 	};
 	
