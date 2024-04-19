@@ -25,7 +25,6 @@ export default function Login() {
 			return JSON.parse(loginResponse);
 		})
 		.then(responseData => {
-			console.log(responseData);
 			localStorage.setItem("login_token", responseData.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
@@ -38,19 +37,10 @@ export default function Login() {
 			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 		})
 		.then(getUserDataResponse => {
-			if (getUserDataResponse.status === 201) {
-				// return getUserDataResponse.json();
-				return JSON.parse(getUserDataResponse.responseText);
-			} else {
-				return new Promise((resolve, reject) => {
-					/* getUserDataResponse.json().then(errorData => {
-						reject(errorData);
-					}); */
-					reject(JSON.parse(getUserDataResponse.responseText));
-				});
-			}
+			return JSON.parse(getUserDataResponse);
 		})
 		.then(userData => {
+			console.log(userData);
 			localStorage.setItem("token", userData.data);
 		})
 		.catch(errorData => {
