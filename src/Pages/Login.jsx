@@ -54,10 +54,10 @@ export default function Login() {
 			.then(userData => {
 				localStorage.setItem("token", userData.data);
 			})
-			.catch(error => {
+			/* .catch(error => {
 				console.error("Error:", error);
 				alert("error", "Error", "An error occurred while processing your request", "/login");
-			});
+			}); */
 	};
 	
 
