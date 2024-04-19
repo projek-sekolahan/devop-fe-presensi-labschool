@@ -1,15 +1,10 @@
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 const createFetchRequest = (method, key, formData) => {
-    let headers={};
-    if (!key || key==null) {
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        };
-    } else {
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Basic ${key}`,
-        };
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    if (key && key !== null) {
+        headers.Authorization = `Basic ${key}`;
     }
     const body = formData.toString();
     const credentials = 'include';
@@ -20,6 +15,7 @@ const createFetchRequest = (method, key, formData) => {
         credentials
     };
 };
+
 export default class apiFetch {
 
     static async getCsrf() {
