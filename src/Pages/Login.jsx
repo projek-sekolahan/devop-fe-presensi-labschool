@@ -26,7 +26,7 @@ export default function Login() {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
 				} else {
-					console.log(JSON.parse(xhr.responseText))
+					console.log(xhr)
 					reject(JSON.parse(xhr.responseText));
 				}
 			};
