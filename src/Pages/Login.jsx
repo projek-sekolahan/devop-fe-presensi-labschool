@@ -19,25 +19,27 @@ export default function Login() {
 		const value = [emailValue, hash, token_key[1], csrf_token];
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		// alert("info", "Login", "Please wait...", "login");
-		const xhr = new XMLHttpRequest();
-		// xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
-		xhr.open("POST", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenSendCsrf");
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		// xhr.setRequestHeader("Authorization", `Basic ${localStorage.getItem("AUTH_KEY")}`);
-		// xhr.withCredentials = true;
-		xhr.onload = () => {
-			if (xhr.status === 200) {
-				// resolve(JSON.parse(xhr.responseText).data);
-				console.log(JSON.parse(xhr.responseText));
-				alert("info", "Login", JSON.parse(xhr.responseText).csrfHash, "login");
-			} else {
-				console.log(xhr.responseText);
-				// reject(xhr.statusText);
-			}
-		};
-		xhr.onerror = () => reject(xhr.statusText);
-		xhr.send(getFormData(key, value).toString());
+		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+		.then(loginResponse => {
+			const responseData = JSON.parse(loginResponse);
+			localStorage.setItem("login_token", responseData.data.Tokenjwt);
+			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+			const values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				responseData.csrfHash,
+				localStorage.getItem("login_token"),
+			];
+			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+		})
+		.then(getUserDataResponse => {
+			const userData = JSON.parse(getUserDataResponse);
+			localStorage.setItem("token", userData.data);
+		})
+		.catch(errorData => {
+			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+		});
 	};
 	
 
