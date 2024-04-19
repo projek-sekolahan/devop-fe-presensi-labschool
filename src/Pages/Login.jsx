@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import apiFetch from "../utils/apiFetch.js";
-import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
-import { useEffect, useState, useRef } from "react";
+import { getHash, getKey, getFormData, alert } from "../utils/utils.js";
+import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 
@@ -9,91 +9,46 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-const onSubmit = async () => {
-    const emailValue = emailRef.current.value;
-    const passwordValue = passwordRef.current.value;
-    const hash = getHash(passwordValue);
-    const token_key = getKey(emailValue, hash);
-    const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-	const key = ["username", "password", "devop-sso", "csrf_token"];
-	const value = [emailValue, hash, token_key[1], csrf_token];
-	localStorage.setItem("AUTH_KEY", token_key[0]);
-	localStorage.setItem("devop-sso", token_key[1]);
-	try {
-		const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
-        if (loginResponse.status === 201) {
-            const responseData = await loginResponse.json();
-            localStorage.setItem("login_token", responseData.data.Tokenjwt);
-            const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-            const values = [
-                localStorage.getItem("AUTH_KEY"),
-                localStorage.getItem("devop-sso"),
-                responseData.csrfHash,
-                localStorage.getItem("login_token"),
-            ];
-
-            alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-
-            /* const getUserDataResponse = await fetch(`${api_url}/api/client/users/profile`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
-                },
-                body: getFormData(keys, values).toString()
-            });
-
-            if (getUserDataResponse.status === 201) {
-                const userData = await getUserDataResponse.json();
-                localStorage.setItem("token", userData.data.data);
-            } else {
-                const errorData = await getUserDataResponse.json();
-                alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-            } */
-        } else {
-            const errorData = await loginResponse.json();
-            alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred while processing your request.");
-    }
-
-	return false;
-	try {
-		const loginResponse = await axiosInstance.post(`${api_url}/api/client/auth/login`, getFormData(key, value), {
-			headers: {
-				Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
-			},
-		});
-		if (loginResponse.status === 201) {
-			localStorage.setItem("login_token", loginResponse.data.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("devop-sso"),
-				loginResponse.data.csrfHash,
-				localStorage.getItem("login_token"),
-			];
-			alert(loginResponse.data.data.info, loginResponse.data.data.title, loginResponse.data.data.message, loginResponse.data.data.location);
-			const getUserDataResponse = await axiosInstance.post(`${api_url}/api/client/users/profile`, getFormData(keys, values), {
-				headers: {
-					Authorization: `Basic ${localStorage.getItem("AUTH_KEY")}`,
-				},
-			});
-			if (getUserDataResponse.status === 201) {
-				localStorage.setItem("token", getUserDataResponse.data.data);
-			} else {
-				alert(getUserDataResponse.data.data.info, getUserDataResponse.data.data.title, getUserDataResponse.data.data.message, getUserDataResponse.data.data.location);
+		const onSubmit = async () => {
+			const emailValue = emailRef.current.value;
+			const passwordValue = passwordRef.current.value;
+			const hash = getHash(passwordValue);
+			const token_key = getKey(emailValue, hash);
+			const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+			const key = ["username", "password", "devop-sso", "csrf_token"];
+			const value = [emailValue, hash, token_key[1], csrf_token];
+			localStorage.setItem("AUTH_KEY", token_key[0]);
+			localStorage.setItem("devop-sso", token_key[1]);
+			try {
+				const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
+				if (loginResponse.status === 201) {
+					const responseData = await loginResponse.json();
+					localStorage.setItem("login_token", responseData.data.Tokenjwt);
+					const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+					const values = [
+						localStorage.getItem("AUTH_KEY"),
+						localStorage.getItem("devop-sso"),
+						responseData.csrfHash,
+						localStorage.getItem("login_token"),
+					];
+					alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+					const getUserDataResponse = await apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+					if (getUserDataResponse.status === 201) {
+						const userData = await getUserDataResponse.json();
+						localStorage.setItem("token", userData.data.data);
+					} else {
+						const errorData = await getUserDataResponse.json();
+						alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+					}
+				} else {
+					const errorData = await loginResponse.json();
+					alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				alert("error", "Error", "An error occurred while processing your request", "/login");
 			}
-		} else {
-			alert(loginResponse.data.data.info, loginResponse.data.data.title, loginResponse.data.data.message, loginResponse.data.data.location);
-		}
-	} catch (error) {
-		console.log(error);
-	}
-}
-			
+		};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
