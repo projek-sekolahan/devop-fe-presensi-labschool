@@ -21,9 +21,10 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1]);
 		// alert("info", "Login", "Please wait...", "login");
 		const xhr = new XMLHttpRequest();
-		xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
+		// xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
+		xhr.open("POST", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenSendCsrf");
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Authorization", `Basic ${key}`);
+		xhr.setRequestHeader("Authorization", `Basic ${localStorage.getItem("AUTH_KEY")}`);
 		xhr.withCredentials = true;
 		xhr.onload = () => {
 			if (xhr.status === 200) {
@@ -36,7 +37,7 @@ export default function Login() {
 			}
 		};
 		xhr.onerror = () => reject(xhr.statusText);
-		xhr.send();
+		xhr.send(getFormData(key, value).toString());
 	};
 	
 
