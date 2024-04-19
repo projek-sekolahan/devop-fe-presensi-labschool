@@ -21,7 +21,7 @@ const onSubmit = async () => {
 	localStorage.setItem("devop-sso", token_key[1]);
 	try {
 		const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
-
+		console.log(loginResponse);
         if (loginResponse.status === 201) {
             const responseData = await loginResponse.json();
             localStorage.setItem("login_token", responseData.data.Tokenjwt);
