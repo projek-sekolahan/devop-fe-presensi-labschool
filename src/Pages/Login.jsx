@@ -19,8 +19,22 @@ export default function Login() {
 		const value = [emailValue, hash, token_key[1], csrf_token];
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		alert("info", "Login", "Please wait...", "");
-		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+		// alert("info", "Login", "Please wait...", "login");
+		const xhr = new XMLHttpRequest();
+		xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
+		xhr.onload = () => {
+			if (xhr.status === 200) {
+				// resolve(JSON.parse(xhr.responseText).data);
+				alert("info", "Login", JSON.parse(xhr.responseText).data, "login");
+			} else {
+				console.log(xhr.responseText);
+				// reject(xhr.statusText);
+			}
+		};
+		xhr.onerror = () => reject(xhr.statusText);
+		xhr.send();
+
+		/* apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
 			const responseData = JSON.parse(loginResponse);
 			localStorage.setItem("login_token", responseData.data.Tokenjwt);
@@ -40,7 +54,7 @@ export default function Login() {
 		})
 		.catch(errorData => {
 			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-		});
+		}); */
 		
 	};
 	
