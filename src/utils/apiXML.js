@@ -33,6 +33,7 @@ export default class apiXML {
                     console.log(xhr);
                     resolve(xhr.responseText);
                 } else {
+                    console.log(xhr);
                     reject(xhr.statusText);
                 }
             };
