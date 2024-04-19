@@ -45,7 +45,7 @@ const onSubmit = async () => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
-				'X-CSRF-Token': csrf_token // Sertakan token CSRF dalam header
+				// 'X-CSRF-Token': csrf_token // Sertakan token CSRF dalam header
             },
             body: getFormData(key, value).toString(),
 			credentials: 'include' // Menyertakan cookie dalam permintaan
