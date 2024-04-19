@@ -24,7 +24,7 @@ export default function Login() {
 		// xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
 		xhr.open("POST", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenSendCsrf");
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Authorization", `Basic ${localStorage.getItem("AUTH_KEY")}`);
+		// xhr.setRequestHeader("Authorization", `Basic ${localStorage.getItem("AUTH_KEY")}`);
 		xhr.withCredentials = true;
 		xhr.onload = () => {
 			if (xhr.status === 200) {
