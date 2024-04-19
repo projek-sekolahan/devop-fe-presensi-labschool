@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
-// import { toLogin, getUserData } from "../utils/api.js";
-// import apiServices from "../utils/apiServices.js";
-// import axiosInstance from "../utils/axiosInstance.js";
-import axios from 'axios';
+import apiFetch from "../utils/apiFetch.js";
 import { getHash, getKey, getFormData, createFormData, parseJwt, alert } from "../utils/utils.js";
 import { useEffect, useState, useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -12,21 +9,6 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
-	// Membuat instance Axios
-	const axiosInstance = axios.create();
-	// Menambahkan interceptor untuk mengatur header cookies pada setiap permintaan
-	axiosInstance
-		.interceptors
-		.request
-		.use(config => {
-			// Mengatur opsi withCredentials ke true untuk mengizinkan pengiriman cookie
-			// lintas domain
-			config.withCredentials = true;
-			return config;
-		}, error => {
-			return Promise.reject(error);
-		});
 const onSubmit = async () => {
     const emailValue = emailRef.current.value;
     const passwordValue = passwordRef.current.value;
@@ -37,19 +19,8 @@ const onSubmit = async () => {
 	const value = [emailValue, hash, token_key[1], csrf_token];
 	localStorage.setItem("AUTH_KEY", token_key[0]);
 	localStorage.setItem("devop-sso", token_key[1]);
-	// alert("info", "Login", "Login Berhasil", "login");
-
 	try {
-        const loginResponse = await fetch(`${api_url}/api/client/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
-				// 'X-CSRF-Token': csrf_token // Sertakan token CSRF dalam header
-            },
-            body: getFormData(key, value).toString(),
-			credentials: 'include' // Menyertakan cookie dalam permintaan
-        });
+		const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
 
         if (loginResponse.status === 201) {
             const responseData = await loginResponse.json();
