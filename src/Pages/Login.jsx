@@ -22,14 +22,16 @@ export default function Login() {
 	
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
+			console.log(loginResponse); return false;
 			if (loginResponse.status === 201) {
 				// return loginResponse.json();
 				return JSON.parse(loginResponse.responseText);
 			} else {
 				return new Promise((resolve, reject) => {
-					loginResponse.json().then(errorData => {
+					reject(JSON.parse(loginResponse.responseText));
+					/* loginResponse.json().then(errorData => {
 						reject(errorData);
-					});
+					}); */
 				});
 			}
 		})
@@ -51,9 +53,10 @@ export default function Login() {
 				return JSON.parse(getUserDataResponse.responseText);
 			} else {
 				return new Promise((resolve, reject) => {
-					getUserDataResponse.json().then(errorData => {
+					/* getUserDataResponse.json().then(errorData => {
 						reject(errorData);
-					});
+					}); */
+					reject(JSON.parse(getUserDataResponse.responseText));
 				});
 			}
 		})
