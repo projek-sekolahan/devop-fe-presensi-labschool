@@ -17,23 +17,23 @@ export default function Login() {
 
 	const xhr = new XMLHttpRequest();
 	const toLogin = (endpoint, key, formData) => {
-		xhr.open("POST", `${api_url}${endpoint}`);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Authorization", `Basic ${key}`);
-		xhr.withCredentials = true;
-		xhr.onload = () => {
-			if (xhr.status === 200 || xhr.status === 201) {
-				resolve(xhr.responseText);
-			} else {
-				reject(JSON.parse(xhr.responseText));
-			}
-		};
-		xhr.onerror = () => reject(xhr.statusText);
-		xhr.send(createRequestBody(formData));
+		return new Promise((resolve, reject) => {
+			xhr.open("POST", `${api_url}${endpoint}`);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.setRequestHeader("Authorization", `Basic ${key}`);
+			xhr.withCredentials = true;
+			xhr.onload = () => {
+				if (xhr.status === 200 || xhr.status === 201) {
+					resolve(xhr.responseText);
+				} else {
+					reject(JSON.parse(xhr.responseText));
+				}
+			};
+			xhr.onerror = () => reject(xhr.statusText);
+			xhr.send(createRequestBody(formData));
+		});
 	}
 	
-	
-
 	const onSubmit = () => {
 		const emailValue = emailRef.current.value;
 		const passwordValue = passwordRef.current.value;
@@ -46,56 +46,8 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1]);
 		toLogin("/api/client/auth/login",localStorage.getItem("AUTH_KEY"), getFormData(key, value)).
 		then(loginResponse => {
-			/* const responseData = JSON.parse(loginResponse);
-			localStorage.setItem("login_token", responseData.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("devop-sso"),
-				responseData.csrfHash, 
-				responseData.data.Tokenjwt
-			];
-			getFormData(keys, values); */
 			console.log(JSON.parse(loginResponse));
-			// alert("info", "Login", JSON.parse(xhr.responseText).csrfHash, "login");
-		})
-		// alert("info", "Login", "Please wait...", "login");
-		/* const xhr = new XMLHttpRequest();
-		xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
-		xhr.onload = () => {
-			if (xhr.status === 200) {
-				// resolve(JSON.parse(xhr.responseText).data);
-				console.log(JSON.parse(xhr.responseText));
-				alert("info", "Login", JSON.parse(xhr.responseText).csrfHash, "login");
-			} else {
-				console.log(xhr.responseText);
-				// reject(xhr.statusText);
-			}
-		};
-		xhr.onerror = () => reject(xhr.statusText);
-		xhr.send(); */
-		/* apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-		.then(loginResponse => {
-			const responseData = JSON.parse(loginResponse);
-			localStorage.setItem("login_token", responseData.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("devop-sso"),
-				responseData.csrfHash,
-				localStorage.getItem("login_token"),
-			];
-			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-		})
-		.then(getUserDataResponse => {
-			const userData = JSON.parse(getUserDataResponse);
-			localStorage.setItem("token", userData.data);
-		})
-		.catch(errorData => {
-			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-		}); */
-		
+		});
 	};
 	
 
