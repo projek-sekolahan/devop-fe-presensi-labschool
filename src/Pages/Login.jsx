@@ -37,7 +37,56 @@ const onSubmit = async () => {
 	const value = [emailValue, hash, token_key[1], csrf_token];
 	localStorage.setItem("AUTH_KEY", token_key[0]);
 	localStorage.setItem("devop-sso", token_key[1]);
-	alert("info", "Login", "Login Berhasil", "login");
+	// alert("info", "Login", "Login Berhasil", "login");
+
+	try {
+        const loginResponse = await fetch(`${api_url}/api/client/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
+            },
+            body: getFormData(key, value).toString()
+        });
+
+        if (loginResponse.status === 201) {
+            const responseData = await loginResponse.json();
+            localStorage.setItem("login_token", responseData.data.Tokenjwt);
+            const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+            const values = [
+                localStorage.getItem("AUTH_KEY"),
+                localStorage.getItem("devop-sso"),
+                responseData.csrfHash,
+                localStorage.getItem("login_token"),
+            ];
+
+            alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+
+            /* const getUserDataResponse = await fetch(`${api_url}/api/client/users/profile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${localStorage.getItem("AUTH_KEY")}`,
+                },
+                body: getFormData(keys, values).toString()
+            });
+
+            if (getUserDataResponse.status === 201) {
+                const userData = await getUserDataResponse.json();
+                localStorage.setItem("token", userData.data.data);
+            } else {
+                const errorData = await getUserDataResponse.json();
+                alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+            } */
+        } else {
+            const errorData = await loginResponse.json();
+            alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request.");
+    }
+
 	return false;
 	try {
 		const loginResponse = await axiosInstance.post(`${api_url}/api/client/auth/login`, getFormData(key, value), {
