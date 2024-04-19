@@ -22,6 +22,9 @@ export default function Login() {
 		// alert("info", "Login", "Please wait...", "login");
 		const xhr = new XMLHttpRequest();
 		xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.setRequestHeader("Authorization", `Basic ${key}`);
+		xhr.withCredentials = true;
 		xhr.onload = () => {
 			if (xhr.status === 200) {
 				// resolve(JSON.parse(xhr.responseText).data);
