@@ -47,6 +47,8 @@ export default function Login() {
 		toLogin("/api/client/auth/login",localStorage.getItem("AUTH_KEY"), getFormData(key, value)).
 		then(loginResponse => {
 			console.log(JSON.parse(loginResponse));
+			const responseData = JSON.parse(loginResponse);
+			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
 		});
 	};
 	
