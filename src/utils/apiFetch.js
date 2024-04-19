@@ -3,7 +3,7 @@ const createFetchRequest = (method, key, formData) => {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
     };
-    if (key && key !== null) {
+    if (key !== null || key !== undefined || key !== '') {
         headers.Authorization = `Basic ${key}`;
     }
     const body = formData.toString();
