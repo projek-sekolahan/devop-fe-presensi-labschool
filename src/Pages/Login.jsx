@@ -25,7 +25,8 @@ export default function Login() {
 		xhr.onload = () => {
 			if (xhr.status === 200) {
 				// resolve(JSON.parse(xhr.responseText).data);
-				alert("info", "Login", JSON.parse(xhr.responseText).data, "login");
+				console.log(JSON.parse(xhr.responseText).data);
+				alert("info", "Login", JSON.parse(xhr.responseText).data.csrfHash, "login");
 			} else {
 				console.log(xhr.responseText);
 				// reject(xhr.statusText);
