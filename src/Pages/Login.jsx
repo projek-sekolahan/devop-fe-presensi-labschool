@@ -23,7 +23,8 @@ export default function Login() {
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
 			if (loginResponse.status === 201) {
-				return loginResponse.json();
+				// return loginResponse.json();
+				return JSON.parse(loginResponse.responseText);
 			} else {
 				return new Promise((resolve, reject) => {
 					loginResponse.json().then(errorData => {
@@ -46,7 +47,8 @@ export default function Login() {
 		})
 		.then(getUserDataResponse => {
 			if (getUserDataResponse.status === 201) {
-				return getUserDataResponse.json();
+				// return getUserDataResponse.json();
+				return JSON.parse(getUserDataResponse.responseText);
 			} else {
 				return new Promise((resolve, reject) => {
 					getUserDataResponse.json().then(errorData => {
