@@ -25,16 +25,12 @@ export default class apiFetch {
 
     static async toLogin(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
-        return fetch(`${api_url}/api/client/auth/login`, requestConfig)
-            // .then((res) => res.json())
-            // .then((res) => res.data);
+        return fetch(`${api_url}/api/client/auth/login`, requestConfig);
     }
 
     static async getUserData(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
-        return fetch(`${api_url}/api/client/users/profile`, requestConfig)
-            .then((res) => res.json())
-            .then((res) => res.data);
+        return fetch(`${api_url}/api/client/users/profile`, requestConfig);
     }
 
 }

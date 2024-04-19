@@ -21,10 +21,9 @@ const onSubmit = async () => {
 	localStorage.setItem("devop-sso", token_key[1]);
 	try {
 		const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
-		console.log(loginResponse);
         if (loginResponse.status === 201) {
-            // const responseData = await loginResponse.json();
-            localStorage.setItem("login_token", loginResponse['Tokenjwt']);
+            const responseData = await loginResponse.json();
+            localStorage.setItem("login_token", responseData.data.Tokenjwt);
             const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
             const values = [
                 localStorage.getItem("AUTH_KEY"),
@@ -33,7 +32,7 @@ const onSubmit = async () => {
                 localStorage.getItem("login_token"),
             ];
 
-            alert(loginResponse['info'], loginResponse['title'], loginResponse['message'], loginResponse['location']);
+            alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
 
             /* const getUserDataResponse = await fetch(`${api_url}/api/client/users/profile`, {
                 method: 'POST',
