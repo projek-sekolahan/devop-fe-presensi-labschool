@@ -4,13 +4,6 @@ const createFetchRequest = (method, key, formData) => {
         'Content-Type'  : 'application/x-www-form-urlencoded',
         'Authorization' : `Basic ${key}`,
     });
-    /* const headers = {
-        'Content-Type'  : 'application/x-www-form-urlencoded',
-        'Authorization' : `Basic ${key}`,
-    }; */
-    /* if (key !== null || key !== undefined || key !== '') {
-        headers.Authorization = `Basic ${key}`;
-    } */
     const body = formData.toString();
     const credentials = 'include';
     return {
@@ -23,65 +16,64 @@ const createFetchRequest = (method, key, formData) => {
 
 export default class apiFetch {
 
-    static async getCsrf() {
+    static getCsrf() {
         return fetch(`${api_url}/view/tokenGetCsrf`)
             .then((res) => res.json())
             .then((res) => res.data);
     }
 
-    static async register(formData) {
+    static register(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/register`, requestConfig);
     }
 
-    static async verify(formData) {
+    static verify(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/verify`, requestConfig);
     }
 
-    static async facecam(formData) {
+    static facecam(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/facecam`, requestConfig);
     }
 
-    static async setPassword(formData) {
+    static setPassword(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/setPassword`, requestConfig);
     }
 
-    static async recover(formData) {
+    static recover(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/recover`, requestConfig);
     }
 
-    static async sendOTP(formData) {
+    static sendOTP(formData) {
         const requestConfig = createFetchRequest('POST', null, formData);
         return fetch(`${api_url}/input/sendOTP`, requestConfig);
     }
 
-    static async toLogin(key, formData) {
+    static toLogin(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
         return fetch(`${api_url}/api/client/auth/login`, requestConfig);
     }
 
-    static async getUserData(key, formData) {
+    static getUserData(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
         return fetch(`${api_url}/api/client/users/profile`, requestConfig);
     }
 
-    static async logout(key, formData) {
+    static logout(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
         return fetch(`${api_url}/api/client/auth/logout`, requestConfig);
     }
 
-    static async sessTime(key, formData) {
+    static sessTime(key, formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
         return fetch(`${api_url}/api/client/auth/sessTime`, requestConfig);
     }
 
-    static async reports(formData) {
+    static reports(formData) {
         const requestConfig = createFetchRequest('POST', key, formData);
         return fetch(`${api_url}/api/client/presensi/reports`, requestConfig);
     }
-
 }

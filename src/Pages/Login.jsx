@@ -9,46 +9,57 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-		const onSubmit = async () => {
-			const emailValue = emailRef.current.value;
-			const passwordValue = passwordRef.current.value;
-			const hash = getHash(passwordValue);
-			const token_key = getKey(emailValue, hash);
-			const csrf_token = Cookies.get("ci_sso_csrf_cookie");
-			const key = ["username", "password", "devop-sso", "csrf_token"];
-			const value = [emailValue, hash, token_key[1], csrf_token];
-			localStorage.setItem("AUTH_KEY", token_key[0]);
-			localStorage.setItem("devop-sso", token_key[1]);
-			try {
-				const loginResponse = await apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value));
+	const onSubmit = () => {
+		const emailValue = emailRef.current.value;
+		const passwordValue = passwordRef.current.value;
+		const hash = getHash(passwordValue);
+		const token_key = getKey(emailValue, hash);
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+		const key = ["username", "password", "devop-sso", "csrf_token"];
+		const value = [emailValue, hash, token_key[1], csrf_token];
+		localStorage.setItem("AUTH_KEY", token_key[0]);
+		localStorage.setItem("devop-sso", token_key[1]);
+	
+		apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+			.then(loginResponse => {
 				if (loginResponse.status === 201) {
-					const responseData = await loginResponse.json();
-					localStorage.setItem("login_token", responseData.data.Tokenjwt);
-					const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-					const values = [
-						localStorage.getItem("AUTH_KEY"),
-						localStorage.getItem("devop-sso"),
-						responseData.csrfHash,
-						localStorage.getItem("login_token"),
-					];
-					alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-					const getUserDataResponse = await apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-					if (getUserDataResponse.status === 201) {
-						const userData = await getUserDataResponse.json();
-						localStorage.setItem("token", userData.data);
-					} else {
-						const errorData = await getUserDataResponse.json();
-						alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-					}
+					return loginResponse.json();
 				} else {
-					const errorData = await loginResponse.json();
-					alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+					return loginResponse.json().then(errorData => {
+						throw errorData;
+					});
 				}
-			} catch (error) {
+			})
+			.then(responseData => {
+				localStorage.setItem("login_token", responseData.data.Tokenjwt);
+				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+				const values = [
+					localStorage.getItem("AUTH_KEY"),
+					localStorage.getItem("devop-sso"),
+					responseData.csrfHash,
+					localStorage.getItem("login_token"),
+				];
+				alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+				return apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+			})
+			.then(getUserDataResponse => {
+				if (getUserDataResponse.status === 201) {
+					return getUserDataResponse.json();
+				} else {
+					return getUserDataResponse.json().then(errorData => {
+						throw errorData;
+					});
+				}
+			})
+			.then(userData => {
+				localStorage.setItem("token", userData.data);
+			})
+			.catch(error => {
 				console.error("Error:", error);
 				alert("error", "Error", "An error occurred while processing your request", "/login");
-			}
-		};
+			});
+	};
+	
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
