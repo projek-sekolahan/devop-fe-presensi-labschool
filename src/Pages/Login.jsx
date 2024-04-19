@@ -9,32 +9,6 @@ export default function Login() {
 	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-
-	const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
-	const createRequestBody = (formData) => {
-		return formData.toString();
-	};
-
-	const xhr = new XMLHttpRequest();
-	const toLogin = (endpoint, key, formData) => {
-		return new Promise((resolve, reject) => {
-			xhr.open("POST", `${api_url}${endpoint}`);
-			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			xhr.setRequestHeader("Authorization", `Basic ${key}`);
-			xhr.withCredentials = true;
-			xhr.onload = () => {
-				if (xhr.status === 200 || xhr.status === 201) {
-					resolve(xhr.responseText);
-				} else {
-					console.log(xhr)
-					reject(JSON.parse(xhr.responseText));
-				}
-			};
-			xhr.onerror = () => reject(xhr.statusText);
-			xhr.send(createRequestBody(formData));
-		});
-	}
-	
 	const onSubmit = () => {
 		const emailValue = emailRef.current.value;
 		const passwordValue = passwordRef.current.value;
@@ -45,16 +19,21 @@ export default function Login() {
 		const value = [emailValue, hash, token_key[1], csrf_token];
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		toLogin("/api/client/auth/login",localStorage.getItem("AUTH_KEY"), getFormData(key, value)).
-		then(loginResponse => {
-			console.log(JSON.parse(loginResponse));
-			const responseData = JSON.parse(loginResponse);
-			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-		})
-		.catch(errorData => {
-			console.log(errorData.data.info);
-			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-		});
+		// alert("info", "Login", "Please wait...", "login");
+		const xhr = new XMLHttpRequest();
+		xhr.open("GET", "https://devop-sso.smalabschoolunesa1.sch.id/view/tokenGetCsrf");
+		xhr.onload = () => {
+			if (xhr.status === 200) {
+				// resolve(JSON.parse(xhr.responseText).data);
+				console.log(JSON.parse(xhr.responseText));
+				alert("info", "Login", JSON.parse(xhr.responseText).csrfHash, "login");
+			} else {
+				console.log(xhr.responseText);
+				// reject(xhr.statusText);
+			}
+		};
+		xhr.onerror = () => reject(xhr.statusText);
+		xhr.send();
 	};
 	
 
