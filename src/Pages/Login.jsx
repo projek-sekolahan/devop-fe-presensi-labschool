@@ -19,7 +19,7 @@ export default function Login() {
 		const value = [emailValue, hash, token_key[1], csrf_token];
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-	
+		alert("info", "Login", "Please wait...", "");
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
 			const responseData = JSON.parse(loginResponse);
