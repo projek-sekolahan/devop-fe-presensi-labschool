@@ -22,18 +22,8 @@ export default function Login() {
 	
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
-			console.log(loginResponse);
-			if (loginResponse.status === 201) {
-				// return loginResponse.json();
-				return JSON.parse(loginResponse.responseText);
-			} else {
-				return new Promise((resolve, reject) => {
-					reject(JSON.parse(loginResponse.responseText));
-					/* loginResponse.json().then(errorData => {
-						reject(errorData);
-					}); */
-				});
-			}
+			console.log(JSON.parse(loginResponse));
+			// return JSON.parse(loginResponse.responseText);
 		})
 		.then(responseData => {
 			console.log(responseData);

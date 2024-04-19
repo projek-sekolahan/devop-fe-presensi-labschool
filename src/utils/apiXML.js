@@ -34,7 +34,7 @@ export default class apiXML {
                     resolve(xhr.responseText);
                 } else {
                     console.log(xhr);
-                    reject(xhr.statusText);
+                    reject(xhr.responseText);
                 }
             };
             xhr.onerror = () => reject(xhr.statusText);
