@@ -21,7 +21,7 @@ export default function Login() {
 			xhr.open("POST", `${api_url}${endpoint}`);
 			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			xhr.setRequestHeader("Authorization", `Basic ${key}`);
-			// xhr.withCredentials = true;
+			xhr.withCredentials = true;
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
