@@ -32,7 +32,7 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                 } else {
-                    reject(xhr.responseText);
+                    reject(JSON.parse(xhr.responseText));
                 }
             };
             xhr.onerror = () => reject(xhr.statusText);
