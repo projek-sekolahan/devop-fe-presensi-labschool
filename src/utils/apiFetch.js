@@ -1,11 +1,12 @@
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 const createFetchRequest = (method, key, formData) => {
     const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type'  : 'application/x-www-form-urlencoded',
+        'Authorization' : `Basic ${key}`,
     };
-    if (key !== null || key !== undefined || key !== '') {
+    /* if (key !== null || key !== undefined || key !== '') {
         headers.Authorization = `Basic ${key}`;
-    }
+    } */
     const body = formData.toString();
     const credentials = 'include';
     return {
