@@ -22,9 +22,7 @@ export default function Login() {
 	
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
-			return JSON.parse(loginResponse);
-		})
-		.then(responseData => {
+			const responseData = JSON.parse(loginResponse);
 			localStorage.setItem("login_token", responseData.data.Tokenjwt);
 			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 			const values = [
@@ -37,15 +35,11 @@ export default function Login() {
 			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 		})
 		.then(getUserDataResponse => {
-			return JSON.parse(getUserDataResponse);
-		})
-		.then(userData => {
+			const userData = JSON.parse(getUserDataResponse);
 			localStorage.setItem("token", userData.data);
 		})
 		.catch(errorData => {
-			console.error("Error:", errorData);
 			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-			// alert("error", "Error", "An error occurred while processing your request", "/login");
 		});
 		
 	};
