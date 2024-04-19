@@ -40,12 +40,12 @@ export default function Login() {
 			return JSON.parse(getUserDataResponse);
 		})
 		.then(userData => {
-			console.log(userData);
 			localStorage.setItem("token", userData.data);
 		})
 		.catch(errorData => {
 			console.error("Error:", errorData);
-			alert("error", "Error", "An error occurred while processing your request", "/login");
+			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
+			// alert("error", "Error", "An error occurred while processing your request", "/login");
 		});
 		
 	};

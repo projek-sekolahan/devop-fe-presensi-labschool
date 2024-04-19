@@ -30,10 +30,8 @@ export default class apiXML {
             xhr.withCredentials = true;
             xhr.onload = () => {
                 if (xhr.status === 200 || xhr.status === 201) {
-                    console.log(xhr);
                     resolve(xhr.responseText);
                 } else {
-                    console.log(xhr);
                     reject(xhr.responseText);
                 }
             };
