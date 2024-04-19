@@ -51,7 +51,7 @@ export default function Login() {
 			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
 		})
 		.catch(errorData => {
-			console.log(errorData);
+			console.log(errorData.data.info);
 			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
 		});
 	};
