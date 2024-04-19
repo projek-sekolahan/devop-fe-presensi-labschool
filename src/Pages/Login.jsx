@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import apiFetch from "../utils/apiFetch.js";
+import apiFetch from "../utils/apiXML.js";
 import { getHash, getKey, getFormData, alert } from "../utils/utils.js";
 import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -21,43 +21,48 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1]);
 	
 		apiFetch.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-			.then(loginResponse => {
-				if (loginResponse.status === 201) {
-					return loginResponse.json();
-				} else {
-					return loginResponse.json().then(errorData => {
-						throw errorData;
+		.then(loginResponse => {
+			if (loginResponse.status === 201) {
+				return loginResponse.json();
+			} else {
+				return new Promise((resolve, reject) => {
+					loginResponse.json().then(errorData => {
+						reject(errorData);
 					});
-				}
-			})
-			.then(responseData => {
-				localStorage.setItem("login_token", responseData.data.Tokenjwt);
-				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-				const values = [
-					localStorage.getItem("AUTH_KEY"),
-					localStorage.getItem("devop-sso"),
-					responseData.csrfHash,
-					localStorage.getItem("login_token"),
-				];
-				alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-				return apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-			})
-			.then(getUserDataResponse => {
-				if (getUserDataResponse.status === 201) {
-					return getUserDataResponse.json();
-				} else {
-					return getUserDataResponse.json().then(errorData => {
-						throw errorData;
+				});
+			}
+		})
+		.then(responseData => {
+			localStorage.setItem("login_token", responseData.data.Tokenjwt);
+			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+			const values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				responseData.csrfHash,
+				localStorage.getItem("login_token"),
+			];
+			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
+			return apiFetch.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+		})
+		.then(getUserDataResponse => {
+			if (getUserDataResponse.status === 201) {
+				return getUserDataResponse.json();
+			} else {
+				return new Promise((resolve, reject) => {
+					getUserDataResponse.json().then(errorData => {
+						reject(errorData);
 					});
-				}
-			})
-			.then(userData => {
-				localStorage.setItem("token", userData.data);
-			})
-			/* .catch(error => {
-				console.error("Error:", error);
-				alert("error", "Error", "An error occurred while processing your request", "/login");
-			}); */
+				});
+			}
+		})
+		.then(userData => {
+			localStorage.setItem("token", userData.data);
+		})
+		.catch(errorData => {
+			console.error("Error:", errorData);
+			alert("error", "Error", "An error occurred while processing your request", "/login");
+		});
+		
 	};
 	
 
