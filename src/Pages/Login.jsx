@@ -22,8 +22,7 @@ export default function Login() {
 	
 		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 		.then(loginResponse => {
-			console.log(JSON.parse(loginResponse));
-			// return JSON.parse(loginResponse.responseText);
+			return JSON.parse(loginResponse);
 		})
 		.then(responseData => {
 			console.log(responseData);
