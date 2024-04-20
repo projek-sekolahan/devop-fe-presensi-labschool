@@ -61,14 +61,14 @@ export default function Register() {
 		});
 	};
 	return (
-		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
-			<h1 className="text-center text-4xl font-bold text-white ">
+		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">
+			<h1 className="text-center mt-16 text-4xl font-bold text-white ">
 				Register
 			</h1>
 			<small className="text-center text-xs font-medium text-white mt-1">
 				Selamat datang!
 			</small>
-			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] relative bottom-0 lef-0 p-4 pb-8">
+			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 left-0 p-4 pb-8">
 				<form className="w-full p-6 flex flex-col gap-2">
 					<div className="w-full flex justify-between gap-8">
 						<label className="flex flex-col items-center">
