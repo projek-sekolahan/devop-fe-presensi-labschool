@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
 export const getHash = (pass) => {
 	const keycode = CryptoJS.enc.Hex.parse(
-		CryptoJS.SHA1(btoa(pass)).toString()
+		CryptoJS.SHA1(btoa(pass)).toString(),
 	);
 	const authcode = CryptoJS.enc.Hex.parse(CryptoJS.SHA1(pass).toString());
 	const hash = CryptoJS.AES.encrypt(pass, keycode, { iv: authcode })
@@ -18,31 +18,31 @@ export const getKey = (email, hash) => {
 };
 
 export const getImageUrl = (source, x, y, size) => {
-    	const canvas = document.createElement("canvas");
-    	canvas.width = size;
-    	canvas.height = size;
-    	const context = canvas.getContext("2d");
+	const canvas = document.createElement("canvas");
+	canvas.width = size;
+	canvas.height = size;
+	const context = canvas.getContext("2d");
 
-    	context?.drawImage(source, x, y, size, size, 0, 0, size, size);
-    	const url = canvas.toDataURL("image/jpeg")
-    	return url
-  	};
+	context?.drawImage(source, x, y, size, size, 0, 0, size, size);
+	const url = canvas.toDataURL("image/jpeg");
+	return url;
+};
 
 export const createFormData = (keys, values) => {
-    const formData = new FormData();
-    keys.forEach((key, index) => {
-        formData.append(key, values[index]);
-    });
-    return formData;
-}
+	const formData = new FormData();
+	keys.forEach((key, index) => {
+		formData.append(key, values[index]);
+	});
+	return formData;
+};
 
 export const getFormData = (keys, values) => {
 	return keys
 		.map(
 			(key, index) =>
 				`${encodeURIComponent(key)}=${encodeURIComponent(
-					values[index]
-				)}`
+					values[index],
+				)}`,
 		)
 		.join("&");
 };
@@ -56,7 +56,7 @@ export function parseJwt(token) {
 			.map(function (c) {
 				return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
 			})
-			.join("")
+			.join(""),
 	);
 	if (token == localStorage.getItem("login_token")) {
 		return decrypt(JSON.parse(jsonPayload), "fromToken");
@@ -89,15 +89,15 @@ function decrypt(param, from) {
 }
 
 export const alert = (type, title, message, location) => {
-	if (location=="dashboard") {
+	if (location == "dashboard") {
 		location = "/home";
 	}
 	Swal.fire({
 		titleText: title,
-		text: message,
+		html: message,
 		icon: type,
 		allowOutsideClick: false,
 		allowEnterKey: false,
 		allowEscapeKey: false,
 	}).then(() => window.location.replace(location));
-}
+};

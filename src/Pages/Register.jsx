@@ -1,7 +1,7 @@
-// import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
 import { Link } from "react-router-dom";
-import { register } from "../utils/api.js";
-import { getFormData } from "../utils/utils.js";
+// import { register } from "../utils/api.js";
+import apiXML from "../utils/apiXML.js";
+import { getFormData, alert } from "../utils/utils.js";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -42,29 +42,21 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		register(getFormData(keys, values), (res) => {
+		apiXML.register(getFormData(keys, values)).then((res) => {
 			if (res.status == 200) {
-				Swal.fire({
-					titleText: res.data.data.title,
-					html: res.data.data.message,
-					icon: "success",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() =>
-					window.location.replace(
-						`${res.data.data.location}/facereg`,
-					),
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					res.data.location,
 				);
 			} else {
-				Swal.fire({
-					titleText: "Register Gagal",
-					text: "Harap periksa apakah nomor dan email belum digunakan!",
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/`));
+				alert(
+					res.data.info,
+					"Register Gagal",
+					"Harap periksa apakah nomor dan email belum digunakan!",
+					"/",
+				);
 			}
 		});
 	};

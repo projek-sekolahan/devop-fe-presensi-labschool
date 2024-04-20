@@ -15,33 +15,49 @@ export default function Login() {
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
 		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [emailValue, hash, token_key[1], csrf_token];
+
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-		apiXML.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-		.then(loginResponse => {
-			const responseData = JSON.parse(loginResponse);
-			localStorage.setItem("login_token", responseData.data.Tokenjwt);
-			const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-			const values = [
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("devop-sso"),
-				responseData.csrfHash,
-				localStorage.getItem("login_token"),
-			];
-			alert(responseData.data.info, responseData.data.title, responseData.data.message, responseData.data.location);
-			return apiXML.getUserData(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
-		})
-		.then(getUserDataResponse => {
-			const userData = JSON.parse(getUserDataResponse);
-			localStorage.setItem("token", userData.data);
-		})
-		.catch(errorData => {
-			alert(errorData.data.info, errorData.data.title, errorData.data.message, errorData.data.location);
-		});
+
+		apiXML
+			.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+			.then((loginResponse) => {
+				const responseData = JSON.parse(loginResponse);
+				localStorage.setItem("login_token", responseData.data.Tokenjwt);
+				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+				const values = [
+					localStorage.getItem("AUTH_KEY"),
+					localStorage.getItem("devop-sso"),
+					responseData.csrfHash,
+					localStorage.getItem("login_token"),
+				];
+				alert(
+					responseData.data.info,
+					responseData.data.title,
+					responseData.data.message,
+					responseData.data.location,
+				);
+				return apiXML.getUserData(
+					localStorage.getItem("AUTH_KEY"),
+					getFormData(keys, values),
+				);
+			})
+			.then((getUserDataResponse) => {
+				const userData = JSON.parse(getUserDataResponse);
+				localStorage.setItem("token", userData.data);
+			})
+			.catch((errorData) => {
+				alert(
+					errorData.data.info,
+					errorData.data.title,
+					errorData.data.message,
+					errorData.data.location,
+				);
+			});
 	};
-	
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">

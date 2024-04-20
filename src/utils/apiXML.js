@@ -25,7 +25,10 @@ export default class apiXML {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", `${api_url}${endpoint}`);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded",
+            );
             xhr.setRequestHeader("Authorization", `Basic ${key}`);
             xhr.withCredentials = true;
             xhr.onload = () => {
@@ -58,5 +61,9 @@ export default class apiXML {
 
     static reports(key, formData) {
         return apiXML.post("/api/client/presensi/reports", key, formData);
+    }
+
+    static register(formData, key = "") {
+        return apiXML.post("/input/register", formData);
     }
 }
