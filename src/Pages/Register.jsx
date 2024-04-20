@@ -45,14 +45,14 @@ export default function Register() {
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			if (res.status == 200) {
 				alert(
-					res.data.info,
-					res.data.title,
-					res.data.message,
-					res.data.location,
+					res.data.data.info,
+					res.data.data.title,
+					res.data.data.message,
+					res.data.data.location,
 				);
 			} else {
 				alert(
-					res.data.info,
+					res.data.data.info,
 					"Register Gagal",
 					"Harap periksa apakah nomor dan email belum digunakan!",
 					"/",
