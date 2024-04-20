@@ -43,12 +43,7 @@ export default function Register() {
 			csrf_token,
 		];
 		apiXML.register(getFormData(keys, values)).then((res) => {
-			alert(
-				res.data.data.info,
-				res.data.data.title,
-				res.data.data.message,
-				res.data.data.location,
-			);
+			alert(res.info, res.title, res.message, res.location);
 		});
 	};
 	return (
