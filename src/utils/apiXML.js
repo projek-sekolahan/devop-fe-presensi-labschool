@@ -21,7 +21,7 @@ export default class apiXML {
         });
     }
 
-    static post(endpoint, key, formData) {
+    static postWithAuth(endpoint, key, formData) {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", `${api_url}${endpoint}`);
@@ -42,28 +42,52 @@ export default class apiXML {
             xhr.send(createRequestBody(formData));
         });
     }
+    static post(endpoint, formData) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `${api_url}${endpoint}`);
+            xhr.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded",
+            );
+            xhr.withCredentials = true;
+            xhr.onload = () => {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    resolve(xhr.responseText);
+                } else {
+                    reject(JSON.parse(xhr.responseText));
+                }
+            };
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send(createRequestBody(formData));
+        });
+    }
 
     static toLogin(key, formData) {
-        return apiXML.post("/api/client/auth/login", key, formData);
+        return apiXML.postWithAuth("/api/client/auth/login", key, formData);
     }
 
     static getUserData(key, formData) {
-        return apiXML.post("/api/client/users/profile", key, formData);
+        return apiXML.postWithAuth("/api/client/users/profile", key, formData);
     }
 
     static logout(key, formData) {
-        return apiXML.post("/api/client/auth/logout", key, formData);
+        return apiXML.postWithAuth("/api/client/auth/logout", key, formData);
     }
 
     static sessTime(key, formData) {
-        return apiXML.post("/api/client/auth/sessTime", key, formData);
+        return apiXML.postWithAuth("/api/client/auth/sessTime", key, formData);
     }
 
     static reports(key, formData) {
-        return apiXML.post("/api/client/presensi/reports", key, formData);
+        return apiXML.postWithAuth(
+            "/api/client/presensi/reports",
+            key,
+            formData,
+        );
     }
 
     static register(formData) {
-        return apiXML.post("/input/register", " ", formData);
+        return apiXML.post("/input/register", formData);
     }
 }
