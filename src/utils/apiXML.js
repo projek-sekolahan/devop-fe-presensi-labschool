@@ -64,7 +64,6 @@ export default class apiXML {
     }
 
     static register(key, formData) {
-        console.log(formData);
         return apiXML.post("/input/register", formData);
     }
 }
