@@ -42,7 +42,6 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		console.log(getFormData(keys, values));
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			if (res.status == 200) {
 				alert(
