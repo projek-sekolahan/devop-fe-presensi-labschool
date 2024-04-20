@@ -42,7 +42,7 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		apiXML.register(getFormData(keys, values)).then((res) => {
+		apiXML.register(" ", getFormData(keys, values)).then((res) => {
 			if (res.status == 200) {
 				alert(
 					res.data.info,
