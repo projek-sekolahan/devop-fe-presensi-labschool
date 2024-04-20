@@ -63,7 +63,7 @@ export default class apiXML {
         return apiXML.post("/api/client/presensi/reports", key, formData);
     }
 
-    static register(key, formData) {
-        return apiXML.post("/input/register", formData);
+    static register(formData) {
+        return apiXML.post("/input/register", " ", formData);
     }
 }
