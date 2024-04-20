@@ -43,22 +43,12 @@ export default function Register() {
 			csrf_token,
 		];
 		apiXML.register(getFormData(keys, values)).then((res) => {
-			console.log(res);
-			// if (res.status == 200) {
-			// 	alert(
-			// 		res.data.data.info,
-			// 		res.data.data.title,
-			// 		res.data.data.message,
-			// 		res.data.data.location,
-			// 	);
-			// } else {
-			// 	alert(
-			// 		res.data.data.info,
-			// 		"Register Gagal",
-			// 		"Harap periksa apakah nomor dan email belum digunakan!",
-			// 		"/",
-			// 	);
-			// }
+			alert(
+				res.data.data.info,
+				res.data.data.title,
+				res.data.data.message,
+				res.data.data.location,
+			);
 		});
 	};
 	return (
