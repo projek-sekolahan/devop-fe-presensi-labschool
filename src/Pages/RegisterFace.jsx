@@ -1,7 +1,7 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { getFormData, getImageUrl } from "../utils/utils";
+import { getFormData, getImageUrl, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
