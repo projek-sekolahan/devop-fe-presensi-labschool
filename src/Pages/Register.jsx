@@ -16,7 +16,7 @@ export default function Register() {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (!role) {
-			alert("error", "Input Error", "Harap pilih role");
+			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
 		}
 		localStorage.setItem("email", emailRef.current.value);
