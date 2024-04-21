@@ -58,7 +58,7 @@ export default class apiXML {
                     reject(JSON.parse(xhr.responseText));
                 }
             };
-            xhr.onerror = () => reject(xhr.statusText);
+            xhr.onerror = () => window.location.reload();
             xhr.send(createRequestBody(formData));
         });
     }
