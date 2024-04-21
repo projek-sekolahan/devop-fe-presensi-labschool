@@ -2,7 +2,7 @@ import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { getFormData, getImageUrl } from "../utils/utils";
-import { facecam } from "../utils/api";
+import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
@@ -103,28 +103,21 @@ export default function RegisterFace() {
 						localStorage.getItem("regist_token"),
 						Cookies.get("ci_sso_csrf_cookie"),
 					];
-					facecam(getFormData(key, values), (res) => {
-						if (res.status == 200 && res.data.data) {
-							Swal.fire({
-								titleText: res.data.data.title,
-								text: res.data.data.message,
-								icon: "success",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() =>
-								window.location.replace("/setpassword"),
-							);
-						} else {
-							Swal.fire({
-								titleText: res.data.title,
-								text: res.data.message,
-								icon: "error",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() => window.location.replace(`/facereg`));
-						}
+					apiXML.facecam(getFormData(key, values)).then((res) => {
+						res = JSON.parse(res);
+						res.status
+							? alert(
+									res.data.info,
+									res.data.title,
+									res.data.message,
+									res.location,
+								)
+							: alert(
+									res.info,
+									res.title,
+									res.message,
+									res.location,
+								);
 					});
 				} else {
 					barRef.current.style.width = percentage;
