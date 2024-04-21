@@ -79,7 +79,7 @@ export default function OtpInput() {
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
 
-		apiXML.sendOTP(getFormData(key, values)).then((res) => {
+		apiXML.sendOtp(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
 			console.log(res);
 			res.status
