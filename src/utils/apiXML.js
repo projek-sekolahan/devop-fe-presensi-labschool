@@ -90,4 +90,19 @@ export default class apiXML {
     static register(formData) {
         return apiXML.post("/input/register", formData);
     }
+    static verify(formData) {
+        return apiXML.post("/input/verify", formData);
+    }
+    static facecam(formData) {
+        return apiXML.post("/input/facecam", formData);
+    }
+    static setpassword(formData) {
+        return apiXML.post("/input/setpassword", formData);
+    }
+    static sendOtp(formData) {
+        return apiXML.post("/input/sendOTP", formData);
+    }
+    static recover(formData) {
+        return apiXML.post("/input/recover", formData);
+    }
 }
