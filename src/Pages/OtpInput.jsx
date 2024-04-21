@@ -26,6 +26,7 @@ export default function OtpInput() {
 		let formData = new FormData(formRef.current);
 		const csrf = Cookies.get("ci_sso_csrf_cookie");
 		formData.append("csrf_token", csrf);
+		console.log(formData.toString());
 
 		apiXML.verify(formData).then((res) => {
 			res = JSON.parse(res);
