@@ -43,6 +43,7 @@ export default function Register() {
 			csrf_token,
 		];
 		apiXML.register(getFormData(keys, values)).then((res) => {
+			res = JSON.parse(loginResponse);
 			console.log(res);
 			console.log(res.info);
 			alert(res.info, res.title, res.message, res.location);
