@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 // import { verify, sendOTP } from "../utils/api";
 import apiXML from "../utils/apiXML";
-import { getFormData } from "../utils/utils";
+import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
@@ -29,26 +29,14 @@ export default function OtpInput() {
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			console.log(res);
-			// if (res.status == 200 && res.data.data) {
-			// 	localStorage.setItem("regist_token", res.data.data.token);
-			// 	Swal.fire({
-			// 		titleText: res.data.data.title,
-			// 		text: "Code Verificated",
-			// 		icon: "success",
-			// 		allowOutsideClick: false,
-			// 		allowEnterKey: false,
-			// 		allowEscapeKey: false,
-			// 	}).then(() => window.location.replace(`/${to}`));
-			// } else {
-			// 	Swal.fire({
-			// 		titleText: res.data.title,
-			// 		html: res.data.message,
-			// 		icon: "error",
-			// 		allowOutsideClick: false,
-			// 		allowEnterKey: false,
-			// 		allowEscapeKey: false,
-			// 	}).then(() => window.location.replace(`/verify/${to}`));
-			// }
+			res.status
+				? alert(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						"facereg",
+					)
+				: alert(res.info, res.title, res.message, res.location);
 		});
 	};
 

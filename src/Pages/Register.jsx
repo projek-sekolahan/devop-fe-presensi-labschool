@@ -45,7 +45,6 @@ export default function Register() {
 						res.data.title,
 						res.data.message,
 						res.data.location,
-						"set",
 					)
 				: alert(res.info, res.title, res.message, res.location);
 		});
