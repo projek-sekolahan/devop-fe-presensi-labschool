@@ -25,7 +25,6 @@ export default function OtpInput() {
 
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
-			console.log(res);
 			res.status
 				? alert(
 						res.data.info,
@@ -81,10 +80,7 @@ export default function OtpInput() {
 
 		apiXML.sendOtp(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
-			console.log(res);
-			res.status
-				? alert(res.info, res.title, res.message, "facereg")
-				: alert(res.info, res.title, res.message, res.location);
+			alert(res.info, res.title, res.message, res.location);
 		});
 	};
 
