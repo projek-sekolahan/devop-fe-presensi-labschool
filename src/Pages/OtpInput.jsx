@@ -2,14 +2,11 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
-// import { verify, sendOTP } from "../utils/api";
 import apiXML from "../utils/apiXML";
 import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
-	const { to } = useParams();
-	console.log(to);
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 
 	const inputRefs = useRef([]);
@@ -85,16 +82,9 @@ export default function OtpInput() {
 		apiXML.sendOTP(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
 			console.log(res);
-			// if (res.status == 200 && res.data.success == "Success") {
-			// 	Swal.fire({
-			// 		titleText: res.data.title,
-			// 		text: "Kode OTP berhasil dikirim",
-			// 		icon: "success",
-			// 		allowOutsideClick: false,
-			// 		allowEnterKey: false,
-			// 		allowEscapeKey: false,
-			// 	}).then(() => window.location.replace(` /verify/${to}`));
-			// }
+			res.status
+				? alert(res.info, res.title, res.message, "facereg")
+				: alert(res.info, res.title, res.message, res.location);
 		});
 	};
 
