@@ -38,7 +38,7 @@ export default class apiXML {
                     reject(JSON.parse(xhr.responseText));
                 }
             };
-            xhr.onerror = () => window.location.reload();
+            xhr.onerror = () => reject(xhr.statusText);
             xhr.send(createRequestBody(formData));
         });
     }
@@ -58,7 +58,7 @@ export default class apiXML {
                     reject(JSON.parse(xhr.responseText));
                 }
             };
-            xhr.onerror = () => window.location.reload();
+            xhr.onerror = () => reject(xhr.statusText);
             xhr.send(createRequestBody(formData));
         });
     }
