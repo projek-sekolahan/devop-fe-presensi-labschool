@@ -133,7 +133,6 @@ export default function OtpInput() {
 							return (
 								<input
 									key={index}
-									type="number"
 									name="digit-input[]"
 									ref={(input) =>
 										(inputRefs.current[index] = input)

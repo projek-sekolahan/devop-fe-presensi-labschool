@@ -39,7 +39,15 @@ export default function Register() {
 			res = JSON.parse(res);
 			console.log(res);
 			console.log(res.info);
-			alert(res.info, res.title, res.message, res.location);
+			res.status
+				? alert(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						res.data.location,
+						"set",
+					)
+				: alert(res.info, res.title, res.message, res.location);
 		});
 	};
 	return (
