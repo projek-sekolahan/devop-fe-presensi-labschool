@@ -89,9 +89,11 @@ function decrypt(param, from) {
 }
 
 export const alert = (type, title, message, location) => {
-	if (location == "dashboard") {
-		location = "/home";
-	}
+	location == "dashboard"
+		? (location = "/home")
+		: location == "register"
+			? (location = "/")
+			: null;
 	Swal.fire({
 		titleText: title,
 		html: message,
