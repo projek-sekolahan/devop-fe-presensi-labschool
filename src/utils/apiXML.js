@@ -80,7 +80,19 @@ export default class apiXML {
     }
 
     static reports(key, formData) {
-        return apiXML.postWithAuth("/api/client/presensi/reports", key, formData);
+        return apiXML.postWithAuth(
+            "/api/client/presensi/reports",
+            key,
+            formData,
+        );
+    }
+
+    static process(key, formData) {
+        return apiXML.postWithAuth(
+            "/api/client/presensi/process",
+            key,
+            formData,
+        );
     }
 
     static register(formData) {
