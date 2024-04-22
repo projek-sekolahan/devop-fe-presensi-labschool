@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/utils";
+
 export default function CardRiwayat({ history, biodata }) {
 	return (
 		<div className="w-full h-fit bg-white rounded-xl text-black flex flex-col justify-center items-center p-4 gap-2">
@@ -9,26 +11,30 @@ export default function CardRiwayat({ history, biodata }) {
 			<p className="font-bold text-base">{biodata.nama_lengkap}</p>
 			<div className="w-full flex gap-2 justify-between">
 				<div className="flex flex-col">
-					<p className="font-medium text-xs">{history.date}</p>
+					<p className="font-medium text-xs">
+						{formatDate(history["Tanggal Presensi"])}
+					</p>
 					<p className="text-xs font-normal">
 						<span className="text-secondary-green">Masuk : </span>
-						{history.checkIn}
+						{history["Jam Masuk"]}
 					</p>
 					<p className="text-xs font-normal">
 						<span className="text-secondary-red">Keluar : </span>
-						{history.checkOut}
+						{history["Jam Pulang"]}
 					</p>
 				</div>
 				<div
 					className={`${
-						history.status == "Masuk"
+						history["Kode Keterangan"] == "1"
 							? "bg-secondary-green"
-							: history.status == "Izin"
-								? "bg-secondary-yellow"
-								: "bg-secondary-red"
+							: history["Kode Keterangan"] == "3"
+								? "bg-secondary-red"
+								: history["Kode Keterangan"] == "7"
+									? "bg-gray-600"
+									: "bg-secondary-yellow"
 					} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 				>
-					{history.status}
+					{history.Keterangan.split(" ")[0]}
 				</div>
 			</div>
 		</div>

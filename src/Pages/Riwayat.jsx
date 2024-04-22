@@ -38,7 +38,7 @@ export default function Riwayat() {
 		"table",
 		"key",
 	];
-	const values = [
+	let values = [
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("csrf"),
