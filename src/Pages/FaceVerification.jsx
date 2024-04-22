@@ -71,17 +71,20 @@ export default function FaceVerification() {
 					coordinat.latitude,
 					coordinat.longitude,
 				);
-				console.log(
-					JSON.stringify({
-						longitude: longitude.toString(),
-						latitude: latitude.toString(),
-					}),
-				);
 				alert(
 					"warning",
 					"",
 					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 				);
+				navigate("/facecam", {
+					state: [
+						...state,
+						JSON.stringify({
+							longitude: longitude.toString(),
+							latitude: latitude.toString(),
+						}),
+					],
+				});
 			}
 		});
 	};

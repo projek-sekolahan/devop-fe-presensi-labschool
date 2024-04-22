@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
-import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
@@ -10,6 +10,8 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	const { state } = useLocation();
+	console.log(state);
 	loading("Loading", "Getting camera access...");
 
 	const key = [
