@@ -55,6 +55,7 @@ export default function FaceVerification() {
 				longitude >= coordinat.max_longitude
 			) {
 				alert("success", "Done", "Anda berada di area sekolah");
+				console.log(state);
 				navigate("/facecam", {
 					state: [
 						...state,
