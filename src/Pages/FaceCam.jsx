@@ -135,15 +135,10 @@ export default function RegisterFace() {
 									res.data.info,
 									res.data.title,
 									res.data.message,
-									() => window.location,
-									replace("home"),
+									() => window.location.replace("home"),
 								)
-							: alert(
-									res.info,
-									res.title,
-									res.message,
-									() => window.location,
-									replace(res.location),
+							: alert(res.info, res.title, res.message, () =>
+									window.location.replace(res.location),
 								);
 					});
 				} else {
