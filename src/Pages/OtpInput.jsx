@@ -3,7 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert } from "../utils/utils";
+import { getFormData, alert, loading } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function OtpInput() {
