@@ -13,6 +13,7 @@ export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
 	const [historys, setHistorys] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	let userData = {};
 	if (localStorage.getItem("token")) {
@@ -50,6 +51,7 @@ export default function Riwayat() {
 		: (values = [...values, "14 DAY"]);
 
 	!historys &&
+		loading &&
 		apiXML
 			.reports(
 				localStorage.getItem("AUTH_KEY"),
@@ -61,6 +63,7 @@ export default function Riwayat() {
 				localStorage.setItem("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
 				setHistorys(data);
+				setLoading(false);
 			});
 
 	return (
@@ -109,6 +112,7 @@ export default function Riwayat() {
 									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
 									setHistorys(null);
+									setLoading(true);
 								}}
 							>
 								7 Hari
@@ -120,6 +124,7 @@ export default function Riwayat() {
 									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
 									setHistorys(null);
+									setLoading(true);
 								}}
 							>
 								14 Hari
@@ -127,7 +132,11 @@ export default function Riwayat() {
 						</li>
 					</ul>
 				</div>
-				{historys ? (
+				{!historys && loading ? (
+					<div className="size-full flex justify-center items-center">
+						<span className="loading loading-spinner text-white"></span>
+					</div>
+				) : historys ? (
 					historys.map((history, i) => {
 						return (
 							<CardRiwayat
@@ -139,7 +148,7 @@ export default function Riwayat() {
 					})
 				) : (
 					<div className="size-full flex justify-center items-center">
-						<span className="loading loading-spinner text-white"></span>
+						<p className="text-white">Belum ada riwayat.</p>
 					</div>
 				)}
 			</main>
