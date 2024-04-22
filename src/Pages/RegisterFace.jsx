@@ -1,8 +1,8 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { getFormData, getImageUrl, loading } from "../utils/utils";
-import { facecam } from "../utils/api";
+import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
@@ -47,7 +47,6 @@ export default function RegisterFace() {
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
 		const registerFace = setInterval(async () => {
-			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
@@ -67,7 +66,7 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-					const url = getImageUrl(
+					const imgUrl = getImageUrl(
 						videoRef.current,
 						x - 50,
 						y - 75,
@@ -80,32 +79,26 @@ export default function RegisterFace() {
 					).join(", ");
 					const values = [
 						stringDescriptor,
-						`["${url}"]`,
+						`["${imgUrl}"]`,
 						localStorage.getItem("regist_token"),
 						Cookies.get("ci_sso_csrf_cookie"),
 					];
-					facecam(getFormData(key, values), (res) => {
-						if (res.status == 200 && res.data.data) {
-							Swal.fire({
-								titleText: res.data.data.title,
-								text: res.data.data.message,
-								icon: "success",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() =>
-								window.location.replace("/setpassword"),
-							);
-						} else {
-							Swal.fire({
-								titleText: res.data.title,
-								text: res.data.message,
-								icon: "error",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() => window.location.replace(`/facereg`));
-						}
+					apiXML.facecam(getFormData(key, values)).then((res) => {
+						res = JSON.parse(res);
+						console.log(res);
+						res.status
+							? alert(
+									res.data.info,
+									res.data.title,
+									res.data.message,
+									"setpassword",
+								)
+							: alert(
+									res.info,
+									res.title,
+									res.message,
+									res.location,
+								);
 					});
 				} else {
 					barRef.current.style.width = percentage;

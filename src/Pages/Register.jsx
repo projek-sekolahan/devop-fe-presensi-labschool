@@ -9,11 +9,13 @@ import Swal from "sweetalert2";
 export default function Register() {
 	localStorage.clear();
 	const [role, setRole] = useState("");
+	const [loading, setLoading] = useState(false);
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
 
-	const onSubmit = () => {
+	const submitHandler = (e) => {
+		e.preventDefault();
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
@@ -37,6 +39,7 @@ export default function Register() {
 		loading("Loading", "Processing Register Data...");
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
+			setLoading(false);
 			res.status
 				? alert(
 						res.data.info,
@@ -141,10 +144,17 @@ export default function Register() {
 							required=""
 						/>
 						<button
-							onClick={onSubmit}
+							onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
-							Create my account
+							{loading ? (
+								<div className="flex justify-center items-center gap-2">
+									<p>Loading </p>
+									<span className="loading loading-spinner text-white"></span>
+								</div>
+							) : (
+								"Create my account"
+							)}
 						</button>
 					</div>
 					<div

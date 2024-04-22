@@ -1,14 +1,15 @@
 import { useParams, Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash } from "../utils/utils";
-import { setPassword } from "../utils/api";
+import { getFormData, getHash, alert } from "../utils/utils";
+import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const inputRef = useRef();
 
 	const changeHandler = (e) => {
@@ -26,7 +27,8 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-
+		setDisabled(true);
+		setLoading(true);
 		const key = ["password", "devop-sso", "csrf_token"];
 		const values = [
 			getHash(inputRef.current.value),
@@ -34,26 +36,18 @@ export default function SetPassword() {
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
 
-		setPassword(getFormData(key, values), (res) => {
-			if (res.status == 200 && res.data.data) {
-				Swal.fire({
-					titleText: res.data.data.title,
-					html: res.data.data.message,
-					icon: "success",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace("/login"));
-			} else {
-				Swal.fire({
-					titleText: res.data.title,
-					html: res.data.message,
-					icon: "error",
-					allowOutsideClick: false,
-					allowEnterKey: false,
-					allowEscapeKey: false,
-				}).then(() => window.location.replace(`/setpassword`));
-			}
+		apiXML.setPassword(getFormData(key, values)).then((res) => {
+			setLoading(false);
+			setDisabled(false);
+			res = JSON.parse(res);
+			res.status
+				? alert(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						"login",
+					)
+				: alert(res.info, res.title, res.message, "setpassword");
 		});
 	};
 
@@ -106,9 +100,16 @@ export default function SetPassword() {
 						<button
 							onClick={submitHandler}
 							disabled={disabled}
-							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-80"
+							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 						>
-							Set Password
+							{loading ? (
+								<div className="flex justify-center items-center gap-2">
+									<p>Loading </p>
+									<span className="loading loading-spinner text-white"></span>
+								</div>
+							) : (
+								"Set Password"
+							)}
 						</button>
 					</form>
 				</div>

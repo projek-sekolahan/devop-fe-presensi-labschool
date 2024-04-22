@@ -96,7 +96,7 @@ export default class apiXML {
     static facecam(formData) {
         return apiXML.post("/input/facecam", formData);
     }
-    static setpassword(formData) {
+    static setPassword(formData) {
         return apiXML.post("/input/setpassword", formData);
     }
     static sendOtp(formData) {
