@@ -80,29 +80,25 @@ export default class apiXML {
     }
 
     static reports(key, formData) {
-        return apiXML.postWithAuth(
-            "/api/client/presensi/reports",
-            key,
-            formData,
-        );
+        return apiXML.postWithAuth("/api/client/presensi/reports", key, formData);
     }
 
     static register(formData) {
-        return apiXML.postWithAuth("/input/register", formData);
+        return apiXML.post("/input/register", formData);
     }
     static verify(formData) {
-        return apiXML.postWithAuth("/input/verify", formData);
+        return apiXML.post("/input/verify", formData);
     }
     static facecam(formData) {
-        return apiXML.postWithAuth("/input/facecam", formData);
+        return apiXML.post("/input/facecam", formData);
     }
     static setPassword(formData) {
-        return apiXML.postWithAuth("/input/setpassword", formData);
+        return apiXML.post("/input/setpassword", formData);
     }
     static sendOtp(formData) {
-        return apiXML.postWithAuth("/input/sendOTP", formData);
+        return apiXML.post("/input/sendOTP", formData);
     }
     static recover(formData) {
-        return apiXML.postWithAuth("/input/recover", formData);
+        return apiXML.post("/input/recover", formData);
     }
 }
