@@ -46,7 +46,7 @@ export default function Register() {
 			setLoad(false);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
-						navigate(res.data.location, {
+						navigate(res.data.location==="register" ? res.data.location : "/", {
 							state: "facereg",
 						}),
 					)
