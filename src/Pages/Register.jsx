@@ -37,6 +37,7 @@ export default function Register() {
 		];
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
+			console.log(res);
 			res.status
 				? alert(
 						res.data.info,
