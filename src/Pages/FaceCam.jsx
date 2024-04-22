@@ -128,19 +128,24 @@ export default function RegisterFace() {
 
 					values = [...values, stringDescriptor, `["${imgUrl}"]`];
 
-					apiXML.facecam(getFormData(key, values)).then((res) => {
-						res = JSON.parse(res);
-						res.status
-							? alert(
-									res.data.info,
-									res.data.title,
-									res.data.message,
-									() => window.location.replace("home"),
-								)
-							: alert(res.info, res.title, res.message, () =>
-									window.location.replace(res.location),
-								);
-					});
+					apiXML
+						.process(
+							localStorage.getItem("AUTH_KEY"),
+							getFormData(key, values),
+						)
+						.then((res) => {
+							res = JSON.parse(res);
+							res.status
+								? alert(
+										res.data.info,
+										res.data.title,
+										res.data.message,
+										() => window.location.replace("home"),
+									)
+								: alert(res.info, res.title, res.message, () =>
+										window.location.replace(res.location),
+									);
+						});
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
