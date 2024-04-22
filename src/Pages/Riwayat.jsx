@@ -108,7 +108,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
-									setHistory(null);
+									setHistorys(null);
 								}}
 							>
 								7 Hari
@@ -119,7 +119,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
-									setHistory(null);
+									setHistorys(null);
 								}}
 							>
 								14 Hari
