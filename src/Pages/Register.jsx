@@ -36,8 +36,6 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
-		loading("Loading", "Processing Register Data...");
-		// console.log(getFormData(keys, values));
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoad(false);
