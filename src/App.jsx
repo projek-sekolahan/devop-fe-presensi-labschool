@@ -63,9 +63,6 @@ function App() {
 				ci_sso_csrf_cookie: result.data.csrfHash,
 				"Max-Age": 1 / 12,
 			};
-			// if (Cookies.get("ci_sso_csrf_cookie")) {
-			// 	Cookies.remove("ci_sso_csrf_cookie");
-			// }
 			// Set cookie menggunakan js-cookies
 			Object.keys(cookieData).forEach((key) => {
 				const cookieValue = cookieData[key];
