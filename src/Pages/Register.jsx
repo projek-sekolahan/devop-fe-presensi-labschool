@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
-import { getFormData, alert, loading } from "../utils/utils.js";
+import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -50,7 +50,7 @@ export default function Register() {
 						res.info,
 						res.title,
 						res.message,
-						window.location.replace(res.data.location),
+						window.location.replace(res.location),
 					);
 		});
 	};
