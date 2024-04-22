@@ -55,7 +55,8 @@ export default function Riwayat() {
 			res = JSON.parse(res);
 			localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", res.csrfHash);
-			setHistorys(parseJwt(res.data));
+			setHistorys(parseJwt(res.data).data);
+			console.log(historys);
 		});
 
 	return (
@@ -121,14 +122,13 @@ export default function Riwayat() {
 					</ul>
 				</div>
 				{historys.map((history, i) => {
-					// return (
-					// 	<CardRiwayat
-					// 		key={i}
-					// 		history={history}
-					// 		biodata={userData}
-					// 	/>
-					// );
-					console.log(history["Jam Masuk"]);
+					return (
+						<CardRiwayat
+							key={i}
+							history={history}
+							biodata={userData}
+						/>
+					);
 				})}
 			</main>
 		</div>
