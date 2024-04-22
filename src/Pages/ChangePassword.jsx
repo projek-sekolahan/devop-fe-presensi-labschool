@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 export default function ChangePassword() {
 	const emailRef = useRef();
 	const [load, setLoad] = useState(false);
+	const navigate = useNavigate();
+
 	const submitHandler = (e) => {
 		e.preventDefault();
 		setLoad(true);
@@ -22,7 +24,9 @@ export default function ChangePassword() {
 			setLoad(false);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace("verify"),
+						navigate("/verify", {
+							state: "setpassword",
+						}),
 					)
 				: alert(res.info, res.title, res.message, () =>
 						window.location.replace("recover"),

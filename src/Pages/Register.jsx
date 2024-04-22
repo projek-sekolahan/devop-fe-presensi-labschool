@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
@@ -12,6 +12,7 @@ export default function Register() {
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
+	const navigate = useNavigate();
 
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -44,7 +45,9 @@ export default function Register() {
 			setLoad(false);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace(res.data.location),
+						navigate(res.data.location, {
+							state: "facereg",
+						}),
 					)
 				: alert(
 						res.info,

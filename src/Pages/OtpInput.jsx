@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -11,6 +11,7 @@ export default function OtpInput() {
 	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
+	const {state} = useLocation()
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -29,7 +30,7 @@ export default function OtpInput() {
 			localStorage.setItem("regist_token", res.data.token);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace("facereg"),
+						window.location.replace(state),
 					)
 				: alert(res.info, res.title, res.message, () =>
 						window.location.replace(res.location),
@@ -52,7 +53,8 @@ export default function OtpInput() {
 			inputRefs.current[index + 1].focus();
 		}
 	};
-	const handleClick = (index) => {
+	const handleClick = (index) =
+	> {
 		inputRefs.current[index].setSelectionRange(1, 1);
 
 		for (let i = 0; i < 4; i++) {
