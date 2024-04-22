@@ -11,7 +11,7 @@ export default function OtpInput() {
 	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
-	const {state} = useLocation()
+	const { state } = useLocation();
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -53,8 +53,7 @@ export default function OtpInput() {
 			inputRefs.current[index + 1].focus();
 		}
 	};
-	const handleClick = (index) =
-	> {
+	const handleClick = (index) => {
 		inputRefs.current[index].setSelectionRange(1, 1);
 
 		for (let i = 0; i < 4; i++) {
