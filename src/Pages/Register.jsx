@@ -17,7 +17,10 @@ export default function Register() {
 		e.preventDefault();
 		setLoad(true);
 		if (!role) {
-			alert("error", "Input Error", "Harap pilih role", "register");
+			alert("error", "Input Error", "Harap pilih role", () =>
+				window.location.replace("/"),
+			);
+
 			return;
 		}
 		localStorage.setItem("email", emailRef.current.value);
@@ -146,6 +149,7 @@ export default function Register() {
 						/>
 						<button
 							onClick={onSubmit}
+							disabled={load}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
 							{load ? (
