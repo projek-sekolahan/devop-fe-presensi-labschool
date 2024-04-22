@@ -15,6 +15,7 @@ export default function Register() {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+		setLoading(true);
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
@@ -36,6 +37,7 @@ export default function Register() {
 			csrf_token,
 		];
 		loading("Loading", "Processing Register Data...");
+		console.log(getFormData(keys, values));
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			res.status
