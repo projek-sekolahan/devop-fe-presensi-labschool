@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData } from "../utils/utils";
-import { reports } from "../utils/api";
+import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
 	const [filter, setFilter] = useState("7 DAY");
@@ -46,14 +46,12 @@ export default function Riwayat() {
 		filter,
 	];
 
-	reports(
-		localStorage.getItem("AUTH_KEY"),
-		getFormData(keys, values),
-		(res) => {
+	apiXML
+		.reports(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
+		.then((res) => {
 			console.log(res);
 			console.log(parseJwt(res.data.data));
-		},
-	);
+		});
 
 	const historys = [
 		{
