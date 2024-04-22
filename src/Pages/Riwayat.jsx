@@ -132,7 +132,7 @@ export default function Riwayat() {
 						</li>
 					</ul>
 				</div>
-				{!historys && loading ? (
+				{loading ? (
 					<div className="size-full flex justify-center items-center">
 						<span className="loading loading-spinner text-white"></span>
 					</div>
