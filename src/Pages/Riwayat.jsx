@@ -9,11 +9,10 @@ import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
-let historys = null;
-
 export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
+	const [historys, setHistorys] = useState(null);
 
 	let userData = {};
 	if (localStorage.getItem("token")) {
@@ -50,15 +49,19 @@ export default function Riwayat() {
 		? (values = [...values, "7 DAY"])
 		: (values = [...values, "14 DAY"]);
 
-	apiXML
-		.reports(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-		.then((res) => {
-			res = JSON.parse(res);
-			localStorage.removeItem("csrf");
-			localStorage.setItem("csrf", res.csrfHash);
-			const { data } = parseJwt(res.data);
-			historys = data;
-		});
+	!historys &&
+		apiXML
+			.reports(
+				localStorage.getItem("AUTH_KEY"),
+				getFormData(keys, values),
+			)
+			.then((res) => {
+				res = JSON.parse(res);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				const { data } = parseJwt(res.data);
+				setHistorys(data);
+			});
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
@@ -105,7 +108,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
-									historys = null;
+									setHistory(null);
 								}}
 							>
 								7 Hari
@@ -116,7 +119,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
-									historys = null;
+									setHistory(null);
 								}}
 							>
 								14 Hari
