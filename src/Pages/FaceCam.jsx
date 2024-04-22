@@ -12,24 +12,24 @@ import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-let userData = {};
-if (localStorage.getItem("token")) {
-	userData = parseJwt(localStorage.getItem("token"));
-} else {
-	window.location.replace("/login");
-}
-
 export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
 	const { state } = useLocation();
 
+	let userData = {};
+	if (localStorage.getItem("token")) {
+		userData = parseJwt(localStorage.getItem("token"));
+	} else {
+		window.location.replace("/login");
+	}
+
 	const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
 	loading("Loading", "Getting camera access...");
 
-	const key = [
+	const keys = [
 		"AUTH_KEY",
 		"devop-sso",
 		"csrf_token",
@@ -38,6 +38,8 @@ export default function RegisterFace() {
 		"status_kehadiran",
 		"geolocation",
 		"facecam_id",
+		"keterangan_kehadiran",
+		"foto_surat",
 		"foto_presensi",
 	];
 	let values;
@@ -126,12 +128,18 @@ export default function RegisterFace() {
 						faceData.descriptor,
 					).join(", ");
 
-					values = [...values, stringDescriptor, `["${imgUrl}"]`];
+					values = [
+						...values,
+						stringDescriptor,
+						"",
+						"",
+						`["${imgUrl}"]`,
+					];
 
 					apiXML
 						.process(
 							localStorage.getItem("AUTH_KEY"),
-							getFormData(key, values),
+							getFormData(keys, values),
 						)
 						.then((res) => {
 							res = JSON.parse(res);
