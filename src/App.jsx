@@ -111,7 +111,7 @@ function App() {
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
 					<Route path="/setpassword" Component={SetPassword} />
-					<Route path="/test" Component={Test} />
+					<Route path="/" Component={Register} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>
