@@ -54,15 +54,17 @@ export default function FaceVerification() {
 				longitude <= coordinat.min_longitude &&
 				longitude >= coordinat.max_longitude
 			) {
-				alert("success", "Done", "Anda berada di area sekolah", () => navigate("/facecam", {
-					state: [
-						...state,
-						JSON.stringify({
-							longitude: longitude.toString(),
-							latitude: latitude.toString(),
-						}),
-					],
-				}););
+				alert("success", "Done", "Anda berada di area sekolah", () =>
+					navigate("/facecam", {
+						state: [
+							...state,
+							JSON.stringify({
+								longitude: longitude.toString(),
+								latitude: latitude.toString(),
+							}),
+						],
+					}),
+				);
 			} else {
 				const distance = calculateDistance(
 					latitude,
@@ -74,15 +76,16 @@ export default function FaceVerification() {
 					"warning",
 					"",
 					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
-					() => navigate("/facecam", {
-					state: [
-						...state,
-						JSON.stringify({
-							longitude: longitude.toString(),
-							latitude: latitude.toString(),
+					() =>
+						navigate("/facecam", {
+							state: [
+								...state,
+								JSON.stringify({
+									longitude: longitude.toString(),
+									latitude: latitude.toString(),
+								}),
+							],
 						}),
-					],
-				});
 				);
 			}
 		});
