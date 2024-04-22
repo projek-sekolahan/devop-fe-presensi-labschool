@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
 import { getFormData, alert } from "../utils/utils";
 import Cookies from "js-cookie";
@@ -8,8 +8,10 @@ import Swal from "sweetalert2";
 
 export default function ChangePassword() {
 	const emailRef = useRef();
+	const [load, setLoad] = useState(false);
 	const submitHandler = (e) => {
 		e.preventDefault();
+		setLoad(true);
 		const key = ["username", "csrf_token"];
 		const values = [
 			emailRef.current.value,
@@ -17,14 +19,14 @@ export default function ChangePassword() {
 		];
 		apiXML.recover(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
+			setLoad(false);
 			res.status
-				? alert(
-						res.data.info,
-						res.data.title,
-						res.data.message,
-						"verify",
+				? alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace("verify"),
 					)
-				: alert(res.info, res.title, res.message, "recover");
+				: alert(res.info, res.title, res.message, () =>
+						window.location.replace("recover"),
+					);
 		});
 	};
 
@@ -36,7 +38,7 @@ export default function ChangePassword() {
 			<img
 				src="/img/reset_pwd.png"
 				alt="reset"
-				className="w-screen absolute top-0 left-0 z-0"
+				className="w-screen h-2/3 absolute top-0 left-0 z-0"
 			/>
 			<div className="w-full h-1/2 mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 relative z-10">
 				<h2 className="font-bold text-4xl">Ganti Password</h2>
@@ -53,9 +55,17 @@ export default function ChangePassword() {
 						/>
 						<button
 							onClick={submitHandler}
+							disabled={load}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
-							Ganti Password
+							{load ? (
+								<div className="flex justify-center items-center gap-2">
+									<p>Loading</p>
+									<span className="loading loading-spinner text-white"></span>
+								</div>
+							) : (
+								"Ganti Password"
+							)}
 						</button>
 					</form>
 				</div>
