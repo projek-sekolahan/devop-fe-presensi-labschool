@@ -105,12 +105,13 @@ export default function RegisterFace() {
 					];
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
+						console.log(res);
 						res.status
 							? alert(
 									res.data.info,
 									res.data.title,
 									res.data.message,
-									res.location,
+									res.data.location,
 								)
 							: alert(
 									res.info,
