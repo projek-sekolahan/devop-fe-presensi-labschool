@@ -146,13 +146,13 @@ export default function Register() {
 						<button
 							onClick={submitHandler}
 							disabled={loading}
-							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white flex justify-center items-center"
+							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 						>
 							{loading ? (
-								<p>
-									Loading{" "}
+								<div className="flex justify-center items-center">
+									<p>Loading </p>
 									<span className="loading loading-spinner text-white"></span>
-								</p>
+								</div>
 							) : (
 								"Create my account"
 							)}
