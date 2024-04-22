@@ -122,15 +122,19 @@ export default function Riwayat() {
 						</li>
 					</ul>
 				</div>
-				{historys.map((history, i) => {
-					return (
-						<CardRiwayat
-							key={i}
-							history={history}
-							biodata={userData}
-						/>
-					);
-				})}
+				{historys ? (
+					historys.map((history, i) => {
+						return (
+							<CardRiwayat
+								key={i}
+								history={history}
+								biodata={userData}
+							/>
+						);
+					})
+				) : (
+					<span className="loading loading-spinner text-white"></span>
+				)}
 			</main>
 		</div>
 	);
