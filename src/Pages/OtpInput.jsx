@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
-	const [loading, setLoading] = useState(false);
+	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
 
@@ -19,13 +19,13 @@ export default function OtpInput() {
 	}, []);
 
 	const onOtpSubmit = () => {
-		setLoading(true);
+		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("ci_sso_csrf_cookie")];
 		loading("Loading", "Processing OTP Data...");
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
-			setLoading(false);
+			setLoad(false);
 			localStorage.setItem("regist_token", res.data.token);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
@@ -134,10 +134,10 @@ export default function OtpInput() {
 					</p>
 					<button
 						onClick={onOtpSubmit}
-						disabled={loading}
+						disabled={load}
 						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white mt-24"
 					>
-						{loading ? (
+						{load ? (
 							<div className="flex justify-center items-center gap-2">
 								<p>Loading</p>
 								<span className="loading loading-spinner text-white"></span>
