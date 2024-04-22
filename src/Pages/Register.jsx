@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-// import { register } from "../utils/api.js";
 import apiXML from "../utils/apiXML.js";
-import { getFormData, alert } from "../utils/utils.js";
+import { getFormData, alert, loading } from "../utils/utils.js";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -9,7 +8,7 @@ import Swal from "sweetalert2";
 export default function Register() {
 	localStorage.clear();
 	const [role, setRole] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [setLoading] = useState(false);
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
