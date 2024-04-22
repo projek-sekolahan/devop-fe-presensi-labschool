@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash } from "../utils/utils";
+import { getFormData, getHash, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
