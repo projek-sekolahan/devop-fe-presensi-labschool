@@ -40,13 +40,15 @@ export default function Register() {
 			res = JSON.parse(res);
 			setLoad(false);
 			res.status
-				? alert(
-						res.data.info,
-						res.data.title,
-						res.data.message,
-						res.data.location,
+				? alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace(res.data.location),
 					)
-				: alert(res.info, res.title, res.message, res.location);
+				: alert(
+						res.info,
+						res.title,
+						res.message,
+						window.location.replace(res.data.location),
+					);
 		});
 	};
 	return (

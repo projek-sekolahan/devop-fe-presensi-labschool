@@ -28,13 +28,12 @@ export default function OtpInput() {
 			setLoading(false);
 			localStorage.setItem("regist_token", res.data.token);
 			res.status
-				? alert(
-						res.data.info,
-						res.data.title,
-						res.data.message,
-						"facereg",
+				? alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace("facereg"),
 					)
-				: alert(res.info, res.title, res.message, res.location);
+				: alert(res.info, res.title, res.message, () =>
+						window.location.replace(res.location),
+					);
 		});
 	};
 
@@ -82,7 +81,9 @@ export default function OtpInput() {
 		loading("Loading", "Processing Send OTP Data...");
 		apiXML.sendOtp(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
-			alert(res.info, res.title, res.message, res.location);
+			alert(res.info, res.title, res.message, () =>
+				window.location.replace(res.location),
+			);
 		});
 	};
 

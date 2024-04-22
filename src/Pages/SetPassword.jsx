@@ -41,13 +41,12 @@ export default function SetPassword() {
 			setDisabled(false);
 			res = JSON.parse(res);
 			res.status
-				? alert(
-						res.data.info,
-						res.data.title,
-						res.data.message,
-						"login",
+				? alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace("login"),
 					)
-				: alert(res.info, res.title, res.message, "setpassword");
+				: alert(res.info, res.title, res.message, () =>
+						window.location.replace("setpassword"),
+					);
 		});
 	};
 

@@ -90,13 +90,11 @@ export default function RegisterFace() {
 									res.data.info,
 									res.data.title,
 									res.data.message,
-									"setpassword",
+									() =>
+										window.location.replace("setpassword"),
 								)
-							: alert(
-									res.info,
-									res.title,
-									res.message,
-									res.location,
+							: alert(res.info, res.title, res.message, () =>
+									window.location.replace(res.location),
 								);
 					});
 				} else {

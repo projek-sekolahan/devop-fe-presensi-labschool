@@ -6,8 +6,8 @@ import {
 	ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { logout } from "../utils/api";
-import { getFormData } from "../utils/utils";
+import apiXML from "../utils/apiXML";
+import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data, csrf }) {
@@ -40,20 +40,20 @@ export default function SideMenu({ show, data, csrf }) {
 						localStorage.getItem("csrf"),
 						localStorage.getItem("login_token"),
 					];
-					logout(
-						localStorage.getItem("AUTH_KEY"),
-						getFormData(key, values),
-						(res) => {
-							Swal.fire({
-								title: "Logout Succesfully",
-								text: "You has been loged out!",
-								icon: "success",
-								allowOutsideClick: false,
-								allowEnterKey: false,
-								allowEscapeKey: false,
-							}).then(() => window.location.replace("/login"));
-						},
-					);
+					apiXML
+						.logout(
+							localStorage.getItem("AUTH_KEY"),
+							getFormData(key, values),
+						)
+						.then((res) => {
+							res = JSON.parse(res);
+							alert(
+								"success",
+								"Logout Succesfully",
+								"You has been loged out!",
+								() => window.location.replace("/login"),
+							);
+						});
 				} else {
 					isLogout = false;
 				}
