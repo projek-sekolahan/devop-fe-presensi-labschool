@@ -40,6 +40,7 @@ export default function Register() {
 			role,
 			csrf_token,
 		];
+		loading("Loading", "Registering...");
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoad(false);
