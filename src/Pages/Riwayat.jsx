@@ -45,7 +45,7 @@ export default function Riwayat() {
 		localStorage.getItem("token"),
 		"tab-presensi",
 	];
-	filter == "7 DAY"
+	filter == "7 Hari"
 		? (values = [...values, "7 DAY"])
 		: (values = [...values, "14 DAY"]);
 
