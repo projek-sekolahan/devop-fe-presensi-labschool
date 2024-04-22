@@ -25,8 +25,7 @@ export default function RegisterFace() {
 	const textRef = useRef();
 	const { state } = useLocation();
 
-	const descriptor = userData.facecam_id;
-	console.log(new Float32Array(descriptor.split(", ")));
+	const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
 	loading("Loading", "Getting camera access...");
 
@@ -80,7 +79,7 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
-		const registerFace = setInterval(async () => {
+		const matchFace = setInterval(async () => {
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
@@ -91,11 +90,16 @@ export default function RegisterFace() {
 
 			if (faceData) {
 				Swal.close();
+				const distance = faceapi.euclideanDistance(
+					descriptor,
+					faceData.descriptor,
+				);
 				const percentage = `${Math.round(
-					(faceData.detection.score / 0.8) * 100,
+					((1 - distance) / 0.4) * 100,
 				)}%`;
-				if (faceData.detection.score >= 0.8) {
-					clearInterval(registerFace);
+
+				if (distance <= 0.6) {
+					clearInterval(matchFace);
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
 
@@ -111,12 +115,9 @@ export default function RegisterFace() {
 					const stringDescriptor = Array.from(
 						faceData.descriptor,
 					).join(", ");
-					const values = [
-						stringDescriptor,
-						`["${imgUrl}"]`,
-						localStorage.getItem("regist_token"),
-						Cookies.get("ci_sso_csrf_cookie"),
-					];
+
+					values = [...values, stringDescriptor, `["${imgUrl}"]`];
+
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
 						res.status
@@ -124,13 +125,15 @@ export default function RegisterFace() {
 									res.data.info,
 									res.data.title,
 									res.data.message,
-									"setpassword",
+									() => window.location,
+									replace("home"),
 								)
 							: alert(
 									res.info,
 									res.title,
 									res.message,
-									res.location,
+									() => window.location,
+									replace(res.location),
 								);
 					});
 				} else {
