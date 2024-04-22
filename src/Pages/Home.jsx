@@ -24,6 +24,8 @@ export default function Home() {
 		window.location.replace("/login");
 	}
 
+	console.log(new Float32Array(userData.facecam_id.split(", ")));
+
 	const checkSession = () => {
 		if (!localStorage.getItem("csrf")) {
 			localStorage.setItem("csrf", Cookies.get("ci_sso_csrf_cookie"));
