@@ -154,7 +154,7 @@ export default function Register() {
 						>
 							{load ? (
 								<div className="flex justify-center items-center gap-2">
-									<p>Loading </p>
+									<p className="text-white">Loading </p>
 									<span className="loading loading-spinner text-white"></span>
 								</div>
 							) : (
