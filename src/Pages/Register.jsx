@@ -13,8 +13,8 @@ export default function Register() {
 	const numberRef = useRef();
 	const emailRef = useRef();
 
-	const onSubmit = () => {
-		setLoading(true);
+	const onSubmit = (e) => {
+		e.preventDefault();
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
@@ -38,7 +38,6 @@ export default function Register() {
 		loading("Loading", "Processing Register Data...");
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
-			setLoading(false);
 			res.status
 				? alert(
 						res.data.info,
