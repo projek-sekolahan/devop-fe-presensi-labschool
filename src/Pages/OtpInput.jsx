@@ -135,7 +135,7 @@ export default function OtpInput() {
 					<button
 						onClick={onOtpSubmit}
 						disabled={loading}
-						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
+						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white mt-24"
 					>
 						{loading ? (
 							<div className="flex justify-center items-center gap-2">
