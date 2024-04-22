@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
-
+	const [loading, setLoading] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
 
@@ -20,11 +20,13 @@ export default function OtpInput() {
 
 	const onOtpSubmit = (e) => {
 		e.preventDefault();
+		setLoading(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("ci_sso_csrf_cookie")];
 
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
+			setLoading(false);
 			localStorage.setItem("regist_token", res.data.token);
 			res.status
 				? alert(
@@ -132,9 +134,17 @@ export default function OtpInput() {
 					</p>
 					<button
 						onClick={onOtpSubmit}
-						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-8"
+						disabled={loading}
+						className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 					>
-						Verifikasi
+						{loading ? (
+							<div className="flex justify-center items-center gap-2">
+								<p>Loading</p>
+								<span className="loading loading-spinner text-white"></span>
+							</div>
+						) : (
+							"Verifikasi"
+						)}
 					</button>
 				</form>
 			</div>

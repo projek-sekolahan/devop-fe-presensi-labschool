@@ -149,7 +149,7 @@ export default function Register() {
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 						>
 							{loading ? (
-								<div className="flex justify-center items-center">
+								<div className="flex justify-center items-center gap-2">
 									<p>Loading </p>
 									<span className="loading loading-spinner text-white"></span>
 								</div>
