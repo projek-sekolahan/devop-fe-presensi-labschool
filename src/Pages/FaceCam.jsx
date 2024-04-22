@@ -1,17 +1,33 @@
 import * as faceapi from "face-api.js";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import {
+	getFormData,
+	getImageUrl,
+	loading,
+	alert,
+	parseJwt,
+} from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+
+let userData = {};
+if (localStorage.getItem("token")) {
+	userData = parseJwt(localStorage.getItem("token"));
+} else {
+	window.location.replace("/login");
+}
 
 export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
 	const { state } = useLocation();
-	console.log(state);
+
+	const descriptor = userData.facecam_id;
+	console.log(new Float32Array(descriptor.split(", ")));
+
 	loading("Loading", "Getting camera access...");
 
 	const key = [
@@ -25,7 +41,12 @@ export default function RegisterFace() {
 		"facecam_id",
 		"foto_presensi",
 	];
-	let values = [];
+	let values = [
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("devop-sso"),
+		localStorage.getItem("csrf"),
+		...state,
+	];
 
 	const startVideo = () => {
 		navigator.mediaDevices

@@ -58,9 +58,9 @@ export default function RegisterFace() {
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
-					(faceData.detection.score / 0.8) * 100,
+					(faceData.detection.score / 0.9) * 100,
 				)}%`;
-				if (faceData.detection.score >= 0.8) {
+				if (faceData.detection.score >= 0.9) {
 					clearInterval(registerFace);
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
