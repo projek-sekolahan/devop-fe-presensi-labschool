@@ -8,14 +8,14 @@ import Swal from "sweetalert2";
 export default function Register() {
 	localStorage.clear();
 	const [role, setRole] = useState("");
-	const [setLoading] = useState(false);
+	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		// setLoading(true);
+		setLoad(true);
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
@@ -40,6 +40,7 @@ export default function Register() {
 		// console.log(getFormData(keys, values));
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
+			setLoad(false);
 			res.status
 				? alert(
 						res.data.info,
