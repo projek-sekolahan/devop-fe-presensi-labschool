@@ -7,7 +7,6 @@ export default function FaceVerification() {
 	const { state } = useLocation();
 	const navigate = useNavigate();
 	console.log(state);
-	console.log("halo");
 
 	// Fungsi untuk mengonversi derajat menjadi radian
 	function degreesToRadians(degrees) {
@@ -56,7 +55,6 @@ export default function FaceVerification() {
 				longitude >= coordinat.max_longitude
 			) {
 				alert("success", "Done", "Anda berada di area sekolah");
-				console.log(state);
 				navigate("/facecam", {
 					state: [
 						...state,
@@ -72,6 +70,12 @@ export default function FaceVerification() {
 					longitude,
 					coordinat.latitude,
 					coordinat.longitude,
+				);
+				console.log(
+					JSON.stringify({
+						longitude: longitude.toString(),
+						latitude: latitude.toString(),
+					}),
 				);
 				alert(
 					"warning",
