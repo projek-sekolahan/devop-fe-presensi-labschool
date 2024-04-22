@@ -10,8 +10,9 @@ import { parseJwt, getFormData } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
-	const [filter, setFilter] = useState("7 DAY");
+	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
+	const [riwayat, setRiwayat] = useState(null);
 
 	let userData = {};
 	if (localStorage.getItem("token")) {
@@ -43,42 +44,18 @@ export default function Riwayat() {
 		localStorage.getItem("csrf"),
 		localStorage.getItem("token"),
 		"tab-presensi",
-		filter,
 	];
+	filter == "7 DAY"
+		? (values = [...values, "7 DAY"])
+		: (values = [...values, "14 DAY"]);
 
 	apiXML
 		.reports(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
 		.then((res) => {
 			res = JSON.parse(res);
-			console.log(parseJwt(res.data));
+			localStorage.setItem("csrf", res.csrfHash);
+			setRiwayat(parseJwt(res.data));
 		});
-
-	const historys = [
-		{
-			date: "Rabu, 23 Februari 2024",
-			status: "Terlambat",
-			checkIn: "07:15:00 WIB",
-			checkOut: "15:00:00 WIB",
-		},
-		{
-			date: "Kamis, 24 Februari 2024",
-			status: "Masuk",
-			checkIn: "06:59:00 WIB",
-			checkOut: "15:00:00 WIB",
-		},
-		{
-			date: "Jumat, 25 Februari 2024",
-			status: "Masuk",
-			checkIn: "06:45:00 WIB",
-			checkOut: "15:00:00 WIB",
-		},
-		{
-			date: "Senin, 28 Februari 2024",
-			status: "Izin",
-			checkIn: "",
-			checkOut: "",
-		},
-	];
 
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
@@ -123,7 +100,7 @@ export default function Riwayat() {
 						<li>
 							<button
 								onClick={() => {
-									setFilter("7 DAY");
+									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
 								}}
 							>
@@ -133,7 +110,7 @@ export default function Riwayat() {
 						<li>
 							<button
 								onClick={() => {
-									setFilter("14 DAY");
+									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
 								}}
 							>
