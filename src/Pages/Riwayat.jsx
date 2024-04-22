@@ -138,7 +138,7 @@ export default function Riwayat() {
 						);
 					})
 				) : (
-					<span className="loading loading-spinner text-white"></span>
+					<span className="loading loading-spinner text-white text-center"></span>
 				)}
 			</main>
 		</div>
