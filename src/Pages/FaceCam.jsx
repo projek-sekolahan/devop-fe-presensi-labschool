@@ -40,12 +40,22 @@ export default function RegisterFace() {
 		"facecam_id",
 		"foto_presensi",
 	];
-	let values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("devop-sso"),
-		localStorage.getItem("csrf"),
-		...state,
-	];
+	let values;
+
+	userData.group_id == "4"
+		? (values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				localStorage.getItem("csrf"),
+				"non-dinas",
+				...state,
+			])
+		: (values = [
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("devop-sso"),
+				localStorage.getItem("csrf"),
+				...state,
+			]);
 
 	const startVideo = () => {
 		navigator.mediaDevices
