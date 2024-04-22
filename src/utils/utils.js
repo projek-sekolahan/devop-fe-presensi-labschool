@@ -88,12 +88,7 @@ function decrypt(param, from) {
 	return JSON.parse(decryptedText);
 }
 
-export const alert = (type, title, message, location = null) => {
-	location == "dashboard"
-		? (location = "/home")
-		: location == "register"
-			? (location = "/")
-			: null;
+export const alert = (type, title, message, callback) => {
 	Swal.fire({
 		titleText: title,
 		html: message,
@@ -102,7 +97,7 @@ export const alert = (type, title, message, location = null) => {
 		allowEnterKey: false,
 		allowEscapeKey: false,
 	}).then(() => {
-		location ? window.location.replace(location) : null;
+		callback();
 	});
 };
 

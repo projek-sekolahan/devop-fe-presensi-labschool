@@ -38,7 +38,7 @@ export default function Login() {
 					responseData.data.info,
 					responseData.data.title,
 					responseData.data.message,
-					responseData.data.location,
+					() => window.location.replace("home"),
 				);
 				return apiXML.getUserData(
 					localStorage.getItem("AUTH_KEY"),
@@ -54,7 +54,7 @@ export default function Login() {
 					errorData.data.info,
 					errorData.data.title,
 					errorData.data.message,
-					errorData.data.location,
+					() => window.location.replace(errorData.data.location),
 				);
 			});
 	};
