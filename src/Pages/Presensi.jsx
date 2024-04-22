@@ -59,6 +59,7 @@ export default function Presensi() {
 					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link
 							to="/presensi/verif"
+							state={[...state, "masuk"]}
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<RaiseHandIcon className="size-20" />
@@ -66,6 +67,7 @@ export default function Presensi() {
 						</Link>
 						<Link
 							to="/presensi/verif"
+							state={[...state, "pulang"]}
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<img
@@ -76,6 +78,7 @@ export default function Presensi() {
 						</Link>
 						<Link
 							to="/presensi/bukti"
+							state={[...state, "sakit"]}
 							className="p-5 bg-secondary-red rounded-md flex flex-col justify-center items-center"
 						>
 							<DoctorRegular
@@ -86,6 +89,7 @@ export default function Presensi() {
 						</Link>
 						<Link
 							to="/presensi/keterangan"
+							state={[...state, "izin"]}
 							className="p-5 bg-secondary-yellow rounded-md flex flex-col justify-center items-center"
 						>
 							<ExclamationTriangleIcon className="size-20 stroke-[2.5]" />

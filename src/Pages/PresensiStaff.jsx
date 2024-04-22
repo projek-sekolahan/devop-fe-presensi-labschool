@@ -50,7 +50,7 @@ export default function PresensiStaff() {
 					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link
 							to="/presensi"
-							state={{ dinas: 0 }}
+							state={["non-dinas"]}
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<RaiseHandIcon className="size-20" />
@@ -60,7 +60,7 @@ export default function PresensiStaff() {
 						</Link>
 						<Link
 							to="/presensi/bukti"
-							state={{ dinas: 1 }}
+							state={["dinas-luar"]}
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<img

@@ -1,10 +1,13 @@
 import { PiUserFocusThin } from "react-icons/pi";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { alert } from "../utils/utils";
 import { useEffect, useState } from "react";
 
 export default function FaceVerification() {
+	const { state } = useLocation();
+	const navigate = useNavigate();
+
 	// Fungsi untuk mengonversi derajat menjadi radian
 	function degreesToRadians(degrees) {
 		return (degrees * Math.PI) / 180;
@@ -51,17 +54,27 @@ export default function FaceVerification() {
 				longitude <= coordinat.min_longitude &&
 				longitude >= coordinat.max_longitude
 			) {
-				alert("Anda berada di area sekolah");
-				window.location.replace("/facecam");
+				alert("success", "Done", "Anda berada di area sekolah");
+				navigate("/facecam", {
+					state: [
+						...state,
+						JSON.stringify({
+							longitude: longitude.toString(),
+							latitude: latitude.toString(),
+						}),
+					],
+				});
 			} else {
 				const distance = calculateDistance(
 					latitude,
 					longitude,
 					coordinat.latitude,
-					coordinat.longitude
+					coordinat.longitude,
 				);
 				alert(
-					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`
+					"warning",
+					"",
+					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 				);
 			}
 		});
@@ -83,14 +96,14 @@ export default function FaceVerification() {
 						presensi
 					</p>
 				</div>
-				<Link className="w-full px-6 absolute bottom-16">
+				<div className="w-full px-6 absolute bottom-16">
 					<button
 						onClick={click}
 						className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
 					>
 						Verifikasi
 					</button>
-				</Link>
+				</div>
 			</div>
 		</div>
 	);

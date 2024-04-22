@@ -1,28 +1,43 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { facecam } from "../utils/api";
-import { getFormData } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function FaceCam() {
+export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	loading("Loading", "Getting camera access...");
+
+	const key = [
+		"AUTH_KEY",
+		"devop-sso",
+		"csrf_token",
+		"token",
+		"status_dinas",
+		"status_kehadiran",
+		"geolocation",
+		"facecam_id",
+		"foto_presensi",
+	];
+	let values = [];
 
 	const startVideo = () => {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
+				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
 					console.log("Izin akses kamera ditolak oleh pengguna");
 				} else if (err.name === "NotFoundError") {
 					console.log(
-						"Tidak ada kamera yang tersedia pada perangkat"
+						"Tidak ada kamera yang tersedia pada perangkat",
 					);
 				} else {
 					console.log("Gagal mengakses webcam!", err);
@@ -36,43 +51,65 @@ export default function FaceCam() {
 		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
 		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
 		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-		faceapi.nets.faceExpressionNet.loadFromUri("/models"),
 	]).then(() => {
-		console.log("models loaded");
 		startVideo();
 	});
 
-	const onComplete = () => {};
-
 	const faceMyDetect = () => {
-		console.log("run detect");
-		setInterval(async () => {
-			console.log("run loop");
-			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
+		loading("Loading", "Tetap arahkan wajah ke kamera...");
+		const registerFace = setInterval(async () => {
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
-					new faceapi.TinyFaceDetectorOptions()
+					new faceapi.TinyFaceDetectorOptions(),
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
 
 			if (faceData) {
-				console.log(faceData);
+				Swal.close();
 				const percentage = `${Math.round(
-					(faceData.detection.score / 0.8) * 100
+					(faceData.detection.score / 0.8) * 100,
 				)}%`;
 				if (faceData.detection.score >= 0.8) {
+					clearInterval(registerFace);
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-					Swal.fire({
-						titleText: "Wajah Terdeteksi",
-						text: "Data telah direkam",
-						icon: "success",
-						allowOutsideClick: false,
-						allowEnterKey: false,
-						allowEscapeKey: false,
-					}).then(() => window.location.replace("/home"));
+
+					const { x, y, width, height } = faceData.detection.box;
+					const imgUrl = getImageUrl(
+						videoRef.current,
+						x - 50,
+						y - 75,
+						height + 125,
+					);
+
+					// Float 32 Array to String
+					const stringDescriptor = Array.from(
+						faceData.descriptor,
+					).join(", ");
+					const values = [
+						stringDescriptor,
+						`["${imgUrl}"]`,
+						localStorage.getItem("regist_token"),
+						Cookies.get("ci_sso_csrf_cookie"),
+					];
+					apiXML.facecam(getFormData(key, values)).then((res) => {
+						res = JSON.parse(res);
+						res.status
+							? alert(
+									res.data.info,
+									res.data.title,
+									res.data.message,
+									"setpassword",
+								)
+							: alert(
+									res.info,
+									res.title,
+									res.message,
+									res.location,
+								);
+					});
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
@@ -106,7 +143,7 @@ export default function FaceCam() {
 						0%
 					</p>
 					<p className="font-medium text-base">
-						Memverifikasi Wajah Anda...
+						Melakukan Registrasi Wajah Anda...
 					</p>
 				</div>
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">

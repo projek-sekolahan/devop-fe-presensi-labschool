@@ -88,7 +88,7 @@ function decrypt(param, from) {
 	return JSON.parse(decryptedText);
 }
 
-export const alert = (type, title, message, location) => {
+export const alert = (type, title, message, location = null) => {
 	location == "dashboard"
 		? (location = "/home")
 		: location == "register"
@@ -102,7 +102,7 @@ export const alert = (type, title, message, location) => {
 		allowEnterKey: false,
 		allowEscapeKey: false,
 	}).then(() => {
-		window.location.replace(location);
+		location ? window.location.replace(location) : null;
 	});
 };
 
