@@ -105,3 +105,17 @@ export const alert = (type, title, message, location) => {
 		window.location.replace(location);
 	});
 };
+
+export const loading = (title, text) => {
+	Swal.fire({
+		titleText: title,
+		html: text,
+		icon: "info",
+		allowOutsideClick: false,
+		allowEnterKey: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
+	});
+}

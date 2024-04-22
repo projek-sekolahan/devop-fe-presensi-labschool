@@ -1,7 +1,7 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { getFormData, getImageUrl } from "../utils/utils";
+import { getFormData, getImageUrl, loading } from "../utils/utils";
 import { facecam } from "../utils/api";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -10,17 +10,7 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
-
-	Swal.fire({
-		titleText: "Loading",
-		text: "Getting camera access...",
-		allowOutsideClick: false,
-		allowEnterKey: false,
-		allowEscapeKey: false,
-		didOpen: () => {
-			Swal.showLoading();
-		},
-	});
+	loading("Loading", "Getting camera access...");
 
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 
@@ -55,16 +45,7 @@ export default function RegisterFace() {
 	});
 
 	const faceMyDetect = () => {
-		Swal.fire({
-			titleText: "Loading",
-			text: "Tetap arahkan wajah ke kamera...",
-			allowOutsideClick: false,
-			allowEnterKey: false,
-			allowEscapeKey: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
+		loading("Loading", "Tetap arahkan wajah ke kamera...");
 		const registerFace = setInterval(async () => {
 			// alert(`${videoRef.current.clientWidth}, ${videoRef.current.clientHeight}, ${window.screen.width}, ${window.screen.height}`)
 			const faceData = await faceapi
