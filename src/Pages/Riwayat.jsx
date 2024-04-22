@@ -49,7 +49,7 @@ export default function Riwayat() {
 	apiXML
 		.reports(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
 		.then((res) => {
-			console.log(res);
+			console.log(res.data);
 			console.log(parseJwt(res.data));
 		});
 
