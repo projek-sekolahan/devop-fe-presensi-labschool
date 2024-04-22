@@ -16,6 +16,7 @@ export default function Register() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		setLoading(true);
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
