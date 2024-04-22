@@ -120,7 +120,7 @@ export const loading = (title, text) => {
 	});
 };
 
-export const formatDate = (inputDate) {
+export const formatDate = (inputDate) => {
 	const date = new Date(inputDate);
 
 	// Array nama hari dalam Bahasa Indonesia
@@ -158,4 +158,4 @@ export const formatDate = (inputDate) {
 
 	// Mengembalikan tanggal dalam format yang diinginkan
 	return `${day}, ${dayOfMonth} ${month} ${year}`;
-}
+};

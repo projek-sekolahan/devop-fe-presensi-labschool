@@ -121,13 +121,14 @@ export default function Riwayat() {
 					</ul>
 				</div>
 				{historys.map((history, i) => {
-					return (
-						<CardRiwayat
-							key={i}
-							history={history}
-							biodata={userData}
-						/>
-					);
+					// return (
+					// 	<CardRiwayat
+					// 		key={i}
+					// 		history={history}
+					// 		biodata={userData}
+					// 	/>
+					// );
+					console.log(history["Jam Masuk"]);
 				})}
 			</main>
 		</div>
