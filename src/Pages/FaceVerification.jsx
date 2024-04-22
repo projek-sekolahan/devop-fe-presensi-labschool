@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function FaceVerification() {
 	const { state } = useLocation();
 	const navigate = useNavigate();
+	console.log(state);
 
 	// Fungsi untuk mengonversi derajat menjadi radian
 	function degreesToRadians(degrees) {
