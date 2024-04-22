@@ -14,8 +14,8 @@ export default function Register() {
 	const numberRef = useRef();
 	const emailRef = useRef();
 
-	const submitHandler = (e) => {
-		e.preventDefault();
+	const onSubmit = () => {
+		setLoading(true);
 		if (!role) {
 			alert("error", "Input Error", "Harap pilih role", "register");
 			return;
@@ -144,7 +144,7 @@ export default function Register() {
 							required=""
 						/>
 						<button
-							onClick={submitHandler}
+							onClick={onSubmit}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
 							{loading ? (

@@ -18,12 +18,11 @@ export default function OtpInput() {
 		}
 	}, []);
 
-	const onOtpSubmit = (e) => {
-		e.preventDefault();
+	const onOtpSubmit = () => {
 		setLoading(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("ci_sso_csrf_cookie")];
-
+		loading("Loading", "Processing OTP Data...");
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoading(false);
@@ -80,7 +79,7 @@ export default function OtpInput() {
 			localStorage.getItem("email"),
 			Cookies.get("ci_sso_csrf_cookie"),
 		];
-
+		loading("Loading", "Processing Send OTP Data...");
 		apiXML.sendOtp(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
 			alert(res.info, res.title, res.message, res.location);
