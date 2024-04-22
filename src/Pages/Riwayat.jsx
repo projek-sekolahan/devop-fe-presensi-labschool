@@ -12,7 +12,7 @@ import apiXML from "../utils/apiXML";
 export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
-	const [riwayat, setRiwayat] = useState(null);
+	const [historys, setHistorys] = useState(null);
 
 	let userData = {};
 	if (localStorage.getItem("token")) {
@@ -53,8 +53,9 @@ export default function Riwayat() {
 		.reports(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
 		.then((res) => {
 			res = JSON.parse(res);
+			localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", res.csrfHash);
-			setRiwayat(parseJwt(res.data));
+			setHistorys(parseJwt(res.data));
 		});
 
 	return (

@@ -118,4 +118,44 @@ export const loading = (title, text) => {
 			Swal.showLoading();
 		},
 	});
+};
+
+export const formatDate = (inputDate) {
+	const date = new Date(inputDate);
+
+	// Array nama hari dalam Bahasa Indonesia
+	const days = [
+		"Minggu",
+		"Senin",
+		"Selasa",
+		"Rabu",
+		"Kamis",
+		"Jumat",
+		"Sabtu",
+	];
+
+	// Array nama bulan dalam Bahasa Indonesia
+	const months = [
+		"Januari",
+		"Februari",
+		"Maret",
+		"April",
+		"Mei",
+		"Juni",
+		"Juli",
+		"Agustus",
+		"September",
+		"Oktober",
+		"November",
+		"Desember",
+	];
+
+	// Mendapatkan hari, tanggal, bulan, dan tahun
+	const day = days[date.getDay()];
+	const dayOfMonth = date.getDate();
+	const month = months[date.getMonth()];
+	const year = date.getFullYear();
+
+	// Mengembalikan tanggal dalam format yang diinginkan
+	return `${day}, ${dayOfMonth} ${month} ${year}`;
 }
