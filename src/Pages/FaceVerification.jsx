@@ -2,12 +2,12 @@ import { PiUserFocusThin } from "react-icons/pi";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { alert } from "../utils/utils";
-import { useEffect, useState } from "react";
 
 export default function FaceVerification() {
 	const { state } = useLocation();
 	const navigate = useNavigate();
 	console.log(state);
+	console.log("halo");
 
 	// Fungsi untuk mengonversi derajat menjadi radian
 	function degreesToRadians(degrees) {
