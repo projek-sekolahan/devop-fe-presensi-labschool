@@ -86,7 +86,7 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-					const url = getImageUrl(
+					const imgUrl = getImageUrl(
 						videoRef.current,
 						x - 50,
 						y - 75,
@@ -99,7 +99,7 @@ export default function RegisterFace() {
 					).join(", ");
 					const values = [
 						stringDescriptor,
-						`["${url}"]`,
+						`["${imgUrl}"]`,
 						localStorage.getItem("regist_token"),
 						Cookies.get("ci_sso_csrf_cookie"),
 					];
@@ -111,7 +111,7 @@ export default function RegisterFace() {
 									res.data.info,
 									res.data.title,
 									res.data.message,
-									res.data.location,
+									"setpassword",
 								)
 							: alert(
 									res.info,

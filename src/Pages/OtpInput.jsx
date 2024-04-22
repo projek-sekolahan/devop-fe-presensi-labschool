@@ -25,6 +25,7 @@ export default function OtpInput() {
 
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
+			localStorage.setItem("regist_token", res.data.token);
 			res.status
 				? alert(
 						res.data.info,

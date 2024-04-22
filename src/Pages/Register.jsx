@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 export default function Register() {
 	localStorage.clear();
 	const [role, setRole] = useState("");
+	const [loading, setLoading] = useState(false);
 	const nameRef = useRef();
 	const numberRef = useRef();
 	const emailRef = useRef();
@@ -37,7 +38,7 @@ export default function Register() {
 		];
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
-			console.log(res);
+			setLoading(false);
 			res.status
 				? alert(
 						res.data.info,
@@ -145,7 +146,7 @@ export default function Register() {
 							onClick={submitHandler}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center"
 						>
-							Create my account
+							{loading ? <p>halo</p> : "Create my account"}
 						</button>
 					</div>
 					<div
