@@ -9,10 +9,11 @@ import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
+let historys = null;
+
 export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
-	const [historys, setHistorys] = useState(null);
 
 	let userData = {};
 	if (localStorage.getItem("token")) {
@@ -56,8 +57,7 @@ export default function Riwayat() {
 			localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", res.csrfHash);
 			const { data } = parseJwt(res.data);
-			console.log(data);
-			setHistorys(data);
+			historys = data;
 		});
 
 	return (
@@ -105,6 +105,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
+									historys = null;
 								}}
 							>
 								7 Hari
@@ -115,6 +116,7 @@ export default function Riwayat() {
 								onClick={() => {
 									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
+									historys = null;
 								}}
 							>
 								14 Hari
