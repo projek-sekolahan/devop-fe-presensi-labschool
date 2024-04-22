@@ -55,7 +55,7 @@ export default function Riwayat() {
 			res = JSON.parse(res);
 			localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", res.csrfHash);
-			{data} = parseJwt(res.data)
+			const { data } = parseJwt(res.data);
 			setHistorys(data);
 		});
 
