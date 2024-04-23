@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert } from "../utils/utils";
+import { getFormData, alert, loading } from "../utils/utils";
 
 export default function ChangePassword() {
 	const emailRef = useRef();
@@ -11,6 +11,7 @@ export default function ChangePassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		loading("Loading", "Verifying Email...");
 		setLoad(true);
 		const key = ["username", "csrf_token"];
 		const values = [
