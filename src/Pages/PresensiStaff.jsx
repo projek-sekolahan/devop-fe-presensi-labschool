@@ -1,7 +1,4 @@
-import {
-	ArrowLeftIcon,
-	ExclamationTriangleIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
@@ -11,7 +8,6 @@ export default function PresensiStaff() {
 	const timeRef = useRef(null);
 	const dateRef = useRef(null);
 	const dayRef = useRef(null);
-	const { state } = useLocation();
 
 	useClock(timeRef, dateRef, dayRef);
 	return (
