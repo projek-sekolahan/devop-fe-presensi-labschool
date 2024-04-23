@@ -56,7 +56,7 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		getCsrf().then((result) => {
+		/* getCsrf().then((result) => {
 			// Data cookie yang diberikan
 			localStorage.setItem("csrf", result.data.csrfHash);
 			const cookieData = {
@@ -70,7 +70,7 @@ function App() {
 					expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
 				});
 			});
-		});
+		}); */
 	}, []);
 
 	return (
