@@ -47,8 +47,6 @@ export default function OtpInput() {
 		newOtp[index] = value.substring(value.length - 1);
 		setOtp(newOtp);
 
-		// const combinedOtp = newOtp.join("");
-
 		if (value && index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
 		}
