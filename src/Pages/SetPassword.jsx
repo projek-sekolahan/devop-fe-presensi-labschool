@@ -35,6 +35,7 @@ export default function SetPassword() {
 			localStorage.getItem("regist_token"),
 			localStorage.getItem("csrf"),
 		];
+		console.log(key, values);
 		loading("Loading", "Processing Set Password Data...");
 		apiXML.setPassword(getFormData(key, values)).then((res) => {
 			setLoading(false);
