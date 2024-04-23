@@ -1,14 +1,15 @@
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash, alert } from "../utils/utils";
+import { getFormData, getHash, alert, loading } from "../utils/utils";
 import apiXML from "../utils/apiXML";
+import PasswordShow from "../Components/PasswordShow";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
-	const [loading, setLoading] = useState(false);
-	const inputRef = useRef();
+	const [setLoading] = useState(false);
+	const [inputRef,confirmRef] = useRef();
 
 	const changeHandler = (e) => {
 		if (inputRef.current.value) {
@@ -33,7 +34,7 @@ export default function SetPassword() {
 			localStorage.getItem("regist_token"),
 			localStorage.getItem("csrf"),
 		];
-
+		loading("Loading", "Processing Set Password Data...");
 		apiXML.setPassword(getFormData(key, values)).then((res) => {
 			setLoading(false);
 			setDisabled(false);
@@ -74,6 +75,7 @@ export default function SetPassword() {
 								required=""
 								ref={inputRef}
 							/>
+							<PasswordShow ref={inputRef} />
 							<label
 								htmlFor="password"
 								style={{ display: `${warning}` }}
@@ -91,8 +93,10 @@ export default function SetPassword() {
 								placeholder="Password (8 or more characters)"
 								className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 								required=""
+								ref={confirmRef}
 								onChange={changeHandler}
 							/>
+							<PasswordShow ref={confirmRef} />
 						</div>
 
 						<button
@@ -100,7 +104,7 @@ export default function SetPassword() {
 							disabled={disabled}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 						>
-							{loading ? (
+							{setLoading ? (
 								<div className="flex justify-center items-center gap-2">
 									<p>Loading </p>
 									<span className="loading loading-spinner text-white"></span>
