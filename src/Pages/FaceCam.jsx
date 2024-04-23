@@ -43,7 +43,7 @@ export default function RegisterFace() {
 	];
 	let values;
 	console.log(userData.group_id);
-	userData.group_id == "4"
+	localStorage.getItem("group_id") == "4"
 		? (values = [
 				localStorage.getItem("AUTH_KEY"),
 				localStorage.getItem("devop-sso"),

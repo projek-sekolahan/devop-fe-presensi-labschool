@@ -19,7 +19,6 @@ export default function Home() {
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
 		localStorage.setItem("group_id", userData.group_id);
-		console.log(userData);
 	} else {
 		window.location.replace("/login");
 	}
