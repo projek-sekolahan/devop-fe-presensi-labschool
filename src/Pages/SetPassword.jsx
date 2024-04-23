@@ -8,7 +8,6 @@ import PasswordShow from "../Components/PasswordShow";
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
-	const [setLoading] = useState(false);
 	const inputRef = useRef();
 	const confirmRef = useRef();
 
@@ -27,20 +26,15 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		console.log(getHash(inputRef.current.value));
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
-		setLoading(true);
 		const key = ["password", "devop-sso", "csrf_token"];
 		const values = [
 			getHash(inputRef.current.value),
 			localStorage.getItem("regist_token"),
 			localStorage.getItem("csrf"),
 		];
-		console.log(key, values);
-		
 		apiXML.setPassword(getFormData(key, values)).then((res) => {
-			setLoading(false);
 			setDisabled(false);
 			res = JSON.parse(res);
 			localStorage.setItem("csrf", res.csrfHash);
@@ -110,7 +104,7 @@ export default function SetPassword() {
 							disabled={disabled}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
 						>
-							{setLoading ? (
+							{disabled ? (
 								<div className="flex justify-center items-center gap-2">
 									<p>Loading </p>
 									<span className="loading loading-spinner text-white"></span>
