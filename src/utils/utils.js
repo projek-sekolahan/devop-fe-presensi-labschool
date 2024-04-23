@@ -164,7 +164,7 @@ export const useClock = (timeRef, dateRef, dayRef) => {
 	  const interval = setInterval(() => {
 		const now = new Date();
 		const currentTime = now.toLocaleTimeString('en-US', { hour12: false }).split(".").join(":");
-		const currentDate = now.toLocaleDateString();
+		const currentDate = now.toLocaleDateString('en-GB');
 		const currentDay = days[now.getDay()];
   
 		if (timeRef.current && dateRef.current && dayRef.current) {
