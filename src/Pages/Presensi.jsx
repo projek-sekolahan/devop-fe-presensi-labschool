@@ -6,29 +6,15 @@ import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
 import { DoctorRegular } from "@fluentui/react-icons";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { useClock } from "../utils/utils";
 
 export default function Presensi() {
-	const timeRef = useRef();
-	const dateRef = useRef();
+	const timeRef = useRef(null);
+	const dateRef = useRef(null);
+	const dayRef = useRef(null);
 	const { state } = useLocation();
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const currentTime = new Date()
-				.toLocaleTimeString()
-				.split(".")
-				.join(":");
-			const currentDate = new Date()
-				.toLocaleDateString()
-				.split("/")
-				.join("-");
-			if (timeRef && dateRef) {
-				timeRef.current.innerText = `${currentTime} WIB`;
-				dateRef.current.innerText = `Tanggal : ${currentDate}`;
-			}
-		}, 1000);
-		return () => clearInterval(interval);
-	}, []);
+	useClock(timeRef, dateRef, dayRef);
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
 			<header className="h-1/5 bg-primary-md relative p-6">
@@ -49,13 +35,16 @@ export default function Presensi() {
 			</header>
 			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-primary-md">
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
-					<p
-						ref={timeRef}
-					>{`${new Date().toLocaleTimeString().split(".").join(":")} WIB`}</p>
-					<small
-						ref={dateRef}
-					>{`Tanggal : ${new Date().toLocaleDateString().split("/").join("-")}`}</small>
 					<div className="grid grid-cols-2 gap-2 text-white">
+						{/* Kolom pertama untuk waktu */}
+						<div className="bg-blue-500 p-2 rounded-lg flex items-center justify-center">
+    						<div ref={timeRef} className="font-bold text-xl"></div>
+    					</div>
+    					{/* Kolom kedua untuk tanggal dan hari */}
+    					<div className="bg-green-500 p-2 rounded-lg flex flex-col items-center justify-center">
+    						<div ref={dateRef} className="font-bold text-md"></div>
+    						<div ref={dayRef} className="font-bold text-md"></div>
+    					</div>
 						<Link
 							to="/presensi/verif"
 							state={state ? [...state, "masuk"] : ["masuk"]}

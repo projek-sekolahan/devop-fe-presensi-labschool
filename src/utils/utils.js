@@ -154,3 +154,26 @@ export const formatDate = (inputDate) => {
 	// Mengembalikan tanggal dalam format yang diinginkan
 	return `${day}, ${dayOfMonth} ${month} ${year}`;
 };
+
+
+// Fungsi untuk mengatur waktu dan tanggal
+export const useClock = (timeRef, dateRef, dayRef) => {
+	const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  
+	useEffect(() => {
+	  const interval = setInterval(() => {
+		const now = new Date();
+		const currentTime = now.toLocaleTimeString().split(".").join(":");
+		const currentDate = now.toLocaleDateString().split("/").join("-");
+		const currentDay = days[now.getDay()];
+  
+		if (timeRef.current && dateRef.current && dayRef.current) {
+		  timeRef.current.innerText = `${currentTime} WIB`;
+		  dateRef.current.innerText = `Tanggal: ${currentDate}`;
+		  dayRef.current.innerText = `Hari: ${currentDay}`;
+		}
+	  }, 1000);
+  
+	  return () => clearInterval(interval);
+	}, [timeRef, dateRef, dayRef]);
+  };
