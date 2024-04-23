@@ -27,6 +27,7 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
 		setLoading(true);
 		const key = ["password", "devop-sso", "csrf_token"];
@@ -36,7 +37,7 @@ export default function SetPassword() {
 			localStorage.getItem("csrf"),
 		];
 		console.log(key, values);
-		loading("Loading", "Processing Set Password Data...");
+		
 		apiXML.setPassword(getFormData(key, values)).then((res) => {
 			setLoading(false);
 			setDisabled(false);
