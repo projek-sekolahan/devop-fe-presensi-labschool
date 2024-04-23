@@ -35,16 +35,17 @@ export default function Presensi() {
 			</header>
 			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-primary-md">
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
-					<div className="grid grid-cols-2 gap-2 text-white">
 						{/* Kolom pertama untuk waktu */}
-						<div className="bg-blue-500 p-2 rounded-lg flex items-center justify-center">
+						<div className="p-2 rounded-lg flex items-center justify-center">
     						<div ref={timeRef} className="font-bold text-xl"></div>
     					</div>
     					{/* Kolom kedua untuk tanggal dan hari */}
-    					<div className="bg-green-500 p-2 rounded-lg flex flex-col items-center justify-center">
+    					<div className="p-2 rounded-lg flex flex-col items-center justify-center">
+							<div ref={dayRef} className="font-bold text-md"></div>
     						<div ref={dateRef} className="font-bold text-md"></div>
-    						<div ref={dayRef} className="font-bold text-md"></div>
+    						
     					</div>
+					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link
 							to="/presensi/verif"
 							state={state ? [...state, "masuk"] : ["masuk"]}

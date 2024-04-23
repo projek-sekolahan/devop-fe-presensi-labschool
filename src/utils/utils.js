@@ -163,14 +163,14 @@ export const useClock = (timeRef, dateRef, dayRef) => {
 	useEffect(() => {
 	  const interval = setInterval(() => {
 		const now = new Date();
-		const currentTime = now.toLocaleTimeString().split(".").join(":");
-		const currentDate = now.toLocaleDateString().split("/").join("-");
+		const currentTime = now.toLocaleTimeString('en-US', { hour12: false }).split(".").join(":");
+		const currentDate = now.toLocaleDateString();
 		const currentDay = days[now.getDay()];
   
 		if (timeRef.current && dateRef.current && dayRef.current) {
 		  timeRef.current.innerText = `${currentTime} WIB`;
-		  dateRef.current.innerText = `Tanggal: ${currentDate}`;
-		  dayRef.current.innerText = `Hari: ${currentDay}`;
+		  dateRef.current.innerText = `${currentDate}`;
+		  dayRef.current.innerText = `Hari: ${currentDay},`;
 		}
 	  }, 1000);
   
