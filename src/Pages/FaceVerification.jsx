@@ -77,7 +77,7 @@ export default function FaceVerification() {
 					"",
 					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 					() =>
-						navigate("/facecam", {
+						navigate("/presensi/verif", {
 							state: [
 								...state,
 								JSON.stringify({
