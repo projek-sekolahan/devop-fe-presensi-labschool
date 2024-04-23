@@ -6,7 +6,6 @@ import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 
 export default function Login() {
-	localStorage.clear();
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const onSubmit = () => {
