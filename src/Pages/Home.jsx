@@ -32,6 +32,8 @@ export default function Home() {
 		apiXML.sessTime(
 			localStorage.getItem("AUTH_KEY"), getFormData(key, value)
 		).then((res) => {
+			res = JSON.parse(res);
+			console.log(res);
 			if (res.data.title == "Your Session OK") {
 				localStorage.setItem("csrf", res.data.csrfHash);
 			} else {
