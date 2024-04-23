@@ -23,8 +23,6 @@ export default function Register() {
 			);
 			return;
 		}
-		localStorage.setItem("email", emailRef.current.value);
-		console.log(localStorage.getItem("email")); return false;
 		const keys = [
 			"username",
 			"phone",
@@ -44,6 +42,8 @@ export default function Register() {
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoad(false);
+			localStorage.setItem("email", emailRef.current.value);
+			// console.log(localStorage.getItem("email")); return false;
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
 						navigate(res.data.location==="register" ? "/" : res.data.location , {
