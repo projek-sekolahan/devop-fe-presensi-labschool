@@ -57,7 +57,7 @@ export default function RegisterFace() {
 				localStorage.getItem("csrf"),
 				...state,
 			]);
-	console.log(values);
+	console.log(values); return false;
 	const startVideo = () => {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
