@@ -32,14 +32,14 @@ export default function Home() {
 		apiXML.sessTime(
 			localStorage.getItem("AUTH_KEY"), getFormData(key, value)
 		).then((res) => {
-			if (res.data.data.title == "Your Session OK") {
+			if (res.data.title == "Your Session OK") {
 				localStorage.setItem("csrf", res.data.csrfHash);
 			} else {
 				localStorage.clear();
 				alert(
-					res.data.data.info,
-					res.data.data.title,
-					res.data.data.message,
+					res.data.info,
+					res.data.title,
+					res.data.message,
 					() => window.location.replace("/login"),
 				)
 			}
