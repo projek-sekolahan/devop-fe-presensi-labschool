@@ -3,31 +3,17 @@ import {
 	ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
-import { DoctorRegular } from "@fluentui/react-icons";
 import { Link } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
+import { useClock } from "../utils/utils";
 
 export default function PresensiStaff() {
-	const timeRef = useRef();
-	const dateRef = useRef();
+	const timeRef = useRef(null);
+	const dateRef = useRef(null);
+	const dayRef = useRef(null);
+	const { state } = useLocation();
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const currentTime = new Date()
-				.toLocaleTimeString()
-				.split(".")
-				.join(":");
-			const currentDate = new Date()
-				.toLocaleDateString()
-				.split("/")
-				.join("-");
-			if (timeRef && dateRef) {
-				timeRef.current.innerText = `${currentTime} WIB`;
-				dateRef.current.innerText = `Tanggal : ${currentDate}`;
-			}
-		}, 1000);
-		return () => clearInterval(interval);
-	}, []);
+	useClock(timeRef, dateRef, dayRef);
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
 			<header className="h-1/5 bg-primary-md relative p-6">
@@ -41,12 +27,13 @@ export default function PresensiStaff() {
 			</header>
 			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-primary-md">
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
-					<p
-						ref={timeRef}
-					>{`${new Date().toLocaleTimeString().split(".").join(":")} WIB`}</p>
-					<small
-						ref={dateRef}
-					>{`Tanggal : ${new Date().toLocaleDateString().split("/").join("-")}`}</small>
+					<div className="flex justify-between items-center w-full">
+						<p ref={timeRef} className="text-lg font-semibold"></p>
+						<div className="text-lg font-bold">
+							<small ref={dayRef}></small>
+							<small ref={dateRef}></small>
+						</div>
+					</div>
 					<div className="grid grid-cols-2 gap-2 text-white">
 						<Link
 							to="/presensi"
