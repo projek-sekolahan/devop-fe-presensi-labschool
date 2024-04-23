@@ -9,7 +9,8 @@ export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(true);
 	const [setLoading] = useState(false);
-	const [inputRef,confirmRef] = useRef();
+	const inputRef = useRef();
+	const confirmRef = useRef();
 
 	const changeHandler = (e) => {
 		if (inputRef.current.value) {
