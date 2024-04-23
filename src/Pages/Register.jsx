@@ -21,9 +21,9 @@ export default function Register() {
 			alert("error", "Input Error", "Harap pilih role", () =>
 				window.location.replace("/"),
 			);
-
 			return;
 		}
+		console.log(emailRef.current.value); return false;
 		localStorage.setItem("email", emailRef.current.value);
 		const keys = [
 			"username",
