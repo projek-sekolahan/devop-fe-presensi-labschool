@@ -7,7 +7,7 @@ import PasswordShow from "../Components/PasswordShow";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
-	const [disabled, setDisabled] = useState(true);
+	const [disabled, setDisabled] = useState(false);
 	const inputRef = useRef();
 	const confirmRef = useRef();
 
