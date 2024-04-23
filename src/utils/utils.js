@@ -155,7 +155,6 @@ export const formatDate = (inputDate) => {
 	return `${day}, ${dayOfMonth} ${month} ${year}`;
 };
 
-
 // Fungsi untuk mengatur waktu dan tanggal
 export const useClock = (timeRef, dateRef, dayRef) => {
 	const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];

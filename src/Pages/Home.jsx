@@ -9,9 +9,8 @@ import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
-import { parseJwt, getFormData } from "../utils/utils";
-import { sessTime } from "../utils/api";
-import Cookies from "js-cookie";
+import { parseJwt, getFormData, alert } from "../utils/utils";
+import apiXML from "../utils/apiXML.js";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
@@ -24,15 +23,27 @@ export default function Home() {
 	}
 
 	const checkSession = () => {
-		if (!localStorage.getItem("csrf")) {
-			localStorage.setItem("csrf", Cookies.get("ci_sso_csrf_cookie"));
-		}
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-		const values = [
+		const value = [
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("AUTH_KEY"),
+			localStorage.getItem("csrf")
 		];
-		values[2] = localStorage.getItem("csrf");
+		apiXML.sessTime(
+			localStorage.getItem("AUTH_KEY"), getFormData(key, value)
+		).then((res) => {
+			if (res.data.data.title == "Your Session OK") {
+				localStorage.setItem("csrf", res.data.csrfHash);
+			} else {
+				localStorage.clear();
+				alert(
+					res.data.data.info,
+					res.data.data.title,
+					res.data.data.message,
+					() => window.location.replace("/login"),
+				)
+			}
+		})
 		// sessTime(
 		// 	localStorage.getItem("AUTH_KEY"),
 		// 	getFormData(key, values),
