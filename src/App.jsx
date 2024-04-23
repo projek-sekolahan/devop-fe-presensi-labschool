@@ -3,7 +3,6 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Navigate,
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
@@ -56,7 +55,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			// Data cookie yang diberikan
+			// Data yang diberikan
 			localStorage.setItem("csrf", result.data.csrfHash);
 		});
 	}, []);
@@ -103,5 +102,4 @@ function App() {
 		</Router>
 	);
 }
-
 export default App;

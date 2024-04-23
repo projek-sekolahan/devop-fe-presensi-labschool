@@ -10,7 +10,6 @@ export default function Register() {
 	const numberRef = useRef();
 	const emailRef = useRef();
 	const navigate = useNavigate();
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 		setLoad(true);

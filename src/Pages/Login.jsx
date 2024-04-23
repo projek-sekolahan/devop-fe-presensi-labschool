@@ -12,7 +12,6 @@ export default function Login() {
 		const passwordValue = passwordRef.current.value;
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
-
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [emailValue, hash, token_key[1], localStorage.getItem("csrf")];
 

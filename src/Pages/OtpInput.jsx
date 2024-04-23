@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
@@ -70,7 +70,7 @@ export default function OtpInput() {
 			inputRefs.current[index - 1].focus();
 		}
 	};
-	const sendOtpAgain = (e) => {
+	const sendOtpAgain = () => {
 		const key = ["email", "csrf_token"];
 		const values = [
 			localStorage.getItem("email"),
@@ -99,8 +99,7 @@ export default function OtpInput() {
 			<div className="w-full h-1/2 mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8">
 				<h2 className="font-bold text-4xl">Email Verification</h2>
 				<p className="text-xs">
-					Enter the verification code that was sended to your email
-					addreas
+					Enter the verification code that was sended to your email addreas
 				</p>
 				<form ref={formRef}>
 					<div className="flex justify-between my-8">
