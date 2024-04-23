@@ -37,7 +37,7 @@ export default function Presensi() {
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
 					<div className="flex justify-between items-center w-full">
 						<p ref={timeRef} className="text-lg font-semibold"></p>
-						<div className="text-base">
+						<div className="text-sm font-semibold">
 							<small className="block" ref={dayRef}></small>
 							<small className="block" ref={dateRef}></small>
 						</div>
