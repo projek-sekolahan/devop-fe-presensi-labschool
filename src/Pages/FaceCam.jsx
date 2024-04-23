@@ -23,7 +23,7 @@ export default function RegisterFace() {
 	} else {
 		window.location.replace("/login");
 	}
-
+	console.log(userData);
 	const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
 	loading("Loading", "Getting camera access...");
