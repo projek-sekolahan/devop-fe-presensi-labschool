@@ -25,7 +25,7 @@ export default function RegisterFace() {
 	}
 	
 	const descriptor = new Float32Array(userData.facecam_id.split(", "));
-	console.log(descriptor);
+	
 	loading("Loading", "Getting camera access...");
 
 	const keys = [
@@ -57,7 +57,7 @@ export default function RegisterFace() {
 				localStorage.getItem("csrf"),
 				...state,
 			]);
-
+	console.log(values);
 	const startVideo = () => {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
