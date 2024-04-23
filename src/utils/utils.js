@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-
+import { useEffect } from "react";
 export const getHash = (pass) => {
 	const keycode = CryptoJS.enc.Hex.parse(
 		CryptoJS.SHA1(btoa(pass)).toString(),

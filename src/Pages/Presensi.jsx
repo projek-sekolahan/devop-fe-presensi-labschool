@@ -5,7 +5,7 @@ import {
 import RaiseHandIcon from "pepicons/svg/pop/raise-hand.svg?react";
 import { DoctorRegular } from "@fluentui/react-icons";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useClock } from "../utils/utils";
 
 export default function Presensi() {
