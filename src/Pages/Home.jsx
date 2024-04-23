@@ -46,23 +46,8 @@ export default function Home() {
 				)
 			}
 		})
-		// sessTime(
-		// 	localStorage.getItem("AUTH_KEY"),
-		// 	getFormData(key, values),
-		// 	(res) => {
-		// 		console.log(res);
-		// 		if (res.data.data.title == "Your Session OK") {
-		// 			localStorage.setItem("csrf", res.data.csrfHash);
-		// 		} else {
-		// window.location.replace("/login");
-		// 		}
-		// 	}
-		// );
 	};
-
-	checkSession();
-	setInterval(checkSession(), 1200000);
-
+	setInterval(checkSession(), 6000);
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
 			setShow(false);
