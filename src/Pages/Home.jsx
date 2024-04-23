@@ -33,13 +33,12 @@ export default function Home() {
 			localStorage.getItem("AUTH_KEY"), getFormData(key, value)
 		).then((res) => {
 			res = JSON.parse(res);
-			console.log(res);
 			if (res.data.title == "Your Session OK") {
 				localStorage.setItem("csrf", res.csrfHash);
 			} else {
 				localStorage.clear();
 				alert(
-					res.data.info,
+					"error",
 					res.data.title,
 					res.data.message,
 					() => window.location.replace("/login"),
