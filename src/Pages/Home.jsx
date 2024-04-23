@@ -35,7 +35,7 @@ export default function Home() {
 			res = JSON.parse(res);
 			console.log(res);
 			if (res.data.title == "Your Session OK") {
-				localStorage.setItem("csrf", res.data.csrfHash);
+				localStorage.setItem("csrf", res.csrfHash);
 			} else {
 				localStorage.clear();
 				alert(
