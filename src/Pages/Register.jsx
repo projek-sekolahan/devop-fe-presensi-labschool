@@ -29,20 +29,19 @@ export default function Register() {
 			"sebagai",
 			"csrf_token",
 		];
-		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [
 			emailRef.current.value,
 			numberRef.current.value,
 			nameRef.current.value,
 			role,
-			csrf_token,
+			localStorage.getItem("csrf"),
 		];
 		loading("Loading", "Registering...");
 		apiXML.register(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoad(false);
 			localStorage.setItem("email", emailRef.current.value);
-			// console.log(localStorage.getItem("email")); return false;
+			localStorage.setItem("csrf", res.csrfHash);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
 						navigate(res.data.location==="register" ? "/" : res.data.location , {

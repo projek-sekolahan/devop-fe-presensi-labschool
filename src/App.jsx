@@ -56,21 +56,10 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		/* getCsrf().then((result) => {
+		getCsrf().then((result) => {
 			// Data cookie yang diberikan
 			localStorage.setItem("csrf", result.data.csrfHash);
-			const cookieData = {
-				ci_sso_csrf_cookie: result.data.csrfHash,
-				"Max-Age": 1 / 12,
-			};
-			// Set cookie menggunakan js-cookies
-			Object.keys(cookieData).forEach((key) => {
-				const cookieValue = cookieData[key];
-				Cookies.set(key, cookieValue, {
-					expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
-				});
-			});
-		}); */
+		});
 	}, []);
 
 	return (
