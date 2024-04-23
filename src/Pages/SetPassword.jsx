@@ -27,6 +27,7 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		console.log(getHash(inputRef.current.value));
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
 		setLoading(true);
