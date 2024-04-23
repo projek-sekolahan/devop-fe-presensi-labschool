@@ -42,7 +42,7 @@ export default function RegisterFace() {
 		"foto_presensi",
 	];
 	let values;
-	console.log(userData.group_id);
+	console.log(...state);
 	localStorage.getItem("group_id") == "4"
 		? (values = [
 				localStorage.getItem("AUTH_KEY"),
