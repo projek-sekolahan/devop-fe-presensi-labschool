@@ -170,7 +170,7 @@ export const useClock = (timeRef, dateRef, dayRef) => {
 		if (timeRef.current && dateRef.current && dayRef.current) {
 		  timeRef.current.innerText = `${currentTime} WIB`;
 		  dateRef.current.innerText = `${currentDate}`;
-		  dayRef.current.innerText = `Hari: ${currentDay},`;
+		  dayRef.current.innerText = `${currentDay},`;
 		}
 	  }, 1000);
   
