@@ -23,8 +23,8 @@ export default function Register() {
 			);
 			return;
 		}
-		console.log(emailRef.current.value); return false;
 		localStorage.setItem("email", emailRef.current.value);
+		console.log(localStorage.getItem("email")); return false;
 		const keys = [
 			"username",
 			"phone",
