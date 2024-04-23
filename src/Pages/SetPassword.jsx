@@ -3,8 +3,6 @@ import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { getFormData, getHash, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
-import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
@@ -33,13 +31,14 @@ export default function SetPassword() {
 		const values = [
 			getHash(inputRef.current.value),
 			localStorage.getItem("regist_token"),
-			Cookies.get("ci_sso_csrf_cookie"),
+			localStorage.getItem("csrf"),
 		];
 
 		apiXML.setPassword(getFormData(key, values)).then((res) => {
 			setLoading(false);
 			setDisabled(false);
 			res = JSON.parse(res);
+			localStorage.setItem("csrf", res.csrfHash);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
 						window.location.replace("login"),

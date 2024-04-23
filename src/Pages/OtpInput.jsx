@@ -1,10 +1,8 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
-import Cookies from "js-cookie";
 import apiXML from "../utils/apiXML";
 import { getFormData, alert, loading } from "../utils/utils";
-import Swal from "sweetalert2";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
@@ -22,12 +20,13 @@ export default function OtpInput() {
 	const onOtpSubmit = () => {
 		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
-		const values = [...otp, Cookies.get("ci_sso_csrf_cookie")];
+		const values = [...otp, localStorage.getItem("csrf")];
 		loading("Loading", "Processing OTP Data...");
 		apiXML.verify(getFormData(keys, values)).then((res) => {
 			res = JSON.parse(res);
 			setLoad(false);
 			localStorage.setItem("regist_token", res.data.token);
+			localStorage.setItem("csrf", res.csrfHash);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
 						window.location.replace(state),
@@ -75,11 +74,12 @@ export default function OtpInput() {
 		const key = ["email", "csrf_token"];
 		const values = [
 			localStorage.getItem("email"),
-			Cookies.get("ci_sso_csrf_cookie"),
+			localStorage.getItem("csrf"),
 		];
 		loading("Loading", "Processing Send OTP Data...");
 		apiXML.sendOtp(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
+			localStorage.setItem("csrf", res.csrfHash);
 			alert(res.info, res.title, res.message, () =>
 				window.location.replace(res.location),
 			);

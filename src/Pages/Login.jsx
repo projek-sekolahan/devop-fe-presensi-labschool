@@ -3,7 +3,6 @@ import apiXML from "../utils/apiXML.js";
 import { getHash, getKey, getFormData, alert } from "../utils/utils.js";
 import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
-import Cookies from "js-cookie";
 
 export default function Login() {
 	const emailRef = useRef(null);
@@ -13,10 +12,9 @@ export default function Login() {
 		const passwordValue = passwordRef.current.value;
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
-		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 
 		const key = ["username", "password", "devop-sso", "csrf_token"];
-		const value = [emailValue, hash, token_key[1], csrf_token];
+		const value = [emailValue, hash, token_key[1], localStorage.getItem("csrf")];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
@@ -47,6 +45,7 @@ export default function Login() {
 			.then((getUserDataResponse) => {
 				const userData = JSON.parse(getUserDataResponse);
 				localStorage.setItem("token", userData.data);
+				localStorage.setItem("csrf", userData.csrfHash);
 			})
 			.catch((errorData) => {
 				alert(

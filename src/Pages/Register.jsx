@@ -2,8 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
-import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 export default function Register() {
 	const [role, setRole] = useState("");

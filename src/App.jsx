@@ -9,7 +9,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
-import Cookies from "js-cookie";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
 // import Login from "./Pages/Login";
