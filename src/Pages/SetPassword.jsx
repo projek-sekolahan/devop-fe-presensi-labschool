@@ -67,16 +67,18 @@ export default function SetPassword() {
 					<form className="space-y-4 md:space-y-6 flex flex-col gap-2">
 						<div>
 							<label htmlFor="password">Password</label>
-							<input
-								type="password"
-								name="password"
-								id="password"
-								placeholder="Password (8 or more characters)"
-								className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-								required=""
-								ref={inputRef}
-							/>
-							<PasswordShow ref={inputRef} />
+							<div className="flex gap-2">
+								<input
+									type="password"
+									name="password"
+									id="password"
+									placeholder="Password (8 or more characters)"
+									className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+									required=""
+									ref={inputRef}
+								/>
+								<PasswordShow ref={inputRef} />
+							</div>
 							<label
 								htmlFor="password"
 								style={{ display: `${warning}` }}
@@ -86,18 +88,18 @@ export default function SetPassword() {
 							</label>
 						</div>
 						<div>
-							<label htmlFor="confirm-password">
-								Confirm Password
-							</label>
-							<input
-								type="password"
-								placeholder="Password (8 or more characters)"
-								className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-								required=""
-								ref={confirmRef}
-								onChange={changeHandler}
-							/>
-							<PasswordShow ref={confirmRef} />
+							<label htmlFor="confirm-password">Confirm Password</label>
+							<div className="flex gap-2">
+								<input
+									type="password"
+									placeholder="Password (8 or more characters)"
+									className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+									required=""
+									ref={confirmRef}
+									onChange={changeHandler}
+								/>
+								<PasswordShow ref={confirmRef} />
+							</div>
 						</div>
 
 						<button
