@@ -4,19 +4,79 @@ import { Label, Textarea, FileInput, Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { getImageUrl } from "../utils/utils";
+import { getImageUrl, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Izin() {
 	const [alert, setAlert] = useState(false);
 	const [imageUrl, setImageUrl] = useState(null);
 	const inputRef = useRef();
+	const keteranganRef = useRef();
 	const { state } = useLocation();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		`["${imageUrl}"]`;
+		let keys = [
+			"AUTH_KEY",
+			"devop-sso",
+			"csrf_token",
+			"token",
+			"status_dinas",
+		];
+		let values = [
+			localStorage.getItem("AUTH_KEY"),
+			localStorage.getItem("devop-sso"),
+			localStorage.getItem("csrf"),
+			localStorage.getItem("login_token"),
+		];
+
+		if (
+			localStorage.getItem("group_id") == "4" ||
+			state.ket[0] === "non-dinas"
+		) {
+			keys = [...keys, "status_kehadiran", "keterangan_kehadiran"];
+
+			values = [
+				...values,
+				"non-dinas",
+				state.ket[state.ket.length - 1],
+				keteranganRef.current.value,
+			];
+		} else {
+			keys = [...keys, "status_kehadiran", "keterangan_kehadiran"];
+			values = [...values, ...state.ket, keteranganRef.current.value];
+		}
+
+		if (imageUrl) {
+			keys = [...keys, "foto_surat"];
+
+			values = [...values, `["${imageUrl}"]`];
+		}
+
+		apiXML
+			.process(
+				localStorage.getItem("AUTH_KEY"),
+				getFormData(keys, values),
+			)
+			.then((res) => {
+				res = JSON.parse(res);
+				localStorage.setItem("csrf", res.csrfHash);
+				console.log(res);
+				res.status
+					? alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace("home"),
+						)
+					: alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace(res.data.location),
+						);
+			});
 	};
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
@@ -33,11 +93,12 @@ export default function Izin() {
 				<form onSubmit={submitHandler}>
 					<div className="max-w-md">
 						<div className="mb-2 block">
-							<Label
+							<label
 								htmlFor="comment"
-								value="Keterangan"
 								className="text-white text-base font-semibold"
-							/>
+							>
+								Keterangan
+							</label>
 						</div>
 						<Textarea
 							id="comment"
@@ -45,6 +106,7 @@ export default function Izin() {
 							required
 							rows={6}
 							className="text-md"
+							ref={keteranganRef}
 						></Textarea>
 					</div>
 					<div className="mt-4">
