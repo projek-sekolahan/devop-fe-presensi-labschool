@@ -76,8 +76,12 @@ export default function Presensi() {
 							<p className="text-center font-semibold">Pulang</p>
 						</Link>
 						<Link
-							to="/presensi/bukti"
-							state={state ? [...state, "sakit"] : ["sakit"]}
+							to="/presensi/izin"
+							state={
+								state
+									? { kode: 2, ket: [...state, "sakit"] }
+									: { kode: 2, ket: ["sakit"] }
+							}
 							className="p-5 bg-secondary-red rounded-md flex flex-col justify-center items-center"
 						>
 							<DoctorRegular
@@ -87,8 +91,12 @@ export default function Presensi() {
 							<p className="text-center font-semibold">Sakit</p>
 						</Link>
 						<Link
-							to="/presensi/keterangan"
-							state={state ? [...state, "izin"] : ["sakit"]}
+							to="/presensi/izin"
+							state={
+								state
+									? { kode: 3, ket: [...state, "izin"] }
+									: { kode: 3, ket: ["sakit"] }
+							}
 							className="p-5 bg-secondary-yellow rounded-md flex flex-col justify-center items-center"
 						>
 							<ExclamationTriangleIcon className="size-20 stroke-[2.5]" />

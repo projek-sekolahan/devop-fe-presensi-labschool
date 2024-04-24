@@ -38,8 +38,7 @@ const Presensi = lazy(() => import("./Pages/Presensi"));
 const Riwayat = lazy(() => import("./Pages/Riwayat"));
 const Bantuan = lazy(() => import("./Pages/Bantuan"));
 const Notification = lazy(() => import("./Pages/Notification"));
-const Sakit = lazy(() => import("./Pages/Sakit"));
-const Ijin = lazy(() => import("./Pages/Ijin"));
+const Izin = lazy(() => import("./Pages/Izin"));
 const Pengaturan = lazy(() => import("./Pages/Pengaturan"));
 const PresensiStaff = lazy(() => import("./Pages/PresensiStaff"));
 const FaceVerification = lazy(() => import("./Pages/FaceVerification"));
@@ -106,8 +105,7 @@ function App() {
 						path="/presensi/verif"
 						Component={FaceVerification}
 					/>
-					<Route path="/presensi/bukti" Component={Sakit} />
-					<Route path="/presensi/keterangan" Component={Ijin} />
+					<Route path="/presensi/izin" Component={Izin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
 					<Route path="/setpassword" Component={SetPassword} />

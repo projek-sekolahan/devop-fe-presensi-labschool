@@ -17,7 +17,7 @@ export const getKey = (email, hash) => {
 	return [key, tokenkey];
 };
 
-export const getImageUrl = (source, x, y, size) => {
+export const getFaceUrl = (source, x, y, size) => {
 	const canvas = document.createElement("canvas");
 	canvas.width = size;
 	canvas.height = size;
@@ -26,6 +26,21 @@ export const getImageUrl = (source, x, y, size) => {
 	context?.drawImage(source, x, y, size, size, 0, 0, size, size);
 	const url = canvas.toDataURL("image/jpeg");
 	return url;
+};
+
+// Fungsi untuk mengonversi file gambar menjadi URL
+export const getImageUrl = (fileInput, callback) => {
+	// Membuat objek FileReader
+	const reader = new FileReader();
+
+	// Event handler yang akan dipanggil setelah pembacaan file selesai
+	reader.onload = function (event) {
+		// Mengembalikan URL gambar dari data yang dibaca
+		callback(event.target.result);
+	};
+
+	// Membaca file gambar sebagai URL data
+	reader.readAsDataURL(fileInput);
 };
 
 export const createFormData = (keys, values) => {

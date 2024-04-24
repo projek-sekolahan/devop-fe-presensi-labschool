@@ -59,8 +59,8 @@ export default function PresensiStaff() {
 							</p>
 						</Link>
 						<Link
-							to="/presensi/bukti"
-							state={["dinas-luar"]}
+							to="/presensi/izin"
+							state={{ kode: 1, ket: ["dinas-luar"] }}
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<img

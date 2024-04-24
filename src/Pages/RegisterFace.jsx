@@ -1,7 +1,7 @@
 import * as faceapi from "face-api.js";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -66,7 +66,7 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getImageUrl(
+					const imgUrl = getFaceUrl(
 						videoRef.current,
 						x - 50,
 						y - 75,

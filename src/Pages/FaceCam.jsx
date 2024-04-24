@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
 	getFormData,
-	getImageUrl,
+	getFaceUrl,
 	loading,
 	alert,
 	parseJwt,
@@ -38,8 +38,6 @@ export default function RegisterFace() {
 		"status_kehadiran",
 		"geolocation",
 		"facecam_id",
-		"keterangan_kehadiran",
-		"foto_surat",
 		"foto_presensi",
 	];
 	let values;
@@ -116,7 +114,7 @@ export default function RegisterFace() {
 					textRef.current.innerText = "100%";
 
 					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getImageUrl(
+					const imgUrl = getFaceUrl(
 						videoRef.current,
 						x - 50,
 						y - 75,
@@ -150,8 +148,14 @@ export default function RegisterFace() {
 										res.data.message,
 										() => window.location.replace("home"),
 									)
-								: alert(res.info, res.title, res.message, () =>
-										window.location.replace(res.location),
+								: alert(
+										res.data.info,
+										res.data.title,
+										res.data.message,
+										() =>
+											window.location.replace(
+												res.data.location,
+											),
 									);
 						});
 				} else {
