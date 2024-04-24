@@ -3,13 +3,11 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Navigate,
 } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
-import Cookies from "js-cookie";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
 // import Login from "./Pages/Login";
@@ -56,22 +54,8 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			// Data cookie yang diberikan
+			// Data yang diberikan
 			localStorage.setItem("csrf", result.data.csrfHash);
-			const cookieData = {
-				ci_sso_csrf_cookie: result.data.csrfHash,
-				"Max-Age": 1 / 12,
-			};
-			// if (Cookies.get("ci_sso_csrf_cookie")) {
-			// 	Cookies.remove("ci_sso_csrf_cookie");
-			// }
-			// Set cookie menggunakan js-cookies
-			Object.keys(cookieData).forEach((key) => {
-				const cookieValue = cookieData[key];
-				Cookies.set(key, cookieValue, {
-					expires: cookieData["Max-Age"], // Konversi Max-Age menjadi jumlah detik
-				});
-			});
 		});
 	}, []);
 
@@ -89,7 +73,7 @@ function App() {
 			) : null}
 			<Suspense fallback={<Loading />}>
 				<Routes>
-					<Route path="/" Component={Register} />
+					<Route path="/register" Component={Register} />
 					<Route path="/verify" Component={OtpInput} />
 					<Route path="/facereg" Component={RegisterFace} />
 					<Route path="/login" Component={Login} />
@@ -109,12 +93,11 @@ function App() {
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
 					<Route path="/setpassword" Component={SetPassword} />
-					<Route path="/test" Component={Test} />
+					<Route path="/" Component={Register} />
 					<Route path="*" Component={Errors} />
 				</Routes>
 			</Suspense>
 		</Router>
 	);
 }
-
 export default App;

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
 	UserCircleIcon,
 	Cog6ToothIcon,
@@ -47,6 +46,7 @@ export default function SideMenu({ show, data, csrf }) {
 						)
 						.then((res) => {
 							res = JSON.parse(res);
+							localStorage.clear();
 							alert(
 								"success",
 								"Logout Succesfully",

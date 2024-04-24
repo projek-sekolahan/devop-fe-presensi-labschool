@@ -9,7 +9,6 @@ import {
 	parseJwt,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
-import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 export default function RegisterFace() {
@@ -24,9 +23,9 @@ export default function RegisterFace() {
 	} else {
 		window.location.replace("/login");
 	}
-
+	
 	const descriptor = new Float32Array(userData.facecam_id.split(", "));
-
+	
 	loading("Loading", "Getting camera access...");
 
 	const keys = [
@@ -41,8 +40,8 @@ export default function RegisterFace() {
 		"foto_presensi",
 	];
 	let values;
-
-	userData.group_id == "4"
+	console.log(state);
+	localStorage.getItem("group_id") == "4"
 		? (values = [
 				localStorage.getItem("AUTH_KEY"),
 				localStorage.getItem("devop-sso"),
@@ -56,7 +55,7 @@ export default function RegisterFace() {
 				localStorage.getItem("csrf"),
 				...state,
 			]);
-
+	console.log(values); return false;
 	const startVideo = () => {
 		navigator.mediaDevices
 			.getUserMedia({ video: true })
@@ -141,6 +140,7 @@ export default function RegisterFace() {
 						)
 						.then((res) => {
 							res = JSON.parse(res);
+							localStorage.setItem("csrf", res.csrfHash);
 							res.status
 								? alert(
 										res.data.info,

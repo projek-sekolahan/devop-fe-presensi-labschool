@@ -2,9 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert } from "../utils/utils";
-import Cookies from "js-cookie";
-import Swal from "sweetalert2";
+import { getFormData, alert, loading } from "../utils/utils";
 
 export default function ChangePassword() {
 	const emailRef = useRef();
@@ -13,14 +11,16 @@ export default function ChangePassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		loading("Loading", "Verifying Email...");
 		setLoad(true);
 		const key = ["username", "csrf_token"];
 		const values = [
 			emailRef.current.value,
-			Cookies.get("ci_sso_csrf_cookie"),
+			localStorage.getItem("csrf"),
 		];
 		apiXML.recover(getFormData(key, values)).then((res) => {
 			res = JSON.parse(res);
+			localStorage.setItem("csrf", res.csrfHash);
 			setLoad(false);
 			res.status
 				? alert(res.data.info, res.data.title, res.data.message, () =>
