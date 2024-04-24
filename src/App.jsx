@@ -1,31 +1,11 @@
 import { Suspense, lazy } from "react";
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
-// import OtpInput from "./Pages/OtpInput";
+
 import Loading from "./Pages/Loading";
-// import Login from "./Pages/Login";
-// import ChangePassword from "./Pages/ChangePassword";
-// import Home from "./Pages/Home";
-// import Profile from "./Pages/Profile";
-// import Presensi from "./Pages/Presensi";
-// import Riwayat from "./Pages/Riwayat";
-// import Bantuan from "./Pages/Bantuan";
-// import Notification from "./Pages/Notification";
-// import Sakit from "./Pages/Sakit";
-// import Ijin from "./Pages/Ijin";
-// import Pengaturan from "./Pages/Pengaturan";
-// import PresensiStaff from "./Pages/PresensiStaff";
-// import FaceVerification from "./Pages/FaceVerification";
-// import FaceCam from "./Pages/FaceCam";
-// import Errors from "./Pages/Error";
-// import RegisterFace from "./Pages/RegisterFace";
 
 const OtpInput = lazy(() => import("./Pages/OtpInput"));
 const Login = lazy(() => import("./Pages/Login"));

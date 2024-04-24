@@ -1,12 +1,6 @@
 import * as faceapi from "face-api.js";
-import React from "react";
-<<<<<<< HEAD
-import { useState, useRef, useEffect } from "react";
-import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
-=======
 import { useRef } from "react";
 import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
->>>>>>> 5bdf88bd42243ded22b70d6eb7b6e26bef71e721
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 
@@ -66,14 +60,8 @@ export default function RegisterFace() {
 					clearInterval(registerFace);
 					barRef.current.style.width = "100%";
 					textRef.current.innerText = "100%";
-<<<<<<< HEAD
-
 					const { x, y, width, height } = faceData.detection.box;
 					const imgUrl = getFaceUrl(
-=======
-					const { x, y, height } = faceData.detection.box;
-					const imgUrl = getImageUrl(
->>>>>>> 5bdf88bd42243ded22b70d6eb7b6e26bef71e721
 						videoRef.current,
 						x - 50,
 						y - 75,
@@ -87,7 +75,7 @@ export default function RegisterFace() {
 						stringDescriptor,
 						`["${imgUrl}"]`,
 						localStorage.getItem("regist_token"),
-						localStorage.getItem("csrf")
+						localStorage.getItem("csrf"),
 					];
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
@@ -136,7 +124,9 @@ export default function RegisterFace() {
 					<p className="font-bold text-4xl" ref={textRef}>
 						0%
 					</p>
-					<p className="font-medium text-base">Melakukan Registrasi Wajah Anda...</p>
+					<p className="font-medium text-base">
+						Melakukan Registrasi Wajah Anda...
+					</p>
 				</div>
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
 					<span
@@ -147,7 +137,8 @@ export default function RegisterFace() {
 					></span>
 				</div>
 				<small>
-					Harap bersabar karena sistem kami sedang memproses wajah anda. Pastikan anda melihat kamera
+					Harap bersabar karena sistem kami sedang memproses wajah
+					anda. Pastikan anda melihat kamera
 				</small>
 			</div>
 		</div>

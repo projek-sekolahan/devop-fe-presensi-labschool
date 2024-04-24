@@ -15,6 +15,7 @@ export default function Izin() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+
 		`["${imageUrl}"]`;
 	};
 	return (
