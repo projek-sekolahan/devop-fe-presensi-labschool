@@ -70,7 +70,7 @@ export default function Izin() {
 					() => window.location.replace("/home"),
 				)
 			}).catch((err) => {
-				if (err.status == 403) {
+				if (err.status == 403 || err.status == 504) {
 					localStorage.clear();
 					alert(
 						"error",
