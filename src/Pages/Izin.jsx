@@ -71,14 +71,23 @@ export default function Izin() {
 				)
 			}).catch((err) => {
 				console.log(err);
-				err = JSON.parse(err);
-				localStorage.clear();
-				alert(
-					err.data.info,
-					err.data.title,
-					err.data.message,
-					() => window.location.replace("/login"),
-				)
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please login again.",
+						() => window.location.replace("/login"),
+					)
+				} else {
+					err = JSON.parse(err.responseText);
+					localStorage.clear();
+					alert(
+						err.data.info,
+						err.data.title,
+						err.data.message,
+						() => window.location.replace("/login"),
+					)
+				}
 			});
 	};
 	return (
