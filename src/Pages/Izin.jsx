@@ -64,19 +64,12 @@ export default function Izin() {
 				const hasil = parseJwt(res.data);
 				localStorage.setItem("csrf", res.csrfHash);
 				console.log(hasil);
-				res.status
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace("home"),
-						)
-					: alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace(res.data.location),
-						);
+				alert(
+					hasil.info,
+					hasil.title,
+					hasil.message,
+					() => window.location.replace("home"),
+				)
 			}).catch((err) => {
 				err = JSON.parse(err);
 				localStorage.clear();
