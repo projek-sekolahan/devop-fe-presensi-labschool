@@ -35,7 +35,6 @@ export default function OtpInput() {
 						window.location.replace(res.location),
 					);
 		}).catch((err) => {
-			console.log(err);
 			if(err.status == 403) {
 				alert(
 					"error",
@@ -47,7 +46,7 @@ export default function OtpInput() {
 				alert(
 					"error",
 					"Input Error",
-					"Something went wrong. Please try again later.",
+					"Something code went wrong. Please try again later.",
 					() => window.location.replace("/verify"),
 				)
 			}
