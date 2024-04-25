@@ -80,6 +80,7 @@ export default function Izin() {
 					)
 				} else {
 					err = JSON.parse(err.responseText);
+					localStorage.setItem("csrf", err.csrfHash);
 					alert(
 						err.data.info,
 						err.data.title,
