@@ -68,7 +68,7 @@ export default function Izin() {
 					hasil.info,
 					hasil.title,
 					hasil.message,
-					() => window.location.replace("home"),
+					() => window.location.replace("/home"),
 				)
 			}).catch((err) => {
 				err = JSON.parse(err);
@@ -77,7 +77,7 @@ export default function Izin() {
 					err.data.info,
 					err.data.title,
 					err.data.message,
-					() => window.location.replace("login"),
+					() => window.location.replace("/login"),
 				)
 			});
 	};
