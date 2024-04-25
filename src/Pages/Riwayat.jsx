@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData } from "../utils/utils";
+import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
