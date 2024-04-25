@@ -76,6 +76,15 @@ export default function Izin() {
 							res.data.message,
 							() => window.location.replace(res.data.location),
 						);
+			}).catch((err) => {
+				console.log(err);
+				localStorage.clear();
+				alert(
+					err.data.info,
+					err.data.title,
+					err.data.message,
+					() => window.location.replace("login"),
+				)
 			});
 	};
 	return (
