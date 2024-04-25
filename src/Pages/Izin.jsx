@@ -53,7 +53,7 @@ export default function Izin() {
 
 			values = [...values, `["${imageUrl}"]`];
 		}
-
+		loading("Loading", "Data sedang diproses...");
 		apiXML
 			.process(
 				localStorage.getItem("AUTH_KEY"),
@@ -63,7 +63,6 @@ export default function Izin() {
 				res = JSON.parse(res);
 				const hasil = parseJwt(res.data);
 				localStorage.setItem("csrf", res.csrfHash);
-				loading("Loading", "Data sedang diproses...");
 				alert(
 					hasil.info,
 					hasil.title,
