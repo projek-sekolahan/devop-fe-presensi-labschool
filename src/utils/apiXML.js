@@ -35,7 +35,7 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                 } else {
-                    reject(JSON.parse(xhr.responseText));
+                    reject(xhr.responseText);
                 }
             };
             xhr.onerror = () => reject(xhr.statusText);
@@ -55,7 +55,7 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                 } else {
-                    reject(JSON.parse(xhr.responseText));
+                    reject(xhr.responseText);
                 }
             };
             xhr.onerror = () => reject(xhr.statusText);
