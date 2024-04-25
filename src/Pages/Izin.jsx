@@ -71,6 +71,7 @@ export default function Izin() {
 				)
 			}).catch((err) => {
 				err = JSON.parse(err);
+				console.log(err);
 				localStorage.clear();
 				alert(
 					err.data.info,
