@@ -35,6 +35,7 @@ export default function OtpInput() {
 						window.location.replace(res.location),
 					);
 		}).catch((err) => {
+			console.log(err);
 			if(err.status == 403) {
 				alert(
 					"error",
