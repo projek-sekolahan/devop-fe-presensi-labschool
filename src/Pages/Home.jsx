@@ -44,6 +44,8 @@ export default function Home() {
 					() => window.location.replace("/login"),
 				)
 			}
+		}).catch((err) => {
+			console.log(err);
 		})
 	};
 	setInterval(checkSession(), 6000);
