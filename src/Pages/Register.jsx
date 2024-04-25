@@ -57,7 +57,7 @@ export default function Register() {
 				alert(
 					"error",
 					"Credential Expired",
-					"Your credentials has expired. Please login again.",
+					"Your credentials has expired. Please try again later.",
 					() => window.location.replace("/"),
 				)
 			} else {

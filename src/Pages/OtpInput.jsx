@@ -39,14 +39,14 @@ export default function OtpInput() {
 				alert(
 					"error",
 					"Credential Expired",
-					"Your credentials has expired. Please login again.",
+					"Your credentials has expired. Please try again later.",
 					() => window.location.replace("/verify"),
 				)
 			} else {
 				alert(
 					"error",
 					"Input Error",
-					"Something code went wrong. Please try again later.",
+					"Something code went wrong. Please check the code in the email.",
 					() => window.location.replace("/verify"),
 				)
 			}
@@ -104,7 +104,7 @@ export default function OtpInput() {
 				alert(
 					"error",
 					"Credential Expired",
-					"Your credentials has expired. Please login again.",
+					"Your credentials has expired. Please try again later.",
 					() => window.location.replace("/verify"),
 				)
 			} else {
