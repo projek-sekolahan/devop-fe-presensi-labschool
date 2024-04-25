@@ -43,7 +43,7 @@ export default function Riwayat() {
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("csrf"),
-		localStorage.getItem("token"),
+		localStorage.getItem("login_token"),
 		"tab-presensi",
 	];
 	filter == "7 Hari"
