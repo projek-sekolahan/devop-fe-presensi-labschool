@@ -4,11 +4,11 @@ import { Label, Textarea, FileInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { getImageUrl, getFormData, loading, parseJwt } from "../utils/utils";
+import { getImageUrl, getFormData, loading, alert, parseJwt } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Izin() {
-	const [alert, setAlert] = useState(false);
+	const [Alert, setAlert] = useState(false);
 	const [imageUrl, setImageUrl] = useState(null);
 	const inputRef = useRef();
 	const keteranganRef = useRef();
@@ -158,7 +158,7 @@ export default function Izin() {
 								}
 							}}
 						/>
-						{alert ? (
+						{Alert ? (
 							<p className="text-xs font-semibold text-secondary-red">
 								Harap upload file sesuai format yang telah
 								ditentukan (*.jpg, *.jpeg, *.png, *.pdf)
