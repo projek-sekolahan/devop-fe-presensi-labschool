@@ -77,6 +77,7 @@ export default function RegisterFace() {
 						localStorage.getItem("regist_token"),
 						localStorage.getItem("csrf"),
 					];
+					loading("Loading", "Registering Face...");
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
 						localStorage.setItem("csrf", res.csrfHash);
