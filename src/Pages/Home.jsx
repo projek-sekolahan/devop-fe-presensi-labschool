@@ -45,6 +45,23 @@ export default function Home() {
 				)
 			}
 		}).catch((err) => {
+			localStorage.clear();
+			if(err.status == 403) {
+				alert(
+					"error",
+					"Credential Expired",
+					"Your credentials has expired. Please login again.",
+					() => window.location.replace("/login"),
+				)
+			} else {
+				err = JSON.parse(err.responseText);
+				alert(
+					err.data.info,
+					err.data.title,
+					err.data.message,
+					() => window.location.replace("/login"),
+				)
+			}
 			console.log(err);
 		})
 	};
