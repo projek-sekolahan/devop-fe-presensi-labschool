@@ -77,7 +77,6 @@ export default function Izin() {
 							() => window.location.replace(res.data.location),
 						);
 			}).catch((err) => {
-				console.log(err);
 				localStorage.clear();
 				alert(
 					err.data.info,
