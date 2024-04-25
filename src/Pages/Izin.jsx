@@ -70,8 +70,8 @@ export default function Izin() {
 					() => window.location.replace("/home"),
 				)
 			}).catch((err) => {
-				err = JSON.parse(err);
 				console.log(err);
+				err = JSON.parse(err);
 				localStorage.clear();
 				alert(
 					err.data.info,
