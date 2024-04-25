@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Label, Textarea, FileInput, Alert } from "flowbite-react";
+import { Label, Textarea, FileInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { getImageUrl, getFormData, alert } from "../utils/utils";
+import { getImageUrl, getFormData, loading, parseJwt } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Izin() {
@@ -61,8 +61,9 @@ export default function Izin() {
 			)
 			.then((res) => {
 				res = JSON.parse(res);
+				const hasil = parseJwt(res.data);
 				localStorage.setItem("csrf", res.csrfHash);
-				console.log(res);
+				console.log(parseJwt(res.data));
 				res.status
 					? alert(
 							res.data.info,
