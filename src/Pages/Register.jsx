@@ -51,7 +51,24 @@ export default function Register() {
 						res.message,
 						window.location.replace(res.location),
 					);
-		});
+		}).catch((err) => {
+			localStorage.clear();
+			if(err.status == 403) {
+				alert(
+					"error",
+					"Credential Expired",
+					"Your credentials has expired. Please login again.",
+					() => window.location.replace("/"),
+				)
+			} else {
+				alert(
+					"error",
+					"Input Error",
+					"Something went wrong. Please try again later.",
+					() => window.location.replace("/"),
+				)
+			}
+		});;
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">

@@ -82,7 +82,6 @@ export default function Riwayat() {
 						() => window.location.replace("/login"),
 					)
 				}
-				console.log(err);
 			});
 
 	return (
