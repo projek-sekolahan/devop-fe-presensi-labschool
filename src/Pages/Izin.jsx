@@ -70,7 +70,6 @@ export default function Izin() {
 					() => window.location.replace("/home"),
 				)
 			}).catch((err) => {
-				console.log(err);
 				if (err.status == 403) {
 					alert(
 						"error",
@@ -85,7 +84,7 @@ export default function Izin() {
 						err.data.info,
 						err.data.title,
 						err.data.message,
-						() => window.location.replace("/login"),
+						() => window.location.replace("/home"),
 					)
 				}
 			});
