@@ -71,6 +71,7 @@ export default function Izin() {
 				)
 			}).catch((err) => {
 				if (err.status == 403) {
+					localStorage.clear();
 					alert(
 						"error",
 						"Credential Expired",
@@ -79,7 +80,6 @@ export default function Izin() {
 					)
 				} else {
 					err = JSON.parse(err.responseText);
-					localStorage.clear();
 					alert(
 						err.data.info,
 						err.data.title,

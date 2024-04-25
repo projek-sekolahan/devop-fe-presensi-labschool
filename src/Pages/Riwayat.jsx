@@ -65,8 +65,8 @@ export default function Riwayat() {
 				setHistorys(data);
 				setLoading(false);
 			}).catch((err) => {
-				localStorage.clear();
 				if(err.status == 403) {
+					localStorage.clear();
 					alert(
 						"error",
 						"Credential Expired",
@@ -79,7 +79,7 @@ export default function Riwayat() {
 						err.data.info,
 						err.data.title,
 						err.data.message,
-						() => window.location.replace("/login"),
+						() => window.location.replace("/home"),
 					)
 				}
 			});

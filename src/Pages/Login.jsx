@@ -47,12 +47,23 @@ export default function Login() {
 				localStorage.setItem("csrf", userData.csrfHash);
 			})
 			.catch((errorData) => {
-				alert(
-					errorData.data.info,
-					errorData.data.title,
-					errorData.data.message,
-					() => window.location.replace(errorData.data.location),
-				);
+				if (errorData.status == 403) {
+					localStorage.clear();
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please login again.",
+						() => window.location.replace("/login"),
+					);
+				} else {
+					errorData = JSON.parse(errorData.responseText);
+					alert(
+						errorData.data.info,
+						errorData.data.title,
+						errorData.data.message,
+						() => window.location.replace(errorData.data.location),
+					);
+				}
 			});
 	};
 
