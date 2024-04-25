@@ -5,12 +5,6 @@ import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
 	const userData = parseJwt(localStorage.getItem("token"));
-	// const userData = {
-	// 	nama_lengkap: "Afrizal",
-	// 	email: "adfsfdsf,",
-	// 	phone: "2345678",
-	// };
-
 	return (
 		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<div

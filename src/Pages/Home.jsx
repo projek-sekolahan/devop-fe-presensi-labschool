@@ -62,7 +62,6 @@ export default function Home() {
 					() => window.location.replace("/login"),
 				)
 			}
-			console.log(err);
 		})
 	};
 	setInterval(checkSession(), 6000);
