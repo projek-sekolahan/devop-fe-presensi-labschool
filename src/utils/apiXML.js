@@ -35,7 +35,7 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                 } else {
-                    reject(xhr.responseText);
+                    reject(xhr);
                 }
             };
             xhr.onerror = () => reject(xhr);
@@ -55,10 +55,10 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                 } else {
-                    reject(xhr.responseText);
+                    reject(xhr);
                 }
             };
-            xhr.onerror = () => reject(xhr.statusText);
+            xhr.onerror = () => reject(xhr);
             xhr.send(createRequestBody(formData));
         });
     }
