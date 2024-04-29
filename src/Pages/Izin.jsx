@@ -21,7 +21,7 @@ export default function Izin() {
 	const { state } = useLocation();
 
 	if (!state) {
-		window.location.replace("home");
+		window.location.replace("/home");
 	}
 
 	const submitHandler = (e) => {
