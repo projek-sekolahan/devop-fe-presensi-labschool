@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { parseJwt, getFormData } from "../utils/utils";
 import { apiXML } from "../utils/apiXML";
-import Loading from "./Pages/Loading";
+import Loading from "./Loading";
 
 export default function Profile() {
 	const [userData, setUserData] = null;
