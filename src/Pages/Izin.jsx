@@ -4,7 +4,13 @@ import { Label, Textarea, FileInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { getImageUrl, getFormData, loading, alert, parseJwt } from "../utils/utils";
+import {
+	getImageUrl,
+	getFormData,
+	loading,
+	alert,
+	parseJwt,
+} from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Izin() {
@@ -13,6 +19,10 @@ export default function Izin() {
 	const inputRef = useRef();
 	const keteranganRef = useRef();
 	const { state } = useLocation();
+
+	if (!state) {
+		window.location.replace("home");
+	}
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -63,13 +73,11 @@ export default function Izin() {
 				res = JSON.parse(res);
 				const hasil = parseJwt(res.data);
 				localStorage.setItem("csrf", res.csrfHash);
-				alert(
-					hasil.info,
-					hasil.title,
-					hasil.message,
-					() => window.location.replace("/home"),
-				)
-			}).catch((err) => {
+				alert(hasil.info, hasil.title, hasil.message, () =>
+					window.location.replace("/home"),
+				);
+			})
+			.catch((err) => {
 				if (err.status == 403 || err.status == 504) {
 					localStorage.clear();
 					alert(
@@ -77,16 +85,13 @@ export default function Izin() {
 						"Credential Expired",
 						"Your credentials has expired. Please login again.",
 						() => window.location.replace("/login"),
-					)
+					);
 				} else {
 					err = JSON.parse(err.responseText);
 					localStorage.setItem("csrf", err.csrfHash);
-					alert(
-						err.data.info,
-						err.data.title,
-						err.data.message,
-						() => window.location.replace("/home"),
-					)
+					alert(err.data.info, err.data.title, err.data.message, () =>
+						window.location.replace("/home"),
+					);
 				}
 			});
 	};
@@ -133,7 +138,7 @@ export default function Izin() {
 						<input
 							type="file"
 							id="file-upload-helper-text"
-							accept=".jpg, .jpeg, .png, .pdf"
+							accept=".jpg, .jpeg, .png, .pdf, .txt"
 							className="whitespace-nowrap w-full rounded-xl bg-white text-gray-500 text-sm"
 							ref={inputRef}
 							required={state.kode == 3 ? false : true}
@@ -158,6 +163,7 @@ export default function Izin() {
 								}
 
 								const file = e.target.files[0];
+								console.log(file);
 
 								if (file) {
 									// Memanggil fungsi untuk mengonversi file gambar menjadi URL
