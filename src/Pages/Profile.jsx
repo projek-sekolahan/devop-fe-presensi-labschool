@@ -12,7 +12,7 @@ export default function Profile() {
 	const values = [
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
-		responseData.csrfHash,
+		localStorage.getItem("csrf"),
 		localStorage.getItem("login_token"),
 	];
 

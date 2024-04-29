@@ -138,7 +138,7 @@ export default function Izin() {
 						<input
 							type="file"
 							id="file-upload-helper-text"
-							accept=".jpg, .jpeg, .png, .pdf, .txt"
+							accept=".jpg, .jpeg, .png, .pdf"
 							className="whitespace-nowrap w-full rounded-xl bg-white text-gray-500 text-sm"
 							ref={inputRef}
 							required={state.kode == 3 ? false : true}
