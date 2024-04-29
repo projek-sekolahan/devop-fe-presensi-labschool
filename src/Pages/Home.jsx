@@ -29,20 +29,21 @@ export default function Home() {
 		localStorage.getItem("login_token"),
 	];
 
-	apiXML
-		.getUserData(
-			localStorage.getItem("AUTH_KEY"),
-			getFormData(keys, values),
-		)
-		.then((getUserDataResponse) => {
-			const res = JSON.parse(getUserDataResponse);
-			localStorage.setItem("token", res.data);
-			localStorage.setItem("csrf", res.csrfHash);
-			setUserData(parseJwt(localStorage.getItem("token")));
-		})
-		.catch(() => {
-			window.location.replace("/login");
-		});
+	userData &&
+		apiXML
+			.getUserData(
+				localStorage.getItem("AUTH_KEY"),
+				getFormData(keys, values),
+			)
+			.then((getUserDataResponse) => {
+				const res = JSON.parse(getUserDataResponse);
+				localStorage.setItem("token", res.data);
+				localStorage.setItem("csrf", res.csrfHash);
+				setUserData(parseJwt(localStorage.getItem("token")));
+			})
+			.catch(() => {
+				window.location.replace("/login");
+			});
 
 	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
