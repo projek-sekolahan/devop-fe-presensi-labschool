@@ -46,12 +46,14 @@ export default function SideMenu({ show, data, csrf }) {
 						)
 						.then((res) => {
 							res = JSON.parse(res);
-							localStorage.clear();
 							alert(
 								"success",
 								"Logout Succesfully",
 								"You has been loged out!",
-								() => window.location.replace("/login"),
+								() => {
+									localStorage.clear();
+									window.location.replace("/login");
+								},
 							);
 						});
 				} else {

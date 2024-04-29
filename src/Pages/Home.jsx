@@ -60,10 +60,10 @@ export default function Home() {
 					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
 				} else {
-					localStorage.clear();
-					alert("error", res.data.title, res.data.message, () =>
-						window.location.replace("/login"),
-					);
+					alert("error", res.data.title, res.data.message, () => {
+						localStorage.clear();
+						window.location.replace("/login");
+					});
 				}
 			})
 			.catch((err) => {
