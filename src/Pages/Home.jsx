@@ -40,24 +40,8 @@ export default function Home() {
 			localStorage.setItem("csrf", res.csrfHash);
 			setUserData(parseJwt(localStorage.getItem("token")));
 		})
-		.catch((errorData) => {
-			if (errorData.status == 403) {
-				localStorage.clear();
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please login again.",
-					() => window.location.replace("/login"),
-				);
-			} else {
-				errorData = JSON.parse(errorData.responseText);
-				alert(
-					errorData.data.info,
-					errorData.data.title,
-					errorData.data.message,
-					() => window.location.replace(errorData.data.location),
-				);
-			}
+		.catch(() => {
+			window.location.replace("/login");
 		});
 
 	const checkSession = () => {
