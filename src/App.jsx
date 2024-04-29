@@ -35,6 +35,7 @@ function App() {
 		});
 		getCsrf().then((result) => {
 			// Data yang diberikan
+			localStorage.getItem("csrf") && localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", result.data.csrfHash);
 		});
 	}, []);
