@@ -11,7 +11,7 @@ import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
-import { Loading } from "./Loading";
+import Loading from "./Loading";
 
 export default function Home() {
 	const [show, setShow] = useState(false);
