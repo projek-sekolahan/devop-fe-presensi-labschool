@@ -1,52 +1,8 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
-import { parseJwt, getFormData } from "../utils/utils";
-import apiXML from "../utils/apiXML";
-import Loading from "./Loading";
+import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
-	const [userData, setUserData] = null;
-
-	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-	const values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("devop-sso"),
-		localStorage.getItem("csrf"),
-		localStorage.getItem("login_token"),
-	];
-
-	console.log("hai");
-	apiXML
-		.getUserData(
-			localStorage.getItem("AUTH_KEY"),
-			getFormData(keys, values),
-		)
-		.then((getUserDataResponse) => {
-			const res = JSON.parse(getUserDataResponse);
-			localStorage.setItem("token", res.data);
-			localStorage.setItem("csrf", res.csrfHash);
-			setUserData(parseJwt(localStorage.getItem("token")));
-		});
-	// .catch((errorData) => {
-	// 	if (errorData.status == 403) {
-	// 		localStorage.clear();
-	// 		alert(
-	// 			"error",
-	// 			"Credential Expired",
-	// 			"Your credentials has expired. Please login again.",
-	// 			() => window.location.replace("/login"),
-	// 		);
-	// 	} else {
-	// 		errorData = JSON.parse(errorData.responseText);
-	// 		alert(
-	// 			errorData.data.info,
-	// 			errorData.data.title,
-	// 			errorData.data.message,
-	// 			() => window.location.replace(errorData.data.location),
-	// 		);
-	// 	}
-	// });
+	userData = parseJwt(localStorage.getItem("token"));
 
 	return (
 		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">

@@ -11,16 +11,54 @@ import SideMenu from "/src/Components/SideMenu";
 import { useState } from "react";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
+import {Loading} from "./Loading"
 
 export default function Home() {
 	const [show, setShow] = useState(false);
-	let userData = {};
-	if (localStorage.getItem("token")) {
-		userData = parseJwt(localStorage.getItem("token"));
-		localStorage.setItem("group_id", userData.group_id);
-	} else {
+	const [userData, setUserData] = useState(null);
+
+	if (!localStorage.getItem("login_token")) {
 		window.location.replace("/login");
 	}
+
+	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+	const values = [
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("devop-sso"),
+		localStorage.getItem("csrf"),
+		localStorage.getItem("login_token"),
+	];
+
+	apiXML
+		.getUserData(
+			localStorage.getItem("AUTH_KEY"),
+			getFormData(keys, values),
+		)
+		.then((getUserDataResponse) => {
+			const res = JSON.parse(getUserDataResponse);
+			localStorage.setItem("token", res.data);
+			localStorage.setItem("csrf", res.csrfHash);
+			setUserData(parseJwt(localStorage.getItem("token")));
+		});
+	.catch((errorData) => {
+		if (errorData.status == 403) {
+			localStorage.clear();
+			alert(
+				"error",
+				"Credential Expired",
+				"Your credentials has expired. Please login again.",
+				() => window.location.replace("/login"),
+			);
+		} else {
+			errorData = JSON.parse(errorData.responseText);
+			alert(
+				errorData.data.info,
+				errorData.data.title,
+				errorData.data.message,
+				() => window.location.replace(errorData.data.location),
+			);
+		}
+	});
 
 	const checkSession = () => {
 		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
@@ -71,7 +109,7 @@ export default function Home() {
 		}
 	});
 
-	return (
+	return !userData ? <Loading/> : (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
 			<img
 				src="/Icons/elipse.svg"
