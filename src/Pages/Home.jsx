@@ -29,7 +29,7 @@ export default function Home() {
 		localStorage.getItem("login_token"),
 	];
 
-	userData &&
+	!userData &&
 		apiXML
 			.getUserData(
 				localStorage.getItem("AUTH_KEY"),
