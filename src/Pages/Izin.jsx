@@ -173,6 +173,7 @@ export default function Izin() {
 										});
 									} else {
 										setAlert({ ext: false, size: true });
+										e.target.value = "";
 									}
 								}
 							}}
