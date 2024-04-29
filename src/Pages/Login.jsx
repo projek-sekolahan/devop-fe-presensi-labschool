@@ -28,13 +28,6 @@ export default function Login() {
 			.then((loginResponse) => {
 				const responseData = JSON.parse(loginResponse);
 				localStorage.setItem("login_token", responseData.data.Tokenjwt);
-				const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-				const values = [
-					localStorage.getItem("AUTH_KEY"),
-					localStorage.getItem("devop-sso"),
-					responseData.csrfHash,
-					localStorage.getItem("login_token"),
-				];
 				alert(
 					responseData.data.info,
 					responseData.data.title,

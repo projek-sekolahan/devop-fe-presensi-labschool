@@ -1,12 +1,20 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { parseJwt } from "../utils/utils";
+import { parseJwt, getFormData } from "../utils/utils";
 import { apiXML } from "../utils/apiXML";
 import Loading from "./Pages/Loading";
 
 export default function Profile() {
 	const [userData, setUserData] = null;
+
+	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+	const values = [
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("devop-sso"),
+		responseData.csrfHash,
+		localStorage.getItem("login_token"),
+	];
 
 	apiXML
 		.getUserData(
@@ -18,6 +26,25 @@ export default function Profile() {
 			localStorage.setItem("token", res.data);
 			localStorage.setItem("csrf", res.csrfHash);
 			setUserData(parseJwt(localStorage.getItem("token")));
+		})
+		.catch((errorData) => {
+			if (errorData.status == 403) {
+				localStorage.clear();
+				alert(
+					"error",
+					"Credential Expired",
+					"Your credentials has expired. Please login again.",
+					() => window.location.replace("/login"),
+				);
+			} else {
+				errorData = JSON.parse(errorData.responseText);
+				alert(
+					errorData.data.info,
+					errorData.data.title,
+					errorData.data.message,
+					() => window.location.replace(errorData.data.location),
+				);
+			}
 		});
 
 	return !userData ? (
