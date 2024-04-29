@@ -13,7 +13,12 @@ export default function Login() {
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
 		const key = ["username", "password", "devop-sso", "csrf_token"];
-		const value = [emailValue, hash, token_key[1], localStorage.getItem("csrf")];
+		const value = [
+			emailValue,
+			hash,
+			token_key[1],
+			localStorage.getItem("csrf"),
+		];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
@@ -36,15 +41,6 @@ export default function Login() {
 					responseData.data.message,
 					() => window.location.replace("home"),
 				);
-				return apiXML.getUserData(
-					localStorage.getItem("AUTH_KEY"),
-					getFormData(keys, values),
-				);
-			})
-			.then((getUserDataResponse) => {
-				const userData = JSON.parse(getUserDataResponse);
-				localStorage.setItem("token", userData.data);
-				localStorage.setItem("csrf", userData.csrfHash);
 			})
 			.catch((errorData) => {
 				if (errorData.status == 403) {

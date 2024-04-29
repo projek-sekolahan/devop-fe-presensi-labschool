@@ -2,9 +2,25 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { parseJwt } from "../utils/utils";
+import { apiXML } from "../utils/apiXML";
+import Loading from "./Pages/Loading";
 
 export default function Profile() {
-	const userData = parseJwt(localStorage.getItem("token"));
+	const [userData, setUserData] = null;
+
+	apiXML
+		.getUserData(
+			localStorage.getItem("AUTH_KEY"),
+			getFormData(keys, values),
+		)
+		.then((getUserDataResponse) => {
+			const res = JSON.parse(getUserDataResponse);
+			localStorage.setItem("token", res.data);
+			localStorage.setItem("csrf", res.csrfHash);
+			setUserData(parseJwt(localStorage.getItem("token")));
+		});
+
+	!userData ? return <Loading/> : 
 	return (
 		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<div
