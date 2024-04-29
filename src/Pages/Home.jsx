@@ -37,6 +37,7 @@ export default function Home() {
 		.then((getUserDataResponse) => {
 			const res = JSON.parse(getUserDataResponse);
 			localStorage.setItem("token", res.data);
+			localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", res.csrfHash);
 			setUserData(parseJwt(localStorage.getItem("token")));
 		})
@@ -56,6 +57,7 @@ export default function Home() {
 			.then((res) => {
 				res = JSON.parse(res);
 				if (res.data.title == "Your Session OK") {
+					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
 				} else {
 					localStorage.clear();
