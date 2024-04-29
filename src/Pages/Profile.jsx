@@ -16,6 +16,7 @@ export default function Profile() {
 		localStorage.getItem("login_token"),
 	];
 
+	console.log("hai");
 	apiXML
 		.getUserData(
 			localStorage.getItem("AUTH_KEY"),
