@@ -15,8 +15,6 @@ export default function Profile() {
 		localStorage.getItem("csrf"),
 		localStorage.getItem("login_token"),
 	];
-	console.log(keys);
-	console.log(values);
 
 	apiXML
 		.getUserData(
