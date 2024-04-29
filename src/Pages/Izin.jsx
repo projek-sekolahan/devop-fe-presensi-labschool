@@ -14,7 +14,7 @@ import {
 import apiXML from "../utils/apiXML";
 
 export default function Izin() {
-	const [Alert, setAlert] = useState(false);
+	const [Alert, setAlert] = useState({ ext: false, size: false });
 	const [imageUrl, setImageUrl] = useState(null);
 	const inputRef = useRef();
 	const keteranganRef = useRef();
@@ -152,31 +152,40 @@ export default function Izin() {
 
 								if (!validExt.includes(extFile) && fileName) {
 									e.target.value = "";
-									setAlert(true);
+									setAlert({ ext: true, size: false });
 									e.target.focus();
 									e.target.classList.add(
 										"focus:border-secondary-red",
 									);
 									e.target.classList.add("focus:border-2");
 								} else {
-									setAlert(false);
+									setAlert({ ext: false, size: false });
 								}
 
 								const file = e.target.files[0];
-								console.log(file);
 
 								if (file) {
 									// Memanggil fungsi untuk mengonversi file gambar menjadi URL
-									getImageUrl(file, (url) => {
-										setImageUrl(url);
-									});
+									if (file.size / 1024 < 750) {
+										setAlert({ ext: false, size: false });
+										getImageUrl(file, (url) => {
+											setImageUrl(url);
+										});
+									} else {
+										setAlert({ ext: false, size: true });
+									}
 								}
 							}}
 						/>
-						{Alert ? (
+						{Alert.ext ? (
 							<p className="text-xs font-semibold text-secondary-red">
 								Harap upload file sesuai format yang telah
 								ditentukan (*.jpg, *.jpeg, *.png, *.pdf)
+							</p>
+						) : Alert.size ? (
+							<p className="text-xs font-semibold text-secondary-red">
+								Harap upload file dengan ukuran kurang dari
+								750Kb
 							</p>
 						) : null}
 						<button
