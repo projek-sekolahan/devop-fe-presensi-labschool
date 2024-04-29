@@ -67,7 +67,6 @@ export default function Home() {
 				}
 			})
 			.catch((err) => {
-				localStorage.clear();
 				if (err.status == 403) {
 					alert(
 						"error",
