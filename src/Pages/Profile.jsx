@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { parseJwt, getFormData } from "../utils/utils";
-import { apiXML } from "../utils/apiXML";
+import apiXML from "../utils/apiXML";
 import Loading from "./Loading";
 
 export default function Profile() {
