@@ -16,6 +16,7 @@ import Loading from "./Loading";
 export default function Home() {
 	const [show, setShow] = useState(false);
 	const [userData, setUserData] = useState(null);
+	userData && localStorage.setItem("group_id", userData.group_id);
 
 	if (!localStorage.getItem("login_token")) {
 		window.location.replace("/login");
@@ -41,11 +42,9 @@ export default function Home() {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				setUserData(parseJwt(localStorage.getItem("token")));
-				localStorage.setItem("group_id", userData.group_id);
 			})
 			.catch(() => {
-				// window.location.replace("/login");
-				console.log("cant do");
+				window.location.replace("/login");
 			});
 
 	const checkSession = () => {
