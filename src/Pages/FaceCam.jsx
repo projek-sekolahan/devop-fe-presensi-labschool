@@ -43,7 +43,7 @@ export default function RegisterFace() {
 
 	if (localStorage.getItem("group_id") == "4") {
 		values = [
-			localStorage.getItem("AUTH_KEY"),
+			localStorage.getItem("AUTH_KEY"),k
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("csrf"),
 			localStorage.getItem("login_token"),
