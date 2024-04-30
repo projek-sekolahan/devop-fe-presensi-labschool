@@ -145,7 +145,7 @@ export default function RegisterFace() {
 										res.data.info,
 										res.data.title,
 										res.data.message,
-										() => window.location.replace("home"),
+										() => window.location.replace("/home"),
 									)
 								: alert(
 										res.data.info,
