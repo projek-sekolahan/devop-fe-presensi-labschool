@@ -41,6 +41,7 @@ export default function Home() {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				setUserData(parseJwt(localStorage.getItem("token")));
+				localStorage.setItem("group_id", userData.group_id);
 			})
 			.catch(() => {
 				window.location.replace("/login");
