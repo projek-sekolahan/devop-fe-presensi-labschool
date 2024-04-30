@@ -43,7 +43,7 @@ export default function RegisterFace() {
 
 	if (localStorage.getItem("group_id") == "4") {
 		values = [
-			localStorage.getItem("AUTH_KEY"),k
+			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("csrf"),
 			localStorage.getItem("login_token"),
@@ -139,23 +139,10 @@ export default function RegisterFace() {
 						.then((res) => {
 							res = JSON.parse(res);
 							localStorage.setItem("csrf", res.csrfHash);
-							console.log(res);
-							res.status
-								? alert(
-										res.data.info,
-										res.data.title,
-										res.data.message,
-										() => window.location.replace("/home"),
-									)
-								: alert(
-										res.data.info,
-										res.data.title,
-										res.data.message,
-										() =>
-											window.location.replace(
-												res.data.location,
-											),
-									);
+							res = parseJwt(res);
+							alert(res.info, res.title, res.message, () =>
+								window.location.replace(res.location),
+							);
 						});
 				} else {
 					barRef.current.style.width = percentage;
