@@ -44,7 +44,8 @@ export default function Home() {
 				localStorage.setItem("group_id", userData.group_id);
 			})
 			.catch(() => {
-				window.location.replace("/login");
+				// window.location.replace("/login");
+				console.log("cant do");
 			});
 
 	const checkSession = () => {
