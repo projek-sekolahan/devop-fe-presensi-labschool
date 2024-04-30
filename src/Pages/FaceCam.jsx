@@ -46,6 +46,7 @@ export default function RegisterFace() {
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("csrf"),
+			localStorage.getItem("login_token"),
 			"non-dinas",
 			...state,
 		];
@@ -54,6 +55,7 @@ export default function RegisterFace() {
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
 			localStorage.getItem("csrf"),
+			localStorage.getItem("login_token"),
 			...state,
 		];
 	}
