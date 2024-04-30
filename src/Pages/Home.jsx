@@ -84,7 +84,7 @@ export default function Home() {
 				}
 			});
 	};
-	setInterval(checkSession(), 6000);
+	setInterval(checkSession(), 20000);
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
 			setShow(false);
