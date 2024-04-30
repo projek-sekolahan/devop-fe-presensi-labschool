@@ -26,13 +26,12 @@ export default function Login() {
 		apiXML
 			.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 			.then((loginResponse) => {
-				const responseData = JSON.parse(loginResponse);
-				localStorage.setItem("login_token", responseData.data.Tokenjwt);
-				alert(
-					responseData.data.info,
-					responseData.data.title,
-					responseData.data.message,
-					() => window.location.replace("/home"),
+				const res = JSON.parse(loginResponse);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				localStorage.setItem("login_token", res.data.Tokenjwt);
+				alert(res.data.info, res.data.title, res.data.message, () =>
+					window.location.replace("/home"),
 				);
 			})
 			.catch((errorData) => {
