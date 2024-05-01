@@ -125,7 +125,7 @@ export default function RegisterFace() {
 						localStorage.setItem("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
 						console.log(jwt);
-						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace(jwt.location));
+						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace("/home"));
 					} else {
 						barRef.current.style.width = percentage;
 						textRef.current.innerText = percentage;
