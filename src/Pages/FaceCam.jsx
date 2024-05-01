@@ -143,6 +143,23 @@ export default function RegisterFace() {
 							alert(res.info, res.title, res.message, () =>
 								window.location.replace(res.location),
 							);
+						}).catch((err) => {
+							if(err.status == 403) {
+								alert(
+									"error",
+									"Credential Expired",
+									"Your credentials has expired. Please try again later.",
+									() => window.location.replace("/home"),
+								)
+							} else {
+								err = JSON.parse(err.responseText);
+								alert(
+									err.info,
+									err.title,
+									err.message,
+									() => window.location.replace("/home"),
+								)
+							}
 						});
 				} else {
 					barRef.current.style.width = percentage;
