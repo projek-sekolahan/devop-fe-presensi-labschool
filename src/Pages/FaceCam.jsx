@@ -140,8 +140,9 @@ export default function RegisterFace() {
 									alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/home"));
 								} else {
 									err = JSON.parse(err.responseText);
+									localStorage.setItem("csrf", err.csrfHash);
 									console.log(err);
-									alert(err.info, err.title, err.message,() => window.location.replace("/home"));
+									alert(err.data.info, err.data.title, err.data.message,() => window.location.replace("/home"));
 								}
 							});
 					} else {
