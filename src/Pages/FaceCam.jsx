@@ -121,10 +121,8 @@ export default function RegisterFace() {
 	
 						const response = await apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 						const res = JSON.parse(response);
-						console.log(res);
 						localStorage.setItem("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
-						console.log(jwt);
 						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace("/home"));
 					} else {
 						barRef.current.style.width = percentage;
@@ -141,7 +139,6 @@ export default function RegisterFace() {
 				} else {
 					const error = JSON.parse(err.responseText);
 					localStorage.setItem("csrf", error.csrfHash);
-					console.log(error);
 					alert(error.data.info, error.data.title, error.data.message,() => window.location.replace("/home"));
 				}
 			}
