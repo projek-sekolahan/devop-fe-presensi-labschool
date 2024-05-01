@@ -135,6 +135,7 @@ export default function RegisterFace() {
 				}
 			} catch (err) {
 				if (err.status === 403) {
+					localStorage.clear();
 					alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/home"));
 				} else {
 					const error = JSON.parse(err.responseText);

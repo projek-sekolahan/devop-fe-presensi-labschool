@@ -45,11 +45,12 @@ export default function Login() {
 					);
 				} else {
 					errorData = JSON.parse(errorData.responseText);
+					localStorage.clear();
 					alert(
 						errorData.data.info,
 						errorData.data.title,
 						errorData.data.message,
-						() => window.location.replace(errorData.data.location),
+						() => window.location.replace("/login"),
 					);
 				}
 			});

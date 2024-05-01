@@ -70,6 +70,7 @@ export default function Home() {
 			})
 			.catch((err) => {
 				if (err.status == 403) {
+					localStorage.clear();
 					alert(
 						"error",
 						"Credential Expired",
@@ -78,6 +79,7 @@ export default function Home() {
 					);
 				} else {
 					err = JSON.parse(err.responseText);
+					localStorage.clear();
 					alert(err.data.info, err.data.title, err.data.message, () =>
 						window.location.replace("/login"),
 					);
