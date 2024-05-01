@@ -39,7 +39,7 @@ export default function RegisterFace() {
 		"facecam_id",
 		"foto_presensi",
 	];
-	let values;
+	let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
 
 	if (localStorage.getItem("group_id") == "4") {
 		values = [
@@ -92,82 +92,71 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
-		const matchFace = setInterval(async () => {
-			const faceData = await faceapi
-				.detectSingleFace(
-					videoRef.current,
-					new faceapi.TinyFaceDetectorOptions(),
-				)
-				.withFaceLandmarks()
-				.withFaceDescriptor();
-
-			if (faceData) {
-				Swal.close();
-				const distance = faceapi.euclideanDistance(
-					descriptor,
-					faceData.descriptor,
-				);
-				const percentage = `${Math.round(
-					((1 - distance) / 0.4) * 100,
-				)}%`;
-
-				if (distance <= 0.6) {
-					clearInterval(matchFace);
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
-
-					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getFaceUrl(
-						videoRef.current,
-						x - 50,
-						y - 75,
-						height + 125,
-					);
-
-					// Float 32 Array to String
-					const stringDescriptor = Array.from(
-						faceData.descriptor,
-					).join(", ");
-
-					values = [...values, stringDescriptor, `["${imgUrl}"]`];
-
-					apiXML
-						.process(
-							localStorage.getItem("AUTH_KEY"),
-							getFormData(keys, values),
-						)
-						.then((res) => {
-							res = JSON.parse(res);
-							localStorage.setItem("csrf", res.csrfHash);
-							res = parseJwt(res);
-							alert(res.info, res.title, res.message, () =>
-								window.location.replace(res.location),
-							);
-						}).catch((err) => {
-							if(err.status == 403) {
-								alert(
-									"error",
-									"Credential Expired",
-									"Your credentials has expired. Please try again later.",
-									() => window.location.replace("/home"),
-								)
-							} else {
-								err = JSON.parse(err.responseText);
-								alert(
-									err.info,
-									err.title,
-									err.message,
-									() => window.location.replace("/home"),
-								)
-							}
-						});
-				} else {
-					barRef.current.style.width = percentage;
-					textRef.current.innerText = percentage;
-				}
+		let matchFace; // Penempatan yang benar jika unik untuk setiap panggilan
+		
+		function startFaceMatching() {
+			// Bersihkan interval yang ada sebelumnya
+			if (matchFace) {
+				clearInterval(matchFace);
 			}
-		}, 1000);
+	
+			let attempts = 0; // Menghitung jumlah upaya deteksi
+			const maxAttempts = 10; // Jumlah maksimal upaya yang diizinkan
+	
+			matchFace = setInterval(async () => {
+				if (attempts >= maxAttempts) {
+					clearInterval(matchFace);
+					alert("error", "Matching Failed", "Failed to match face after several attempts.");
+					return;
+				}
+				attempts++;
+	
+				const faceData = await faceapi
+					.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+					.withFaceLandmarks()
+					.withFaceDescriptor();
+	
+				if (faceData) {
+					const distance = faceapi.euclideanDistance(descriptor, faceData.descriptor);
+					const percentage = `${Math.round(((1 - distance) / 0.4) * 100)}%`;
+	
+					if (distance <= 0.6) {
+						clearInterval(matchFace);
+						barRef.current.style.width = "100%";
+						textRef.current.innerText = "100%";
+	
+						const { x, y, width, height } = faceData.detection.box;
+						const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
+						const stringDescriptor = Array.from(faceData.descriptor).join(", ");
+						values.push(stringDescriptor, `["${imgUrl}"]`);
+	
+						apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
+							.then((res) => {
+								res = JSON.parse(res);
+								localStorage.setItem("csrf", res.csrfHash);
+								res = parseJwt(res);
+								console.log(res);
+								alert(res.info, res.title, res.message,() => window.location.replace(res.location));
+							}).catch((err) => {
+								if (err.status === 403) {
+									alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/home"));
+								} else {
+									err = JSON.parse(err.responseText);
+									console.log(err);
+									alert(err.info, err.title, err.message,() => window.location.replace("/home"));
+								}
+							});
+					} else {
+						barRef.current.style.width = percentage;
+						textRef.current.innerText = percentage;
+					}
+				}
+			}, 1000);
+		}
+	
+		startFaceMatching(); // Panggil fungsi untuk memulai proses pencocokan
 	};
+	
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
