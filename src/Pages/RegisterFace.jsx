@@ -19,13 +19,11 @@ export default function RegisterFace() {
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					console.log("Izin akses kamera ditolak oleh pengguna");
+					alert("Error","Error","Izin akses kamera ditolak oleh pengguna");
 				} else if (err.name === "NotFoundError") {
-					console.log(
-						"Tidak ada kamera yang tersedia pada perangkat",
-					);
+					alert("Error","Error","Tidak ada kamera yang tersedia pada perangkat");
 				} else {
-					console.log("Gagal mengakses webcam!", err);
+					alert("Error","Error","Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -77,7 +75,6 @@ export default function RegisterFace() {
 						localStorage.getItem("regist_token"),
 						localStorage.getItem("csrf"),
 					];
-					console.log(values);
 					loading("Loading", "Registering Face...");
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
