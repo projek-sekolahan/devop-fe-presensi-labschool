@@ -90,25 +90,17 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
-		let matchFace; // Penempatan yang benar jika unik untuk setiap panggilan
-		
-		function startFaceMatching() {
-			// Bersihkan interval yang ada sebelumnya
-			if (matchFace) {
-				clearInterval(matchFace);
+		let attempts = 0; // Menghitung jumlah upaya deteksi 
+		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
+
+		async function attemptMatch() {
+			if (attempts >= maxAttempts) {
+				alert("error", "Matching Failed", "Failed to match face after several attempts.");
+				return;
 			}
+			attempts++;
 	
-			let attempts = 0; // Menghitung jumlah upaya deteksi
-			const maxAttempts = 10; // Jumlah maksimal upaya yang diizinkan
-	
-			matchFace = setInterval(async () => {
-				if (attempts >= maxAttempts) {
-					clearInterval(matchFace);
-					alert("error", "Matching Failed", "Failed to match face after several attempts.");
-					return;
-				}
-				attempts++;
-	
+			try {
 				const faceData = await faceapi
 					.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
 					.withFaceLandmarks()
@@ -119,7 +111,6 @@ export default function RegisterFace() {
 					const percentage = `${Math.round(((1 - distance) / 0.4) * 100)}%`;
 	
 					if (distance <= 0.6) {
-						clearInterval(matchFace);
 						barRef.current.style.width = "100%";
 						textRef.current.innerText = "100%";
 	
@@ -128,34 +119,34 @@ export default function RegisterFace() {
 						const stringDescriptor = Array.from(faceData.descriptor).join(", ");
 						values.push(stringDescriptor, `["${imgUrl}"]`);
 	
-						apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-							.then((res) => {
-								res = JSON.parse(res);
-								localStorage.setItem("csrf", res.csrfHash);
-								res = parseJwt(res);
-								console.log(res);
-								alert(res.info, res.title, res.message,() => window.location.replace(res.location));
-							}).catch((err) => {
-								if (err.status === 403) {
-									alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/home"));
-								} else {
-									err = JSON.parse(err.responseText);
-									localStorage.setItem("csrf", err.csrfHash);
-									console.log(err);
-									alert(err.data.info, err.data.title, err.data.message,() => window.location.replace("/home"));
-								}
-							});
+						const response = await apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+						const res = JSON.parse(response);
+						localStorage.setItem("csrf", res.csrfHash);
+						const jwt = parseJwt(res);
+						console.log(jwt);
+						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace(jwt.location));
 					} else {
 						barRef.current.style.width = percentage;
 						textRef.current.innerText = percentage;
+						setTimeout(attemptMatch, 1000); // Schedule the next attempt
 					}
+				} else {
+					setTimeout(attemptMatch, 1000); // No face detected, retry
 				}
-			}, 1000);
+			} catch (err) {
+				if (err.status === 403) {
+					alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/home"));
+				} else {
+					const error = JSON.parse(err.responseText);
+					localStorage.setItem("csrf", error.csrfHash);
+					console.log(error);
+					alert(error.data.info, error.data.title, error.data.message,() => window.location.replace("/home"));
+				}
+			}
 		}
 	
-		startFaceMatching(); // Panggil fungsi untuk memulai proses pencocokan
+		attemptMatch(); // Memulai percobaan pertama
 	};
-	
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
