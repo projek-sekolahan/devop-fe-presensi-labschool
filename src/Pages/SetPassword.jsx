@@ -45,6 +45,22 @@ export default function SetPassword() {
 				: alert(res.info, res.title, res.message, () =>
 						window.location.replace("setpassword"),
 					);
+		}).catch((err) => {
+			if(err.status == 403) {
+				alert(
+					"error",
+					"Credential Expired",
+					"Your credentials has expired. Please try again later.",
+					() => window.location.replace("/setpassword"),
+				)
+			} else {
+				alert(
+					"error",
+					"Input Error",
+					"Something went wrong. Please refresh the page.",
+					() => window.location.replace("/setpassword"),
+				)
+			}
 		});
 	};
 
