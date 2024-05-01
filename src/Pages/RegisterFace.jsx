@@ -50,7 +50,7 @@ export default function RegisterFace() {
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
-
+			console.log(faceData);
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
