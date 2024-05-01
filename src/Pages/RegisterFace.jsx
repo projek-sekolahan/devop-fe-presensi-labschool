@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
 import { useRef } from "react";
-import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 
@@ -50,7 +50,7 @@ export default function RegisterFace() {
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
-			console.log(faceData);
+			
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
@@ -77,6 +77,7 @@ export default function RegisterFace() {
 						localStorage.getItem("regist_token"),
 						localStorage.getItem("csrf"),
 					];
+					console.log(values);
 					loading("Loading", "Registering Face...");
 					apiXML.facecam(getFormData(key, values)).then((res) => {
 						res = JSON.parse(res);
