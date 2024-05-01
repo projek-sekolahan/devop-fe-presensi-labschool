@@ -121,8 +121,9 @@ export default function RegisterFace() {
 	
 						const response = await apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
 						const res = JSON.parse(response);
+						console.log(res);
 						localStorage.setItem("csrf", res.csrfHash);
-						const jwt = parseJwt(res);
+						const jwt = parseJwt(res.data);
 						console.log(jwt);
 						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace(jwt.location));
 					} else {
