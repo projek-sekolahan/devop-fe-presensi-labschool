@@ -34,41 +34,51 @@ export default function Register() {
 			localStorage.getItem("csrf"),
 		];
 		loading("Loading", "Registering...");
-		apiXML.register(getFormData(keys, values)).then((res) => {
-			res = JSON.parse(res);
-			setLoad(false);
-			localStorage.setItem("email", emailRef.current.value);
-			localStorage.setItem("csrf", res.csrfHash);
-			res.status
-				? alert(res.data.info, res.data.title, res.data.message, () =>
-						navigate(res.data.location==="register" ? "/" : res.data.location , {
-							state: "facereg",
-						}),
-					)
-				: alert(
-						res.info,
-						res.title,
-						res.message,
-						window.location.replace(res.location),
+		apiXML
+			.register(getFormData(keys, values))
+			.then((res) => {
+				res = JSON.parse(res);
+				setLoad(false);
+				localStorage.setItem("email", emailRef.current.value);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				res.status
+					? alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() =>
+								navigate(
+									res.data.location === "register"
+										? "/"
+										: res.data.location,
+								),
+						)
+					: alert(
+							res.info,
+							res.title,
+							res.message,
+							window.location.replace(res.location),
+						);
+			})
+			.catch((err) => {
+				localStorage.clear();
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/"),
 					);
-		}).catch((err) => {
-			localStorage.clear();
-			if(err.status == 403) {
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please try again later.",
-					() => window.location.replace("/"),
-				)
-			} else {
-				alert(
-					"error",
-					"Input Error",
-					"Something went wrong. Please try again later.",
-					() => window.location.replace("/"),
-				)
-			}
-		});
+				} else {
+					alert(
+						"error",
+						"Input Error",
+						"Something went wrong. Please try again later.",
+						() => window.location.replace("/"),
+					);
+				}
+			});
 	};
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">

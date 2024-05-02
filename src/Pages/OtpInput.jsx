@@ -9,7 +9,6 @@ export default function OtpInput() {
 	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
-	const { state } = useLocation();
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -22,35 +21,41 @@ export default function OtpInput() {
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, localStorage.getItem("csrf")];
 		loading("Loading", "Processing OTP Data...");
-		apiXML.verify(getFormData(keys, values)).then((res) => {
-			res = JSON.parse(res);
-			setLoad(false);
-			localStorage.setItem("regist_token", res.data.token);
-			localStorage.setItem("csrf", res.csrfHash);
-			res.status
-				? alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace(state),
-					)
-				: alert(res.info, res.title, res.message, () =>
-						window.location.replace(res.location),
+		apiXML
+			.verify(getFormData(keys, values))
+			.then((res) => {
+				res = JSON.parse(res);
+				setLoad(false);
+				localStorage.setItem("regist_token", res.data.token);
+				localStorage.setItem("csrf", res.csrfHash);
+				res.status
+					? alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace("/facereg"),
+						)
+					: alert(res.info, res.title, res.message, () =>
+							window.location.replace(res.location),
+						);
+			})
+			.catch((err) => {
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/verify"),
 					);
-		}).catch((err) => {
-			if(err.status == 403) {
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please try again later.",
-					() => window.location.replace("/verify"),
-				)
-			} else {
-				alert(
-					"error",
-					"Input Error",
-					"Something code went wrong. Please check the code in the email.",
-					() => window.location.replace("/verify"),
-				)
-			}
-		});
+				} else {
+					alert(
+						"error",
+						"Input Error",
+						"Something code went wrong. Please check the code in the email.",
+						() => window.location.replace("/verify"),
+					);
+				}
+			});
 	};
 
 	const handleChange = (index, e) => {
@@ -93,29 +98,32 @@ export default function OtpInput() {
 			localStorage.getItem("csrf"),
 		];
 		loading("Loading", "Processing Send OTP Data...");
-		apiXML.sendOtp(getFormData(key, values)).then((res) => {
-			res = JSON.parse(res);
-			localStorage.setItem("csrf", res.csrfHash);
-			alert(res.info, res.title, res.message, () =>
-				window.location.replace(res.location),
-			);
-		}).catch((err) => {
-			if(err.status == 403) {
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please try again later.",
-					() => window.location.replace("/verify"),
-				)
-			} else {
-				alert(
-					"error",
-					"Input Error",
-					"Something went wrong. Please try again later.",
-					() => window.location.replace("/verify"),
-				)
-			}
-		});
+		apiXML
+			.sendOtp(getFormData(key, values))
+			.then((res) => {
+				res = JSON.parse(res);
+				localStorage.setItem("csrf", res.csrfHash);
+				alert(res.info, res.title, res.message, () =>
+					window.location.replace(res.location),
+				);
+			})
+			.catch((err) => {
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/verify"),
+					);
+				} else {
+					alert(
+						"error",
+						"Input Error",
+						"Something went wrong. Please try again later.",
+						() => window.location.replace("/verify"),
+					);
+				}
+			});
 	};
 
 	return (
@@ -131,7 +139,8 @@ export default function OtpInput() {
 			<div className="w-full h-1/2 mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8">
 				<h2 className="font-bold text-4xl">Email Verification</h2>
 				<p className="text-xs">
-					Enter the verification code that was sended to your email addreas
+					Enter the verification code that was sended to your email
+					addreas
 				</p>
 				<form ref={formRef}>
 					<div className="flex justify-between my-8">

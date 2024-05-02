@@ -7,47 +7,47 @@ import { getFormData, alert, loading } from "../utils/utils";
 export default function ChangePassword() {
 	const emailRef = useRef();
 	const [load, setLoad] = useState(false);
-	const navigate = useNavigate();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		loading("Loading", "Verifying Email...");
 		setLoad(true);
 		const key = ["username", "csrf_token"];
-		const values = [
-			emailRef.current.value,
-			localStorage.getItem("csrf"),
-		];
-		apiXML.recover(getFormData(key, values)).then((res) => {
-			res = JSON.parse(res);
-			localStorage.setItem("csrf", res.csrfHash);
-			setLoad(false);
-			res.status
-				? alert(res.data.info, res.data.title, res.data.message, () =>
-						navigate("/verify", {
-							state: "setpassword",
-						}),
-					)
-				: alert(res.info, res.title, res.message, () =>
-						window.location.replace("recover"),
+		const values = [emailRef.current.value, localStorage.getItem("csrf")];
+		apiXML
+			.recover(getFormData(key, values))
+			.then((res) => {
+				res = JSON.parse(res);
+				localStorage.setItem("csrf", res.csrfHash);
+				setLoad(false);
+				res.status
+					? alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace("/verify"),
+						)
+					: alert(res.info, res.title, res.message, () =>
+							window.location.replace("/recover"),
+						);
+			})
+			.catch((err) => {
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/recover"),
 					);
-		}).catch((err) => {
-			if(err.status == 403) {
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please try again later.",
-					() => window.location.replace("/recover"),
-				)
-			} else {
-				alert(
-					"error",
-					"Input Error",
-					"Something went wrong. Please refresh the page.",
-					() => window.location.replace("/recover"),
-				)
-			}
-		});
+				} else {
+					alert(
+						"error",
+						"Input Error",
+						"Something went wrong. Please refresh the page.",
+						() => window.location.replace("/recover"),
+					);
+				}
+			});
 	};
 
 	return (
