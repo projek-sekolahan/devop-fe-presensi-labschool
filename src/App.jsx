@@ -24,7 +24,6 @@ const FaceCam = lazy(() => import("./Pages/FaceCam"));
 const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
-const Test = lazy(() => import("./Pages/Test"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
@@ -38,6 +37,8 @@ function App() {
 			// Data yang diberikan
 			localStorage.getItem("csrf") && localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", result.data.csrfHash);
+		}).catch((err) => {
+			console.log(err);
 		});
 	}, []);
 
