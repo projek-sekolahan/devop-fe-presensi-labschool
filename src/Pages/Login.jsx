@@ -35,7 +35,6 @@ export default function Login() {
 				);
 			})
 			.catch((errorData) => {
-<<<<<<< HEAD
 				errorData = JSON.parse(errorData.responseText);
 				alert(
 					errorData.data.info,
@@ -43,26 +42,6 @@ export default function Login() {
 					errorData.data.message,
 					() => window.location.replace(errorData.data.location),
 				);
-=======
-				if (errorData.status == 403) {
-					localStorage.clear();
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					errorData = JSON.parse(errorData.responseText);
-					localStorage.clear();
-					alert(
-						errorData.data.info,
-						errorData.data.title,
-						errorData.data.message,
-						() => window.location.replace("/login"),
-					);
-				}
->>>>>>> 6175f89921f8a437632f2b1b41c3a1cc0dd60a36
 			});
 	};
 
