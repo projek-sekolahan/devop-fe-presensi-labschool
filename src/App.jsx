@@ -36,7 +36,7 @@ function App() {
 			console.log(result);
 			// Data yang diberikan
 			localStorage.getItem("csrf") && localStorage.removeItem("csrf");
-			localStorage.setItem("csrf", result.data.csrfHash);
+			localStorage.setItem("csrf", result.csrfHash);
 		}).catch((err) => {
 			console.log(err);
 		});
