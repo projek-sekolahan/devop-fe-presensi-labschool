@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { getCsrf } from "./utils/api";
+import apiXML from "../utils/apiXML.js";
 import Register from "./Pages/Register";
 
 import Loading from "./Pages/Loading";
@@ -33,7 +33,8 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		getCsrf().then((result) => {
+		apiXML.getCsrf().then((result) => {
+			console.log(result);
 			// Data yang diberikan
 			localStorage.getItem("csrf") && localStorage.removeItem("csrf");
 			localStorage.setItem("csrf", result.data.csrfHash);

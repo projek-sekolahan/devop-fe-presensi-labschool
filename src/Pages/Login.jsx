@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
-import { getHash, getKey, getFormData, alert } from "../utils/utils.js";
+import { getHash, getKey, getFormData, alert, loading } from "../utils/utils.js";
 import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 
@@ -22,7 +22,7 @@ export default function Login() {
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
-
+		loading("Loading", "Logging in...");
 		apiXML
 			.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 			.then((loginResponse) => {

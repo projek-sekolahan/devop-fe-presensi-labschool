@@ -10,7 +10,7 @@ export default class apiXML {
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
             xhr.onload = () => {
-                if (xhr.status === 200) {
+                if (xhr.status === 200 || xhr.status === 201) {
                     resolve(JSON.parse(xhr.responseText).data);
                 } else {
                     reject(xhr.statusText);
