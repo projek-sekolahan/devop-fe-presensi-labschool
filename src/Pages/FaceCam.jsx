@@ -39,7 +39,7 @@ export default function RegisterFace() {
 		"facecam_id",
 		"foto_presensi",
 	];
-	let values;
+	let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
 
 	if (localStorage.getItem("group_id") == "4") {
 		values = [
@@ -69,13 +69,11 @@ export default function RegisterFace() {
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					console.log("Izin akses kamera ditolak oleh pengguna");
+					alert("Error","Error","Izin akses kamera ditolak oleh pengguna");
 				} else if (err.name === "NotFoundError") {
-					console.log(
-						"Tidak ada kamera yang tersedia pada perangkat",
-					);
+					alert("Error","Error","Tidak ada kamera yang tersedia pada perangkat");
 				} else {
-					console.log("Gagal mengakses webcam!", err);
+					alert("Error","Error","Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -92,64 +90,61 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
-		const matchFace = setInterval(async () => {
-			const faceData = await faceapi
-				.detectSingleFace(
-					videoRef.current,
-					new faceapi.TinyFaceDetectorOptions(),
-				)
-				.withFaceLandmarks()
-				.withFaceDescriptor();
+		let attempts = 0; // Menghitung jumlah upaya deteksi 
+		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
-			if (faceData) {
-				Swal.close();
-				const distance = faceapi.euclideanDistance(
-					descriptor,
-					faceData.descriptor,
-				);
-				const percentage = `${Math.round(
-					((1 - distance) / 0.4) * 100,
-				)}%`;
-
-				if (distance <= 0.6) {
-					clearInterval(matchFace);
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
-
-					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getFaceUrl(
-						videoRef.current,
-						x - 50,
-						y - 75,
-						height + 125,
-					);
-
-					// Float 32 Array to String
-					const stringDescriptor = Array.from(
-						faceData.descriptor,
-					).join(", ");
-
-					values = [...values, stringDescriptor, `["${imgUrl}"]`];
-
-					apiXML
-						.process(
-							localStorage.getItem("AUTH_KEY"),
-							getFormData(keys, values),
-						)
-						.then((res) => {
-							res = JSON.parse(res);
-							localStorage.setItem("csrf", res.csrfHash);
-							res = parseJwt(res);
-							alert(res.info, res.title, res.message, () =>
-								window.location.replace(res.location),
-							);
-						});
+		async function attemptMatch() {
+			if (attempts >= maxAttempts) {
+				alert("error", "Matching Failed", "Failed to match face after several attempts.");
+				return;
+			}
+			attempts++;
+	
+			try {
+				const faceData = await faceapi
+					.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+					.withFaceLandmarks()
+					.withFaceDescriptor();
+	
+				if (faceData) {
+					const distance = faceapi.euclideanDistance(descriptor, faceData.descriptor);
+					const percentage = `${Math.round(((1 - distance) / 0.4) * 100)}%`;
+	
+					if (distance <= 0.6) {
+						barRef.current.style.width = "100%";
+						textRef.current.innerText = "100%";
+	
+						const { x, y, width, height } = faceData.detection.box;
+						const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
+						const stringDescriptor = Array.from(faceData.descriptor).join(", ");
+						values.push(stringDescriptor, `["${imgUrl}"]`);
+	
+						const response = await apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+						const res = JSON.parse(response);
+						localStorage.setItem("csrf", res.csrfHash);
+						const jwt = parseJwt(res.data);
+						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace("/home"));
+					} else {
+						barRef.current.style.width = percentage;
+						textRef.current.innerText = percentage;
+						setTimeout(attemptMatch, 1000); // Schedule the next attempt
+					}
 				} else {
-					barRef.current.style.width = percentage;
-					textRef.current.innerText = percentage;
+					setTimeout(attemptMatch, 1000); // No face detected, retry
+				}
+			} catch (err) {
+				if (err.status === 403) {
+					localStorage.clear();
+					alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/login"));
+				} else {
+					const error = JSON.parse(err.responseText);
+					localStorage.setItem("csrf", error.csrfHash);
+					alert(error.data.info, error.data.title, error.data.message,() => window.location.replace("/home"));
 				}
 			}
-		}, 1000);
+		}
+	
+		attemptMatch(); // Memulai percobaan pertama
 	};
 
 	return (

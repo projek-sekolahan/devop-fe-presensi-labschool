@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
 import { useRef } from "react";
-import { getFormData, getImageUrl, loading, alert } from "../utils/utils";
+import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 
@@ -19,13 +19,11 @@ export default function RegisterFace() {
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					console.log("Izin akses kamera ditolak oleh pengguna");
+					alert("Error","Error","Izin akses kamera ditolak oleh pengguna");
 				} else if (err.name === "NotFoundError") {
-					console.log(
-						"Tidak ada kamera yang tersedia pada perangkat",
-					);
+					alert("Error","Error","Tidak ada kamera yang tersedia pada perangkat");
 				} else {
-					console.log("Gagal mengakses webcam!", err);
+					alert("Error","Error","Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -50,7 +48,7 @@ export default function RegisterFace() {
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
-
+			
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
