@@ -35,7 +35,8 @@ function App() {
 		apiXML.getCsrf().then((result) => {
 			console.log(result);
 			// Data yang diberikan
-			localStorage.setItem("csrf", result.csrfHash);
+			// JSON.parse(xhr.responseText)
+			// localStorage.setItem("csrf", result.csrfHash);
 		}).catch((err) => {
 			console.log(err);
 		});

@@ -9,9 +9,10 @@ export default class apiXML {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
+            xhr.withCredentials = true;
             xhr.onload = () => {
                 if (xhr.status === 200 || xhr.status === 201) {
-                    resolve(JSON.parse(xhr.responseText));
+                    resolve(xhr);
                 } else {
                     reject(xhr.statusText);
                 }
