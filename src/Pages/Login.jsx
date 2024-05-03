@@ -36,7 +36,6 @@ export default function Login() {
 				);
 			})
 			.catch((errorData) => {
-				console.log(errorData);
 				localStorage.clear();
 				if (errorData.status == 403) {
 					alert(
