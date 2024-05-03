@@ -35,13 +35,23 @@ export default function Login() {
 				);
 			})
 			.catch((errorData) => {
-				errorData = JSON.parse(errorData.responseText);
-				alert(
-					errorData.data.info,
-					errorData.data.title,
-					errorData.data.message,
-					() => window.location.replace(errorData.data.location),
-				);
+				localStorage.clear();
+				if (errorData.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/login"),
+					);
+				} else {
+					errorData = JSON.parse(errorData.responseText);
+					alert(
+						errorData.data.info,
+						errorData.data.title,
+						errorData.data.message,
+						() => window.location.replace(errorData.data.location),
+					);
+				}
 			});
 	};
 
