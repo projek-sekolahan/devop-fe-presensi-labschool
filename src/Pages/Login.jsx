@@ -37,14 +37,6 @@ export default function Login() {
 			})
 			.catch((errorData) => {
 				localStorage.clear();
-				if (errorData.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/login"),
-					);
-				} else {
 					errorData = JSON.parse(errorData.responseText);
 					alert(
 						errorData.data.info,
@@ -52,7 +44,6 @@ export default function Login() {
 						errorData.data.message,
 						() => window.location.replace(errorData.data.location),
 					);
-				}
 			});
 	};
 
