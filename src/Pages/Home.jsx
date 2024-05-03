@@ -13,6 +13,47 @@ import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 
+const checkSession = () => {
+	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
+	const value = [
+		localStorage.getItem("devop-sso"),
+		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("csrf"),
+	];
+	apiXML
+		.sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+		.then((res) => {
+			res = JSON.parse(res);
+			if (res.data.title == "Your Session OK") {
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+			} else {
+				alert("error", res.data.title, res.data.message, () => {
+					localStorage.clear();
+					window.location.replace("/login");
+				});
+			}
+		})
+		.catch((err) => {
+			if (err.status == 403) {
+				localStorage.clear();
+				alert(
+					"error",
+					"Credential Expired",
+					"Your credentials has expired. Please login again.",
+					() => window.location.replace("/login"),
+				);
+			} else {
+				err = JSON.parse(err.responseText);
+				localStorage.clear();
+				alert(err.data.info, err.data.title, err.data.message, () =>
+					window.location.replace("/login"),
+				);
+			}
+		});
+	};
+setInterval(checkSession(), 20000);
+
 export default function Home() {
 	const [show, setShow] = useState(false);
 	const [userData, setUserData] = useState(null);
@@ -46,47 +87,6 @@ export default function Home() {
 			.catch(() => {
 				window.location.replace("/login");
 			});
-
-	const checkSession = () => {
-		const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-		const value = [
-			localStorage.getItem("devop-sso"),
-			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("csrf"),
-		];
-		apiXML
-			.sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-			.then((res) => {
-				res = JSON.parse(res);
-				if (res.data.title == "Your Session OK") {
-					localStorage.removeItem("csrf");
-					localStorage.setItem("csrf", res.csrfHash);
-				} else {
-					alert("error", res.data.title, res.data.message, () => {
-						localStorage.clear();
-						window.location.replace("/login");
-					});
-				}
-			})
-			.catch((err) => {
-				if (err.status == 403) {
-					localStorage.clear();
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					err = JSON.parse(err.responseText);
-					localStorage.clear();
-					alert(err.data.info, err.data.title, err.data.message, () =>
-						window.location.replace("/login"),
-					);
-				}
-			});
-	};
-	setInterval(checkSession(), 20000);
 	window.addEventListener("click", (e) => {
 		if (e.pageX > (screen.width * 75) / 100) {
 			setShow(false);
