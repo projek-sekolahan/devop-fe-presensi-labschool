@@ -1,4 +1,5 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
