@@ -33,11 +33,11 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		apiXML.getCsrf().then((result) => {
+			// Data yang diberikan
+			result =JSON.parse(result.responseText);
 			console.log(result);
 			console.log(document.cookie);
-			// Data yang diberikan
-			// JSON.parse(xhr.responseText)
-			// localStorage.setItem("csrf", result.csrfHash);
+			localStorage.setItem("csrf", result.csrfHash);
 		}).catch((err) => {
 			console.log(err);
 		});
