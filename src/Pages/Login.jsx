@@ -7,7 +7,8 @@ import PasswordShow from "../Components/PasswordShow";
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const onSubmit = () => {
+	const onSubmit = (e) => {
+		e.preventDefault();
 		const emailValue = emailRef.current.value;
 		const passwordValue = passwordRef.current.value;
 		const hash = getHash(passwordValue);
