@@ -37,7 +37,7 @@ export default function Login() {
 			})
 			.catch((errorData) => {
 				localStorage.clear();
-				if (errorData.status == 403) {
+				if (errorData.status == 403 || errorData.status == 502) {
 					alert(
 						"error",
 						"Credential Expired",
