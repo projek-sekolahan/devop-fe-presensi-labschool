@@ -3,7 +3,6 @@ import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
 	const userData = parseJwt(localStorage.getItem("token"));
-	console.log(parseJwt(localStorage.getItem("token")));
 	return (
 		<div className="font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-8 relative text-white px-6">
 			<div
