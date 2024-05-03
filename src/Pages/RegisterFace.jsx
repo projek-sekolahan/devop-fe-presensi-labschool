@@ -15,6 +15,9 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
+				videoRef.current.setAttribute('autoplay', '');
+				videoRef.current.setAttribute('muted', '');
+				videoRef.current.setAttribute('playsinline', '');
 				Swal.close();
 			})
 			.catch(function (err) {
