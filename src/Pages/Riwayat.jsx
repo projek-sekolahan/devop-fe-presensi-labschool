@@ -23,18 +23,16 @@ export default function Riwayat() {
 	} else {
 		window.location.replace("/login");
 	} */
-		userData = parseJwt(localStorage.getItem("token"));
-		console.log(userData);
-		console.log(historys)
+	userData = parseJwt(localStorage.getItem("token"));
 
-	window.addEventListener("click", (e) => {
+	/* window.addEventListener("click", (e) => {
 		const dropdown = document.getElementById("dropdown");
 		const dropdownContent = document.getElementById("dropdown-content");
 		if (!dropdown.contains(e.target) && swapButton[0] == "off") {
 			dropdownContent.classList.add("hidden");
 			setSwapButton(["on", "off"]);
 		}
-	});
+	}); */
 
 	const keys = [
 		"AUTH_KEY",
