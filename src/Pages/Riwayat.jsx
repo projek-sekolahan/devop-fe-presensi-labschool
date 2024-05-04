@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData, alert } from "../utils/utils";
+import { parseJwt, getFormData, alert, loading } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
@@ -51,7 +51,7 @@ export default function Riwayat() {
 	filter == "7 Hari"
 		? (values = [...values, "7 DAY"])
 		: (values = [...values, "14 DAY"]);
-
+	loading("Loading", "Fetching data...");
 	!historys &&
 		loading &&
 		apiXML
