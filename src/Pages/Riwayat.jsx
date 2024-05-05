@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData, alert } from "../utils/utils";
+import { parseJwt, getFormData, alert, loading } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
@@ -16,22 +16,23 @@ export default function Riwayat() {
 	const [loading, setLoading] = useState(true);
 
 	let userData = {};
-	if (!localStorage.getItem("token")) {
+	/* if (!localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
 		console.log(userData);
 		console.log(historys)
 	} else {
 		window.location.replace("/login");
-	}
+	} */
+	userData = parseJwt(localStorage.getItem("token"));
 
-	window.addEventListener("click", (e) => {
+	/* window.addEventListener("click", (e) => {
 		const dropdown = document.getElementById("dropdown");
 		const dropdownContent = document.getElementById("dropdown-content");
 		if (!dropdown.contains(e.target) && swapButton[0] == "off") {
 			dropdownContent.classList.add("hidden");
 			setSwapButton(["on", "off"]);
 		}
-	});
+	}); */
 
 	const keys = [
 		"AUTH_KEY",
@@ -51,7 +52,7 @@ export default function Riwayat() {
 	filter == "7 Hari"
 		? (values = [...values, "7 DAY"])
 		: (values = [...values, "14 DAY"]);
-
+	loading("Loading", "Fetching data...");
 	!historys &&
 		loading &&
 		apiXML
@@ -64,6 +65,7 @@ export default function Riwayat() {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
+				console.log(data);
 				setHistorys(data);
 				setLoading(false);
 			}).catch((err) => {
