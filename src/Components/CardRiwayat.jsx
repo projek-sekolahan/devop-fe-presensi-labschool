@@ -8,7 +8,7 @@ export default function CardRiwayat({ history, biodata }) {
 				alt="photo_profile"
 				className="size-12 rounded-full bg-white"
 			/>
-			<p className="font-bold text-base">{biodata.nama_lengkap}</p>
+			<p className="font-bold text-base">{history["Nama Lengkap"]}</p>
 			<div className="w-full flex gap-2 justify-between">
 				<div className="flex flex-col">
 					<p className="font-medium text-xs">
