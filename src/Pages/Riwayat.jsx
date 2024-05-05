@@ -13,9 +13,10 @@ export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
 	const [swapButton, setSwapButton] = useState(["on", "off"]);
 	const [historys, setHistorys] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [load, setLoad] = useState(true);
 
 	let userData = {};
+
 	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
 	} else {
@@ -25,7 +26,7 @@ export default function Riwayat() {
 	userData = parseJwt(localStorage.getItem("token"));
 	console.log(userData);
 
-	 window.addEventListener("click", (e) => {
+	window.addEventListener("click", (e) => {
 		const dropdown = document.getElementById("dropdown");
 		const dropdownContent = document.getElementById("dropdown-content");
 		if (!dropdown.contains(e.target) && swapButton[0] == "off") {
@@ -54,7 +55,7 @@ export default function Riwayat() {
 		: (values = [...values, "14 DAY"]);
 	loading("Loading", "Fetching data...");
 	!historys &&
-		loading &&
+		load &&
 		apiXML
 			.reports(
 				localStorage.getItem("AUTH_KEY"),
@@ -67,7 +68,7 @@ export default function Riwayat() {
 				const { data } = parseJwt(res.data);
 				console.log(data);
 				setHistorys(data);
-				setLoading(false);
+				setLoad(false);
 			}).catch((err) => {
 				if(err.status == 403) {
 					localStorage.clear();
@@ -135,7 +136,7 @@ export default function Riwayat() {
 									setFilter("7 Hari");
 									setSwapButton(["on", "off"]);
 									setHistorys(null);
-									setLoading(true);
+									setLoad(true);
 								}}
 							>
 								7 Hari
@@ -147,7 +148,7 @@ export default function Riwayat() {
 									setFilter("14 Hari");
 									setSwapButton(["on", "off"]);
 									setHistorys(null);
-									setLoading(true);
+									setLoad(true);
 								}}
 							>
 								14 Hari
@@ -155,7 +156,7 @@ export default function Riwayat() {
 						</li>
 					</ul>
 				</div>
-				{loading ? (
+				{load ? (
 					<div className="size-full flex justify-center items-center">
 						<span className="loading loading-spinner text-white"></span>
 					</div>
