@@ -16,10 +16,8 @@ export default function Riwayat() {
 	const [loading, setLoading] = useState(true);
 
 	let userData = {};
-	 if (!localStorage.getItem("token")) {
+	if (localStorage.getItem("token")) {
 		userData = parseJwt(localStorage.getItem("token"));
-		console.log(userData);
-		console.log(historys)
 	} else {
 		window.location.replace("/login");
 	} 
