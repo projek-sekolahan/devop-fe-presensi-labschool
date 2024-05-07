@@ -42,19 +42,46 @@ export default function FaceVerification() {
 		max_latitude: -7.2994,
 	};
 
-	const click = () => {
-		navigator.geolocation.getCurrentPosition((position) => {
-			const latitude = position.coords.latitude;
-			const longitude = position.coords.longitude;
+	const options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0,
+	  };
+	  
+	const success = (position) => {
+		const latitude = position.coords.latitude;
+		const longitude = position.coords.longitude;
 
-			if (
-				latitude >= coordinat.min_latitude &&
-				latitude <= coordinat.max_latitude &&
-				longitude <= coordinat.min_longitude &&
-				longitude >= coordinat.max_longitude
-			) {
-				alert("success", "Done", "Anda berada di area sekolah", () =>
-					navigate("/facecam", {
+		if (
+			latitude >= coordinat.min_latitude &&
+			latitude <= coordinat.max_latitude &&
+			longitude <= coordinat.min_longitude &&
+			longitude >= coordinat.max_longitude
+		) {
+			alert("success", "Done", "Anda berada di area sekolah", () =>
+				navigate("/facecam", {
+					state: [
+						...state,
+						JSON.stringify({
+							longitude: longitude.toString(),
+							latitude: latitude.toString(),
+						}),
+					],
+				}),
+			);
+		} else {
+			const distance = calculateDistance(
+				latitude,
+				longitude,
+				coordinat.latitude,
+				coordinat.longitude,
+			);
+			alert(
+				"warning",
+				"",
+				`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
+				() =>
+					navigate("/presensi/verif", {
 						state: [
 							...state,
 							JSON.stringify({
@@ -63,31 +90,16 @@ export default function FaceVerification() {
 							}),
 						],
 					}),
-				);
-			} else {
-				const distance = calculateDistance(
-					latitude,
-					longitude,
-					coordinat.latitude,
-					coordinat.longitude,
-				);
-				alert(
-					"warning",
-					"",
-					`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
-					() =>
-						navigate("/presensi/verif", {
-							state: [
-								...state,
-								JSON.stringify({
-									longitude: longitude.toString(),
-									latitude: latitude.toString(),
-								}),
-							],
-						}),
-				);
-			}
-		});
+			);
+		}
+	}
+	  
+	const error = (err) => {
+		console.warn(`ERROR(${err.code}): ${err.message}`);
+	}
+
+	const click = () => {
+		navigator.geolocation.getCurrentPosition(success, error, options);
 	};
 
 	return (
