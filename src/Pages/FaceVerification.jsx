@@ -43,7 +43,7 @@ export default function FaceVerification() {
 	};
 
 	const options = {
-		enableHighAccuracy: true,
+		enableHighAccuracy: false,
 		timeout: 5000,
 		maximumAge: 0,
 	  };
