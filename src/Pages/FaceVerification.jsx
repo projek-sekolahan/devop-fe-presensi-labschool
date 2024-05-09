@@ -6,6 +6,7 @@ import { alert } from "../utils/utils";
 export default function FaceVerification() {
 	const { state } = useLocation();
 	const navigate = useNavigate();
+	console.log(state);
 
 	// Fungsi untuk mengonversi derajat menjadi radian
 	function degreesToRadians(degrees) {
@@ -46,8 +47,8 @@ export default function FaceVerification() {
 		enableHighAccuracy: true,
 		timeout: 5000,
 		maximumAge: 0,
-	  };
-	  
+	};
+
 	const success = (position) => {
 		const latitude = position.coords.latitude;
 		const longitude = position.coords.longitude;
@@ -67,14 +68,14 @@ export default function FaceVerification() {
 							latitude: latitude.toString(),
 						}),
 					],
-				}),
+				})
 			);
 		} else {
 			const distance = calculateDistance(
 				latitude,
 				longitude,
 				coordinat.latitude,
-				coordinat.longitude,
+				coordinat.longitude
 			);
 			alert(
 				"warning",
@@ -82,21 +83,15 @@ export default function FaceVerification() {
 				`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 				() =>
 					navigate("/presensi/verif", {
-						state: [
-							...state,
-							JSON.stringify({
-								longitude: longitude.toString(),
-								latitude: latitude.toString(),
-							}),
-						],
-					}),
+						state: [...state],
+					})
 			);
 		}
-	}
-	  
+	};
+
 	const error = (err) => {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
-	}
+	};
 
 	const click = () => {
 		navigator.geolocation.getCurrentPosition(success, error, options);

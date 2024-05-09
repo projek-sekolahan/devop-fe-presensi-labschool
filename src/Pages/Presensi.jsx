@@ -13,6 +13,7 @@ export default function Presensi() {
 	const dateRef = useRef(null);
 	const dayRef = useRef(null);
 	const { state } = useLocation();
+	console.log(state);
 
 	useClock(timeRef, dateRef, dayRef);
 	return (
