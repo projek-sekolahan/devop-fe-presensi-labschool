@@ -24,7 +24,6 @@ export default function Riwayat() {
 	} 
 
 	userData = parseJwt(localStorage.getItem("token"));
-	console.log(userData);
 
 	window.addEventListener("click", (e) => {
 		const dropdown = document.getElementById("dropdown");
@@ -65,7 +64,7 @@ export default function Riwayat() {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
-				console.log(data); return false;
+				console.log(data);
 				setHistorys(data);
 				setLoad(false);
 			}).catch((err) => {
