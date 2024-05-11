@@ -34,7 +34,17 @@ export default function CardRiwayat({ history, biodata }) {
 									: "bg-secondary-yellow"
 					} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 				>
-					{/* history.Keterangan.split(" ")[0] */}
+					{
+						`${
+							history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
+							? "Normal"
+							: history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
+								? "Tidak Normal"
+								: history["Status Masuk"] == NULL && history["Status Pulang"] == NULL && history["Keterangan"] == "Dinas Luar"
+									? "Dinas Luar"
+									: "Izin/Sakit"
+						}`
+					}
 				</div>
 			</div>
 		</div>
