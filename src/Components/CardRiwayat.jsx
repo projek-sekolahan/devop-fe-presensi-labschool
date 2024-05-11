@@ -25,16 +25,16 @@ export default function CardRiwayat({ history, biodata }) {
 				</div>
 				<div
 					className={`${
-						history["Kode Keterangan"] == "1"
+						history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
 							? "bg-secondary-green"
-							: history["Kode Keterangan"] == "3"
+							: history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
 								? "bg-secondary-red"
-								: history["Kode Keterangan"] == "7"
+								: history["Status Masuk"] == NULL && history["Status Pulang"] == NULL && history["Keterangan"] == "Dinas Luar"
 									? "bg-gray-600"
 									: "bg-secondary-yellow"
 					} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 				>
-					{history.Keterangan.split(" ")[0]}
+					{/* history.Keterangan.split(" ")[0] */}
 				</div>
 			</div>
 		</div>
