@@ -88,6 +88,14 @@ export default class apiXML {
         );
     }
 
+    static details(key, formData) {
+        return apiXML.postWithAuth(
+            "/api/client/presensi/detail_presensi",
+            key,
+            formData,
+        );
+    }
+
     static process(key, formData) {
         return apiXML.postWithAuth(
             "/api/client/presensi/process",
