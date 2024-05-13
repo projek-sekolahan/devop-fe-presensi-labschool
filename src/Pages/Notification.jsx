@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import apiXML from "../utils/apiXML.js";
-import {getFormData} from "../utils/utils"
+import {getFormData, parseJwt} from "../utils/utils"
 
 function CardNotifikasi({ datas }) {
 	return (
@@ -104,7 +104,10 @@ export default function Notification() {
 	];
 	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"]
 	const values = [localStorage.getItem("AUTH_KEY"), localStorage.getItem("devop-sso"), localStorage.getItem("csrf"), localStorage.getItem("login_token"), "1, 2024-05-07"]
-	apiXML.details(localStorage.getItem("login_token"), getFormData(keys, values)).then(res => console.log(JSON.parse(res)))
+	apiXML.details(localStorage.getItem("login_token"), getFormData(keys, values)).then(res => {
+		res = JSON.parse(res)
+		console.log(parseJwt(res.data))
+	})
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">
 			<header className="min-h-[60px] bg-primary-md relative p-6 flex justify-start items-center gap-3">
