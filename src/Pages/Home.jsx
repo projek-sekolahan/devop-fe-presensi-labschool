@@ -41,17 +41,17 @@ const checkSession = () => {
 					"error",
 					"Credential Expired",
 					"Your credentials has expired. Please login again.",
-					() => window.location.replace("/login"),
+					() => window.location.replace("/login")
 				);
 			} else {
 				err = JSON.parse(err.responseText);
 				localStorage.clear();
 				alert(err.data.info, err.data.title, err.data.message, () =>
-					window.location.replace("/login"),
+					window.location.replace("/login")
 				);
 			}
 		});
-	};
+};
 setInterval(checkSession(), 20000);
 
 export default function Home() {
@@ -75,7 +75,7 @@ export default function Home() {
 		apiXML
 			.getUserData(
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values),
+				getFormData(keys, values)
 			)
 			.then((getUserDataResponse) => {
 				const res = JSON.parse(getUserDataResponse);
@@ -231,6 +231,51 @@ export default function Home() {
 						<UserIcon className="size-7" />
 						<p className="text-center font-bold text-xs">Profile</p>
 					</Link>
+					<button
+						onClick={() => {
+							apiXML
+								.create(
+									localStorage.getItem("AUTH_KEY"),
+									getFormData(
+										[
+											"AUTH_KEY",
+											"devop-sso",
+											"csrf_token",
+											"token",
+											"type",
+											"category",
+											"title",
+											"message",
+											"url",
+											"is_read",
+										],
+										[
+											localStorage.getItem("AUTH_KEY"),
+											localStorage.getItem("devop_sso"),
+											localStorage.getItem("csrf"),
+											localStorage.getItem("login_token"),
+											"succes",
+											"notifikasi",
+											"Presensi Berhasil",
+											"thankss",
+											"/riwayat",
+											"0",
+										]
+									)
+								)
+								.then((getUserDataResponse) => {
+									const res = JSON.parse(getUserDataResponse);
+									localStorage.setItem("token", res.data);
+									localStorage.removeItem("csrf");
+									localStorage.setItem("csrf", res.csrfHash);
+									setUserData(
+										parseJwt(localStorage.getItem("token"))
+									);
+								});
+						}}
+					>
+						test
+					</button>
 				</div>
 			</div>
 			<SideMenu show={show} data={userData} />
