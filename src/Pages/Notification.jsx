@@ -101,16 +101,18 @@ export default function Notification() {
 			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
 		},
 	];
-	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
+	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 	const values = [
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
 		localStorage.getItem("csrf"),
 		localStorage.getItem("login_token"),
-		"1, 2024-05-07",
 	];
 	apiXML
-		.details(localStorage.getItem("login_token"), getFormData(keys, values))
+		.details(
+			localStorage.getItem("login_token"),
+			getFormData([...keys, "param"], [...values, "1, 2024-05-07"])
+		)
 		.then((res) => {
 			res = JSON.parse(res);
 			console.log(parseJwt(res.data));
