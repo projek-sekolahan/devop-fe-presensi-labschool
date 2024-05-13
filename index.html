@@ -20,8 +20,10 @@
 		<div id="root"></div>
 		<script type="module">
 			window.addEventListener("load", () => {
-				if ("serviceWorker" in navigator) {
-					console.log(window.location.host);
+				if (
+					"serviceWorker" in navigator &&
+					window.location.pathname == "/"
+				) {
 					navigator.serviceWorker
 						.register("./sw.js")
 						.then(function (registration) {
