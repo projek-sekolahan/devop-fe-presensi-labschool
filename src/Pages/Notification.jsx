@@ -80,6 +80,7 @@ export default function Notification() {
 				setData(parseJwt(res.data));
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
+				console.log(parseJwt(res.data));
 				setLoad(false);
 			});
 	return (
