@@ -106,34 +106,38 @@ export default function CardRiwayat({ history, biodata }) {
 					) : (
 						datas.map((data, i) => {
 							return (
-								<div key={i}>
+								<>
 									<h3>Detail</h3>
-									<div className="grid grid-cols-2">
-										<img
-											src={data.foto_presensi}
-											alt="foto_presensi"
-										/>
-										<div>
-											<p>
-												{formatDate(
-													data.tanggal_presensi
-												)}
-											</p>
-											<p>{data.waktu_presensi}</p>
-											<div
-												className={`${
-													"Masuk Normal".split(
-														" "
-													)[1] === "Normal"
-														? "bg-secondary-green"
-														: "bg-secondary-red"
-												} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
-											>
-												{data.keterangan}
+									<div key={i}>
+										<div className="grid grid-cols-2">
+											<img
+												src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
+												alt="foto_presensi"
+											/>
+											<div>
+												<p className="font-medium text-xs">
+													{formatDate(
+														data.tanggal_presensi
+													)}
+												</p>
+												<p className="text-xs font-normal">
+													{data.waktu_presensi}
+												</p>
+												<div
+													className={`${
+														data.keterangan.split(
+															" "
+														)[1] === "Normal"
+															? "bg-secondary-green"
+															: "bg-secondary-red"
+													} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+												>
+													{data.keterangan}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</>
 							);
 						})
 					)}
