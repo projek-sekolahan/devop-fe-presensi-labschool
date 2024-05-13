@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData, alert} from "../utils/utils";
+import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 
 export default function Riwayat() {
@@ -21,7 +21,7 @@ export default function Riwayat() {
 		userData = parseJwt(localStorage.getItem("token"));
 	} else {
 		window.location.replace("/login");
-	} 
+	}
 
 	userData = parseJwt(localStorage.getItem("token"));
 
@@ -32,7 +32,7 @@ export default function Riwayat() {
 			dropdownContent.classList.add("hidden");
 			setSwapButton(["on", "off"]);
 		}
-	}); 
+	});
 
 	const keys = [
 		"AUTH_KEY",
@@ -57,33 +57,32 @@ export default function Riwayat() {
 		apiXML
 			.reports(
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values),
+				getFormData(keys, values)
 			)
 			.then((res) => {
 				res = JSON.parse(res);
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
+				console.log(parseJwt(res.data));
 				setHistorys(data);
 				setLoad(false);
-			}).catch((err) => {
-				if(err.status == 403) {
+			})
+			.catch((err) => {
+				if (err.status == 403) {
 					localStorage.clear();
 					alert(
 						"error",
 						"Credential Expired",
 						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login"),
-					)
+						() => window.location.replace("/login")
+					);
 				} else {
 					err = JSON.parse(err.responseText);
 					localStorage.setItem("csrf", err.csrfHash);
-					alert(
-						err.data.info,
-						err.data.title,
-						err.data.message,
-						() => window.location.replace("/home"),
-					)
+					alert(err.data.info, err.data.title, err.data.message, () =>
+						window.location.replace("/home")
+					);
 				}
 			});
 
