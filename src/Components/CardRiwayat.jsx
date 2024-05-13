@@ -20,7 +20,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 			biodata.id.concat(",", history["Tanggal Presensi"]),
 		];
 
-		load &&
+		loading &&
 			!datas &&
 			apiXML
 				.details(
@@ -145,7 +145,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 					)}
 					<div className="modal-action">
 						<form method="dialog">
-							<button onClick={() => {setDatas(null); setLoad(true)}} className="btn">Close</button>
+							<button onClick={() => {setDatas(null); setLoading(true)}} className="btn">Close</button>
 						</form>
 					</div>
 				</div>
