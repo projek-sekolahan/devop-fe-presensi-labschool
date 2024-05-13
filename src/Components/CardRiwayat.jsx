@@ -90,9 +90,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 										"Terlambat Masuk" ||
 								  history["Status Pulang"] == "Pulang Cepat"
 								? "Tidak Normal"
-								: history["Status Masuk"] == null &&
-								  history["Status Pulang"] == null &&
-								  history["Keterangan"] == "Dinas Luar"
+								: history["Keterangan"] == "Dinas Luar"
 								? "Dinas Luar"
 								: "Izin/Sakit"
 						}`}
