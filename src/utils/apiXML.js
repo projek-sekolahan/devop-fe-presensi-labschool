@@ -112,6 +112,14 @@ export default class apiXML {
 		);
 	}
 
+	static detail(key, formData) {
+		return apiXML.postWithAuth(
+			"/api/client/notifications/detail",
+			key,
+			formData
+		);
+	}
+
 	static register(formData) {
 		return apiXML.post("/input/register", formData);
 	}
