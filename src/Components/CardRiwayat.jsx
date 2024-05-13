@@ -32,7 +32,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
-					setLoad(false);
+					setLoading(false);
 					console.log(parseJwt(res.data))
 				});
 	};
