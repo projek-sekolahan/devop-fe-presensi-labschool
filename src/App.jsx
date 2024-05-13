@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
-import { generateToken } from "./firebase/firebase";
 
 import Register from "./Pages/Register";
 
@@ -44,8 +43,6 @@ function App() {
 			.catch((err) => {
 				console.log(err);
 			});
-
-		generateToken();
 	}, []);
 
 	return (

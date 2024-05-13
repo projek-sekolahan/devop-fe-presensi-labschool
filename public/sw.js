@@ -1,4 +1,20 @@
-// This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
+import { getMessaging } from "firebase/messaging/sw";
+import { onBackgroundMessage } from "firebase/messaging/sw";
+import { initializeApp } from "firebase/app";
+import { getMessaging } from "firebase/messaging";
+
+const firebaseConfig = {
+	apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+	authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+	projectId: "projek-sekolah-1acb4",
+	storageBucket: "projek-sekolah-1acb4.appspot.com",
+	messagingSenderId: "796889279454",
+	appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+	measurementId: "G-NWG3GGV7DF",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 const CACHE = "pwabuilder-offline-page";
 
@@ -6,7 +22,6 @@ importScripts(
 	"https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
 );
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "offline.html";
 
 self.addEventListener("message", (event) => {
@@ -53,4 +68,20 @@ self.addEventListener("fetch", (event) => {
 			})()
 		);
 	}
+});
+
+const messaging = getMessaging(app);
+onBackgroundMessage(messaging, (payload) => {
+	console.log(
+		"[firebase-messaging-sw.js] Received background message ",
+		payload
+	);
+	// Customize notification here
+	const notificationTitle = "Background Message Title";
+	const notificationOptions = {
+		body: "Background Message body.",
+		icon: "/firebase-logo.png",
+	};
+
+	self.registration.showNotification(notificationTitle, notificationOptions);
 });
