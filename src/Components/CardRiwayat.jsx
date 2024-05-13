@@ -99,7 +99,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 			</button>
 			<dialog id={`my_modal_${key}`} className="modal">
 				<div className="modal-box">
-					{load ? (
+					{loading ? (
 						<div className="size-full flex justify-center items-center">
 							<span className="loading loading-spinner text-gray-500"></span>
 						</div>
