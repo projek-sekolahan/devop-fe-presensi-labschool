@@ -19,19 +19,20 @@ export default function CardRiwayat({ history, biodata }) {
 			biodata.id.concat(",", history["Tanggal Presensi"]),
 		];
 
-		// load && !data &&
-		apiXML
-			.details(
-				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values)
-			)
-			.then((res) => {
-				res = JSON.parse(res);
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
-				setLoad(false);
-				console.log(parseJwt(res.data));
-			});
+		load &&
+			!data &&
+			apiXML
+				.details(
+					localStorage.getItem("AUTH_KEY"),
+					getFormData(keys, values)
+				)
+				.then((res) => {
+					res = JSON.parse(res);
+					localStorage.removeItem("csrf");
+					localStorage.setItem("csrf", res.csrfHash);
+					setLoad(false);
+					setData(parseJwt(res.data).result);
+				});
 	};
 	return (
 		<>
@@ -103,7 +104,29 @@ export default function CardRiwayat({ history, biodata }) {
 							<span className="loading loading-spinner text-gray-500"></span>
 						</div>
 					) : (
-						<div>Halloo</div>
+						<div>
+							<h3>Detail</h3>
+							<div className="grid grid-cols-2">
+								<img
+									src={data.foto_presensi}
+									alt="foto_presensi"
+								/>
+								<div>
+									<p>{formatDate(data.tanggal_presensi)}</p>
+									<p>{data.waktu_presensi}</p>
+									<div
+										className={`${
+											data.keterangan.split(" ")[1] ===
+											"Normal"
+												? "bg-secondary-green"
+												: "bg-secondary-red"
+										}justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+									>
+										{data.keterangan}
+									</div>
+								</div>
+							</div>
+						</div>
 					)}
 					<div className="modal-action">
 						<form method="dialog">
