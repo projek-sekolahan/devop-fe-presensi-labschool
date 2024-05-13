@@ -6,6 +6,7 @@ import { useState } from "react";
 export default function CardRiwayat({ key, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
+	console.log(key)
 
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${key}`).showModal();
