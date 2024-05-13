@@ -14,12 +14,12 @@ function CardNotifikasi({ datas }) {
 						key={i}
 					>
 						<div className="flex flex-col justify-center">
-							{data.kode == 2 ? (
+							{data.category != "notifikasi" ? (
 								<>
 									<h4 className="font-semibold text-[12px] text-primary-low inline">
 										Berita
 										<span className="text-bg-3 ml-3 opacity-50">
-											{data.jam}
+											{data.created_at.slice(10, 16)}
 										</span>
 									</h4>
 									<h4 className="font-semibold text-[12px]">
@@ -31,10 +31,10 @@ function CardNotifikasi({ datas }) {
 									<h4 className="font-semibold text-[12px] text-primary-low">
 										Notifikasi
 										<span className="text-bg-3 ml-3 opacity-50">
-											{data.jam}
+											{data.created_at.slice(10, 16)}
 										</span>
 									</h4>
-									{data.kode == 1 ? (
+									{data.title == "Presensi Berhasil" ? (
 										<h4 className="font-semibold text-[12px] text-secondary-green">
 											Presensi Berhasil
 										</h4>
@@ -47,7 +47,7 @@ function CardNotifikasi({ datas }) {
 							)}
 
 							<p className="text-bg-3 font-light text-[10px] text-justify">
-								{data.desc}
+								{data.message}
 							</p>
 						</div>
 					</div>
