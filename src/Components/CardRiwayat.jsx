@@ -3,13 +3,13 @@ import apiXML from "../utils/apiXML";
 import { parseJwt, getFormData } from "../utils/utils";
 import { useState } from "react";
 
-export default function CardRiwayat({ key, history, biodata }) {
+export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
-	console.log(key)
+	console.log(index)
 
 	const clickHandler = () => {
-		document.getElementById(`my_modal_${key}`).showModal();
+		document.getElementById(`my_modal_${index}`).showModal();
 		setDatas(null)
 
 		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
@@ -98,7 +98,7 @@ export default function CardRiwayat({ key, history, biodata }) {
 					</div>
 				</div>
 			</button>
-			<dialog id={`my_modal_${key}`} className="modal">
+			<dialog id={`my_modal_${index}`} className="modal">
 				<div className="modal-box">
 					{loading ? (
 						<div className="size-full flex justify-center items-center">

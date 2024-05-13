@@ -161,6 +161,7 @@ export default function Riwayat() {
 						return (
 							<CardRiwayat
 								key={i}
+								index={i}
 								history={history}
 								biodata={userData}
 							/>
