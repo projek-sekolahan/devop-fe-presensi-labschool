@@ -4,10 +4,11 @@ import { parseJwt, getFormData } from "../utils/utils";
 import { useState } from "react";
 
 export default function CardRiwayat({ history, biodata }) {
+	const [data, setData] = useState(null);
+	const [load, setLoad] = useState(true);
+
 	const clickHandler = () => {
 		document.getElementById("my_modal_1").showModal();
-		const [data, setData] = useState(null);
-		const [load, setLoad] = useState(true);
 
 		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
 		let values = [
@@ -95,7 +96,7 @@ export default function CardRiwayat({ history, biodata }) {
 				<div className="modal-box">
 					{load ? (
 						<div className="size-full flex justify-center items-center">
-							<span className="loading loading-spinner text-white"></span>
+							<span className="loading loading-spinner text-gray-500"></span>
 						</div>
 					) : (
 						<div>Halloo</div>
