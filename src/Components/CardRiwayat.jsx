@@ -120,7 +120,7 @@ export default function CardRiwayat({ history, biodata }) {
 											"Normal"
 												? "bg-secondary-green"
 												: "bg-secondary-red"
-										}justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+										} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 									>
 										{data.keterangan}
 									</div>
