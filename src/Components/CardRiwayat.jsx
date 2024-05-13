@@ -105,7 +105,7 @@ export default function CardRiwayat({ history, biodata }) {
 						</div>
 					) : (
 						<>
-							<h3 className="font-semibold text-xl">Detail</h3>
+							<h3 className="font-semibold text-xl mb-6">Detail</h3>
 							{datas.map((data, i) => {
 								return (
 									<div key={i}>
@@ -115,12 +115,12 @@ export default function CardRiwayat({ history, biodata }) {
 												alt="foto_presensi"
 											/>
 											<div>
-												<p className="font-medium text-lg">
+												<p className="font-medium text-md">
 													{formatDate(
 														data.tanggal_presensi
 													)}
 												</p>
-												<p className="text-md font-normal">
+												<p className="text-sm font-normal">
 													{data.waktu_presensi}
 												</p>
 												<div
