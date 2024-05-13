@@ -82,6 +82,7 @@ export default function Home() {
 				localStorage.setItem("token", res.data);
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
+				localStorage.setItem("id", res.id);
 				setUserData(parseJwt(localStorage.getItem("token")));
 			})
 			.catch(() => {
