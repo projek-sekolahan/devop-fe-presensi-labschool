@@ -29,6 +29,7 @@ export default function CardRiwayat({ history, biodata }) {
 				)
 				.then((res) => {
 					res = JSON.parse(res);
+					console.log(parseJwt(res.data))
 					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
