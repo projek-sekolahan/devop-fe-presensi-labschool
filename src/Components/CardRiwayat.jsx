@@ -9,6 +9,7 @@ export default function CardRiwayat({ history, biodata }) {
 
 	const clickHandler = () => {
 		document.getElementById("my_modal_1").showModal();
+		setDatas(null)
 
 		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
 		let values = [
@@ -30,8 +31,8 @@ export default function CardRiwayat({ history, biodata }) {
 					res = JSON.parse(res);
 					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
-					setLoad(false);
 					setDatas(parseJwt(res.data).result);
+					setLoad(false);
 				});
 	};
 	return (
