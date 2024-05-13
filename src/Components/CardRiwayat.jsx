@@ -75,8 +75,8 @@ export default function CardRiwayat({ key, history, biodata }) {
 										"Terlambat Masuk" ||
 								  history["Status Pulang"] == "Pulang Cepat"
 								? "bg-secondary-red"
-								: history["Status Masuk"] == NULL &&
-								  history["Status Pulang"] == NULL &&
+								: history["Status Masuk"] == null &&
+								  history["Status Pulang"] == null &&
 								  history["Keterangan"] == "Dinas Luar"
 								? "bg-gray-600"
 								: "bg-secondary-yellow"
@@ -90,8 +90,8 @@ export default function CardRiwayat({ key, history, biodata }) {
 										"Terlambat Masuk" ||
 								  history["Status Pulang"] == "Pulang Cepat"
 								? "Tidak Normal"
-								: history["Status Masuk"] == NULL &&
-								  history["Status Pulang"] == NULL &&
+								: history["Status Masuk"] == null &&
+								  history["Status Pulang"] == null &&
 								  history["Keterangan"] == "Dinas Luar"
 								? "Dinas Luar"
 								: "Izin/Sakit"
