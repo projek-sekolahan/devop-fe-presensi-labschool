@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
-import { getHash, getKey, getFormData, alert, loading } from "../utils/utils.js";
+import {
+	getHash,
+	getKey,
+	getFormData,
+	alert,
+	loading,
+} from "../utils/utils.js";
 import { useRef } from "react";
 import PasswordShow from "../Components/PasswordShow";
 
@@ -31,9 +37,10 @@ export default function Login() {
 				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				localStorage.setItem("login_token", res.data.Tokenjwt);
-				alert(res.data.info, res.data.title, res.data.message, () =>
-					window.location.replace("/home"),
-				);
+				alert(res.data.info, res.data.title, res.data.message, () => {
+					window.location.replace("/home");
+					localStorage.removeItem("csrf");
+				});
 			})
 			.catch((errorData) => {
 				localStorage.clear();
@@ -42,7 +49,7 @@ export default function Login() {
 						"error",
 						"Credential Expired",
 						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/login"),
+						() => window.location.replace("/login")
 					);
 				} else {
 					errorData = JSON.parse(errorData.responseText);
@@ -50,7 +57,7 @@ export default function Login() {
 						errorData.data.info,
 						errorData.data.title,
 						errorData.data.message,
-						() => window.location.replace(errorData.data.location),
+						() => window.location.replace(errorData.data.location)
 					);
 				}
 			});
