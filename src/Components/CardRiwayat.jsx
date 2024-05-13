@@ -116,7 +116,7 @@ export default function CardRiwayat({ history, biodata }) {
 									<p>{data.waktu_presensi}</p>
 									<div
 										className={`${
-											data.keterangan.split(" ")[1] ===
+											"Masuk Normal".split(" ")[1] ===
 											"Normal"
 												? "bg-secondary-green"
 												: "bg-secondary-red"
