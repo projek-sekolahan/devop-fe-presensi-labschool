@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
+import { generateToken } from "./firebase/firebase";
+
 import Register from "./Pages/Register";
 
 import Loading from "./Pages/Loading";
@@ -32,13 +34,18 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		apiXML.getCsrf().then((result) => {
-			// Data yang diberikan
-			result =JSON.parse(result.responseText);
-			localStorage.setItem("csrf", result.csrfHash);
-		}).catch((err) => {
-			console.log(err);
-		});
+		apiXML
+			.getCsrf()
+			.then((result) => {
+				// Data yang diberikan
+				result = JSON.parse(result.responseText);
+				localStorage.setItem("csrf", result.csrfHash);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		generateToken();
 	}, []);
 
 	return (
@@ -67,7 +74,10 @@ function App() {
 					<Route path="/bantuan" Component={Bantuan} />
 					<Route path="/notifikasi" Component={Notification} />
 					<Route path="/presensi/staff" Component={PresensiStaff} />
-					<Route path="/presensi/verif" Component={FaceVerification} />
+					<Route
+						path="/presensi/verif"
+						Component={FaceVerification}
+					/>
 					<Route path="/presensi/izin" Component={Izin} />
 					<Route path="/setting" Component={Pengaturan} />
 					<Route path="/facecam" Component={FaceCam} />
