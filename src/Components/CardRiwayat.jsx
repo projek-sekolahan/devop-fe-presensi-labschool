@@ -105,7 +105,7 @@ export default function CardRiwayat({ history, biodata }) {
 						</div>
 					) : (
 						<>
-							<h3>Detail</h3>
+							<h3 className="font-semibold text-lg">Detail</h3>
 							{datas.map((data, i) => {
 								return (
 									<div key={i}>
