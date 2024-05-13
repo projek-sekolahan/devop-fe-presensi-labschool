@@ -273,6 +273,7 @@ export default function Home() {
 									);
 								});
 						}}
+						className="bg-white size-10"
 					>
 						test
 					</button>
