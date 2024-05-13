@@ -20,7 +20,7 @@ export default function CardRiwayat({ history, biodata }) {
 		];
 
 		load &&
-			!data &&
+			!datas &&
 			apiXML
 				.details(
 					localStorage.getItem("AUTH_KEY"),
@@ -106,7 +106,7 @@ export default function CardRiwayat({ history, biodata }) {
 					) : (
 						datas.map((data, i) => {
 							return (
-								<div>
+								<div key={i}>
 									<h3>Detail</h3>
 									<div className="grid grid-cols-2">
 										<img
