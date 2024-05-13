@@ -93,6 +93,46 @@ export default function Home() {
 		}
 	});
 
+	const click = () => {
+		apiXML
+			.create(
+				localStorage.getItem("AUTH_KEY"),
+				getFormData(
+					[
+						"AUTH_KEY",
+						"devop-sso",
+						"csrf_token",
+						"token",
+						"type",
+						"category",
+						"title",
+						"message",
+						"url",
+						"is_read",
+					],
+					[
+						localStorage.getItem("AUTH_KEY"),
+						localStorage.getItem("devop_sso"),
+						localStorage.getItem("csrf"),
+						localStorage.getItem("login_token"),
+						"succes",
+						"notifikasi",
+						"Presensi Berhasil",
+						"thankss",
+						"/riwayat",
+						"0",
+					]
+				)
+			)
+			.then((getUserDataResponse) => {
+				const res = JSON.parse(getUserDataResponse);
+				localStorage.setItem("token", res.data);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				setUserData(parseJwt(localStorage.getItem("token")));
+			});
+	};
+
 	return !userData ? (
 		<Loading />
 	) : (
@@ -215,50 +255,7 @@ export default function Home() {
 						</p>
 						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
 					</Link>
-					<button
-						onClick={() => {
-							apiXML
-								.create(
-									localStorage.getItem("AUTH_KEY"),
-									getFormData(
-										[
-											"AUTH_KEY",
-											"devop-sso",
-											"csrf_token",
-											"token",
-											"type",
-											"category",
-											"title",
-											"message",
-											"url",
-											"is_read",
-										],
-										[
-											localStorage.getItem("AUTH_KEY"),
-											localStorage.getItem("devop_sso"),
-											localStorage.getItem("csrf"),
-											localStorage.getItem("login_token"),
-											"succes",
-											"notifikasi",
-											"Presensi Berhasil",
-											"thankss",
-											"/riwayat",
-											"0",
-										]
-									)
-								)
-								.then((getUserDataResponse) => {
-									const res = JSON.parse(getUserDataResponse);
-									localStorage.setItem("token", res.data);
-									localStorage.removeItem("csrf");
-									localStorage.setItem("csrf", res.csrfHash);
-									setUserData(
-										parseJwt(localStorage.getItem("token"))
-									);
-								});
-						}}
-						className="bg-white size-10"
-					>
+					<button onClick={click} className="btn">
 						test
 					</button>
 				</main>
