@@ -112,7 +112,7 @@ export default function Home() {
 					],
 					[
 						localStorage.getItem("AUTH_KEY"),
-						localStorage.getItem("devop_sso"),
+						localStorage.getItem("devop-sso"),
 						localStorage.getItem("csrf"),
 						localStorage.getItem("login_token"),
 						"succes",
