@@ -38,6 +38,7 @@ function App() {
 			.then((result) => {
 				// Data yang diberikan
 				result = JSON.parse(result.responseText);
+				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", result.csrfHash);
 			})
 			.catch((err) => {
