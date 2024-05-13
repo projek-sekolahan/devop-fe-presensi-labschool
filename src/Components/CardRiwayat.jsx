@@ -4,7 +4,7 @@ import { parseJwt, getFormData } from "../utils/utils";
 import { useState } from "react";
 
 export default function CardRiwayat({ history, biodata }) {
-	const [data, setData] = useState(null);
+	const [datas, setDatas] = useState(null);
 	const [load, setLoad] = useState(true);
 
 	const clickHandler = () => {
@@ -31,8 +31,7 @@ export default function CardRiwayat({ history, biodata }) {
 					localStorage.removeItem("csrf");
 					localStorage.setItem("csrf", res.csrfHash);
 					setLoad(false);
-					setData(parseJwt(res.data).result);
-					console.log(parseJwt(res.data).result);
+					setDatas(parseJwt(res.data).result);
 				});
 	};
 	return (
@@ -105,29 +104,38 @@ export default function CardRiwayat({ history, biodata }) {
 							<span className="loading loading-spinner text-gray-500"></span>
 						</div>
 					) : (
-						<div>
-							<h3>Detail</h3>
-							<div className="grid grid-cols-2">
-								<img
-									src={data.foto_presensi}
-									alt="foto_presensi"
-								/>
+						datas.map((data, i) => {
+							return (
 								<div>
-									<p>{formatDate(data.tanggal_presensi)}</p>
-									<p>{data.waktu_presensi}</p>
-									<div
-										className={`${
-											"Masuk Normal".split(" ")[1] ===
-											"Normal"
-												? "bg-secondary-green"
-												: "bg-secondary-red"
-										} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
-									>
-										{data.keterangan}
+									<h3>Detail</h3>
+									<div className="grid grid-cols-2">
+										<img
+											src={data.foto_presensi}
+											alt="foto_presensi"
+										/>
+										<div>
+											<p>
+												{formatDate(
+													data.tanggal_presensi
+												)}
+											</p>
+											<p>{data.waktu_presensi}</p>
+											<div
+												className={`${
+													"Masuk Normal".split(
+														" "
+													)[1] === "Normal"
+														? "bg-secondary-green"
+														: "bg-secondary-red"
+												} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+											>
+												{data.keterangan}
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
+							);
+						})
 					)}
 					<div className="modal-action">
 						<form method="dialog">
