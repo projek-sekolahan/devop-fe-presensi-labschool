@@ -19,6 +19,7 @@ export default function CardRiwayat({ history, biodata }) {
 			biodata.id.concat(",", history["Tanggal Presensi"]),
 		];
 
+		// load && !data &&
 		apiXML
 			.details(
 				localStorage.getItem("AUTH_KEY"),
@@ -26,7 +27,10 @@ export default function CardRiwayat({ history, biodata }) {
 			)
 			.then((res) => {
 				res = JSON.parse(res);
-				console.log(parseJwt(res));
+				locaStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				setLoad(false);
+				console.log(parseJwt(res.data));
 			});
 	};
 	return (
