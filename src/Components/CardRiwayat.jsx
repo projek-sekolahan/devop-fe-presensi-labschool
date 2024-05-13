@@ -105,22 +105,22 @@ export default function CardRiwayat({ history, biodata }) {
 						</div>
 					) : (
 						<>
-							<h3 className="font-semibold text-lg">Detail</h3>
+							<h3 className="font-semibold text-xl">Detail</h3>
 							{datas.map((data, i) => {
 								return (
 									<div key={i}>
-										<div className="grid grid-cols-2">
+										<div className="grid grid-cols-2 gap-4">
 											<img
 												src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
 												alt="foto_presensi"
 											/>
 											<div>
-												<p className="font-medium text-xs">
+												<p className="font-medium text-lg">
 													{formatDate(
 														data.tanggal_presensi
 													)}
 												</p>
-												<p className="text-xs font-normal">
+												<p className="text-md font-normal">
 													{data.waktu_presensi}
 												</p>
 												<div
