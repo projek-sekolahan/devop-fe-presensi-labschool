@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, parseJwt } from "../utils/utils";
+import { useState } from "react";
 
 function CardNotifikasi({ datas }) {
 	return (
@@ -57,50 +58,9 @@ function CardNotifikasi({ datas }) {
 }
 
 export default function Notification() {
-	const data = [
-		{
-			kode: 1,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 0,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 2,
-			title: "Prestasi SMA Labschool Unesa",
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 2,
-			title: "Kegiatan P5 SMA Labschool Unesa",
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 1,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 0,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 1,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-		{
-			kode: 0,
-			jam: "09.32",
-			desc: "Lorem ipsum dolor sit amet consectetur. Velit dolor turpis tristique justo libero vitae ipsum. Malesuada bibendum enim faucibus nisi a posuere",
-		},
-	];
+	const [data, setData] = useState(null);
+	const [load, setLoad] = useState(true);
+
 	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
 	const values = [
 		localStorage.getItem("AUTH_KEY"),
@@ -109,19 +69,13 @@ export default function Notification() {
 		localStorage.getItem("login_token"),
 	];
 	apiXML
-		.details(
-			localStorage.getItem("login_token"),
-			getFormData([...keys, "param"], [...values, "1, 2024-05-07"])
-		)
-		.then((res) => {
-			res = JSON.parse(res);
-			console.log(parseJwt(res.data));
-		});
-	apiXML
 		.detail(localStorage.getItem("login_token"), getFormData(keys, values))
 		.then((res) => {
 			res = JSON.parse(res);
-			console.log(parseJwt(res.data));
+			setData(parseJwt(res.data));
+			localStorage.removeItem("csrf");
+			localStorage.setItem("csrf", res.csrfHash);
+			setLoad(false);
 		});
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">
@@ -133,7 +87,17 @@ export default function Notification() {
 				<h2 className="text-2xl font-bold">Notifikasi</h2>
 			</header>
 			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-6 pb-4 text-black overflow-y-auto">
-				<CardNotifikasi datas={data} />
+				{load ? (
+					<div className="size-full flex justify-center items-center">
+						<span className="loading loading-spinner text-white"></span>
+					</div>
+				) : data ? (
+					<CardNotifikasi datas={data} />
+				) : (
+					<div className="size-full flex justify-center items-center">
+						<p className="text-white">Belum ada notifikasi.</p>
+					</div>
+				)}
 			</main>
 		</div>
 	);
