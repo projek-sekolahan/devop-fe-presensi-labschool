@@ -104,10 +104,10 @@ export default function CardRiwayat({ history, biodata }) {
 							<span className="loading loading-spinner text-gray-500"></span>
 						</div>
 					) : (
-						datas.map((data, i) => {
-							return (
-								<>
-									<h3>Detail</h3>
+						<>
+							<h3>Detail</h3>
+							{datas.map((data, i) => {
+								return (
 									<div key={i}>
 										<div className="grid grid-cols-2">
 											<img
@@ -137,9 +137,9 @@ export default function CardRiwayat({ history, biodata }) {
 											</div>
 										</div>
 									</div>
-								</>
-							);
-						})
+								);
+							})}
+						</>
 					)}
 					<div className="modal-action">
 						<form method="dialog">
