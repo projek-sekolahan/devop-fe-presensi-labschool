@@ -106,7 +106,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 						</div>
 					) : (
 						<>
-							<h3 className="font-semibold text-xl mb-6">Detail</h3>
+							<h3 className="font-semibold text-xl mb-4">Detail</h3>
 							{datas.map((data, i) => {
 								return (
 									<div key={i}>
@@ -114,7 +114,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 											<img
 												src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
 												alt="foto_presensi"
-												className="rounded-xl border-4 border-gray-400"
+												className="rounded-xl border-4 border-white"
 											/>
 											<div>
 												<p className="font-medium text-md">
