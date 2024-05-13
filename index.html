@@ -21,6 +21,7 @@
 		<script type="module">
 			window.addEventListener("load", () => {
 				if ("serviceWorker" in navigator) {
+					console.log(window.location.host);
 					navigator.serviceWorker
 						.register("./sw.js")
 						.then(function (registration) {

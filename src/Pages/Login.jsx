@@ -39,7 +39,6 @@ export default function Login() {
 				localStorage.setItem("login_token", res.data.Tokenjwt);
 				alert(res.data.info, res.data.title, res.data.message, () => {
 					window.location.replace("/home");
-					localStorage.removeItem("csrf");
 				});
 			})
 			.catch((errorData) => {
