@@ -103,9 +103,42 @@ export default function CardRiwayat({ history, biodata }) {
 			<dialog id="my_modal_1" className="modal">
 				<div className="modal-box">
 					{load ? (
-						<div className="size-full flex justify-center items-center">
-							<span className="loading loading-spinner text-gray-500"></span>
-						</div>
+						<>
+							<h3 className="font-semibold text-xl mb-6">Detail</h3>
+							{datas.map((data, i) => {
+								return (
+									<div key={i}>
+										<div className="grid grid-cols-2 gap-4">
+											<img
+												src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
+												alt="foto_presensi"
+											/>
+											<div>
+												<p className="font-medium text-md">
+													{formatDate(
+														data.tanggal_presensi
+													)}
+												</p>
+												<p className="text-sm font-normal">
+													{data.waktu_presensi}
+												</p>
+												<div
+													className={`${
+														data.keterangan.split(
+															" "
+														)[1] === "Normal"
+															? "bg-secondary-green"
+															: "bg-secondary-red"
+													} justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+												>
+													{data.keterangan}
+												</div>
+											</div>
+										</div>
+									</div>
+								);
+							})}
+						</>
 					) : (
 						<>
 							<h3 className="font-semibold text-xl mb-6">Detail</h3>
