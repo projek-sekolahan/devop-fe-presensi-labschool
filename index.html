@@ -19,13 +19,13 @@
 	<body data-theme="light">
 		<div id="root"></div>
 		<script type="module">
-			window.addEventListener("load", () => {
-				if ("serviceWorker" in navigator) {
-					navigator.serviceWorker.register("./sw.js");
-				} else {
-					console.log("No service-worker on this browser");
-				}
-			});
+			// window.addEventListener("load", () => {
+			// 	if ("serviceWorker" in navigator) {
+			// 		navigator.serviceWorker.register("./sw.js");
+			// 	} else {
+			// 		console.log("No service-worker on this browser");
+			// 	}
+			// });
 		</script>
 		<script type="module" src="/src/main.jsx"></script>
 		<script
