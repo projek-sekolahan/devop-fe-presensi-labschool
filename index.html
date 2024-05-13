@@ -20,7 +20,7 @@
 		<div id="root"></div>
 		<script type="module">
 			window.addEventListener("load", () => {
-				if ("serviceWorker" in navigato) {
+				if ("serviceWorker" in navigate) {
 					navigator.serviceWorker.register("./sw.js");
 				} else {
 					console.log("No service-worker on this browser");
