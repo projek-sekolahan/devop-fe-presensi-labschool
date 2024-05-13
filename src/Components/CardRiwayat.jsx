@@ -114,6 +114,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 											<img
 												src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
 												alt="foto_presensi"
+												className="rounded-xl border-4 border-gray-400"
 											/>
 											<div>
 												<p className="font-medium text-md">
