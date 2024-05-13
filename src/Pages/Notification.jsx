@@ -68,15 +68,20 @@ export default function Notification() {
 		localStorage.getItem("csrf"),
 		localStorage.getItem("login_token"),
 	];
-	apiXML
-		.detail(localStorage.getItem("login_token"), getFormData(keys, values))
-		.then((res) => {
-			res = JSON.parse(res);
-			setData(parseJwt(res.data));
-			localStorage.removeItem("csrf");
-			localStorage.setItem("csrf", res.csrfHash);
-			setLoad(false);
-		});
+	load &&
+		!data &&
+		apiXML
+			.detail(
+				localStorage.getItem("login_token"),
+				getFormData(keys, values)
+			)
+			.then((res) => {
+				res = JSON.parse(res);
+				setData(parseJwt(res.data));
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", res.csrfHash);
+				setLoad(false);
+			});
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">
 			<header className="min-h-[60px] bg-primary-md relative p-6 flex justify-start items-center gap-3">
