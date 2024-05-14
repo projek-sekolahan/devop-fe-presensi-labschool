@@ -33,7 +33,7 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-		
+
 		apiXML
 			.getCsrf()
 			.then((result) => {
@@ -45,6 +45,18 @@ function App() {
 			.catch((err) => {
 				console.log(err);
 			});
+
+		navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  for (let registration of registrations) {
+    registration.unregister().then(function(boolean) {
+      if (boolean) {
+        console.log('Service worker unregistered:', registration);
+      }
+    });
+  }
+}).catch(function(error) {
+  console.error('Error during service worker unregister:', error);
+});
 	}, []);
 
 	return (
