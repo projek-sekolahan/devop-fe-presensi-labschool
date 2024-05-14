@@ -132,6 +132,12 @@ export default function Home() {
 			});
 	};
 
+	if ("serviceWorker" in navigator) {
+					navigator.serviceWorker.register("./firebase-messaging-sw.js");
+				} else {
+					console.log("No service-worker on this browser");
+				}
+
 	return !userData ? (
 		<Loading />
 	) : (
