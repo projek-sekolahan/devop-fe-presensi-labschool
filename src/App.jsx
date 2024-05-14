@@ -33,6 +33,7 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
+		console.log("service worker" in navigator)
 		// apiXML
 		// 	.getCsrf()
 		// 	.then((result) => {
