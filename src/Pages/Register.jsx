@@ -4,6 +4,7 @@ import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
 
 export default function Register() {
+	localStorage.clear()
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
