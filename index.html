@@ -30,6 +30,7 @@
 				if ("serviceWorker" in navigator) {
 					navigator.serviceWorker.register("./sw.js")
 						.then(registration => {
+							requestPermission();
 							console.log("Service worker registered successfully!");
 						})
 						.catch(error => {
@@ -39,6 +40,24 @@
 					console.log("No service-worker on this browser");
 				}
 			});
+			function requestPermission() {
+				console.log('Requesting permission...');
+
+				// Meminta izin notifikasi dari pengguna
+				Notification
+					.requestPermission()
+					.then((permission) => {
+						// Memeriksa apakah izin diberikan
+						if (permission === 'granted') {
+							console.log('Notification permission granted.');
+							// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
+							// menampilkan notifikasi
+						} else {
+							console.log('Notification permission denied.');
+							// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
+						}
+					});
+			}			  
 		</script>
 	</body>
 </html>
