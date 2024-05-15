@@ -34,7 +34,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		if(!localStorage.getItem("csrf")) && apiXML
+		!localStorage.getItem("csrf") && apiXML
 			.getCsrf()
 			.then((result) => {
 				// Data yang diberikan
