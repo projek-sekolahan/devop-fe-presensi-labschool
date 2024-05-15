@@ -79,6 +79,7 @@
 					})
 						.then((currentToken) => {
 							if (currentToken) {
+								localStorage.setItem("token_fcm", currentToken);
 								console.log('Token FCM:', currentToken);
 								// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
 							} else {
