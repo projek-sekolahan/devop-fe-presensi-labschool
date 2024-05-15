@@ -29,6 +29,14 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
 
+	window.addEventListener("load", () => {
+				if ("serviceWorker" in navigator) {
+					navigator.serviceWorker.register("./sw.js");
+				} else {
+					console.log("No service-worker on this browser");
+				}
+			});
+
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
