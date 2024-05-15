@@ -81,7 +81,6 @@ export default function Home() {
 				const res = JSON.parse(getUserDataResponse);
 				console.log(res);
 				localStorage.setItem("token", res.data);
-				localStorage.removeItem("csrf");
 				localStorage.setItem("csrf", res.csrfHash);
 				setUserData(parseJwt(localStorage.getItem("token")));
 			})
@@ -125,9 +124,8 @@ export default function Home() {
 					]
 				)
 			)
-			.then((getUserDataResponse) => {
-				const res = JSON.parse(getUserDataResponse);
-				localStorage.removeItem("csrf");
+			.then((getResponse) => {
+				const res = JSON.parse(getResponse);
 				localStorage.setItem("csrf", res.csrfHash);
 				console.log(parseJwt(res.data));
 			});
