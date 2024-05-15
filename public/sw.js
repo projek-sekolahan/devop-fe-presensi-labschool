@@ -58,17 +58,15 @@ self.addEventListener("fetch", (event) => {
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here. Other Firebase libraries
 // are not available in the service worker.
-/* importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
-importScripts(
-	"https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
-); */
+importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js");
 
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getMessaging, onMessage } from "firebase/messaging/sw";
+/* import { initializeApp } from "firebase/app";
+import { getMessaging, onMessage } from "firebase/messaging/sw"; */
 // import { getAnalytics } from "firebase/analytics";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -85,16 +83,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 console.log(app);
 // const analytics = getAnalytics(app);
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
-const messaging = getMessaging(firebaseConfig);
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // ...
+const messaging = firebase.messaging();
+messaging.onMessage((payload) => {
+    console.log('Message received. ', payload);
+    // ...
 });
 
 /* messaging.onBackgroundMessage((payload) => {
