@@ -33,17 +33,17 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		// !localStorage.getItem("csrf") && apiXML
-		// 	.getCsrf()
-		// 	.then((result) => {
-		// 		// Data yang diberikan
-		// 		result = JSON.parse(result.responseText);
-		// 		localStorage.removeItem("csrf");
-		// 		localStorage.setItem("csrf", result.csrfHash);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		!localStorage.getItem("csrf") && apiXML
+			.getCsrf()
+			.then((result) => {
+				// Data yang diberikan
+				result = JSON.parse(result.responseText);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", result.csrfHash);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 
 		console.log("this new 3")
 	}, []);
