@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
 
 import Register from "./Pages/Register";
-
 import Loading from "./Pages/Loading";
 
 const OtpInput = lazy(() => import("./Pages/OtpInput"));
@@ -28,14 +27,6 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
-
-	window.addEventListener("load", () => {
-				if ("serviceWorker" in navigator) {
-					navigator.serviceWorker.register("./sw.js");
-				} else {
-					console.log("No service-worker on this browser");
-				}
-			});
 
 	useEffect(() => {
 		window.addEventListener("resize", () => {
@@ -71,28 +62,25 @@ function App() {
 			) : null}
 			<Suspense fallback={<Loading />}>
 				<Routes>
-					<Route path="/register" Component={Register} />
-					<Route path="/verify" Component={OtpInput} />
-					<Route path="/facereg" Component={RegisterFace} />
-					<Route path="/login" Component={Login} />
-					<Route path="/recover" Component={ChangePassword} />
-					<Route path="/home" Component={Home} />
-					<Route path="/profile" Component={Profile} />
-					<Route path="/presensi" Component={Presensi} />
-					<Route path="/riwayat" Component={Riwayat} />
-					<Route path="/bantuan" Component={Bantuan} />
-					<Route path="/notifikasi" Component={Notification} />
-					<Route path="/presensi/staff" Component={PresensiStaff} />
-					<Route
-						path="/presensi/verif"
-						Component={FaceVerification}
-					/>
-					<Route path="/presensi/izin" Component={Izin} />
-					<Route path="/setting" Component={Pengaturan} />
-					<Route path="/facecam" Component={FaceCam} />
-					<Route path="/setpassword" Component={SetPassword} />
-					<Route path="/" Component={Register} />
-					<Route path="*" Component={Errors} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/verify" element={<OtpInput />} />
+					<Route path="/facereg" element={<RegisterFace />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/recover" element={<ChangePassword />} />
+					<Route path="/home" element={<Home />} />
+					<Route path="/profile" element={<Profile />} />
+					<Route path="/presensi" element={<Presensi />} />
+					<Route path="/riwayat" element={<Riwayat />} />
+					<Route path="/bantuan" element={<Bantuan />} />
+					<Route path="/notifikasi" element={<Notification />} />
+					<Route path="/presensi/staff" element={<PresensiStaff />} />
+					<Route path="/presensi/verif" element={<FaceVerification />} />
+					<Route path="/presensi/izin" element={<Izin />} />
+					<Route path="/setting" element={<Pengaturan />} />
+					<Route path="/facecam" element={<FaceCam />} />
+					<Route path="/setpassword" element={<SetPassword />} />
+					<Route path="/" element={<Register />} />
+					<Route path="*" element={<Errors />} />
 				</Routes>
 			</Suspense>
 		</Router>
