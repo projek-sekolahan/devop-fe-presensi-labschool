@@ -27,16 +27,16 @@
 		></script>
 		<script>
 			window.addEventListener("load", () => {
-				if ("serviceWorker" in navigator) {
-					navigator.serviceWorker.register("/firebase-messaging-sw.js")
-						.then(registration => {
-							requestPermission();
-							console.log("Service worker registered successfully!");
-						})
-						.catch(error => {
-							console.error("Service worker registration failed:", error);
-						});
-				} else {
+				if ('serviceWorker' in navigator) {
+					navigator.serviceWorker.register('/firebase-messaging-sw.js')
+					.then((registration) => {
+						requestPermission();
+						console.log('Pendaftaran Service Worker berhasil dengan cakupan: ', registration.scope);
+					}).catch((err) => {
+						console.log('Pendaftaran Service Worker gagal: ', err);
+					});
+				}
+				else {
 					console.log("No service-worker on this browser");
 				}
 			});
