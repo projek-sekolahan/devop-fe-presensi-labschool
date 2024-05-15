@@ -5,6 +5,19 @@ import { useRef, useState } from "react";
 
 export default function Register() {
 	localStorage.clear()
+
+	apiXML
+			.getCsrf()
+			.then((result) => {
+				// Data yang diberikan
+				result = JSON.parse(result.responseText);
+				localStorage.removeItem("csrf");
+				localStorage.setItem("csrf", result.csrfHash);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+			
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
