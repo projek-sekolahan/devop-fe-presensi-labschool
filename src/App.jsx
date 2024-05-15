@@ -34,7 +34,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		apiXML
+		if(!localStorage.getItem("csrf")) && apiXML
 			.getCsrf()
 			.then((result) => {
 				// Data yang diberikan
@@ -46,17 +46,7 @@ function App() {
 				console.log(err);
 			});
 
-		navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  for (let registration of registrations) {
-    registration.unregister().then(function(boolean) {
-      if (boolean) {
-        console.log('Service worker unregistered:', registration);
-      }
-    });
-  }
-}).catch(function(error) {
-  console.error('Error during service worker unregister:', error);
-});
+		
 	}, []);
 
 	return (
