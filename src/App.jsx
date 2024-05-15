@@ -31,6 +31,7 @@ function App() {
 
 	window.addEventListener("load", () => {
 				if ("serviceWorker" in navigator) {
+					console.log("service worker on")
 					navigator.serviceWorker.register("./sw.js");
 				} else {
 					console.log("No service-worker on this browser");
