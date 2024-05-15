@@ -79,7 +79,6 @@ export default function Home() {
 			)
 			.then((getUserDataResponse) => {
 				const res = JSON.parse(getUserDataResponse);
-				console.log(res);
 				localStorage.setItem("token", res.data);
 				localStorage.setItem("csrf", res.csrfHash);
 				setUserData(parseJwt(localStorage.getItem("token")));
