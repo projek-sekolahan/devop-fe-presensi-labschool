@@ -28,7 +28,7 @@
 		<script>
 			window.addEventListener("load", () => {
 				if ('serviceWorker' in navigator) {
-					navigator.serviceWorker.register('/firebase-messaging-sw.js')
+					navigator.serviceWorker.register('/sw.js')
 					.then((registration) => {
 						requestPermission();
 						console.log('Pendaftaran Service Worker berhasil dengan cakupan: ', registration.scope);
@@ -87,6 +87,8 @@
 		onMessage(messaging, (payload) => {
 			console.log('Message received:', payload);
 			// Handle the message here
+			// Tangani pesan di sini, misalnya menampilkan notifikasi atau update UI
+			alert('Pesan baru: ' + payload.notification.title + ' - ' + payload.notification.body);
 		});
 	</script>	
 </html>
