@@ -54,7 +54,7 @@ function App() {
 				console.log(err);
 			});
 
-		console.log("this new 1")
+		console.log("this new 2")
 	}, []);
 
 	return (
