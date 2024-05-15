@@ -63,7 +63,7 @@
 	<script type="module">
 		// Import Firebase SDK
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
-		import { getAnalytics } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js";
+		// import { getAnalytics } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js";
 		import { getMessaging, onMessage } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js";
 	
 		// Firebase configuration
@@ -80,7 +80,7 @@
 	
 		// Initialize Firebase
 		const app = initializeApp(firebaseConfig);
-		const analytics = getAnalytics(app);
+		// const analytics = getAnalytics(app);
 		const messaging = getMessaging(app);
 	
 		// Handle incoming messages
