@@ -13,6 +13,26 @@ import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+import {
+	getMessaging,
+	getToken,
+	onMessage,
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
+
+// Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+	apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+	authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+	projectId: "projek-sekolah-1acb4",
+	storageBucket: "projek-sekolah-1acb4.appspot.com",
+	messagingSenderId: "796889279454",
+	appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+	measurementId: "G-NWG3GGV7DF",
+};
+
 const checkSession = () => {
 	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
 	const value = [
@@ -41,13 +61,13 @@ const checkSession = () => {
 					"error",
 					"Credential Expired",
 					"Your credentials has expired. Please login again.",
-					() => window.location.replace("/login")
+					() => window.location.replace("/login"),
 				);
 			} else {
 				err = JSON.parse(err.responseText);
 				localStorage.clear();
 				alert(err.data.info, err.data.title, err.data.message, () =>
-					window.location.replace("/login")
+					window.location.replace("/login"),
 				);
 			}
 		});
@@ -55,6 +75,59 @@ const checkSession = () => {
 setInterval(checkSession(), 20000);
 
 export default function Home() {
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+	const messaging = getMessaging(app);
+
+	// Meminta izin notifikasi dari pengguna
+	Notification.requestPermission().then((permission) => {
+		// Memeriksa apakah izin diberikan
+		if (permission === "granted") {
+			console.log("Notification permission granted.");
+			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
+			// Dapatkan token FCM
+			getToken(messaging, {
+				vapidKey:
+					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J" +
+					"7ldrAAngw",
+			})
+				.then((currentToken) => {
+					if (currentToken) {
+						localStorage.setItem("token_fcm", currentToken);
+						console.log("Token FCM:", currentToken);
+						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
+					} else {
+						console.log(
+							"Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.",
+						);
+					}
+				})
+				.catch((err) => {
+					console.log(
+						"Terjadi kesalahan saat mendapatkan token:",
+						err,
+					);
+				});
+		} else {
+			console.log("Notification permission denied.");
+			// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
+		}
+	});
+
+	// Handle incoming messages
+	onMessage(messaging, (payload) => {
+		console.log("Message received:", payload);
+		// Handle the message here
+		// Tangani pesan di sini, misalnya menampilkan notifikasi atau update UI
+		alert(
+			"Pesan baru: " +
+				payload.notification.title +
+				" - " +
+				payload.notification.body,
+		);
+	});
+
 	const [show, setShow] = useState(false);
 	const [userData, setUserData] = useState(null);
 	userData && localStorage.setItem("group_id", userData.group_id);
@@ -75,7 +148,7 @@ export default function Home() {
 		apiXML
 			.getUserData(
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values)
+				getFormData(keys, values),
 			)
 			.then((getUserDataResponse) => {
 				const res = JSON.parse(getUserDataResponse);
@@ -122,8 +195,8 @@ export default function Home() {
 						"thankss",
 						"/riwayat",
 						"0",
-					]
-				)
+					],
+				),
 			)
 			.then((getResponse) => {
 				const res = JSON.parse(getResponse);

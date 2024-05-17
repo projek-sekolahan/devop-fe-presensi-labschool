@@ -33,19 +33,19 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		!localStorage.getItem("csrf") && apiXML
-			.getCsrf()
-			.then((result) => {
-				// Data yang diberikan
-				result = JSON.parse(result.responseText);
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", result.csrfHash);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		!localStorage.getItem("csrf") &&
+			apiXML
+				.getCsrf()
+				.then((result) => {
+					// Data yang diberikan
+					result = JSON.parse(result.responseText);
+					localStorage.removeItem("csrf");
+					localStorage.setItem("csrf", result.csrfHash);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 	}, []);
-
 	return (
 		<Router>
 			{width && width > 500 ? (
@@ -72,7 +72,10 @@ function App() {
 					<Route path="/bantuan" element={<Bantuan />} />
 					<Route path="/notifikasi" element={<Notification />} />
 					<Route path="/presensi/staff" element={<PresensiStaff />} />
-					<Route path="/presensi/verif" element={<FaceVerification />} />
+					<Route
+						path="/presensi/verif"
+						element={<FaceVerification />}
+					/>
 					<Route path="/presensi/izin" element={<Izin />} />
 					<Route path="/setting" element={<Pengaturan />} />
 					<Route path="/facecam" element={<FaceCam />} />
