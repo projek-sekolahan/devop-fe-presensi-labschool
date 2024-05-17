@@ -87,7 +87,7 @@ export default function Home() {
 			console.log("Notification permission granted.");
 			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
 			// Dapatkan token FCM
-			getToken(messaging, {
+			!localStorage.getItem("token_fcm") && getToken(messaging, {
 				vapidKey:
 					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J" +
 					"7ldrAAngw",
@@ -327,9 +327,9 @@ export default function Home() {
 						</p>
 						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
 					</Link>
-					 <button onClick={click} className="btn">
+					{/*<button onClick={click} className="btn">
 						test
-					</button> 
+					</button> */}
 				</main>
 				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-14 py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
 					<Link
