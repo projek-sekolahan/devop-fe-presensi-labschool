@@ -44,8 +44,6 @@ function App() {
 			.catch((err) => {
 				console.log(err);
 			});
-
-		console.log("this new 3")
 	}, []);
 
 	return (
