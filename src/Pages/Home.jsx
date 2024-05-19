@@ -222,15 +222,15 @@ export default function Home() {
                         setShow(true);
                     }}
                 >
-                    <Bars3Icon className="fill-white size-8" />
+                    <Bars3Icon className="size-8" />
                 </button>
-                <div id="profile" className="flex items-center gap-2">
-                    {userData && userData.img_location ? (
+                <div className="flex flex-col items-center gap-1">
+                    {userData ? (
                         <>
                             <img
-                                src={`${userData.img_location}`}
-                                alt="photo_profile"
-                                className="size-12 rounded-full bg-white"
+                                src={userData.img_location || "/default-profile.png"}
+                                alt="user"
+                                className="w-[40px] h-[40px] rounded-full"
                             />
                             <p className="font-semibold">{userData.fullname}</p>
                         </>
@@ -249,11 +249,11 @@ export default function Home() {
                         alt="image 1"
                     />
                     <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWufDB8fGVufDB8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
                         alt="image 2"
                     />
                     <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWufDB8fGVufDB8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
                         alt="image 3"
                     />
                 </Carousel>
