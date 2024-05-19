@@ -70,7 +70,7 @@ export default function Home() {
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchUserData = useCallback(async () => {
             const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
             const values = [
                 localStorage.getItem("AUTH_KEY"),
@@ -102,7 +102,7 @@ export default function Home() {
                 console.error("Error fetching user data:", error);
                 window.location.replace("/login");
             }
-        };
+        }, []);
 
         if (!localStorage.getItem("login_token")) {
             window.location.replace("/login");
