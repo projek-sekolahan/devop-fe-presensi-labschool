@@ -13,7 +13,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
-// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
     authDomain: "projek-sekolah-1acb4.firebaseapp.com",
@@ -24,7 +23,6 @@ const firebaseConfig = {
     measurementId: "G-NWG3GGV7DF",
 };
 
-// Fungsi untuk memeriksa sesi
 const checkSession = () => {
     const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
     const value = [
@@ -65,7 +63,6 @@ const checkSession = () => {
         });
 };
 
-// Mengatur interval pemeriksaan sesi menjadi setiap 2 jam (7200000 ms)
 setInterval(checkSession, 2 * 60 * 60 * 1000);
 
 export default function Home() {
@@ -88,13 +85,19 @@ export default function Home() {
                     localStorage.getItem("AUTH_KEY"),
                     getFormData(keys, values)
                 );
+                console.log("API Response:", response);
                 const res = JSON.parse(response);
-                console.log("API Response:", res);
-                localStorage.setItem("token", res.data);
-                localStorage.setItem("csrf", res.csrfHash);
-                const user = parseJwt(localStorage.getItem("token"));
-                console.log("Parsed User Data:", user);
-                setUserData(user);
+                console.log("Parsed API Response:", res);
+
+                if (res && res.data) {
+                    localStorage.setItem("token", res.data);
+                    localStorage.setItem("csrf", res.csrfHash);
+                    const user = parseJwt(localStorage.getItem("token"));
+                    console.log("Parsed User Data:", user);
+                    setUserData(user);
+                } else {
+                    console.error("No data in API response:", res);
+                }
             } catch (error) {
                 console.error("Error fetching user data:", error);
                 window.location.replace("/login");
@@ -107,25 +110,20 @@ export default function Home() {
             fetchUserData();
         }
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const messaging = getMessaging(app);
 
-        // Meminta izin notifikasi dari pengguna
         Notification.requestPermission().then((permission) => {
-            // Memeriksa apakah izin diberikan
             if (permission === "granted") {
                 alert("success", "Notification", "Notification permission granted.");
                 console.log("Notification permission granted.");
-                
-                // Mendapatkan token FCM
+
                 getToken(messaging, {
                     vapidKey: "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
                 }).then((currentToken) => {
                     console.log("FCM token:", currentToken);
 
-                    // Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
                     apiXML
                         .registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
                             "AUTH_KEY",
@@ -166,12 +164,10 @@ export default function Home() {
                     alert("error", "Notification", "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
                 });
             } else {
-                // Tindakan jika izin ditolak
                 alert("error", "Notification", "Notification permission denied.");
             }
         });
 
-        // Handle incoming messages
         onMessage(messaging, (payload) => {
             console.log("Message received:", payload);
             const notificationTitle = payload.notification.title;
@@ -179,7 +175,6 @@ export default function Home() {
                 body: payload.notification.body,
             };
 
-            // Show the notification using the browser's Notification API
             if (Notification.permission === 'granted') {
                 new Notification(notificationTitle, notificationOptions);
             }
