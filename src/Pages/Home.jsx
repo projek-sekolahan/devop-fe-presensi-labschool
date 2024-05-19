@@ -98,7 +98,7 @@ export default function Home() {
                 console.log("Parsed User Data:", user);
                 if (user) {
                     setUserData(user);
-                    console.log("User data set successfully");
+                    console.log("User data set successfully", user);
                 } else {
                     console.error("Parsed user data is null");
                 }
