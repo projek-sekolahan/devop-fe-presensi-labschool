@@ -1,39 +1,30 @@
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
-import {
-	CheckCircleIcon,
-	ClockIcon,
-	ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { CheckCircleIcon, ClockIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-import {
-	getMessaging,
-	getToken,
-	onMessage,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
 // Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
-	authDomain: "projek-sekolah-1acb4.firebaseapp.com",
-	projectId: "projek-sekolah-1acb4",
-	storageBucket: "projek-sekolah-1acb4.appspot.com",
-	messagingSenderId: "796889279454",
-	appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
-	measurementId: "G-NWG3GGV7DF",
+    apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+    authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+    projectId: "projek-sekolah-1acb4",
+    storageBucket: "projek-sekolah-1acb4.appspot.com",
+    messagingSenderId: "796889279454",
+    appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+    measurementId: "G-NWG3GGV7DF",
 };
 
-// Check session function
+// Fungsi untuk memeriksa sesi
 const checkSession = () => {
     const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
     const value = [
@@ -45,7 +36,7 @@ const checkSession = () => {
         .sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
         .then((res) => {
             res = JSON.parse(res);
-            if (res.data.title == "Your Session OK") {
+            if (res.data.title === "Your Session OK") {
                 localStorage.removeItem("csrf");
                 localStorage.setItem("csrf", res.csrfHash);
             } else {
@@ -56,7 +47,7 @@ const checkSession = () => {
             }
         })
         .catch((err) => {
-            if (err.status == 403) {
+            if (err.status === 403) {
                 localStorage.clear();
                 alert(
                     "error",
@@ -73,262 +64,216 @@ const checkSession = () => {
             }
         });
 };
+
+// Mengatur interval pemeriksaan sesi menjadi setiap 2 jam (7200000 ms)
 setInterval(checkSession, 2 * 60 * 60 * 1000);
 
 export default function Home() {
-	// Initialize Firebase
-	const app = initializeApp(firebaseConfig);
-	const analytics = getAnalytics(app);
-	const messaging = getMessaging(app);
+    const [show, setShow] = useState(false);
+    const [userData, setUserData] = useState(null);
+    userData && localStorage.setItem("group_id", userData.group_id);
 
-	// Meminta izin notifikasi dari pengguna
-	Notification.requestPermission().then((permission) => {
-		// Memeriksa apakah izin diberikan
-		if (permission === "granted") {
-			alert("success","Notification","Notification permission granted.");
-			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk Dapatkan token FCM
-			getToken(messaging, {
-				vapidKey:
-					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
-			}).then((currentToken) => { console.log(currentToken);
-					// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
-					apiXML
-					.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
-						"AUTH_KEY",
-						"devop-sso",
-						"csrf_token",
-						"token",
-						"token_fcm",
-					], [
-						localStorage.getItem("AUTH_KEY"),
-						localStorage.getItem("devop-sso"),
-						localStorage.getItem("csrf"),
-						localStorage.getItem("login_token"),
-						currentToken,
-					]))
-					.then((getResponse) => {
-						const res = JSON.parse(getResponse);
-						localStorage.setItem("csrf", res.csrfHash);
-					}).catch((err) => {
-						if (err.status == 403) {
-							localStorage.clear();
-							alert(
-								"error",
-								"Credential Expired",
-								"Your credentials has expired. Please login again.",
-								() => window.location.replace("/login"),
-							);
-						} else {
-							err = JSON.parse(err.responseText);
-							localStorage.clear();
-							alert(err.data.info, err.data.title, err.data.message, () =>
-								window.location.replace("/login"),
-							);
-						}
-					});
-				})
-				.catch((err) => {
-					alert("error","Notification","Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
-				});
-		} else {
-			// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
-			alert("error","Notification","Notification permission denied.");
-		}
-	});
+    if (!localStorage.getItem("login_token")) {
+        window.location.replace("/login");
+    }
 
-	// Handle incoming messages
-	onMessage(messaging, (payload) => {
-		console.log("Message received:", payload);
-		// Tangani pesan di sini, misalnya menampilkan notifikasi atau update UI
-		const notificationTitle = payload.notification.title;
-		const notificationOptions = {
-			body: payload.notification.body,
-		};
-	
-		// Show the notification using the browser's Notification API
-		if (Notification.permission === 'granted') {
-			new Notification(notificationTitle, notificationOptions);
-		}
-	});
+    const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+    const values = [
+        localStorage.getItem("AUTH_KEY"),
+        localStorage.getItem("devop-sso"),
+        localStorage.getItem("csrf"),
+        localStorage.getItem("login_token"),
+    ];
 
-	const [show, setShow] = useState(false);
-	const [userData, setUserData] = useState(null);
-	userData && localStorage.setItem("group_id", userData.group_id);
+    useEffect(() => {
+        !userData &&
+            apiXML
+                .getUserData(
+                    localStorage.getItem("AUTH_KEY"),
+                    getFormData(keys, values),
+                )
+                .then((getUserDataResponse) => {
+                    const res = JSON.parse(getUserDataResponse);
+                    localStorage.setItem("token", res.data);
+                    localStorage.setItem("csrf", res.csrfHash);
+                    setUserData(parseJwt(localStorage.getItem("token")));
+                })
+                .catch(() => {
+                    window.location.replace("/login");
+                });
 
-	if (!localStorage.getItem("login_token")) {
-		window.location.replace("/login");
-	}
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const messaging = getMessaging(app);
 
-	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-	const values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("devop-sso"),
-		localStorage.getItem("csrf"),
-		localStorage.getItem("login_token"),
-	];
+        // Meminta izin notifikasi dari pengguna
+        Notification.requestPermission().then((permission) => {
+            // Memeriksa apakah izin diberikan
+            if (permission === "granted") {
+                alert("success", "Notification", "Notification permission granted.");
+                console.log("Notification permission granted.");
+                
+                // Mendapatkan token FCM
+                getToken(messaging, {
+                    vapidKey: "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
+                }).then((currentToken) => {
+                    console.log("FCM token:", currentToken);
 
-	!userData &&
-		apiXML
-			.getUserData(
-				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values),
-			)
-			.then((getUserDataResponse) => {
-				const res = JSON.parse(getUserDataResponse);
-				localStorage.setItem("token", res.data);
-				localStorage.setItem("csrf", res.csrfHash);
-				setUserData(parseJwt(localStorage.getItem("token")));
-			})
-			.catch(() => {
-				window.location.replace("/login");
-			});
-	window.addEventListener("click", (e) => {
-		if (e.pageX > (screen.width * 75) / 100) {
-			setShow(false);
-		}
-	});
+                    // Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
+                    apiXML
+                        .registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
+                            "AUTH_KEY",
+                            "devop-sso",
+                            "csrf_token",
+                            "token",
+                            "token_fcm",
+                        ], [
+                            localStorage.getItem("AUTH_KEY"),
+                            localStorage.getItem("devop-sso"),
+                            localStorage.getItem("csrf"),
+                            localStorage.getItem("login_token"),
+                            currentToken,
+                        ]))
+                        .then((getResponse) => {
+                            console.log("Token registered successfully");
+                            const res = JSON.parse(getResponse);
+                            localStorage.setItem("csrf", res.csrfHash);
+                        }).catch((err) => {
+                            console.error("Error registering token", err);
+                            if (err.status === 403) {
+                                localStorage.clear();
+                                alert(
+                                    "error",
+                                    "Credential Expired",
+                                    "Your credentials has expired. Please login again.",
+                                    () => window.location.replace("/login"),
+                                );
+                            } else {
+                                err = JSON.parse(err.responseText);
+                                localStorage.clear();
+                                alert(err.data.info, err.data.title, err.data.message, () =>
+                                    window.location.replace("/login"),
+                                );
+                            }
+                        });
+                }).catch((err) => {
+                    alert("error", "Notification", "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
+                });
+            } else {
+                // Tindakan jika izin ditolak
+                alert("error", "Notification", "Notification permission denied.");
+            }
+        });
 
-	return !userData ? (
-		<Loading />
-	) : (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
-			<img
-				src="/Icons/elipse.svg"
-				alt="elipse"
-				className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
-			/>
-			<nav className="relative z-[2] flex items-center justify-between">
-				<button
-					onClick={() => {
-						setShow(true);
-					}}
-				>
-					<Bars3Icon className="fill-white size-8" />
-				</button>
-				<div id="profile" className="flex items-center gap-2">
-					<img
-						src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
-						alt="photo_profile"
-						className="size-12 rounded-full bg-white"
-					/>
-					<p className="font-semibold text-sm ">
-						{userData.nama_lengkap}
-					</p>
-				</div>
-				<Link to="/notifikasi">
-					<BellIcon className="fill-white size-8" />
-				</Link>
-			</nav>
-			<div
-				id="core"
-				className="z-[2] size-full relative pb-24 overflow-y-auto"
-			>
-				<main className="mt-8 h-fit sm:h-52">
-					<div id="news" className="size-full">
-						<Carousel
-							leftControl=" "
-							rightControl=" "
-							className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] min-h-48 h-48"
-						>
-							<img src="/img/news.png" className="h-full" />
-							<img src="/img/news.png" className="h-full" />
-							<img src="/img/news.png" className="h-full" />
-							<img src="/img/news.png" className="h-full" />
-						</Carousel>
-					</div>
-					<div
-						id="rekap"
-						className="bg-white h-3/5 mt-5 rounded-2xl px-3 py-2"
-					>
-						<h3 className="text-primary-md font-bold text-base">
-							{"Rekapan Presensi (Bulan Ini)"}
-						</h3>
-						<div className="flex justify-between mt-2">
-							<div id="hadir" className="w-24">
-								<div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
-									<p className="text-center text-lg font-bold">
-										{userData.hadir ? userData.hadir : "0"}
-									</p>
-								</div>
-								<h4 className="text-center text-xs font-bold text-primary-md">
-									Hadir
-								</h4>
-							</div>
-							<div id="izin" className="w-24">
-								<div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
-									<p className="text-center text-lg font-bold">
-										{userData.tidak_hadir
-											? userData.tidak_hadir
-											: "0"}
-									</p>
-								</div>
-								<h4 className="text-center text-xs font-bold text-primary-md">
-									Izin / Sakit
-								</h4>
-							</div>
-							<div id="terlambat" className="w-24">
-								<div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
-									<p className="text-center text-lg font-bold">
-										{userData.terlambat_pulang_cepat
-											? userData.terlambat_pulang_cepat
-											: "0"}
-									</p>
-								</div>
-								<h4 className="text-center text-xs font-bold text-primary-md">
-									Terlambat
-								</h4>
-							</div>
-						</div>
-					</div>
-					<Link
-						id="presensi"
-						to={
-							localStorage.getItem("group_id") == "4"
-								? "/presensi"
-								: "/presensi/staff"
-						}
-						className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-					>
-						<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-							<CheckCircleIcon className="size-6" />
-						</div>
-						<p className="text-primary-md text-center font-bold text-sm">
-							Presensi
-						</p>
-						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-					</Link>
-					<Link
-						id="riwayat_presensi"
-						to="/riwayat"
-						className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-					>
-						<div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-							<ClockIcon className="size-6" />
-						</div>
-						<p className="text-primary-md text-center font-bold text-sm">
-							Riwayat Presensi
-						</p>
-						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-					</Link>
-				</main>
-				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-14 py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
-					<Link
-						to="/home"
-						className="flex flex-col justify-center items-center text-primary-md"
-					>
-						<HomeIcon className="size-7" />
-						<p className="text-center font-bold text-xs">Beranda</p>
-					</Link>
-					<Link
-						to="/profile"
-						className="flex flex-col justify-center items-center text-bg-2 hover:text-primary-md"
-					>
-						<UserIcon className="size-7" />
-						<p className="text-center font-bold text-xs">Profile</p>
-					</Link>
-				</div>
-			</div>
-			<SideMenu show={show} data={userData} />
-		</div>
-	);
+        // Handle incoming messages
+        onMessage(messaging, (payload) => {
+            console.log("Message received:", payload);
+            const notificationTitle = payload.notification.title;
+            const notificationOptions = {
+                body: payload.notification.body,
+            };
+
+            // Show the notification using the browser's Notification API
+            if (Notification.permission === 'granted') {
+                new Notification(notificationTitle, notificationOptions);
+            }
+        });
+    }, []);
+
+    window.addEventListener("click", (e) => {
+        if (e.pageX > (screen.width * 75) / 100) {
+            setShow(false);
+        }
+    });
+
+    return !userData ? (
+        <Loading />
+    ) : (
+        <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
+            <img
+                src="/Icons/elipse.svg"
+                alt="elipse"
+                className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
+            />
+            <nav className="relative z-[2] flex items-center justify-between">
+                <button
+                    onClick={() => {
+                        setShow(true);
+                    }}
+                >
+                    <Bars3Icon className="fill-white size-8" />
+                </button>
+                <div id="profile" className="flex items-center gap-2">
+                    <img
+                        src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
+                        alt="photo_profile"
+                        className="size-12 rounded-full bg-white"
+                    />
+                    <p className="font-semibold text-sm ">
+                        {userData.nama_lengkap}
+                    </p>
+                </div>
+                <Link to="/notifikasi">
+                    <BellIcon className="size-8" />
+                </Link>
+            </nav>
+            <div className="carousel relative z-[1] h-[300px] mt-8 rounded-xl overflow-hidden">
+                <Carousel>
+                    <img
+                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                        alt="image 1"
+                    />
+                    <img
+                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                        alt="image 2"
+                    />
+                    <img
+                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+                        alt="image 3"
+                    />
+                </Carousel>
+            </div>
+            <div className="mt-6 grid grid-cols-2 gap-4">
+                <Link
+                    to="/pengajuan"
+                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
+                >
+                    <ClockIcon className="size-12" />
+                    <p className="font-semibold text-sm">Pengajuan</p>
+                </Link>
+                <Link
+                    to="/kehadiran"
+                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
+                >
+                    <CheckCircleIcon className="size-12" />
+                    <p className="font-semibold text-sm">Kehadiran</p>
+                </Link>
+            </div>
+            <div className="mt-8">
+                <h1 className="text-lg font-bold">Fitur Lainnya</h1>
+                <Link
+                    to="/profil"
+                    className="mt-4 flex items-center justify-between"
+                >
+                    <div className="flex items-center gap-4">
+                        <UserIcon className="size-12" />
+                        <p>Profil</p>
+                    </div>
+                    <ChevronRightIcon className="size-8" />
+                </Link>
+                <Link
+                    to="/daftar-hadir"
+                    className="mt-4 flex items-center justify-between"
+                >
+                    <div className="flex items-center gap-4">
+                        <HomeIcon className="size-12" />
+                        <p>Daftar Hadir</p>
+                    </div>
+                    <ChevronRightIcon className="size-8" />
+                </Link>
+            </div>
+            <SideMenu show={show} close={() => setShow(false)} />
+        </div>
+    );
 }
