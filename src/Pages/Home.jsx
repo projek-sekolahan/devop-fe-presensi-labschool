@@ -1,18 +1,19 @@
-import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
-import { CheckCircleIcon, ClockIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { Carousel } from "flowbite-react";
-import { Link } from "react-router-dom";
-import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
-import SideMenu from "/src/Components/SideMenu";
 import { useState, useEffect, useCallback } from "react";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
+import { Link } from "react-router-dom";
+import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, ClockIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { Carousel } from "flowbite-react";
+import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
+import SideMenu from "/src/Components/SideMenu";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
     authDomain: "projek-sekolah-1acb4.firebaseapp.com",
@@ -23,6 +24,7 @@ const firebaseConfig = {
     measurementId: "G-NWG3GGV7DF",
 };
 
+// Fungsi untuk memeriksa sesi
 const checkSession = () => {
     const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
     const value = [
@@ -50,7 +52,7 @@ const checkSession = () => {
                 alert(
                     "error",
                     "Credential Expired",
-                    "Your credentials has expired. Please login again.",
+                    "Your credentials have expired. Please login again.",
                     () => window.location.replace("/login"),
                 );
             } else {
@@ -63,67 +65,82 @@ const checkSession = () => {
         });
 };
 
+// Mengatur interval pemeriksaan sesi menjadi setiap 2 jam (7200000 ms)
 setInterval(checkSession, 2 * 60 * 60 * 1000);
 
 export default function Home() {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
 
-    useEffect(() => {
-        const fetchUserData = useCallback(async () => {
-            const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-            const values = [
+    const fetchUserData = useCallback(async () => {
+        const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+        const values = [
+            localStorage.getItem("AUTH_KEY"),
+            localStorage.getItem("devop-sso"),
+            localStorage.getItem("csrf"),
+            localStorage.getItem("login_token"),
+        ];
+
+        try {
+            console.log("Fetching user data...");
+            const response = await apiXML.getUserData(
                 localStorage.getItem("AUTH_KEY"),
-                localStorage.getItem("devop-sso"),
-                localStorage.getItem("csrf"),
-                localStorage.getItem("login_token"),
-            ];
+                getFormData(keys, values)
+            );
+            console.log("API Response:", response);
+            const res = JSON.parse(response);
+            console.log("Parsed API Response:", res);
 
-            try {
-                console.log("Fetching user data...");
-                const response = await apiXML.getUserData(
-                    localStorage.getItem("AUTH_KEY"),
-                    getFormData(keys, values)
-                );
-                console.log("API Response:", response);
-                const res = JSON.parse(response);
-                console.log("Parsed API Response:", res);
-
-                if (res && res.data) {
-                    localStorage.setItem("token", res.data);
-                    localStorage.setItem("csrf", res.csrfHash);
-                    const user = parseJwt(localStorage.getItem("token"));
-                    console.log("Parsed User Data:", user);
-                    setUserData(user);
-                } else {
-                    console.error("No data in API response:", res);
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                window.location.replace("/login");
+            if (res && res.data) {
+                localStorage.setItem("token", res.data);
+                localStorage.setItem("csrf", res.csrfHash);
+                const user = parseJwt(localStorage.getItem("token"));
+                console.log("Parsed User Data:", user);
+                setUserData(user);
+            } else {
+                console.error("No data in API response:", res);
             }
-        }, []);
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            window.location.replace("/login");
+        }
+    }, []);
 
+    useEffect(() => {
         if (!localStorage.getItem("login_token")) {
             window.location.replace("/login");
         } else {
             fetchUserData();
         }
+    }, [fetchUserData]);
 
+    useEffect(() => {
+        console.log("User Data updated:", userData);
+        if (userData) {
+            localStorage.setItem("group_id", userData.group_id);
+        }
+    }, [userData]);
+
+    useEffect(() => {
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const messaging = getMessaging(app);
 
+        // Meminta izin notifikasi dari pengguna
         Notification.requestPermission().then((permission) => {
+            // Memeriksa apakah izin diberikan
             if (permission === "granted") {
                 alert("success", "Notification", "Notification permission granted.");
                 console.log("Notification permission granted.");
-
+                
+                // Mendapatkan token FCM
                 getToken(messaging, {
                     vapidKey: "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
                 }).then((currentToken) => {
                     console.log("FCM token:", currentToken);
 
+                    // Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
                     apiXML
                         .registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
                             "AUTH_KEY",
@@ -149,7 +166,7 @@ export default function Home() {
                                 alert(
                                     "error",
                                     "Credential Expired",
-                                    "Your credentials has expired. Please login again.",
+                                    "Your credentials have expired. Please login again.",
                                     () => window.location.replace("/login"),
                                 );
                             } else {
@@ -164,10 +181,12 @@ export default function Home() {
                     alert("error", "Notification", "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
                 });
             } else {
+                // Tindakan jika izin ditolak
                 alert("error", "Notification", "Notification permission denied.");
             }
         });
 
+        // Handle incoming messages
         onMessage(messaging, (payload) => {
             console.log("Message received:", payload);
             const notificationTitle = payload.notification.title;
@@ -175,18 +194,12 @@ export default function Home() {
                 body: payload.notification.body,
             };
 
+            // Show the notification using the browser's Notification API
             if (Notification.permission === 'granted') {
                 new Notification(notificationTitle, notificationOptions);
             }
         });
     }, []);
-
-    useEffect(() => {
-        console.log("User Data updated:", userData);
-        if (userData) {
-            localStorage.setItem("group_id", userData.group_id);
-        }
-    }, [userData]);
 
     window.addEventListener("click", (e) => {
         if (e.pageX > (screen.width * 75) / 100) {
