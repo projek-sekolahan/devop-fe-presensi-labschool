@@ -92,7 +92,7 @@ export default function Home() {
 					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J" +
 					"7ldrAAngw",
 			})
-				.then((currentToken) => {
+				.then((currentToken) => { console.log(currentToken);
 					if (currentToken) {
 						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
 						apiXML
