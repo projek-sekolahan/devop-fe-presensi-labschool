@@ -33,46 +33,47 @@ const firebaseConfig = {
 	measurementId: "G-NWG3GGV7DF",
 };
 
+// Check session function
 const checkSession = () => {
-	const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-	const value = [
-		localStorage.getItem("devop-sso"),
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("csrf"),
-	];
-	apiXML
-		.sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-		.then((res) => {
-			res = JSON.parse(res);
-			if (res.data.title == "Your Session OK") {
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
-			} else {
-				alert("error", res.data.title, res.data.message, () => {
-					localStorage.clear();
-					window.location.replace("/login");
-				});
-			}
-		})
-		.catch((err) => {
-			if (err.status == 403) {
-				localStorage.clear();
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please login again.",
-					() => window.location.replace("/login"),
-				);
-			} else {
-				err = JSON.parse(err.responseText);
-				localStorage.clear();
-				alert(err.data.info, err.data.title, err.data.message, () =>
-					window.location.replace("/login"),
-				);
-			}
-		});
+    const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
+    const value = [
+        localStorage.getItem("devop-sso"),
+        localStorage.getItem("AUTH_KEY"),
+        localStorage.getItem("csrf"),
+    ];
+    apiXML
+        .sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+        .then((res) => {
+            res = JSON.parse(res);
+            if (res.data.title == "Your Session OK") {
+                localStorage.removeItem("csrf");
+                localStorage.setItem("csrf", res.csrfHash);
+            } else {
+                alert("error", res.data.title, res.data.message, () => {
+                    localStorage.clear();
+                    window.location.replace("/login");
+                });
+            }
+        })
+        .catch((err) => {
+            if (err.status == 403) {
+                localStorage.clear();
+                alert(
+                    "error",
+                    "Credential Expired",
+                    "Your credentials has expired. Please login again.",
+                    () => window.location.replace("/login"),
+                );
+            } else {
+                err = JSON.parse(err.responseText);
+                localStorage.clear();
+                alert(err.data.info, err.data.title, err.data.message, () =>
+                    window.location.replace("/login"),
+                );
+            }
+        });
 };
-setInterval(checkSession(), 20000);
+setInterval(checkSession, 2 * 60 * 60 * 1000);
 
 export default function Home() {
 	// Initialize Firebase
@@ -108,6 +109,22 @@ export default function Home() {
 					.then((getResponse) => {
 						const res = JSON.parse(getResponse);
 						localStorage.setItem("csrf", res.csrfHash);
+					}).catch((err) => {
+						if (err.status == 403) {
+							localStorage.clear();
+							alert(
+								"error",
+								"Credential Expired",
+								"Your credentials has expired. Please login again.",
+								() => window.location.replace("/login"),
+							);
+						} else {
+							err = JSON.parse(err.responseText);
+							localStorage.clear();
+							alert(err.data.info, err.data.title, err.data.message, () =>
+								window.location.replace("/login"),
+							);
+						}
 					});
 				})
 				.catch((err) => {
