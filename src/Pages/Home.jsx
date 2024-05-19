@@ -84,7 +84,7 @@ export default function Home() {
 	Notification.requestPermission().then((permission) => {
 		// Memeriksa apakah izin diberikan
 		if (permission === "granted") {
-			alert("success","Notification","Notification permission granted.",()=>{});
+			alert("success","Notification","Notification permission granted.");
 			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
 			// Dapatkan token FCM
 			!localStorage.getItem("token_fcm") && getToken(messaging, {
@@ -93,7 +93,7 @@ export default function Home() {
 					"7ldrAAngw",
 			})
 				.then((currentToken) => {
-					if (currentToken) { console.log('device token: ' + currentToken);
+					if (currentToken) {
 						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
 						apiXML
 							.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
@@ -112,18 +112,17 @@ export default function Home() {
 							.then((getResponse) => {
 								const res = JSON.parse(getResponse);
 								localStorage.setItem("csrf", res.csrfHash);
-								console.log(parseJwt(res.data));
 							});
 					} else {
-						alert("error","Notification","Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.",()=>{});
+						alert("error","Notification","Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.");
 					}
 				})
 				.catch((err) => {
-					alert("error","Notification","Terjadi kesalahan saat mendapatkan token.",()=>{});
+					alert("error","Notification","Terjadi kesalahan saat mendapatkan token.");
 				});
 		} else {
 			// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
-			alert("error","Notification","Notification permission denied.",()=>{});
+			alert("error","Notification","Notification permission denied.");
 		}
 	});
 
