@@ -4,7 +4,7 @@ import { Carousel } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
