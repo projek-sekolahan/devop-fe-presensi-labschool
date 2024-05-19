@@ -205,14 +205,20 @@ export default function Home() {
                     <Bars3Icon className="fill-white size-8" />
                 </button>
                 <div id="profile" className="flex items-center gap-2">
-                    <img
-                        src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
-                        alt="photo_profile"
-                        className="size-12 rounded-full bg-white"
-                    />
-                    <p className="font-semibold text-sm ">
-                        {userData.nama_lengkap}
-                    </p>
+                    {userData && userData.img_location ? (
+                        <>
+                            <img
+                                src={`${userData.img_location}`}
+                                alt="photo_profile"
+                                className="size-12 rounded-full bg-white"
+                            />
+                            <p className="font-semibold text-sm ">
+                                {userData.nama_lengkap}
+                            </p>
+                        </>
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </div>
                 <Link to="/notifikasi">
                     <BellIcon className="size-8" />
