@@ -97,8 +97,9 @@ export default function Home() {
                 const user = parseJwt(localStorage.getItem("token"));
                 console.log("Parsed User Data:", user);
                 if (user) {
-                    setUserData(user);
-                    console.log("User data set successfully", user);
+					console.log("Before setting user data:", userData);
+					setUserData(user);
+					console.log("After setting user data:", userData);
                 } else {
                     console.error("Parsed user data is null");
                 }
