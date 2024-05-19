@@ -24,51 +24,7 @@ const firebaseConfig = {
     measurementId: "G-NWG3GGV7DF",
 };
 
-// Fungsi untuk memeriksa sesi
-const checkSession = () => {
-    const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-    const value = [
-        localStorage.getItem("devop-sso"),
-        localStorage.getItem("AUTH_KEY"),
-        localStorage.getItem("csrf"),
-    ];
-    apiXML
-        .sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-        .then((res) => {
-            res = JSON.parse(res);
-            if (res.data.title === "Your Session OK") {
-                localStorage.removeItem("csrf");
-                localStorage.setItem("csrf", res.csrfHash);
-            } else {
-                alert("error", res.data.title, res.data.message, () => {
-                    localStorage.clear();
-                    window.location.replace("/login");
-                });
-            }
-        })
-        .catch((err) => {
-            if (err.status === 403) {
-                localStorage.clear();
-                alert(
-                    "error",
-                    "Credential Expired",
-                    "Your credentials have expired. Please login again.",
-                    () => window.location.replace("/login"),
-                );
-            } else {
-                err = JSON.parse(err.responseText);
-                localStorage.clear();
-                alert(err.data.info, err.data.title, err.data.message, () =>
-                    window.location.replace("/login"),
-                );
-            }
-        });
-};
-
-// Mengatur interval pemeriksaan sesi menjadi setiap 2 jam (7200000 ms)
-setInterval(checkSession, 2 * 60 * 60 * 1000);
-
-export default function Home() {
+const Home = () => {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
 
@@ -110,6 +66,51 @@ export default function Home() {
             console.error("Error fetching user data:", error);
             window.location.replace("/login");
         }
+    }, []);
+
+	useEffect(() => {
+        const checkSession = () => {
+            // Logika pemeriksaan sesi
+			const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
+			const value = [
+				localStorage.getItem("devop-sso"),
+				localStorage.getItem("AUTH_KEY"),
+				localStorage.getItem("csrf"),
+			];
+			apiXML
+				.sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+				.then((res) => {
+					res = JSON.parse(res);
+					if (res.data.title === "Your Session OK") {
+						localStorage.removeItem("csrf");
+						localStorage.setItem("csrf", res.csrfHash);
+					} else {
+						alert("error", res.data.title, res.data.message, () => {
+							localStorage.clear();
+							window.location.replace("/login");
+						});
+					}
+				})
+				.catch((err) => {
+					if (err.status === 403) {
+						localStorage.clear();
+						alert(
+							"error",
+							"Credential Expired",
+							"Your credentials have expired. Please login again.",
+							() => window.location.replace("/login"),
+						);
+					} else {
+						err = JSON.parse(err.responseText);
+						localStorage.clear();
+						alert(err.data.info, err.data.title, err.data.message, () =>
+							window.location.replace("/login"),
+						);
+					}
+				});
+        };
+        const intervalId = setInterval(checkSession, 2 * 60 * 60 * 1000);
+        return () => clearInterval(intervalId);
     }, []);
 
     useEffect(() => {
@@ -306,3 +307,4 @@ export default function Home() {
         </div>
     );
 }
+export default Home;
