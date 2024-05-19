@@ -71,36 +71,41 @@ setInterval(checkSession, 2 * 60 * 60 * 1000);
 export default function Home() {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
-    userData && localStorage.setItem("group_id", userData.group_id);
-
-    if (!localStorage.getItem("login_token")) {
-        window.location.replace("/login");
-    }
-
-    const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-    const values = [
-        localStorage.getItem("AUTH_KEY"),
-        localStorage.getItem("devop-sso"),
-        localStorage.getItem("csrf"),
-        localStorage.getItem("login_token"),
-    ];
 
     useEffect(() => {
-        !userData &&
-            apiXML
-                .getUserData(
+        const fetchUserData = async () => {
+            const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+            const values = [
+                localStorage.getItem("AUTH_KEY"),
+                localStorage.getItem("devop-sso"),
+                localStorage.getItem("csrf"),
+                localStorage.getItem("login_token"),
+            ];
+
+            try {
+                console.log("Fetching user data...");
+                const response = await apiXML.getUserData(
                     localStorage.getItem("AUTH_KEY"),
-                    getFormData(keys, values),
-                )
-                .then((getUserDataResponse) => {
-                    const res = JSON.parse(getUserDataResponse);
-                    localStorage.setItem("token", res.data);
-                    localStorage.setItem("csrf", res.csrfHash);
-                    setUserData(parseJwt(localStorage.getItem("token"))); console.log(userData);
-                })
-                .catch(() => {
-                    window.location.replace("/login");
-                });
+                    getFormData(keys, values)
+                );
+                const res = JSON.parse(response);
+                console.log("API Response:", res);
+                localStorage.setItem("token", res.data);
+                localStorage.setItem("csrf", res.csrfHash);
+                const user = parseJwt(localStorage.getItem("token"));
+                console.log("Parsed User Data:", user);
+                setUserData(user);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                window.location.replace("/login");
+            }
+        };
+
+        if (!localStorage.getItem("login_token")) {
+            window.location.replace("/login");
+        } else {
+            fetchUserData();
+        }
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
@@ -180,6 +185,13 @@ export default function Home() {
             }
         });
     }, []);
+
+    useEffect(() => {
+        console.log("User Data updated:", userData);
+        if (userData) {
+            localStorage.setItem("group_id", userData.group_id);
+        }
+    }, [userData]);
 
     window.addEventListener("click", (e) => {
         if (e.pageX > (screen.width * 75) / 100) {
