@@ -13,7 +13,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
-// Firebase configuration
+// Konfigurasi Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
     authDomain: "projek-sekolah-1acb4.firebaseapp.com",
@@ -232,9 +232,7 @@ export default function Home() {
                                 alt="photo_profile"
                                 className="size-12 rounded-full bg-white"
                             />
-                            <p className="font-semibold text-sm ">
-                                {userData.nama_lengkap}
-                            </p>
+                            <p className="font-semibold">{userData.fullname}</p>
                         </>
                     ) : (
                         <p>Loading...</p>
