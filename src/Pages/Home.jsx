@@ -85,40 +85,33 @@ export default function Home() {
 		// Memeriksa apakah izin diberikan
 		if (permission === "granted") {
 			alert("success","Notification","Notification permission granted.");
-			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
-			// Dapatkan token FCM
-			!localStorage.getItem("token_fcm") && getToken(messaging, {
+			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk Dapatkan token FCM
+			getToken(messaging, {
 				vapidKey:
-					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J" +
-					"7ldrAAngw",
-			})
-				.then((currentToken) => { console.log(currentToken);
-					if (currentToken) {
-						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
-						apiXML
-							.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
-								"AUTH_KEY",
-								"devop-sso",
-								"csrf_token",
-								"token",
-								"token_fcm",
-							], [
-								localStorage.getItem("AUTH_KEY"),
-								localStorage.getItem("devop-sso"),
-								localStorage.getItem("csrf"),
-								localStorage.getItem("login_token"),
-								currentToken,
-							]))
-							.then((getResponse) => {
-								const res = JSON.parse(getResponse);
-								localStorage.setItem("csrf", res.csrfHash);
-							});
-					} else {
-						alert("error","Notification","Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.");
-					}
+					"BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
+			}).then((currentToken) => { console.log(currentToken);
+					// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
+					apiXML
+					.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
+						"AUTH_KEY",
+						"devop-sso",
+						"csrf_token",
+						"token",
+						"token_fcm",
+					], [
+						localStorage.getItem("AUTH_KEY"),
+						localStorage.getItem("devop-sso"),
+						localStorage.getItem("csrf"),
+						localStorage.getItem("login_token"),
+						currentToken,
+					]))
+					.then((getResponse) => {
+						const res = JSON.parse(getResponse);
+						localStorage.setItem("csrf", res.csrfHash);
+					});
 				})
 				.catch((err) => {
-					alert("error","Notification","Terjadi kesalahan saat mendapatkan token.");
+					alert("error","Notification","Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
 				});
 		} else {
 			// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
@@ -129,9 +122,7 @@ export default function Home() {
 	// Handle incoming messages
 	onMessage(messaging, (payload) => {
 		console.log("Message received:", payload);
-		// Handle the message here
 		// Tangani pesan di sini, misalnya menampilkan notifikasi atau update UI
-		// Customize UI notification here
 		const notificationTitle = payload.notification.title;
 		const notificationOptions = {
 			body: payload.notification.body,
