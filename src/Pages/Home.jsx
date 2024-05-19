@@ -96,7 +96,7 @@ export default function Home() {
                     const res = JSON.parse(getUserDataResponse);
                     localStorage.setItem("token", res.data);
                     localStorage.setItem("csrf", res.csrfHash);
-                    setUserData(parseJwt(localStorage.getItem("token"))); console.log(setUserData);
+                    setUserData(parseJwt(localStorage.getItem("token"))); console.log(userData);
                 })
                 .catch(() => {
                     window.location.replace("/login");
