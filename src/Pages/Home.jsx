@@ -84,7 +84,7 @@ export default function Home() {
 	Notification.requestPermission().then((permission) => {
 		// Memeriksa apakah izin diberikan
 		if (permission === "granted") {
-			console.log("Notification permission granted.");
+			alert("success","Notification","Notification permission granted.",()=>{});
 			// Lanjutkan ke langkah selanjutnya setelah izin diberikan Misalnya, kode untuk
 			// Dapatkan token FCM
 			!localStorage.getItem("token_fcm") && getToken(messaging, {
@@ -94,24 +94,36 @@ export default function Home() {
 			})
 				.then((currentToken) => {
 					if (currentToken) {
-						localStorage.setItem("token_fcm", currentToken);
-						console.log("Token FCM:", currentToken);
 						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
+						apiXML
+							.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
+								"AUTH_KEY",
+								"devop-sso",
+								"csrf_token",
+								"token",
+								"token_fcm",
+							], [
+								localStorage.getItem("AUTH_KEY"),
+								localStorage.getItem("devop-sso"),
+								localStorage.getItem("csrf"),
+								localStorage.getItem("login_token"),
+								currentToken,
+							]))
+							.then((getResponse) => {
+								const res = JSON.parse(getResponse);
+								localStorage.setItem("csrf", res.csrfHash);
+								console.log(parseJwt(res.data));
+							});
 					} else {
-						console.log(
-							"Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.",
-						);
+						alert("error","Notification","Tidak dapat mendapatkan token. Pastikan izin notifikasi diberikan.",()=>{});
 					}
 				})
 				.catch((err) => {
-					console.log(
-						"Terjadi kesalahan saat mendapatkan token:",
-						err,
-					);
+					alert("error","Notification","Terjadi kesalahan saat mendapatkan token.",()=>{});
 				});
 		} else {
-			console.log("Notification permission denied.");
 			// Tindakan jika izin ditolak, misalnya menampilkan pesan kepada pengguna
+			alert("error","Notification","Notification permission denied.",()=>{});
 		}
 	});
 
@@ -120,12 +132,16 @@ export default function Home() {
 		console.log("Message received:", payload);
 		// Handle the message here
 		// Tangani pesan di sini, misalnya menampilkan notifikasi atau update UI
-		alert(
-			"Pesan baru: " +
-				payload.notification.title +
-				" - " +
-				payload.notification.body,
-		);
+		// Customize UI notification here
+		const notificationTitle = payload.notification.title;
+		const notificationOptions = {
+			body: payload.notification.body,
+		};
+	
+		// Show the notification using the browser's Notification API
+		if (Notification.permission === 'granted') {
+			new Notification(notificationTitle, notificationOptions);
+		}
 	});
 
 	const [show, setShow] = useState(false);
@@ -164,46 +180,6 @@ export default function Home() {
 			setShow(false);
 		}
 	});
-
-	const click = () => {
-		apiXML
-			.create(
-				localStorage.getItem("AUTH_KEY"),
-				getFormData(
-					[
-						"AUTH_KEY",
-						"devop-sso",
-						"csrf_token",
-						"token",
-						"token_fcm",
-						"type",
-						"category",
-						"title",
-						"message",
-						"url",
-						"is_read",
-					],
-					[
-						localStorage.getItem("AUTH_KEY"),
-						localStorage.getItem("devop-sso"),
-						localStorage.getItem("csrf"),
-						localStorage.getItem("login_token"),
-						localStorage.getItem("token_fcm"),
-						"succes",
-						"notifikasi",
-						"Presensi Berhasil",
-						"thankss",
-						"/riwayat",
-						"0",
-					],
-				),
-			)
-			.then((getResponse) => {
-				const res = JSON.parse(getResponse);
-				localStorage.setItem("csrf", res.csrfHash);
-				console.log(parseJwt(res.data));
-			});
-	};
 
 	return !userData ? (
 		<Loading />
@@ -327,9 +303,6 @@ export default function Home() {
 						</p>
 						<ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
 					</Link>
-					{/*<button onClick={click} className="btn">
-						test
-					</button> */}
 				</main>
 				<div className="fixed bottom-5 left-6 bg-white w-[calc(100vw-3rem)] h-14 py-2 px-4 rounded-s-full rounded-e-full flex justify-between z-10">
 					<Link

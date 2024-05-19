@@ -120,6 +120,14 @@ export default class apiXML {
 		);
 	}
 
+	static registerToken(key, formData) {
+		return apiXML.postWithAuth(
+			"/api/client/notifications/registerToken",
+			key,
+			formData
+		);
+	}
+
 	static register(formData) {
 		return apiXML.post("/input/register", formData);
 	}
