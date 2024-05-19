@@ -96,7 +96,12 @@ export default function Home() {
                 localStorage.setItem("csrf", res.csrfHash);
                 const user = parseJwt(localStorage.getItem("token"));
                 console.log("Parsed User Data:", user);
-                setUserData(user);
+                if (user) {
+                    setUserData(user);
+                    console.log("User data set successfully");
+                } else {
+                    console.error("Parsed user data is null");
+                }
             } else {
                 console.error("No data in API response:", res);
             }
@@ -214,13 +219,12 @@ export default function Home() {
             <img
                 src="/Icons/elipse.svg"
                 alt="elipse"
-                className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
+                className="w-full min-h-fit absolute z-[1] left-0 top-0"
             />
-            <nav className="relative z-[2] flex items-center justify-between">
+            <nav className="relative z-[2] flex items-center justify-between mb-6">
                 <button
-                    onClick={() => {
-                        setShow(true);
-                    }}
+                    onClick={() => setShow(!show)}
+                    className="bg-white rounded-lg p-1"
                 >
                     <Bars3Icon className="size-8" />
                 </button>
