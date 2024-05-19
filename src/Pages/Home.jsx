@@ -93,7 +93,7 @@ export default function Home() {
 					"7ldrAAngw",
 			})
 				.then((currentToken) => {
-					if (currentToken) {
+					if (currentToken) { console.log('device token: ' + currentToken);
 						// Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
 						apiXML
 							.registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
