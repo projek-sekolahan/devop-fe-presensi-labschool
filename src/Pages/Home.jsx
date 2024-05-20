@@ -8,7 +8,6 @@ import { CheckCircleIcon, ClockIcon, ChevronRightIcon } from "@heroicons/react/2
 import { Carousel } from "flowbite-react";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
@@ -29,36 +28,19 @@ const Home = () => {
     const [userData, setUserData] = useState(null);
 
     const fetchUserData = useCallback(async () => {
-        const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
-        const values = [
-            localStorage.getItem("AUTH_KEY"),
-            localStorage.getItem("devop-sso"),
-            localStorage.getItem("csrf"),
-            localStorage.getItem("login_token"),
-        ];
-
         try {
-            console.log("Fetching user data...");
-            const response = await apiXML.getUserData(
-                localStorage.getItem("AUTH_KEY"),
-                getFormData(keys, values)
-            );
-            console.log("API Response:", response);
-            const res = JSON.parse(response);
-            console.log("Parsed API Response:", res);
+            const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+            const values = keys.map(key => localStorage.getItem(key));
 
-            if (res && res.data) {
+            console.log("Fetching user data...");
+            const response = await apiXML.getUserData(values[0], getFormData(keys, values));
+            const res = JSON.parse(response);
+
+            if (res?.data) {
                 localStorage.setItem("token", res.data);
                 localStorage.setItem("csrf", res.csrfHash);
-                const user = parseJwt(localStorage.getItem("token"));
-                console.log("Parsed User Data:", user);
-                if (user) {
-					console.log("Before setting user data:", userData);
-					setUserData(user);
-					console.log("After setting user data:", userData);
-                } else {
-                    console.error("Parsed user data is null");
-                }
+                const user = parseJwt(res.data);
+                setUserData(user);
             } else {
                 console.error("No data in API response:", res);
             }
@@ -68,47 +50,24 @@ const Home = () => {
         }
     }, []);
 
-	useEffect(() => {
-        const checkSession = () => {
-            // Logika pemeriksaan sesi
-			const key = ["devop-sso", "AUTH_KEY", "csrf_token"];
-			const value = [
-				localStorage.getItem("devop-sso"),
-				localStorage.getItem("AUTH_KEY"),
-				localStorage.getItem("csrf"),
-			];
-			apiXML
-				.sessTime(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
-				.then((res) => {
-					res = JSON.parse(res);
-					if (res.data.title === "Your Session OK") {
-						localStorage.removeItem("csrf");
-						localStorage.setItem("csrf", res.csrfHash);
-					} else {
-						alert("error", res.data.title, res.data.message, () => {
-							localStorage.clear();
-							window.location.replace("/login");
-						});
-					}
-				})
-				.catch((err) => {
-					if (err.status === 403) {
-						localStorage.clear();
-						alert(
-							"error",
-							"Credential Expired",
-							"Your credentials have expired. Please login again.",
-							() => window.location.replace("/login"),
-						);
-					} else {
-						err = JSON.parse(err.responseText);
-						localStorage.clear();
-						alert(err.data.info, err.data.title, err.data.message, () =>
-							window.location.replace("/login"),
-						);
-					}
-				});
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const keys = ["devop-sso", "AUTH_KEY", "csrf_token"];
+                const values = keys.map(key => localStorage.getItem(key));
+                const res = await apiXML.sessTime(values[1], getFormData(keys, values));
+                const parsedRes = JSON.parse(res);
+
+                if (parsedRes.data.title === "Your Session OK") {
+                    localStorage.setItem("csrf", parsedRes.csrfHash);
+                } else {
+                    handleSessionExpired(parsedRes.data);
+                }
+            } catch (err) {
+                handleSessionError(err);
+            }
         };
+
         const intervalId = setInterval(checkSession, 2 * 60 * 60 * 1000);
         return () => clearInterval(intervalId);
     }, []);
@@ -122,91 +81,62 @@ const Home = () => {
     }, [fetchUserData]);
 
     useEffect(() => {
-        console.log("User Data updated:", userData);
         if (userData) {
             localStorage.setItem("group_id", userData.group_id);
         }
     }, [userData]);
 
     useEffect(() => {
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const messaging = getMessaging(app);
 
-        // Meminta izin notifikasi dari pengguna
-        Notification.requestPermission().then((permission) => {
-            // Memeriksa apakah izin diberikan
+        Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 alert("success", "Notification", "Notification permission granted.");
-                console.log("Notification permission granted.");
-                
-                // Mendapatkan token FCM
-                getToken(messaging, {
-                    vapidKey: "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
-                }).then((currentToken) => {
-                    console.log("FCM token:", currentToken);
-
-                    // Kirim token ke server untuk menyimpan atau gunakan sesuai kebutuhan
-                    apiXML
-                        .registerToken(localStorage.getItem("AUTH_KEY"), getFormData([
-                            "AUTH_KEY",
-                            "devop-sso",
-                            "csrf_token",
-                            "token",
-                            "token_fcm",
-                        ], [
-                            localStorage.getItem("AUTH_KEY"),
-                            localStorage.getItem("devop-sso"),
-                            localStorage.getItem("csrf"),
-                            localStorage.getItem("login_token"),
-                            currentToken,
-                        ]))
-                        .then((getResponse) => {
-                            console.log("Token registered successfully");
-                            const res = JSON.parse(getResponse);
-                            localStorage.setItem("csrf", res.csrfHash);
-                        }).catch((err) => {
-                            console.error("Error registering token", err);
-                            if (err.status === 403) {
-                                localStorage.clear();
-                                alert(
-                                    "error",
-                                    "Credential Expired",
-                                    "Your credentials have expired. Please login again.",
-                                    () => window.location.replace("/login"),
-                                );
-                            } else {
-                                err = JSON.parse(err.responseText);
-                                localStorage.clear();
-                                alert(err.data.info, err.data.title, err.data.message, () =>
-                                    window.location.replace("/login"),
-                                );
-                            }
-                        });
-                }).catch((err) => {
-                    alert("error", "Notification", "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.");
-                });
+                getToken(messaging, { vapidKey: "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw" })
+                    .then(currentToken => registerToken(currentToken))
+                    .catch(() => alert("error", "Notification", "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan."));
             } else {
-                // Tindakan jika izin ditolak
                 alert("error", "Notification", "Notification permission denied.");
             }
         });
 
-        // Handle incoming messages
-        onMessage(messaging, (payload) => {
-            console.log("Message received:", payload);
-            const notificationTitle = payload.notification.title;
-            const notificationOptions = {
-                body: payload.notification.body,
-            };
-
-            // Show the notification using the browser's Notification API
+        onMessage(messaging, payload => {
+            const { title, body } = payload.notification;
             if (Notification.permission === 'granted') {
-                new Notification(notificationTitle, notificationOptions);
+                new Notification(title, { body });
             }
         });
     }, []);
+
+    const handleSessionExpired = (data) => {
+        alert("error", data.title, data.message, () => {
+            localStorage.clear();
+            window.location.replace("/login");
+        });
+    };
+
+    const handleSessionError = (err) => {
+        const parsedError = JSON.parse(err.responseText || '{}');
+        localStorage.clear();
+        alert(parsedError.data.info, parsedError.data.title, parsedError.data.message, () => {
+            window.location.replace("/login");
+        });
+    };
+
+    const registerToken = (currentToken) => {
+        const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "token_fcm"];
+        const values = [...keys.slice(0, -1).map(key => localStorage.getItem(key)), currentToken];
+
+        apiXML.registerToken(values[0], getFormData(keys, values))
+            .then(response => {
+                const res = JSON.parse(response);
+                localStorage.setItem("csrf", res.csrfHash);
+                console.log("Token registered successfully");
+            })
+            .catch(handleSessionError);
+    };
 
     window.addEventListener("click", (e) => {
         if (e.pageX > (screen.width * 75) / 100) {
@@ -218,26 +148,15 @@ const Home = () => {
         <Loading />
     ) : (
         <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
-            <img
-                src="/Icons/elipse.svg"
-                alt="elipse"
-                className="w-full min-h-fit absolute z-[1] left-0 top-0"
-            />
+            <img src="/Icons/elipse.svg" alt="elipse" className="w-full min-h-fit absolute z-[1] left-0 top-0" />
             <nav className="relative z-[2] flex items-center justify-between mb-6">
-                <button
-                    onClick={() => setShow(!show)}
-                    className="bg-white rounded-lg p-1"
-                >
+                <button onClick={() => setShow(!show)} className="bg-white rounded-lg p-1">
                     <Bars3Icon className="size-8" />
                 </button>
                 <div className="flex flex-col items-center gap-1">
                     {userData ? (
                         <>
-                            <img
-                                src={userData.img_location || "/default-profile.png"}
-                                alt="user"
-                                className="w-[40px] h-[40px] rounded-full"
-                            />
+                            <img src={userData.img_location || "/default-profile.png"} alt="user" className="w-[40px] h-[40px] rounded-full" />
                             <p className="font-semibold">{userData.fullname}</p>
                         </>
                     ) : (
@@ -250,52 +169,31 @@ const Home = () => {
             </nav>
             <div className="carousel relative z-[1] h-[300px] mt-8 rounded-xl overflow-hidden">
                 <Carousel>
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 1"
-                    />
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWufDB8fGVufDB8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 2"
-                    />
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWufDB8fGVufDB8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 3"
-                    />
+                    <img src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="image 1" />
+                    <img src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="image 2" />
+                    <img src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="image 3" />
                 </Carousel>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-4">
-                <Link
-                    to="/pengajuan"
-                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
-                >
+                <Link to="/pengajuan" className="p-4 border border-white rounded-lg flex flex-col items-center justify-center">
                     <ClockIcon className="size-12" />
                     <p className="font-semibold text-sm">Pengajuan</p>
                 </Link>
-                <Link
-                    to="/kehadiran"
-                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
-                >
+                <Link to="/kehadiran" className="p-4 border border-white rounded-lg flex flex-col items-center justify-center">
                     <CheckCircleIcon className="size-12" />
                     <p className="font-semibold text-sm">Kehadiran</p>
                 </Link>
             </div>
             <div className="mt-8">
                 <h1 className="text-lg font-bold">Fitur Lainnya</h1>
-                <Link
-                    to="/profil"
-                    className="mt-4 flex items-center justify-between"
-                >
+                <Link to="/profil" className="mt-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <UserIcon className="size-12" />
                         <p>Profil</p>
                     </div>
                     <ChevronRightIcon className="size-8" />
                 </Link>
-                <Link
-                    to="/daftar-hadir"
-                    className="mt-4 flex items-center justify-between"
-                >
+                <Link to="/daftar-hadir" className="mt-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <HomeIcon className="size-12" />
                         <p>Daftar Hadir</p>
