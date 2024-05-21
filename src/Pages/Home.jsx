@@ -56,6 +56,7 @@ const Home = () => {
                 localStorage.setItem("token", res.data);
                 Cookies.set("csrf", res.csrfHash);
                 const user = parseJwt(res.data);
+                console.log(user);
                 setUserData(user);
             } else {
                 console.error("No data in API response:", res);
