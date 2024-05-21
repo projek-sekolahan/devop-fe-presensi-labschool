@@ -34,6 +34,7 @@ function App() {
 		});
 
 		apiXML.getCsrf();
+		console.log(Cookies.get("ci_sso_csrf_cookie"));
 	}, []);
 	return (
 		<Router>

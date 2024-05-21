@@ -15,8 +15,6 @@ export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 
-	console.log(Cookies.get("ci_sso_csrf_cookie"));
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 		const emailValue = emailRef.current.value;
