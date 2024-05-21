@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, parseJwt } from "../utils/utils";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
 	return (
@@ -65,7 +66,7 @@ export default function Notification() {
 	const values = [
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
-		localStorage.getItem("csrf"),
+		Cookies.get("csrf"),
 		localStorage.getItem("login_token"),
 	];
 	load &&
@@ -73,14 +74,13 @@ export default function Notification() {
 		apiXML
 			.detail(
 				localStorage.getItem("login_token"),
-				getFormData(keys, values)
+				getFormData(keys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);
 				setData(parseJwt(res.data));
 				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
-				console.log(parseJwt(res.data));
+				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			});
 	return (

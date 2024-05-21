@@ -207,10 +207,11 @@ const Home = () => {
             />
             <nav className="relative z-[2] flex items-center justify-between mb-6">
                 <button
-                    onClick={() => setShow(!show)}
-                    className="bg-white rounded-lg p-1"
+                    onClick={() => {
+                        setShow(true);
+                    }}
                 >
-                    <Bars3Icon className="size-8" />
+                    <Bars3Icon className="fill-white size-8" />
                 </button>
                 <div className="flex flex-col items-center gap-1">
                     {userData ? (
@@ -235,18 +236,9 @@ const Home = () => {
             </nav>
             <div className="carousel relative z-[1] h-[300px] mt-8 rounded-xl overflow-hidden">
                 <Carousel>
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 1"
-                    />
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 2"
-                    />
-                    <img
-                        src="https://images.unsplash.com/photo-1677606752374-40b7ff2287d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWd8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                        alt="image 3"
-                    />
+                    <img src="/img/news.png" alt="image 1" />
+                    <img src="/img/news.png" alt="image 2" />
+                    <img src="/img/news.png" alt="image 3" />
                 </Carousel>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-4">
