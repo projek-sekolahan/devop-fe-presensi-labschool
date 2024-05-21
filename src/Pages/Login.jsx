@@ -24,7 +24,7 @@ export default function Login() {
 				.then((result) => {apiXML
 					// Data yang diberikan
 					result = JSON.parse(result.responseText);
-					return result.csrfHash
+					result.csrfHash
 				})
 		console.log(csrf)
 		const key = ["username", "password", "devop-sso", "csrf_token"];
