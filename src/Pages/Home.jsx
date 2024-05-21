@@ -181,16 +181,16 @@ const Home = () => {
             res = JSON.parse(res);
             keys = [...keys, "csrf_token"];
             values = [...values, res.csrfHash];
-        });
 
-        apiXML
-            .registerToken(values[0], getFormData(keys, values))
-            .then((response) => {
-                const res = JSON.parse(response);
-                Cookies.set("csrf", res.csrfHash);
-                console.log("Token registered successfully");
-            })
-            .catch(handleSessionError);
+            apiXML
+                .registerToken(values[0], getFormData(keys, values))
+                .then((response) => {
+                    const res = JSON.parse(response);
+                    Cookies.set("csrf", res.csrfHash);
+                    console.log("Token registered successfully");
+                })
+                .catch(handleSessionError);
+        });
     };
 
     window.addEventListener("click", (e) => {
