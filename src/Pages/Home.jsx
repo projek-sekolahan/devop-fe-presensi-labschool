@@ -203,7 +203,7 @@ const Home = () => {
     });
 
     const createNotif = () => {
-        const key = [
+        const keys = [
             "AUTH_KEY",
             "devop-sso",
             "csrf_token",
@@ -230,7 +230,7 @@ const Home = () => {
             "0",
         ];
         apiXML
-            .create(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+            .create(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
             .then((res) => console.log(res));
     };
 
