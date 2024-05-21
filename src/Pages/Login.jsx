@@ -32,8 +32,6 @@ export default function Login() {
 			.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 			.then((loginResponse) => {
 				const res = JSON.parse(loginResponse);
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
 				localStorage.setItem("login_token", res.data.Tokenjwt);
 				alert(res.data.info, res.data.title, res.data.message, () => {
 					window.location.replace("/home");
