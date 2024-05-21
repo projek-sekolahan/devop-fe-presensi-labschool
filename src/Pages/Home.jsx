@@ -289,7 +289,7 @@ const Home = () => {
                     <ChevronRightIcon className="size-8" />
                 </Link>
             </div>
-            <SideMenu show={show} close={() => setShow(false)} />
+            <SideMenu show={show} data={userData} />
         </div>
     );
 };
