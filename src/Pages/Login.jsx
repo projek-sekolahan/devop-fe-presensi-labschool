@@ -20,13 +20,12 @@ export default function Login() {
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
 
-		let csrf;
-		apiXML.getCsrf().then((result) => {
+		let csrf = apiXML.getCsrf().then((result) => {
 			// Data yang diberikan
 			result = JSON.parse(result.responseText);
-			console.log(result);
+			return result.csrfHash;
 		});
-		console.log(csrf);
+
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [emailValue, hash, token_key[1], csrf];
 
