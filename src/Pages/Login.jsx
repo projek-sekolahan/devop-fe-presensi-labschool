@@ -26,8 +26,8 @@ export default function Login() {
 			return result.csrfHash;
 		});
 
-		const key = ["username", "password", "devop-sso", "csrf_token"];
-		const value = [emailValue, hash, token_key[1], csrf];
+		const key = ["username", "password", "devop-sso"];
+		const value = [emailValue, hash, token_key[1]];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);

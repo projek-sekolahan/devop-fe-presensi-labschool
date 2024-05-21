@@ -28,7 +28,7 @@ export default class apiXML {
 			xhr.open("POST", `${api_url}${endpoint}`);
 			xhr.setRequestHeader(
 				"Content-Type",
-				"application/x-www-form-urlencoded"
+				"application/x-www-form-urlencoded",
 			);
 			xhr.setRequestHeader("Authorization", `Basic ${key}`);
 			xhr.withCredentials = true;
@@ -40,6 +40,11 @@ export default class apiXML {
 				}
 			};
 			xhr.onerror = () => reject(xhr);
+
+			apiXML.getCsrf().then((res) => {
+				res = JSON.parse(res);
+				formData.append("csrf_token", res.csrfHash);
+			});
 			xhr.send(createRequestBody(formData));
 		});
 	}
@@ -49,7 +54,7 @@ export default class apiXML {
 			xhr.open("POST", `${api_url}${endpoint}`);
 			xhr.setRequestHeader(
 				"Content-Type",
-				"application/x-www-form-urlencoded"
+				"application/x-www-form-urlencoded",
 			);
 			xhr.withCredentials = true;
 			xhr.onload = () => {
@@ -84,7 +89,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/reports",
 			key,
-			formData
+			formData,
 		);
 	}
 
@@ -92,7 +97,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/detail_presensi",
 			key,
-			formData
+			formData,
 		);
 	}
 
@@ -100,7 +105,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/process",
 			key,
-			formData
+			formData,
 		);
 	}
 
@@ -108,7 +113,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/create",
 			key,
-			formData
+			formData,
 		);
 	}
 
@@ -116,7 +121,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/detail",
 			key,
-			formData
+			formData,
 		);
 	}
 
@@ -124,7 +129,7 @@ export default class apiXML {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/registerToken",
 			key,
-			formData
+			formData,
 		);
 	}
 
