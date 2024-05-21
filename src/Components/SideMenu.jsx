@@ -6,12 +6,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
 import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, data}) {
-	console.log(data)
+export default function SideMenu({ show, data }) {
+	console.log(data);
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -38,7 +38,7 @@ export default function SideMenu({ show, data}) {
 					const values = [
 						localStorage.getItem("devop-sso"),
 						localStorage.getItem("AUTH_KEY"),
-						Cookies.get("csrf")
+						Cookies.get("csrf"),
 						localStorage.getItem("login_token"),
 					];
 					apiXML
