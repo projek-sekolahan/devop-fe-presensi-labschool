@@ -35,6 +35,8 @@ function App() {
 		});
 
 		apiXML.getCsrf();
+
+		console.log("it change");
 	}, []);
 	return (
 		<Router>
