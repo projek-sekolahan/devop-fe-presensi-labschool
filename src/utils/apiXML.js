@@ -12,7 +12,7 @@ export default class apiXML {
 			xhr.withCredentials = true;
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
-					resolve(xhr);
+					resolve(xhr.responseText);
 				} else {
 					reject(xhr.statusText);
 				}
