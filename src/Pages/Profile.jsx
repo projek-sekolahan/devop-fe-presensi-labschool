@@ -15,7 +15,7 @@ export default function Profile() {
 				</Link>
 				<h2 className="text-center font-bold text-lg">Profil</h2>
 				<img
-					src={`https://devop-sso.smalabschoolunesa1.sch.id/${userData.img_location}`}
+					src={userData.img_location}
 					alt="photo_profile"
 					className="size-28 rounded-full bg-white mt-6 mx-auto"
 				/>
