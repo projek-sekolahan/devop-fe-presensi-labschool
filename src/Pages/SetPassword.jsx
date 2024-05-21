@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { getFormData, getHash, alert, loading } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
+import Cookies from "js-cookie";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
@@ -32,36 +33,42 @@ export default function SetPassword() {
 		const values = [
 			getHash(inputRef.current.value),
 			localStorage.getItem("regist_token"),
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 		];
-		apiXML.setPassword(getFormData(key, values)).then((res) => {
-			setDisabled(false);
-			res = JSON.parse(res);
-			localStorage.setItem("csrf", res.csrfHash);
-			res.status
-				? alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace("login"),
-					)
-				: alert(res.info, res.title, res.message, () =>
-						window.location.replace("setpassword"),
+		apiXML
+			.setPassword(getFormData(key, values))
+			.then((res) => {
+				setDisabled(false);
+				res = JSON.parse(res);
+				Cookies.set("csrf", res.csrfHash);
+				res.status
+					? alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace("login"),
+						)
+					: alert(res.info, res.title, res.message, () =>
+							window.location.replace("setpassword"),
+						);
+			})
+			.catch((err) => {
+				if (err.status == 403) {
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials has expired. Please try again later.",
+						() => window.location.replace("/setpassword"),
 					);
-		}).catch((err) => {
-			if(err.status == 403) {
-				alert(
-					"error",
-					"Credential Expired",
-					"Your credentials has expired. Please try again later.",
-					() => window.location.replace("/setpassword"),
-				)
-			} else {
-				alert(
-					"error",
-					"Input Error",
-					"Something went wrong. Please refresh the page.",
-					() => window.location.replace("/setpassword"),
-				)
-			}
-		});
+				} else {
+					alert(
+						"error",
+						"Input Error",
+						"Something went wrong. Please refresh the page.",
+						() => window.location.replace("/setpassword"),
+					);
+				}
+			});
 	};
 
 	return (
@@ -101,7 +108,9 @@ export default function SetPassword() {
 							</label>
 						</div>
 						<div>
-							<label htmlFor="confirm-password">Confirm Password</label>
+							<label htmlFor="confirm-password">
+								Confirm Password
+							</label>
 							<div className="flex gap-2">
 								<input
 									type="password"

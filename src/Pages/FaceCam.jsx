@@ -10,8 +10,9 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
-export default function RegisterFace() {
+export default function FaceCam() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
@@ -45,7 +46,7 @@ export default function RegisterFace() {
 		values = [
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			"non-dinas",
 			...state,
@@ -54,7 +55,7 @@ export default function RegisterFace() {
 		values = [
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			...state,
 		];
@@ -65,18 +66,26 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				videoRef.current.setAttribute('autoplay', '');
-				videoRef.current.setAttribute('muted', '');
-				videoRef.current.setAttribute('playsinline', '');
+				videoRef.current.setAttribute("autoplay", "");
+				videoRef.current.setAttribute("muted", "");
+				videoRef.current.setAttribute("playsinline", "");
 				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					alert("Error","Error","Izin akses kamera ditolak oleh pengguna");
+					alert(
+						"Error",
+						"Error",
+						"Izin akses kamera ditolak oleh pengguna",
+					);
 				} else if (err.name === "NotFoundError") {
-					alert("Error","Error","Tidak ada kamera yang tersedia pada perangkat");
+					alert(
+						"Error",
+						"Error",
+						"Tidak ada kamera yang tersedia pada perangkat",
+					);
 				} else {
-					alert("Error","Error","Gagal mengakses webcam!");
+					alert("Error", "Error", "Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -93,40 +102,62 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
-		let attempts = 0; // Menghitung jumlah upaya deteksi 
+		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
 		async function attemptMatch() {
 			if (attempts >= maxAttempts) {
-				alert("error", "Matching Failed", "Failed to match face after several attempts.");
+				alert(
+					"error",
+					"Matching Failed",
+					"Failed to match face after several attempts.",
+				);
 				return;
 			}
 			attempts++;
-	
+
 			try {
 				const faceData = await faceapi
-					.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+					.detectSingleFace(
+						videoRef.current,
+						new faceapi.TinyFaceDetectorOptions(),
+					)
 					.withFaceLandmarks()
 					.withFaceDescriptor();
-	
+
 				if (faceData) {
-					const distance = faceapi.euclideanDistance(descriptor, faceData.descriptor);
+					const distance = faceapi.euclideanDistance(
+						descriptor,
+						faceData.descriptor,
+					);
 					const percentage = `${Math.round(((1 - distance) / 0.4) * 100)}%`;
-	
+
 					if (distance <= 0.6) {
 						barRef.current.style.width = "100%";
 						textRef.current.innerText = "100%";
-	
+
 						const { x, y, width, height } = faceData.detection.box;
-						const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
-						const stringDescriptor = Array.from(faceData.descriptor).join(", ");
+						const imgUrl = getFaceUrl(
+							videoRef.current,
+							x - 50,
+							y - 75,
+							height + 125,
+						);
+						const stringDescriptor = Array.from(
+							faceData.descriptor,
+						).join(", ");
 						values.push(stringDescriptor, `["${imgUrl}"]`);
-	
-						const response = await apiXML.process(localStorage.getItem("AUTH_KEY"), getFormData(keys, values));
+
+						const response = await apiXML.process(
+							localStorage.getItem("AUTH_KEY"),
+							getFormData(keys, values),
+						);
 						const res = JSON.parse(response);
 						localStorage.setItem("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
-						alert(jwt.info, jwt.title, jwt.message,() => window.location.replace("/home"));
+						alert(jwt.info, jwt.title, jwt.message, () =>
+							window.location.replace("/home"),
+						);
 					} else {
 						barRef.current.style.width = percentage;
 						textRef.current.innerText = percentage;
@@ -138,15 +169,25 @@ export default function RegisterFace() {
 			} catch (err) {
 				if (err.status === 403) {
 					localStorage.clear();
-					alert("error", "Credential Expired", "Your credentials have expired. Please try again later.", () => window.location.replace("/login"));
+					alert(
+						"error",
+						"Credential Expired",
+						"Your credentials have expired. Please try again later.",
+						() => window.location.replace("/login"),
+					);
 				} else {
 					const error = JSON.parse(err.responseText);
 					localStorage.setItem("csrf", error.csrfHash);
-					alert(error.data.info, error.data.title, error.data.message,() => window.location.replace("/home"));
+					alert(
+						error.data.info,
+						error.data.title,
+						error.data.message,
+						() => window.location.replace("/home"),
+					);
 				}
 			}
 		}
-	
+
 		attemptMatch(); // Memulai percobaan pertama
 	};
 

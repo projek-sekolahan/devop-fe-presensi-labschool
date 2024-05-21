@@ -8,6 +8,7 @@ import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
+import Cookies from "js-cookie";
 
 export default function Riwayat() {
 	const [filter, setFilter] = useState("7 Hari");
@@ -45,7 +46,7 @@ export default function Riwayat() {
 	let values = [
 		localStorage.getItem("AUTH_KEY"),
 		localStorage.getItem("devop-sso"),
-		localStorage.getItem("csrf"),
+		Cookies.get("csrf"),
 		localStorage.getItem("login_token"),
 		"tab-presensi",
 	];
@@ -57,14 +58,13 @@ export default function Riwayat() {
 		apiXML
 			.reports(
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values)
+				getFormData(keys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);
 				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
-				console.log(parseJwt(res.data));
 				setHistorys(data);
 				setLoad(false);
 			})
@@ -75,13 +75,13 @@ export default function Riwayat() {
 						"error",
 						"Credential Expired",
 						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login")
+						() => window.location.replace("/login"),
 					);
 				} else {
 					err = JSON.parse(err.responseText);
 					localStorage.setItem("csrf", err.csrfHash);
 					alert(err.data.info, err.data.title, err.data.message, () =>
-						window.location.replace("/home")
+						window.location.replace("/home"),
 					);
 				}
 			});

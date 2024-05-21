@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
 import { getFormData, alert, loading } from "../utils/utils";
+import Cookies from "js-cookie";
 
 export default function ChangePassword() {
 	const emailRef = useRef();
@@ -13,12 +14,12 @@ export default function ChangePassword() {
 		loading("Loading", "Verifying Email...");
 		setLoad(true);
 		const key = ["username", "csrf_token"];
-		const values = [emailRef.current.value, localStorage.getItem("csrf")];
+		const values = [emailRef.current.value, Cookies.get("csrf")];
 		apiXML
 			.recover(getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 				res.status
 					? alert(

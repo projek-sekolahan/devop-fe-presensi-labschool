@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
 import { getFormData, alert, loading } from "../utils/utils";
+import Cookies from "js-cookie";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
@@ -19,7 +20,7 @@ export default function OtpInput() {
 	const onOtpSubmit = () => {
 		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
-		const values = [...otp, localStorage.getItem("csrf")];
+		const values = [...otp, Cookies.get("csrf")];
 		loading("Loading", "Processing OTP Data...");
 		apiXML
 			.verify(getFormData(keys, values))
@@ -27,7 +28,7 @@ export default function OtpInput() {
 				res = JSON.parse(res);
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.token);
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				res.status
 					? alert(
 							res.data.info,
@@ -93,16 +94,13 @@ export default function OtpInput() {
 	};
 	const sendOtpAgain = () => {
 		const key = ["email", "csrf_token"];
-		const values = [
-			localStorage.getItem("email"),
-			localStorage.getItem("csrf"),
-		];
+		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
 		loading("Loading", "Processing Send OTP Data...");
 		apiXML
 			.sendOtp(getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				alert(res.info, res.title, res.message, () =>
 					window.location.replace(res.location),
 				);

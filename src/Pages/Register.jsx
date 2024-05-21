@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
+import Cookie from "js-cookie";
 
 export default function Register() {
 	localStorage.clear();
@@ -33,7 +34,7 @@ export default function Register() {
 			numberRef.current.value,
 			nameRef.current.value,
 			role,
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 		];
 		loading("Loading", "Registering...");
 		apiXML
@@ -42,8 +43,7 @@ export default function Register() {
 				res = JSON.parse(res);
 				setLoad(false);
 				localStorage.setItem("email", emailRef.current.value);
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				res.status
 					? alert(
 							res.data.info,

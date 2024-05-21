@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 export default function RegisterFace() {
 	const videoRef = useRef();
@@ -15,18 +16,26 @@ export default function RegisterFace() {
 			.getUserMedia({ video: true })
 			.then((stream) => {
 				videoRef.current.srcObject = stream;
-				videoRef.current.setAttribute('autoplay', '');
-				videoRef.current.setAttribute('muted', '');
-				videoRef.current.setAttribute('playsinline', '');
+				videoRef.current.setAttribute("autoplay", "");
+				videoRef.current.setAttribute("muted", "");
+				videoRef.current.setAttribute("playsinline", "");
 				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					alert("Error","Error","Izin akses kamera ditolak oleh pengguna");
+					alert(
+						"Error",
+						"Error",
+						"Izin akses kamera ditolak oleh pengguna",
+					);
 				} else if (err.name === "NotFoundError") {
-					alert("Error","Error","Tidak ada kamera yang tersedia pada perangkat");
+					alert(
+						"Error",
+						"Error",
+						"Tidak ada kamera yang tersedia pada perangkat",
+					);
 				} else {
-					alert("Error","Error","Gagal mengakses webcam!");
+					alert("Error", "Error", "Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -51,7 +60,7 @@ export default function RegisterFace() {
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
-			
+
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
@@ -76,40 +85,45 @@ export default function RegisterFace() {
 						stringDescriptor,
 						`["${imgUrl}"]`,
 						localStorage.getItem("regist_token"),
-						localStorage.getItem("csrf"),
+						Cookies.get("csrf"),
 					];
 					loading("Loading", "Registering Face...");
-					apiXML.facecam(getFormData(key, values)).then((res) => {
-						res = JSON.parse(res);
-						localStorage.setItem("csrf", res.csrfHash);
-						res.status
-							? alert(
-									res.data.info,
-									res.data.title,
-									res.data.message,
-									() =>
-										window.location.replace("setpassword"),
-								)
-							: alert(res.info, res.title, res.message, () =>
-									window.location.replace(res.location),
+					apiXML
+						.facecam(getFormData(key, values))
+						.then((res) => {
+							res = JSON.parse(res);
+							Cookies.set("csrf", res.csrfHash);
+							res.status
+								? alert(
+										res.data.info,
+										res.data.title,
+										res.data.message,
+										() =>
+											window.location.replace(
+												"setpassword",
+											),
+									)
+								: alert(res.info, res.title, res.message, () =>
+										window.location.replace(res.location),
+									);
+						})
+						.catch((err) => {
+							if (err.status == 403) {
+								alert(
+									"error",
+									"Credential Expired",
+									"Your credentials has expired. Please try again later.",
+									() => window.location.replace("/facereg"),
 								);
-					}).catch((err) => {
-						if(err.status == 403) {
-							alert(
-								"error",
-								"Credential Expired",
-								"Your credentials has expired. Please try again later.",
-								() => window.location.replace("/facereg"),
-							)
-						} else {
-							alert(
-								"error",
-								"Input Error",
-								"Something went wrong. Please refresh the page.",
-								() => window.location.replace("/facereg"),
-							)
-						}
-					});
+							} else {
+								alert(
+									"error",
+									"Input Error",
+									"Something went wrong. Please refresh the page.",
+									() => window.location.replace("/facereg"),
+								);
+							}
+						});
 				} else {
 					barRef.current.style.width = percentage;
 					textRef.current.innerText = percentage;
