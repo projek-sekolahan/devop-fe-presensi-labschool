@@ -12,6 +12,7 @@ import {
 	parseJwt,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
+import Cookies from "js-cookie";
 
 export default function Izin() {
 	const [Alert, setAlert] = useState({ ext: false, size: false });
@@ -37,7 +38,7 @@ export default function Izin() {
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 		];
 
@@ -72,7 +73,7 @@ export default function Izin() {
 			.then((res) => {
 				res = JSON.parse(res);
 				const hasil = parseJwt(res.data);
-				localStorage.setItem("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				alert(hasil.info, hasil.title, hasil.message, () =>
 					window.location.replace("/home"),
 				);
