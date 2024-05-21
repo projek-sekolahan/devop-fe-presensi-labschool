@@ -17,7 +17,7 @@ export default function Login() {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		localStorage.setItem("token_registered", false);
+		localStorage.removeItem("token_registered");
 		const emailValue = emailRef.current.value;
 		const passwordValue = passwordRef.current.value;
 		const hash = getHash(passwordValue);

@@ -190,7 +190,7 @@ const Home = () => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
                     console.log("Token registered successfully");
-                    localStorage.setItem("token_registered", true);
+                    localStorage.setItem("token_registered", "done");
                 })
                 .catch(handleSessionError);
         });
