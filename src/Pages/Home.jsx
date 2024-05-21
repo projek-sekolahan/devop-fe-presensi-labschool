@@ -39,14 +39,17 @@ const Home = () => {
 
     const fetchUserData = useCallback(async () => {
         try {
-            const keys = ["AUTH_KEY", "devop-sso", "token"];
-            const values = keys.map((key) => localStorage.getItem(key));
+            let keys = ["AUTH_KEY", "devop-sso", "token"];
+            let values = keys.map((key) => localStorage.getItem(key));
 
-            let formData = getFormData(keys, values);
-            formData.append("csrf_token", Cookies.get("csrf"));
+            keys = [...keys, "csrf_token"];
+            values = [...values, Cookies.get("csrf")];
 
             console.log("Fetching user data...");
-            const response = await apiXML.getUserData(values[0], formData);
+            const response = await apiXML.getUserData(
+                values[0],
+                getFormData(keys, values),
+            );
             const res = JSON.parse(response);
 
             if (res?.data) {
@@ -69,10 +72,13 @@ const Home = () => {
                 const keys = ["devop-sso", "AUTH_KEY"];
                 const values = keys.map((key) => localStorage.getItem(key));
 
-                let formData = getFormData(keys, values);
-                formData.append("csrf_token", Cookies.get("csrf"));
+                keys = [...keys, "csrf_token"];
+                values = [...values, Cookies.get("csrf")];
 
-                const res = await apiXML.sessTime(values[1], formData);
+                const res = await apiXML.sessTime(
+                    values[1],
+                    getFormData(keys, values),
+                );
                 const parsedRes = JSON.parse(res);
 
                 if (parsedRes.data.title === "Your Session OK") {
