@@ -7,7 +7,7 @@ import {
 	alert,
 	loading,
 } from "../utils/utils.js";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import PasswordShow from "../Components/PasswordShow";
 
 export default function Login() {
@@ -16,9 +16,8 @@ export default function Login() {
 
 	apiXML.getCsrf();
 
-	window.addEventListener("load", () => {
-		console.log(document.cookie);
-	});
+	useEffect(() => console.log(document.cookie), []);
+
 	const onSubmit = (e) => {
 		e.preventDefault();
 		const emailValue = emailRef.current.value;
