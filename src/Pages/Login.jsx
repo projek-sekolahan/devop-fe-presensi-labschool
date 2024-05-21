@@ -17,7 +17,7 @@ export default function Login() {
 
 	apiXML.getCsrf();
 
-	Cookies.get("ci_sso_csrf_cookie");
+	console.log(Cookies.get("ci_sso_csrf_cookie"));
 
 	const onSubmit = (e) => {
 		e.preventDefault();
