@@ -34,10 +34,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		apiXML.getCsrf().then((res) => {
-			res = JSON.parse(res);
-			Cookies.set("csrf", res.csrfHash);
-		});
+		apiXML.getCsrf();
 	}, []);
 	return (
 		<Router>

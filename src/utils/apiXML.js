@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 const createRequestBody = (formData) => {
@@ -13,6 +15,8 @@ export default class apiXML {
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
+					let res = JSON.parse(xhr.responseText);
+					Cookies.set("csrf", res.csrfHash);
 				} else {
 					reject(xhr.statusText);
 				}
