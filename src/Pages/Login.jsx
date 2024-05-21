@@ -16,7 +16,9 @@ export default function Login() {
 
 	apiXML.getCsrf();
 
-	console.log(document.cookie);
+	window.addEventListener("load", () => {
+		console.log(document.cookie);
+	});
 	const onSubmit = (e) => {
 		e.preventDefault();
 		const emailValue = emailRef.current.value;
