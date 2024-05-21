@@ -19,6 +19,8 @@ export default function Login() {
 		const passwordValue = passwordRef.current.value;
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
+
+		let csrf = apiXML.getCsrf().then((res = console.log(res)));
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [
 			emailValue,
@@ -48,7 +50,7 @@ export default function Login() {
 						"error",
 						"Credential Expired",
 						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/login")
+						() => window.location.replace("/login"),
 					);
 				} else {
 					errorData = JSON.parse(errorData.responseText);
@@ -56,7 +58,7 @@ export default function Login() {
 						errorData.data.info,
 						errorData.data.title,
 						errorData.data.message,
-						() => window.location.replace(errorData.data.location)
+						() => window.location.replace(errorData.data.location),
 					);
 				}
 			});
