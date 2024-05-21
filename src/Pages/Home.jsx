@@ -110,44 +110,46 @@ const Home = () => {
     }, [userData]);
 
     useEffect(() => {
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const messaging = getMessaging(app);
+        if (localStorage.getItem("token_registered")) {
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            const messaging = getMessaging(app);
 
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                alert(
-                    "success",
-                    "Notification",
-                    "Notification permission granted.",
-                );
-                getToken(messaging, {
-                    vapidKey:
-                        "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
-                })
-                    .then((currentToken) => registerToken(currentToken))
-                    .catch(() =>
-                        alert(
-                            "error",
-                            "Notification",
-                            "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                        ),
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    alert(
+                        "success",
+                        "Notification",
+                        "Notification permission granted.",
                     );
-            } else {
-                alert(
-                    "error",
-                    "Notification",
-                    "Notification permission denied.",
-                );
-            }
-        });
+                    getToken(messaging, {
+                        vapidKey:
+                            "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
+                    })
+                        .then((currentToken) => registerToken(currentToken))
+                        .catch(() =>
+                            alert(
+                                "error",
+                                "Notification",
+                                "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                            ),
+                        );
+                } else {
+                    alert(
+                        "error",
+                        "Notification",
+                        "Notification permission denied.",
+                    );
+                }
+            });
 
-        onMessage(messaging, (payload) => {
-            const { title, body } = payload.notification;
-            if (Notification.permission === "granted") {
-                new Notification(title, { body });
-            }
-        });
+            onMessage(messaging, (payload) => {
+                const { title, body } = payload.notification;
+                if (Notification.permission === "granted") {
+                    new Notification(title, { body });
+                }
+            });
+        }
     }, []);
 
     const handleSessionExpired = (data) => {
@@ -188,6 +190,7 @@ const Home = () => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
                     console.log("Token registered successfully");
+                    localStorage.setItem("token_registered", true);
                 })
                 .catch(handleSessionError);
         });
