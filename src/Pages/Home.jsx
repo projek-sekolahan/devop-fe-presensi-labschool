@@ -232,7 +232,11 @@ const Home = () => {
         ];
         apiXML
             .create(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-            .then((res) => console.log(parseJwt(JSON.parse(res).data)));
+            .then((res) => {
+                res = JSON.parse(res);
+                console.log(parseJwt(res.data));
+                Cookies.set("csrf", res.csrfHash);
+            });
     };
 
     return !userData ? (
