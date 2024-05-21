@@ -9,6 +9,7 @@ import {
 } from "../utils/utils.js";
 import { useRef, useEffect } from "react";
 import PasswordShow from "../Components/PasswordShow";
+import Cookies from "js-cookie";
 
 export default function Login() {
 	const emailRef = useRef(null);
@@ -16,7 +17,7 @@ export default function Login() {
 
 	apiXML.getCsrf();
 
-	useEffect(() => console.log(document.cookie), []);
+	Cookies.get("ci_sso_csrf_cookie");
 
 	const onSubmit = (e) => {
 		e.preventDefault();
