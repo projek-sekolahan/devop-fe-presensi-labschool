@@ -171,23 +171,20 @@ const Home = () => {
     };
 
     const registerToken = (currentToken) => {
-        const keys = [
-            "AUTH_KEY",
-            "devop-sso",
-            "csrf_token",
-            "login_token",
-            "token_fcm",
-        ];
-        const values = [
+        let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
+        let values = [
             ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
             currentToken,
         ];
+
+        keys = [...keys, "csrf_token"];
+        values = [...values, Cookies.get("csrf")];
 
         apiXML
             .registerToken(values[0], getFormData(keys, values))
             .then((response) => {
                 const res = JSON.parse(response);
-                localStorage.setItem("csrf", res.csrfHash);
+                Cookies.set("csrf", res.csrfHash);
                 console.log("Token registered successfully");
             })
             .catch(handleSessionError);
