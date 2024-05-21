@@ -110,7 +110,7 @@ const Home = () => {
     }, [userData]);
 
     useEffect(() => {
-        if (localStorage.getItem("token_registered")) {
+        if (!localStorage.getItem("token_registered")) {
             const app = initializeApp(firebaseConfig);
             const analytics = getAnalytics(app);
             const messaging = getMessaging(app);
