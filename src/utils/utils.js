@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+
 export const getHash = (pass) => {
 	const keycode = CryptoJS.enc.Hex.parse(
 		CryptoJS.SHA1(btoa(pass)).toString(),
@@ -172,22 +173,33 @@ export const formatDate = (inputDate) => {
 
 // Fungsi untuk mengatur waktu dan tanggal
 export const useClock = (timeRef, dateRef, dayRef) => {
-	const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  
+	const days = [
+		"Minggu",
+		"Senin",
+		"Selasa",
+		"Rabu",
+		"Kamis",
+		"Jumat",
+		"Sabtu",
+	];
+
 	useEffect(() => {
-	  const interval = setInterval(() => {
-		const now = new Date();
-		const currentTime = now.toLocaleTimeString('en-US', { hour12: false }).split(".").join(":");
-		const currentDate = now.toLocaleDateString('en-GB');
-		const currentDay = days[now.getDay()];
-  
-		if (timeRef.current && dateRef.current && dayRef.current) {
-		  timeRef.current.innerText = `${currentTime} WIB`;
-		  dateRef.current.innerText = `${currentDate}`;
-		  dayRef.current.innerText = `${currentDay},`;
-		}
-	  }, 1000);
-  
-	  return () => clearInterval(interval);
+		const interval = setInterval(() => {
+			const now = new Date();
+			const currentTime = now
+				.toLocaleTimeString("en-US", { hour12: false })
+				.split(".")
+				.join(":");
+			const currentDate = now.toLocaleDateString("en-GB");
+			const currentDay = days[now.getDay()];
+
+			if (timeRef.current && dateRef.current && dayRef.current) {
+				timeRef.current.innerText = `${currentTime} WIB`;
+				dateRef.current.innerText = `${currentDate}`;
+				dayRef.current.innerText = `${currentDay},`;
+			}
+		}, 1000);
+
+		return () => clearInterval(interval);
 	}, [timeRef, dateRef, dayRef]);
-  };
+};
