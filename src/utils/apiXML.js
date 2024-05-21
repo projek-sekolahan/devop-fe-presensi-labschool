@@ -41,10 +41,10 @@ export default class apiXML {
 			};
 			xhr.onerror = () => reject(xhr);
 
-			apiXML.getCsrf().then((res) => {
-				res = JSON.parse(res);
-				formData.append("csrf_token", res.csrfHash);
-			});
+			// apiXML.getCsrf().then((res) => {
+			// 	res = JSON.parse(res);
+			// 	formData.append("csrf_token", res.csrfHash);
+			// });
 			xhr.send(createRequestBody(formData));
 		});
 	}

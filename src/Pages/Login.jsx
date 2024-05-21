@@ -13,6 +13,10 @@ import PasswordShow from "../Components/PasswordShow";
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
+
+	apiXML.getCsrf();
+
+	console.log(document.cookie);
 	const onSubmit = (e) => {
 		e.preventDefault();
 		const emailValue = emailRef.current.value;
@@ -20,8 +24,8 @@ export default function Login() {
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
 
-		const key = ["username", "password", "devop-sso"];
-		const value = [emailValue, hash, token_key[1]];
+		const key = ["username", "password", "devop-sso", "csrf_token"];
+		const value = [emailValue, hash, token_key[1], Cookies.get];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
