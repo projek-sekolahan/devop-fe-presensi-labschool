@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
+import Cookies from "js-cookie";
 
 import Register from "./Pages/Register";
 import Loading from "./Pages/Loading";
