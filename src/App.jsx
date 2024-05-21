@@ -36,6 +36,7 @@ function App() {
 
 		apiXML.getCsrf().then((res) => {
 			res = JSON.parse(res);
+			console.log(res);
 			Cookies.set("csrf", res.csrfHash);
 		});
 	}, []);
