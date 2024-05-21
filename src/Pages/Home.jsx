@@ -178,6 +178,7 @@ const Home = () => {
             ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
             currentToken,
         ];
+        localStorage.setItem("token_fcm", currentToken);
 
         apiXML.getCsrf().then((res) => {
             res = JSON.parse(res);
