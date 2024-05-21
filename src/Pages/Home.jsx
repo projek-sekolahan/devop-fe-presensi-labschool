@@ -62,15 +62,15 @@ const Home = () => {
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
-            // window.location.replace("/login");
+            window.location.replace("/login");
         }
     }, []);
 
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const keys = ["devop-sso", "AUTH_KEY"];
-                const values = keys.map((key) => localStorage.getItem(key));
+                let keys = ["devop-sso", "AUTH_KEY"];
+                let values = keys.map((key) => localStorage.getItem(key));
 
                 keys = [...keys, "csrf_token"];
                 values = [...values, Cookies.get("csrf")];
