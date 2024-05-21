@@ -177,8 +177,11 @@ const Home = () => {
             currentToken,
         ];
 
-        keys = [...keys, "csrf_token"];
-        values = [...values, Cookies.get("csrf")];
+        apiXML.getCsrf().then((res) => {
+            res = JSON.parse(res);
+            keys = [...keys, "csrf_token"];
+            values = [...values, res.csrfHash];
+        });
 
         apiXML
             .registerToken(values[0], getFormData(keys, values))
