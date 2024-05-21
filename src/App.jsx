@@ -32,6 +32,8 @@ function App() {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
+
+		apiXML.getCsrf();
 	}, []);
 	return (
 		<Router>
