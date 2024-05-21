@@ -199,86 +199,131 @@ const Home = () => {
     return !userData ? (
         <Loading />
     ) : (
-        <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 text-white px-6 relative overflow-hidden">
+        <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
             <img
                 src="/Icons/elipse.svg"
                 alt="elipse"
-                className="w-full min-h-fit absolute z-[1] left-0 top-0"
+                className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
             />
-            <nav className="relative z-[2] flex items-center justify-between mb-6">
-                <button
-                    onClick={() => {
-                        setShow(true);
-                    }}
-                >
-                    <Bars3Icon className="fill-white size-8" />
-                </button>
-                <div className="flex flex-col items-center gap-1">
-                    {userData ? (
-                        <>
-                            <img
-                                src={
-                                    userData.img_location ||
-                                    "/default-profile.png"
-                                }
-                                alt="user"
-                                className="w-[40px] h-[40px] rounded-full"
-                            />
-                            <p className="font-semibold">{userData.fullname}</p>
-                        </>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
+            <div id="core" className="relative z-[2] size-full">
+                <nav className="flex items-center justify-between">
+                    <button
+                        onClick={() => {
+                            setShow(true);
+                        }}
+                    >
+                        <Bars3Icon className="fill-white size-8" />
+                    </button>
+                    <div id="profile" className="flex items-center gap-2">
+                        <img
+                            src={userData.img_location}
+                            alt="photo_profile"
+                            className="size-12 rounded-full bg-white"
+                        />
+                        <p className="font-semibold text-sm ">
+                            {userData.nama_lengkap}
+                        </p>
+                    </div>
+                    <Link to="/notifikasi">
+                        <BellIcon className="fill-white size-8" />
+                    </Link>
+                </nav>
+                <main className="mt-8 h-56 sm:h-52">
+                    <div id="news" className="size-full">
+                        <Carousel
+                            leftControl=" "
+                            rightControl=" "
+                            className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
+                        >
+                            <img src="/img/news.png" className="" />
+                            <img src="/img/news.png" className="" />
+                            <img src="/img/news.png" className="" />
+                            <img src="/img/news.png" className="" />
+                        </Carousel>
+                        <div
+                            id="rekap"
+                            className="bg-white h-3/5 mt-5 rounded-2xl px-3 py-2"
+                        >
+                            <h3 className="text-primary-md font-bold text-base">
+                                {"Rekapan Presensi (Bulan Ini)"}
+                            </h3>
+                            <div className="flex justify-between mt-2">
+                                <div id="hadir" className="w-24">
+                                    <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
+                                        <p className="text-center text-lg font-bold">
+                                            0
+                                        </p>
+                                    </div>
+                                    <h4 className="text-center text-xs font-bold text-primary-md">
+                                        Hadir
+                                    </h4>
+                                </div>
+                                <div id="izin" className="w-24">
+                                    <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
+                                        <p className="text-center text-lg font-bold">
+                                            0
+                                        </p>
+                                    </div>
+                                    <h4 className="text-center text-xs font-bold text-primary-md">
+                                        Izin / Sakit
+                                    </h4>
+                                </div>
+                                <div id="terlambat" className="w-24">
+                                    <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
+                                        <p className="text-center text-lg font-bold">
+                                            0
+                                        </p>
+                                    </div>
+                                    <h4 className="text-center text-xs font-bold text-primary-md">
+                                        Terlambat
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <Link
+                            id="presensi"
+                            to="/presensi/staff"
+                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+                        >
+                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+                                <CheckCircleIcon className="size-6" />
+                            </div>
+                            <p className="text-primary-md text-center font-bold text-sm">
+                                Presensi
+                            </p>
+                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+                        </Link>
+                        <Link
+                            id="riwayat_presensi"
+                            to="/riwayat"
+                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+                        >
+                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+                                <ClockIcon className="size-6" />
+                            </div>
+                            <p className="text-primary-md text-center font-bold text-sm">
+                                Riwayat Presensi
+                            </p>
+                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+                        </Link>
+                    </div>
+                </main>
+                <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
+                    <Link
+                        to="/home"
+                        className="flex flex-col justify-center items-center text-primary-md"
+                    >
+                        <HomeIcon className="size-7" />
+                        <p className="text-center font-bold text-xs">Beranda</p>
+                    </Link>
+                    <Link
+                        to="/profile"
+                        className="flex flex-col justify-center items-center text-bg-2 hover:text-primary-md"
+                    >
+                        <UserIcon className="size-7" />
+                        <p className="text-center font-bold text-xs">Profile</p>
+                    </Link>
                 </div>
-                <Link to="/notifikasi">
-                    <BellIcon className="size-8" />
-                </Link>
-            </nav>
-            <div className="carousel relative z-[1] h-[300px] mt-8 rounded-xl overflow-hidden">
-                <Carousel>
-                    <img src="/img/news.png" alt="image 1" />
-                    <img src="/img/news.png" alt="image 2" />
-                    <img src="/img/news.png" alt="image 3" />
-                </Carousel>
-            </div>
-            <div className="mt-6 grid grid-cols-2 gap-4">
-                <Link
-                    to="/pengajuan"
-                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
-                >
-                    <ClockIcon className="size-12" />
-                    <p className="font-semibold text-sm">Pengajuan</p>
-                </Link>
-                <Link
-                    to="/kehadiran"
-                    className="p-4 border border-white rounded-lg flex flex-col items-center justify-center"
-                >
-                    <CheckCircleIcon className="size-12" />
-                    <p className="font-semibold text-sm">Kehadiran</p>
-                </Link>
-            </div>
-            <div className="mt-8">
-                <h1 className="text-lg font-bold">Fitur Lainnya</h1>
-                <Link
-                    to="/profil"
-                    className="mt-4 flex items-center justify-between"
-                >
-                    <div className="flex items-center gap-4">
-                        <UserIcon className="size-12" />
-                        <p>Profil</p>
-                    </div>
-                    <ChevronRightIcon className="size-8" />
-                </Link>
-                <Link
-                    to="/daftar-hadir"
-                    className="mt-4 flex items-center justify-between"
-                >
-                    <div className="flex items-center gap-4">
-                        <HomeIcon className="size-12" />
-                        <p>Daftar Hadir</p>
-                    </div>
-                    <ChevronRightIcon className="size-8" />
-                </Link>
             </div>
             <SideMenu show={show} data={userData} />
         </div>
