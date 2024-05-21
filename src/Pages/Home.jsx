@@ -59,7 +59,7 @@ const Home = () => {
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
-            window.location.replace("/login");
+            // window.location.replace("/login");
         }
     }, []);
 
