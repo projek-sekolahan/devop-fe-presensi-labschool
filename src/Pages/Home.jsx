@@ -39,7 +39,7 @@ const Home = () => {
 
     const fetchUserData = useCallback(async () => {
         try {
-            let keys = ["AUTH_KEY", "devop-sso", "token"];
+            let keys = ["AUTH_KEY", "devop-sso", "login_token"];
             let values = keys.map((key) => localStorage.getItem(key));
 
             keys = [...keys, "csrf_token"];
@@ -175,7 +175,7 @@ const Home = () => {
             "AUTH_KEY",
             "devop-sso",
             "csrf_token",
-            "token",
+            "login_token",
             "token_fcm",
         ];
         const values = [
