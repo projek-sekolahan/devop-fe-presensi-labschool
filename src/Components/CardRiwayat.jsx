@@ -6,11 +6,11 @@ import { useState } from "react";
 export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
-	console.log(index)
+	console.log(index);
 
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${index}`).showModal();
-		setDatas(null)
+		setDatas(null);
 
 		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
 		let values = [
@@ -26,7 +26,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 			apiXML
 				.details(
 					localStorage.getItem("AUTH_KEY"),
-					getFormData(keys, values)
+					getFormData(keys, values),
 				)
 				.then((res) => {
 					res = JSON.parse(res);
@@ -34,7 +34,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 					localStorage.setItem("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
-					console.log(parseJwt(res.data))
+					console.log(parseJwt(res.data));
 				});
 	};
 	return (
@@ -44,7 +44,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 				className="btn w-full h-fit bg-white rounded-xl text-black flex flex-col justify-center items-center p-4 gap-2"
 			>
 				<img
-					src={`https://devop-sso.smalabschoolunesa1.sch.id/${biodata.img_location}`}
+					src={biodata.img_location}
 					alt="photo_profile"
 					className="size-12 rounded-full bg-white"
 				/>
@@ -73,14 +73,14 @@ export default function CardRiwayat({ index, history, biodata }) {
 							history["Status Pulang"] == "Pulang Normal"
 								? "bg-secondary-green"
 								: history["Status Masuk"] ==
-										"Terlambat Masuk" ||
-								  history["Status Pulang"] == "Pulang Cepat"
-								? "bg-secondary-red"
-								: history["Status Masuk"] == null &&
-								  history["Status Pulang"] == null &&
-								  history["Keterangan"] == "Dinas Luar"
-								? "bg-gray-600"
-								: "bg-secondary-yellow"
+											"Terlambat Masuk" ||
+									  history["Status Pulang"] == "Pulang Cepat"
+									? "bg-secondary-red"
+									: history["Status Masuk"] == null &&
+										  history["Status Pulang"] == null &&
+										  history["Keterangan"] == "Dinas Luar"
+										? "bg-gray-600"
+										: "bg-secondary-yellow"
 						} row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
 					>
 						{`${
@@ -88,12 +88,12 @@ export default function CardRiwayat({ index, history, biodata }) {
 							history["Status Pulang"] == "Pulang Normal"
 								? "Normal"
 								: history["Status Masuk"] ==
-										"Terlambat Masuk" ||
-								  history["Status Pulang"] == "Pulang Cepat"
-								? "Tidak Normal"
-								: history["Keterangan"] == "Dinas Luar"
-								? "Dinas Luar"
-								: "Izin/Sakit"
+											"Terlambat Masuk" ||
+									  history["Status Pulang"] == "Pulang Cepat"
+									? "Tidak Normal"
+									: history["Keterangan"] == "Dinas Luar"
+										? "Dinas Luar"
+										: "Izin/Sakit"
 						}`}
 					</div>
 				</div>
@@ -106,7 +106,9 @@ export default function CardRiwayat({ index, history, biodata }) {
 						</div>
 					) : (
 						<>
-							<h3 className="font-semibold text-xl mb-4">Detail</h3>
+							<h3 className="font-semibold text-xl mb-4">
+								Detail
+							</h3>
 							{datas.map((data, i) => {
 								return (
 									<div key={i}>
@@ -119,7 +121,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 											<div>
 												<p className="font-medium text-md">
 													{formatDate(
-														data.tanggal_presensi
+														data.tanggal_presensi,
 													)}
 												</p>
 												<p className="text-sm font-normal">
@@ -128,7 +130,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 												<div
 													className={`${
 														data.keterangan.split(
-															" "
+															" ",
 														)[1] === "Normal"
 															? "bg-secondary-green"
 															: "bg-secondary-red"
@@ -145,7 +147,15 @@ export default function CardRiwayat({ index, history, biodata }) {
 					)}
 					<div className="modal-action">
 						<form method="dialog">
-							<button onClick={() => {setDatas(null); setLoading(true)}} className="btn">Close</button>
+							<button
+								onClick={() => {
+									setDatas(null);
+									setLoading(true);
+								}}
+								className="btn"
+							>
+								Close
+							</button>
 						</form>
 					</div>
 				</div>
