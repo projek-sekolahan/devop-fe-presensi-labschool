@@ -202,6 +202,38 @@ const Home = () => {
         }
     });
 
+    const createNotif = () => {
+        const key = [
+            "AUTH_KEY",
+            "devop-sso",
+            "csrf_token",
+            "token",
+            "token_fcm",
+            "type",
+            "category",
+            "title",
+            "message",
+            "url",
+            "is_read",
+        ];
+        const values = [
+            localStorage.getItem("AUTH_KEY"),
+            localStorage.getItem("devop-sso"),
+            Cookies.get("csrf"),
+            localStorage.getItem("token"),
+            localStorage.getItem("token_fcm"),
+            "success",
+            "notifikasi",
+            "Presensi Berhasil",
+            "Terima Kasih Telah Mengisi Presensi, Untuk Lihat Detailnya Silahkan Cek Menu Riwayat Presensi",
+            "/riwayat",
+            "0",
+        ];
+        apiXML
+            .create(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+            .then((res) => console.log(res));
+    };
+
     return !userData ? (
         <Loading />
     ) : (
@@ -313,6 +345,9 @@ const Home = () => {
                             <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
                         </Link>
                     </div>
+                    <button className="btn" onClick={createNotif}>
+                        test cuy
+                    </button>
                 </main>
                 <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
                     <Link
