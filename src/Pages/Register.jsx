@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, alert, loading } from "../utils/utils";
 import { useRef, useState } from "react";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 export default function Register() {
 	localStorage.clear();
