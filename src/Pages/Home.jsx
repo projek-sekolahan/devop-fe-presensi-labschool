@@ -294,7 +294,7 @@ const Home = () => {
                                 <div id="hadir" className="w-24">
                                     <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            0
+                                            {userData.hadir ? userData.hadir : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
@@ -304,7 +304,7 @@ const Home = () => {
                                 <div id="izin" className="w-24">
                                     <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            0
+                                            {userData.tidak_hadir ? userData.tidak_hadir : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
@@ -314,7 +314,7 @@ const Home = () => {
                                 <div id="terlambat" className="w-24">
                                     <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            0
+                                            {userData.terlambat_pulang_cepat ? userData.terlambat_pulang_cepat : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
