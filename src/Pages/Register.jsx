@@ -53,7 +53,7 @@ export default function Register() {
 								navigate(
 									res.data.location === "register"
 										? "/"
-										: res.data.location,
+										: () => window.location.replace("/verify"),
 								),
 						)
 					: alert(
