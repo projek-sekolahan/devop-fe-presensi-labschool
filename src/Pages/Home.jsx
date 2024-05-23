@@ -14,13 +14,9 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js";
-import {
-    getMessaging,
-    getToken,
-    onMessage,
-} from "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getAnalytics } from "firebase/analytics";
 
 // Konfigurasi Firebase
 const firebaseConfig = {
