@@ -166,7 +166,9 @@ const Home = () => {
     };
 
     const registerToken = (currentToken) => {
-        console.log(currentToken);
+        alert("warning", "Token", currentToken, () =>
+            console.log(currentToken),
+        );
         let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
         let values = [
             ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
