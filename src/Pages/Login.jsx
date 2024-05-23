@@ -36,6 +36,7 @@ export default function Login() {
 			.then((loginResponse) => {
 				const res = JSON.parse(loginResponse);
 				localStorage.setItem("login_token", res.data.Tokenjwt);
+				Cookies.set("csrf", res.csrfHash);
 				alert(res.data.info, res.data.title, res.data.message, () => {
 					window.location.replace("/home");
 				});
