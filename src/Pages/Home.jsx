@@ -91,7 +91,7 @@ const Home = () => {
             }
         };
 
-        const intervalId = setInterval(checkSession, 2 * 60 * 60 * 1000);
+        const intervalId = setInterval(checkSession, 60 * 60 * 1000);
         return () => clearInterval(intervalId);
     }, []);
 
@@ -144,10 +144,6 @@ const Home = () => {
             });
 
             onMessage(messaging, (payload) => {
-                /* const { title, body } = payload.notification;
-                if (Notification.permission === "granted") {
-                    new Notification(title, { body });
-                } */
                 const notificationTitle = payload.notification.title;
                 const notificationOptions = {
                     body: payload.notification.body,
@@ -162,6 +158,24 @@ const Home = () => {
     }, []);
 
     const handleSessionExpired = (data) => {
+        // Ambil semua cookies yang ada
+        var allCookies = Cookies.get();
+
+        // Iterasi setiap cookie
+        Object
+            .keys(allCookies)
+            .forEach(function (cookieName) {
+                var cookieValue = Cookies.get(cookieName);
+
+                // Periksa apakah cookie sudah kedaluwarsa
+                if (!cookieValue) {
+                    // Hapus cookie yang sudah kedaluwarsa
+                    Cookies.remove(cookieName);
+                    console.log(
+                        'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
+                    );
+                }
+        });
         alert("error", data.title, data.message, () => {
             localStorage.clear();
             window.location.replace("/login");

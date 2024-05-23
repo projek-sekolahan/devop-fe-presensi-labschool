@@ -50,7 +50,7 @@ function App() {
 			}).then((result) => {
 				if (result.isConfirmed) {
 					apiXML.getCsrf();
-					Cookies.set("cookiesAccepted", "true", { expires: 365 }); // Set cookie untuk 1 tahun
+					Cookies.set("cookiesAccepted", "true", { expires: 2 * 60 * 60 * 1000 }); // Set cookie untuk 1 tahun
 					localStorage.setItem("cookiesAccepted", "true");
 				}
 			});
