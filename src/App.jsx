@@ -35,7 +35,7 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		if (!localStorage.getItem("allowCookies")) {
+		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",
 				text: "",
