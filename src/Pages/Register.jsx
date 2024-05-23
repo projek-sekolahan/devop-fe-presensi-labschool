@@ -37,12 +37,12 @@ export default function Register() {
 			Cookies.get("csrf"),
 		];
 		loading("Loading", "Registering...");
+		localStorage.setItem("email", emailRef.current.value);
 		apiXML
 			.register(getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res);
 				setLoad(false);
-				localStorage.setItem("email", emailRef.current.value);
 				Cookies.set("csrf", res.csrfHash);
 				res.status
 					? alert(
