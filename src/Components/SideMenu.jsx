@@ -46,6 +46,24 @@ export default function SideMenu({ show, data }) {
 							getFormData(key, values),
 						)
 						.then((res) => {
+							// Ambil semua cookies yang ada
+							var allCookies = Cookies.get();
+
+							// Iterasi setiap cookie
+							Object
+								.keys(allCookies)
+								.forEach(function (cookieName) {
+									var cookieValue = Cookies.get(cookieName);
+
+									// Periksa apakah cookie sudah kedaluwarsa
+									if (!cookieValue) {
+										// Hapus cookie yang sudah kedaluwarsa
+										Cookies.remove(cookieName);
+										console.log(
+											'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
+										);
+									}
+							});
 							res = JSON.parse(res);
 							alert(
 								"success",
