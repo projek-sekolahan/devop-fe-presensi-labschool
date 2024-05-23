@@ -350,9 +350,9 @@ const Home = () => {
                             <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
                         </Link>
                     </div>
-                    {/*<button className="btn" onClick={createNotif}>
+                    <button className="btn" onClick={createNotif}>
                         test cuy
-                    </button>*/}
+                    </button>
                 </main>
                 <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
                     <Link
