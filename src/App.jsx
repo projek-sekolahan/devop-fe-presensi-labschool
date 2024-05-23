@@ -4,7 +4,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
 import Cookies from "js-cookie";
-import { alert } from "./utils/utils";
+import Swal from "sweetalert2";
 
 import Register from "./Pages/Register";
 import Loading from "./Pages/Loading";
@@ -36,9 +36,20 @@ function App() {
 		});
 
 		if (!localStorage.getItem("allowCookies")) {
-			alert("warning", "Allow Cookies", "", () => {
-				Cookies.set("cookiesAccepted", "true", { expires: 365 }); // Set cookie untuk 1 tahun
-				localStorage.setItem("cookiesAccepted", "true");
+			Swal.fire({
+				title: "Allow Cookies",
+				text: "",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Allow",
+				cancelButtonText: "Don't Allow",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Cookies.set("cookiesAccepted", "true", { expires: 365 }); // Set cookie untuk 1 tahun
+					localStorage.setItem("cookiesAccepted", "true");
+				}
 			});
 		}
 
