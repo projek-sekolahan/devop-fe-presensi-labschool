@@ -4,6 +4,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
 import Cookies from "js-cookie";
+import { alert } from "./utils/utils";
 
 import Register from "./Pages/Register";
 import Loading from "./Pages/Loading";
@@ -34,9 +35,14 @@ function App() {
 			setWidth(window.screen.width);
 		});
 
-		apiXML.getCsrf();
+		if (!localStorage.getItem("allowCookies")) {
+			alert("warning", "Allow Cookies", "", () => {
+				Cookies.set("cookiesAccepted", "true", { expires: 365 }); // Set cookie untuk 1 tahun
+				localStorage.setItem("cookiesAccepted", "true");
+			});
+		}
 
-		console.log("it change");
+		apiXML.getCsrf();
 	}, []);
 	return (
 		<Router>
