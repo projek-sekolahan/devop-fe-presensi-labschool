@@ -45,7 +45,6 @@ const Home = () => {
             keys = [...keys, "csrf_token"];
             values = [...values, Cookies.get("csrf")];
 
-            console.log("Fetching user data...");
             const response = await apiXML.getUserData(
                 values[0],
                 getFormData(keys, values),
@@ -61,8 +60,7 @@ const Home = () => {
                 console.error("No data in API response:", res);
             }
         } catch (error) {
-            console.error("Error fetching user data:", error);
-            window.location.replace("/login");
+            handleSessionError(error);
         }
     }, []);
 
@@ -213,7 +211,6 @@ const Home = () => {
                 .then((response) => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
-                    console.log("Token registered successfully");
                     localStorage.setItem("token_registered", "done");
                 })
                 .catch(handleSessionError);
@@ -225,42 +222,6 @@ const Home = () => {
             setShow(false);
         }
     });
-
-    const createNotif = () => {
-        const keys = [
-            "AUTH_KEY",
-            "devop-sso",
-            "csrf_token",
-            "token",
-            "token_fcm",
-            "type",
-            "category",
-            "title",
-            "message",
-            "url",
-            "is_read",
-        ];
-        const values = [
-            localStorage.getItem("AUTH_KEY"),
-            localStorage.getItem("devop-sso"),
-            Cookies.get("csrf"),
-            localStorage.getItem("token"),
-            localStorage.getItem("token_fcm"),
-            "success",
-            "notifikasi",
-            "Presensi Berhasil",
-            "Terima Kasih Telah Mengisi Presensi, Untuk Lihat Detailnya Silahkan Cek Menu Riwayat Presensi",
-            "/riwayat",
-            "0",
-        ];
-        apiXML
-            .create(localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-            .then((res) => {
-                res = JSON.parse(res);
-                console.log(parseJwt(res.data));
-                Cookies.set("csrf", res.csrfHash);
-            });
-    };
 
     return !userData ? (
         <Loading />
@@ -379,9 +340,6 @@ const Home = () => {
                             <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
                         </Link>
                     </div>
-                    <button className="btn" onClick={createNotif}>
-                        test cuy
-                    </button>
                 </main>
                 <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
                     <Link
