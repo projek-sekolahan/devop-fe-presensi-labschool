@@ -144,10 +144,19 @@ const Home = () => {
             });
 
             onMessage(messaging, (payload) => {
-                const { title, body } = payload.notification;
+                /* const { title, body } = payload.notification;
                 if (Notification.permission === "granted") {
                     new Notification(title, { body });
-                }
+                } */
+                const notificationTitle = payload.notification.title;
+                const notificationOptions = {
+                    body: payload.notification.body,
+                };
+                alert(
+                    "success",
+                    notificationTitle,
+                    notificationOptions.body,
+                );
             });
         }
     }, []);

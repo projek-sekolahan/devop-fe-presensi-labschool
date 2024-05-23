@@ -40,20 +40,19 @@ function App() {
 				title: "Allow Cookies",
 				text: "",
 				icon: "warning",
-				showCancelButton: true,
+				showCancelButton: false,
 				confirmButtonColor: "#3085d6",
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Allow",
 				cancelButtonText: "Don't Allow",
 			}).then((result) => {
 				if (result.isConfirmed) {
+					apiXML.getCsrf();
 					Cookies.set("cookiesAccepted", "true", { expires: 365 }); // Set cookie untuk 1 tahun
 					localStorage.setItem("cookiesAccepted", "true");
 				}
 			});
 		}
-
-		apiXML.getCsrf();
 	}, []);
 	return (
 		<Router>
