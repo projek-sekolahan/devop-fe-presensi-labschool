@@ -14,9 +14,13 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+import {
+    getMessaging,
+    getToken,
+    onMessage,
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
 // Konfigurasi Firebase
 const firebaseConfig = {
@@ -352,9 +356,9 @@ const Home = () => {
                             <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
                         </Link>
                     </div>
-                    <button className="btn" onClick={createNotif}>
+                    {/*<button className="btn" onClick={createNotif}>
                         test cuy
-                    </button>
+                    </button>*/}
                 </main>
                 <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
                     <Link
