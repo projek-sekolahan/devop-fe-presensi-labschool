@@ -11,7 +11,6 @@ import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
-	console.log(data);
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;

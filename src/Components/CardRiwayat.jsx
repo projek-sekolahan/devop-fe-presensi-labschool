@@ -6,7 +6,6 @@ import { useState } from "react";
 export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
-	console.log(index);
 
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${index}`).showModal();
@@ -34,7 +33,6 @@ export default function CardRiwayat({ index, history, biodata }) {
 					localStorage.setItem("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
-					console.log(parseJwt(res.data));
 				});
 	};
 	return (
