@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export const getHash = (pass) => {
 	const keycode = CryptoJS.enc.Hex.parse(
@@ -203,3 +204,25 @@ export const useClock = (timeRef, dateRef, dayRef) => {
 		return () => clearInterval(interval);
 	}, [timeRef, dateRef, dayRef]);
 };
+
+export const clearCookies = () => {
+	localStorage.clear();
+	// Ambil semua cookies yang ada
+	var allCookies = Cookies.get();
+
+	// Iterasi setiap cookie
+	Object
+		.keys(allCookies)
+		.forEach(function (cookieName) {
+			var cookieValue = Cookies.get(cookieName);
+
+			// Periksa apakah cookie sudah kedaluwarsa
+			if (!cookieValue) {
+				// Hapus cookie yang sudah kedaluwarsa
+				Cookies.remove(cookieName);
+				console.log(
+					'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
+				);
+			}
+	});
+}

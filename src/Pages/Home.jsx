@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { parseJwt, getFormData, alert } from "../utils/utils";
+import { parseJwt, getFormData, alert, clearCookies } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
@@ -156,41 +156,30 @@ const Home = () => {
     }, []);
 
     const handleSessionExpired = (data) => {
-        // Ambil semua cookies yang ada
-        var allCookies = Cookies.get();
-
-        // Iterasi setiap cookie
-        Object
-            .keys(allCookies)
-            .forEach(function (cookieName) {
-                var cookieValue = Cookies.get(cookieName);
-
-                // Periksa apakah cookie sudah kedaluwarsa
-                if (!cookieValue) {
-                    // Hapus cookie yang sudah kedaluwarsa
-                    Cookies.remove(cookieName);
-                    console.log(
-                        'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
-                    );
-                }
-        });
+        clearCookies();
         alert("error", data.title, data.message, () => {
-            localStorage.clear();
             window.location.replace("/login");
         });
     };
 
     const handleSessionError = (err) => {
-        const parsedError = JSON.parse(err.responseText || "{}");
-        localStorage.clear();
-        alert(
-            parsedError.data.info,
-            parsedError.data.title,
-            parsedError.data.message,
-            () => {
-                window.location.replace("/login");
-            },
-        );
+        clearCookies();
+        if (err.status == 403 || err.status == 502) {
+            alert(
+                "error",
+                "Credential Expired",
+                "Your credentials has expired. Please try again later.",
+                () => window.location.replace("/login"),
+            );
+        } else {
+            err = JSON.parse(err.responseText || "{}");
+            alert(
+                err.data.info,
+                err.data.title,
+                err.data.message,
+                () => window.location.replace("/login"),
+            );
+        }
     };
 
     const registerToken = (currentToken) => {

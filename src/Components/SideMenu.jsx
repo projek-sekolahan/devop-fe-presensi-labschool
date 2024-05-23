@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { getFormData, alert } from "../utils/utils";
+import { getFormData, alert, clearCookies } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
@@ -46,31 +46,13 @@ export default function SideMenu({ show, data }) {
 							getFormData(key, values),
 						)
 						.then((res) => {
-							// Ambil semua cookies yang ada
-							var allCookies = Cookies.get();
-
-							// Iterasi setiap cookie
-							Object
-								.keys(allCookies)
-								.forEach(function (cookieName) {
-									var cookieValue = Cookies.get(cookieName);
-
-									// Periksa apakah cookie sudah kedaluwarsa
-									if (!cookieValue) {
-										// Hapus cookie yang sudah kedaluwarsa
-										Cookies.remove(cookieName);
-										console.log(
-											'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
-										);
-									}
-							});
+							clearCookies();
 							res = JSON.parse(res);
 							alert(
 								"success",
 								"Logout Succesfully",
 								"You has been loged out!",
 								() => {
-									localStorage.clear();
 									window.location.replace("/login");
 								},
 							);

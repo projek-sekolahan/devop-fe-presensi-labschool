@@ -38,7 +38,7 @@ function App() {
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",
-				text: "",
+				text: "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
 				icon: "warning",
 				showCancelButton: false,
 				allowEscapeKey: false,
