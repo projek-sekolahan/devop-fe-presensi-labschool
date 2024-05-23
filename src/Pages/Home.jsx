@@ -105,11 +105,10 @@ const Home = () => {
     }, [userData]);
 
     useEffect(() => {
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const messaging = getMessaging(app);
         if (!localStorage.getItem("token_registered")) {
-            const app = initializeApp(firebaseConfig);
-            const analytics = getAnalytics(app);
-            const messaging = getMessaging(app);
-
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
                     alert(
