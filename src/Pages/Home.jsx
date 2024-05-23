@@ -14,28 +14,23 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-import {
-    getMessaging,
-    getToken,
-    onMessage,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
-
-// Konfigurasi Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
-    authDomain: "projek-sekolah-1acb4.firebaseapp.com",
-    projectId: "projek-sekolah-1acb4",
-    storageBucket: "projek-sekolah-1acb4.appspot.com",
-    messagingSenderId: "796889279454",
-    appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
-    measurementId: "G-NWG3GGV7DF",
-};
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const Home = () => {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+        authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+        projectId: "projek-sekolah-1acb4",
+        storageBucket: "projek-sekolah-1acb4.appspot.com",
+        messagingSenderId: "796889279454",
+        appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+        measurementId: "G-NWG3GGV7DF",
+    };
 
     const fetchUserData = useCallback(async () => {
         try {
@@ -142,14 +137,13 @@ const Home = () => {
                     );
                 }
             });
-
-            onMessage(messaging, (payload) => {
-                const { title, body } = payload.notification;
-                if (Notification.permission === "granted") {
-                    new Notification(title, { body });
-                }
-            });
         }
+        onMessage(messaging, (payload) => {
+            const { title, body } = payload.notification;
+            if (Notification.permission === "granted") {
+                new Notification(title, { body });
+            }
+        });
     }, []);
 
     const handleSessionExpired = (data) => {
@@ -173,7 +167,7 @@ const Home = () => {
     };
 
     const registerToken = (currentToken) => {
-        console.log(currentToken)
+        console.log(currentToken);
         let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
         let values = [
             ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
@@ -295,7 +289,9 @@ const Home = () => {
                                 <div id="hadir" className="w-24">
                                     <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            {userData.hadir ? userData.hadir : 0}
+                                            {userData.hadir
+                                                ? userData.hadir
+                                                : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
@@ -305,7 +301,9 @@ const Home = () => {
                                 <div id="izin" className="w-24">
                                     <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            {userData.tidak_hadir ? userData.tidak_hadir : 0}
+                                            {userData.tidak_hadir
+                                                ? userData.tidak_hadir
+                                                : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
@@ -315,7 +313,9 @@ const Home = () => {
                                 <div id="terlambat" className="w-24">
                                     <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
                                         <p className="text-center text-lg font-bold">
-                                            {userData.terlambat_pulang_cepat ? userData.terlambat_pulang_cepat : 0}
+                                            {userData.terlambat_pulang_cepat
+                                                ? userData.terlambat_pulang_cepat
+                                                : 0}
                                         </p>
                                     </div>
                                     <h4 className="text-center text-xs font-bold text-primary-md">
