@@ -14,23 +14,28 @@ import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js";
+import {
+    getMessaging,
+    getToken,
+    onMessage,
+} from "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js";
+
+// Konfigurasi Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+    authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+    projectId: "projek-sekolah-1acb4",
+    storageBucket: "projek-sekolah-1acb4.appspot.com",
+    messagingSenderId: "796889279454",
+    appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+    measurementId: "G-NWG3GGV7DF",
+};
 
 const Home = () => {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
-        authDomain: "projek-sekolah-1acb4.firebaseapp.com",
-        projectId: "projek-sekolah-1acb4",
-        storageBucket: "projek-sekolah-1acb4.appspot.com",
-        messagingSenderId: "796889279454",
-        appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
-        measurementId: "G-NWG3GGV7DF",
-    };
 
     const fetchUserData = useCallback(async () => {
         try {
@@ -105,10 +110,11 @@ const Home = () => {
     }, [userData]);
 
     useEffect(() => {
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const messaging = getMessaging(app);
         if (!localStorage.getItem("token_registered")) {
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            const messaging = getMessaging(app);
+
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
                     alert(
@@ -136,13 +142,14 @@ const Home = () => {
                     );
                 }
             });
+
+            onMessage(messaging, (payload) => {
+                const { title, body } = payload.notification;
+                if (Notification.permission === "granted") {
+                    new Notification(title, { body });
+                }
+            });
         }
-        onMessage(messaging, (payload) => {
-            const { title, body } = payload.notification;
-            if (Notification.permission === "granted") {
-                new Notification(title, { body });
-            }
-        });
     }, []);
 
     const handleSessionExpired = (data) => {
@@ -166,9 +173,6 @@ const Home = () => {
     };
 
     const registerToken = (currentToken) => {
-        alert("warning", "Token", currentToken, () =>
-            console.log(currentToken),
-        );
         let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
         let values = [
             ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
