@@ -89,6 +89,23 @@ export default function ChangePassword() {
 							)}
 						</button>
 					</form>
+					<div
+						id="line"
+						className="w-full border-t-[0.25px] border-white h-0 relative top-4"
+					>
+						<p className="absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10">
+							or
+						</p>
+					</div>
+					<p className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
+					Sudah memiliki akun?{" "}
+					<Link
+						to="/login"
+						className="font-medium underline text-white hover:underline dark:text-primary-500"
+					>
+						Login
+					</Link>
+					</p>
 				</div>
 			</div>
 		</div>
