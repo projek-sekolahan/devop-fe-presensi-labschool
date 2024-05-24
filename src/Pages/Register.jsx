@@ -5,8 +5,7 @@ import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Register() {
-	localStorage.clear();
-
+	
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
