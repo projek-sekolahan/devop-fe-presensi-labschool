@@ -14,9 +14,6 @@ import Cookies from "js-cookie";
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-
-	localStorage.removeItem("token_registered");
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 

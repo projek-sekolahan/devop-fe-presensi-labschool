@@ -80,7 +80,6 @@ export default function Notification() {
 			.then((res) => {
 				res = JSON.parse(res);
 				setData(parseJwt(res.data));
-				localStorage.removeItem("csrf");
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			});

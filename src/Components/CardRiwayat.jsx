@@ -15,7 +15,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("devop-sso"),
-			localStorage.getItem("csrf"),
+			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			biodata.id.concat(",", history["Tanggal Presensi"]),
 		];
@@ -30,8 +30,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 				)
 				.then((res) => {
 					res = JSON.parse(res);
-					localStorage.removeItem("csrf");
-					localStorage.setItem("csrf", res.csrfHash);
+					Cookies.set("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
 				});
