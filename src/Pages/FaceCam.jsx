@@ -154,7 +154,7 @@ export default function FaceCam() {
 							getFormData(keys, values),
 						);
 						const res = JSON.parse(response);
-						localStorage.setItem("csrf", res.csrfHash);
+						Cookies.set("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
 						alert(jwt.info, jwt.title, jwt.message, () =>
 							window.location.replace("/home"),

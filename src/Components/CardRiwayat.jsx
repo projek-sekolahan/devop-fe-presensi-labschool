@@ -2,7 +2,7 @@ import { formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import { parseJwt, getFormData } from "../utils/utils";
 import { useState } from "react";
-
+import Cookies from "js-cookie";
 export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
