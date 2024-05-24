@@ -330,7 +330,7 @@ const Home = () => {
                         </Link>
                     </div>
                 </main>
-                <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
+                {/* <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
                     <Link
                         to="/home"
                         className="flex flex-col justify-center items-center text-primary-md"
@@ -345,7 +345,7 @@ const Home = () => {
                         <UserIcon className="size-7" />
                         <p className="text-center font-bold text-xs">Profile</p>
                     </Link>
-                </div>
+                </div> */}
             </div>
             <SideMenu show={show} data={userData} />
         </div>
