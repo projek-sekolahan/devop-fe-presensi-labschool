@@ -100,11 +100,11 @@ export default function ChangePassword() {
 				</div>
 				<p
 					className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
-					Sudah memiliki akun?{" "}
+					Belum memiliki akun?{" "}
 					<Link
-						to="/login"
+						to="/"
 						className="font-medium underline text-white hover:underline dark:text-primary-500">
-						Login
+						Register
 					</Link>
 				</p>
 			</div>
