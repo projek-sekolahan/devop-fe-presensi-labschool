@@ -97,16 +97,16 @@ export default function ChangePassword() {
 							</p>
 						</div>
 					</form>
-					<p className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
+				</div>
+				<p
+					className="text-center text-sm font-light text-white dark:text-gray-400 mt-5 top-4">
 					Sudah memiliki akun?{" "}
 					<Link
 						to="/login"
-						className="font-medium underline text-white hover:underline dark:text-primary-500"
-					>
+						className="font-medium underline text-white hover:underline dark:text-primary-500">
 						Login
 					</Link>
-					</p>
-				</div>
+				</p>
 			</div>
 		</div>
 	);
