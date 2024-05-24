@@ -210,6 +210,8 @@ const Home = () => {
             setShow(false);
         }
     });
+    const keys = ["devop-sso", "csrf_token"];
+    const values = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
 
     apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
         // Parse JSON
