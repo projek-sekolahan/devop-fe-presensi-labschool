@@ -23,7 +23,7 @@ export default function OtpInput() {
 		const values = [...otp, Cookies.get("csrf")];
 		loading("Loading", "Processing OTP Data...");
 		apiXML
-			.verify(getFormData(keys, values))
+			.postInput('verify',getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res);
 				setLoad(false);
@@ -97,7 +97,7 @@ export default function OtpInput() {
 		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
 		loading("Loading", "Processing Send OTP Data...");
 		apiXML
-			.sendOtp(getFormData(key, values))
+			.postInput('sendOTP',getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);

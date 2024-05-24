@@ -16,7 +16,7 @@ export default function ChangePassword() {
 		const key = ["username", "csrf_token"];
 		const values = [emailRef.current.value, Cookies.get("csrf")];
 		apiXML
-			.recover(getFormData(key, values))
+			.postInput('recover', getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);

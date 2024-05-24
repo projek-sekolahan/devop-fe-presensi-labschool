@@ -36,7 +36,7 @@ export default function SetPassword() {
 			Cookies.get("csrf"),
 		];
 		apiXML
-			.setPassword(getFormData(key, values))
+			.postInput('setPassword',getFormData(key, values))
 			.then((res) => {
 				setDisabled(false);
 				res = JSON.parse(res);

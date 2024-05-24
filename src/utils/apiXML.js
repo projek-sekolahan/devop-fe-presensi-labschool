@@ -25,7 +25,6 @@ export default class apiXML {
 			xhr.send();
 		});
 	}
-
 	static postWithAuth(endpoint, key, formData) {
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
@@ -44,11 +43,6 @@ export default class apiXML {
 				}
 			};
 			xhr.onerror = () => reject(xhr);
-
-			// apiXML.getCsrf().then((res) => {
-			// 	res = JSON.parse(res);
-			// 	formData.append("csrf_token", res.csrfHash);
-			// });
 			xhr.send(createRequestBody(formData));
 		});
 	}
@@ -72,23 +66,18 @@ export default class apiXML {
 			xhr.send(createRequestBody(formData));
 		});
 	}
-
 	static toLogin(key, formData) {
 		return apiXML.postWithAuth("/api/client/auth/login", key, formData);
 	}
-
 	static getUserData(key, formData) {
 		return apiXML.postWithAuth("/api/client/users/profile", key, formData);
 	}
-
 	static logout(key, formData) {
 		return apiXML.postWithAuth("/api/client/auth/logout", key, formData);
 	}
-
 	static sessTime(key, formData) {
 		return apiXML.postWithAuth("/api/client/auth/sessTime", key, formData);
 	}
-
 	static reports(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/reports",
@@ -96,7 +85,6 @@ export default class apiXML {
 			formData,
 		);
 	}
-
 	static details(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/detail_presensi",
@@ -104,7 +92,6 @@ export default class apiXML {
 			formData,
 		);
 	}
-
 	static process(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/presensi/process",
@@ -112,7 +99,6 @@ export default class apiXML {
 			formData,
 		);
 	}
-
 	static create(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/create",
@@ -120,7 +106,6 @@ export default class apiXML {
 			formData,
 		);
 	}
-
 	static detail(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/detail",
@@ -128,7 +113,6 @@ export default class apiXML {
 			formData,
 		);
 	}
-
 	static registerToken(key, formData) {
 		return apiXML.postWithAuth(
 			"/api/client/notifications/registerToken",
@@ -136,12 +120,17 @@ export default class apiXML {
 			formData,
 		);
 	}
-
-	static register(formData) {
+	static postInput(url,formData) {
+		return apiXML.post("/input/" + url, formData);
+	}
+	/* static register(formData) {
 		return apiXML.post("/input/register", formData);
 	}
 	static verify(formData) {
 		return apiXML.post("/input/verify", formData);
+	}
+	static loadFace(formData) {
+		return apiXML.post("/input/loadFace", formData);
 	}
 	static facecam(formData) {
 		return apiXML.post("/input/facecam", formData);
@@ -154,5 +143,5 @@ export default class apiXML {
 	}
 	static recover(formData) {
 		return apiXML.post("/input/recover", formData);
-	}
+	} */
 }

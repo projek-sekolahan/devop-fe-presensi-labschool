@@ -77,6 +77,15 @@ export default function RegisterFace() {
 						y - 75,
 						height + 125,
 					);
+					// loadFace apixml
+					// const keyLoad = ["devop-sso", "csrf_token"];
+					// const valuesLoad = [localStorage.getItem("regist_token"),Cookies.get("csrf")];
+					/* apiXML
+						.postInput('loadFace',getFormData(keyLoad, valuesLoad))
+						.then((res) => {
+							res = JSON.parse(res);
+							Cookies.set("csrf", res.csrfHash);
+						}) */
 					// Float 32 Array to String
 					const stringDescriptor = Array.from(
 						faceData.descriptor,
@@ -89,7 +98,7 @@ export default function RegisterFace() {
 					];
 					loading("Loading", "Registering Face...");
 					apiXML
-						.facecam(getFormData(key, values))
+						.postInput('facecam',getFormData(key, values))
 						.then((res) => {
 							res = JSON.parse(res);
 							Cookies.set("csrf", res.csrfHash);

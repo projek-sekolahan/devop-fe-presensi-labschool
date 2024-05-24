@@ -38,7 +38,7 @@ export default function Register() {
 		loading("Loading", "Registering...");
 		localStorage.setItem("email", emailRef.current.value);
 		apiXML
-			.register(getFormData(keys, values))
+			.postInput('register',getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res);
 				setLoad(false);
