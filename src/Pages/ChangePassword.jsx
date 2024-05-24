@@ -63,7 +63,7 @@ export default function ChangePassword() {
 			/>
 			<div className="w-full h-1/2 mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 relative z-10">
 				<h2 className="font-bold text-4xl">Ganti Password</h2>
-				<div className="my-6 space-y-4 md:space-y-6 p-4 pb-8">
+				<div className="my-6 space-y-4 md:space-y-6 p-4 pb-4">
 					<form className="space-y-4 md:space-y-6 flex flex-col gap-2">
 						<input
 							type="email"
@@ -99,7 +99,7 @@ export default function ChangePassword() {
 					</form>
 				</div>
 				<p
-					className="text-center text-sm font-light text-white dark:text-gray-400 mt-5 top-4">
+					className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
 					Sudah memiliki akun?{" "}
 					<Link
 						to="/login"
