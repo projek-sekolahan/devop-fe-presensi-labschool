@@ -78,14 +78,21 @@ export default function RegisterFace() {
 						height + 125,
 					);
 					// loadFace apixml
-					// const keyLoad = ["devop-sso", "csrf_token"];
-					// const valuesLoad = [localStorage.getItem("regist_token"),Cookies.get("csrf")];
-					/* apiXML
+					const keyLoad = ["devop-sso", "csrf_token"];
+					const valuesLoad = [localStorage.getItem("regist_token"),Cookies.get("csrf")];
+					apiXML
 						.postInput('loadFace',getFormData(keyLoad, valuesLoad))
 						.then((res) => {
+							// Parse JSON
 							res = JSON.parse(res);
+							// Akses data facecam
+							const facecamData = res.data.facecam;
 							Cookies.set("csrf", res.csrfHash);
-						}) */
+							facecamData.forEach(facecam => {
+								console.log(`Facecam ID: ${facecam.facecam_id}`);
+								console.log(`Level: ${facecam.level}`);
+							});
+						})
 					// Float 32 Array to String
 					const stringDescriptor = Array.from(
 						faceData.descriptor,
