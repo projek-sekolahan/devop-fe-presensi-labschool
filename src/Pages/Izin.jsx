@@ -66,7 +66,8 @@ export default function Izin() {
 		}
 		loading("Loading", "Data sedang diproses...");
 		apiXML
-			.process(
+			.presensiPost(
+				'process',
 				localStorage.getItem("AUTH_KEY"),
 				getFormData(keys, values),
 			)

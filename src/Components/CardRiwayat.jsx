@@ -23,7 +23,8 @@ export default function CardRiwayat({ index, history, biodata }) {
 		loading &&
 			!datas &&
 			apiXML
-				.details(
+				.presensiPost(
+					'detail_presensi',
 					localStorage.getItem("AUTH_KEY"),
 					getFormData(keys, values),
 				)

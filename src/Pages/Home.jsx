@@ -45,7 +45,8 @@ const Home = () => {
             keys = [...keys, "csrf_token"];
             values = [...values, Cookies.get("csrf")];
 
-            const response = await apiXML.getUserData(
+            const response = await apiXML.usersPost(
+                'profile',
                 values[0],
                 getFormData(keys, values),
             );
@@ -73,7 +74,8 @@ const Home = () => {
                 keys = [...keys, "csrf_token"];
                 values = [...values, Cookies.get("csrf")];
 
-                const res = await apiXML.sessTime(
+                const res = await apiXML.authPost(
+                    'sessTime',
                     values[1],
                     getFormData(keys, values),
                 );
@@ -196,7 +198,7 @@ const Home = () => {
             values = [...values, res.csrfHash];
 
             apiXML
-                .registerToken(values[0], getFormData(keys, values))
+                .notificationsPost('registerToken', values[0], getFormData(keys, values))
                 .then((response) => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);

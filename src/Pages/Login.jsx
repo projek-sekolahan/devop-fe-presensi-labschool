@@ -32,7 +32,7 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1]);
 		loading("Loading", "Logging in...");
 		apiXML
-			.toLogin(localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+			.authPost('login', localStorage.getItem("AUTH_KEY"), getFormData(key, value))
 			.then((loginResponse) => {
 				const res = JSON.parse(loginResponse);
 				localStorage.setItem("login_token", res.data.Tokenjwt);

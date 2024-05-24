@@ -72,7 +72,8 @@ export default function Notification() {
 	load &&
 		!data &&
 		apiXML
-			.detail(
+			.notificationsPost(
+				'detail',
 				localStorage.getItem("login_token"),
 				getFormData(keys, values),
 			)

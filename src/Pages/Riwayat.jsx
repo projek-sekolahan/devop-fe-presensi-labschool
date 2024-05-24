@@ -56,7 +56,8 @@ export default function Riwayat() {
 	!historys &&
 		load &&
 		apiXML
-			.reports(
+			.presensiPost(
+				'reports',
 				localStorage.getItem("AUTH_KEY"),
 				getFormData(keys, values),
 			)

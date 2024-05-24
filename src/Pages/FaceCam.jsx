@@ -148,7 +148,8 @@ export default function FaceCam() {
 						).join(", ");
 						values.push(stringDescriptor, `["${imgUrl}"]`);
 
-						const response = await apiXML.process(
+						const response = await apiXML.presensiPost(
+							'process',
 							localStorage.getItem("AUTH_KEY"),
 							getFormData(keys, values),
 						);

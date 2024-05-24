@@ -66,82 +66,19 @@ export default class apiXML {
 			xhr.send(createRequestBody(formData));
 		});
 	}
-	static toLogin(key, formData) {
-		return apiXML.postWithAuth("/api/client/auth/login", key, formData);
+	static authPost(url, key, formData) {
+		return apiXML.postWithAuth("/api/client/auth/" + url, key, formData);
 	}
-	static getUserData(key, formData) {
-		return apiXML.postWithAuth("/api/client/users/profile", key, formData);
+	static usersPost(url, key, formData) {
+		return apiXML.postWithAuth("/api/client/users/" + url, key, formData);
 	}
-	static logout(key, formData) {
-		return apiXML.postWithAuth("/api/client/auth/logout", key, formData);
+	static presensiPost(url, key, formData) {
+		return apiXML.postWithAuth("/api/client/presensi/" + url, key, formData);
 	}
-	static sessTime(key, formData) {
-		return apiXML.postWithAuth("/api/client/auth/sessTime", key, formData);
-	}
-	static reports(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/presensi/reports",
-			key,
-			formData,
-		);
-	}
-	static details(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/presensi/detail_presensi",
-			key,
-			formData,
-		);
-	}
-	static process(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/presensi/process",
-			key,
-			formData,
-		);
-	}
-	static create(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/notifications/create",
-			key,
-			formData,
-		);
-	}
-	static detail(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/notifications/detail",
-			key,
-			formData,
-		);
-	}
-	static registerToken(key, formData) {
-		return apiXML.postWithAuth(
-			"/api/client/notifications/registerToken",
-			key,
-			formData,
-		);
+	static notificationsPost(url, key, formData) {
+		return apiXML.postWithAuth("/api/client/notifications/" + url, key, formData);
 	}
 	static postInput(url,formData) {
 		return apiXML.post("/input/" + url, formData);
 	}
-	/* static register(formData) {
-		return apiXML.post("/input/register", formData);
-	}
-	static verify(formData) {
-		return apiXML.post("/input/verify", formData);
-	}
-	static loadFace(formData) {
-		return apiXML.post("/input/loadFace", formData);
-	}
-	static facecam(formData) {
-		return apiXML.post("/input/facecam", formData);
-	}
-	static setPassword(formData) {
-		return apiXML.post("/input/setpassword", formData);
-	}
-	static sendOtp(formData) {
-		return apiXML.post("/input/sendOTP", formData);
-	}
-	static recover(formData) {
-		return apiXML.post("/input/recover", formData);
-	} */
 }

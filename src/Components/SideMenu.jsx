@@ -41,7 +41,8 @@ export default function SideMenu({ show, data }) {
 						localStorage.getItem("login_token"),
 					];
 					apiXML
-						.logout(
+						.authPost(
+							'logout',
 							localStorage.getItem("AUTH_KEY"),
 							getFormData(key, values),
 						)

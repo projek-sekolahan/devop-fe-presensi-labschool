@@ -29,12 +29,10 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
-
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
 		});
-
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",
@@ -82,10 +80,7 @@ function App() {
 					<Route path="/bantuan" element={<Bantuan />} />
 					<Route path="/notifikasi" element={<Notification />} />
 					<Route path="/presensi/staff" element={<PresensiStaff />} />
-					<Route
-						path="/presensi/verif"
-						element={<FaceVerification />}
-					/>
+					<Route path="/presensi/verif" element={<FaceVerification />} />
 					<Route path="/presensi/izin" element={<Izin />} />
 					<Route path="/setting" element={<Pengaturan />} />
 					<Route path="/facecam" element={<FaceCam />} />
