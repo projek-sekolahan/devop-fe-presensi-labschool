@@ -65,28 +65,37 @@ export default function RegisterFace() {
 					(faceData.detection.score / 0.9) * 100,
 				)}%`;
 				// loadFace apixml
-				const keyLoad = ["devop-sso", "csrf_token"];
-				const valuesLoad = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
+				const keys = ["devop-sso", "csrf_token"];
+				const values = [
+					localStorage.getItem("regist_token"),
+					Cookies.get("csrf"),
+				];
 				apiXML
-					.postInput('loadFace', getFormData(keyLoad, valuesLoad))
+					.postInput("loadFace", getFormData(keys, values))
 					.then((res) => {
 						// Parse JSON
 						res = JSON.parse(res);
 						// Akses data facecam
 						const facecamData = res.data.facecam;
 						Cookies.set("csrf", res.csrfHash);
-						facecamData.forEach(facecam => {
+						facecamData.forEach((facecam) => {
 							console.log(`Facecam ID: ${facecam.facecam_id}`);
 							console.log(`Level: ${facecam.level}`);
 							const distance = faceapi.euclideanDistance(
-								new Float32Array(facecam.facecam_id.split(", ")),
+								new Float32Array(
+									facecam.facecam_id.split(", "),
+								),
 								faceData.descriptor,
 							);
-							if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+							if (
+								faceData.detection.score >= 0.9 &&
+								distance <= 0.6
+							) {
 								clearInterval(registerFace);
 								barRef.current.style.width = "100%";
 								textRef.current.innerText = "100%";
-								const { x, y, width, height } = faceData.detection.box;
+								const { x, y, width, height } =
+									faceData.detection.box;
 								const imgUrl = getFaceUrl(
 									videoRef.current,
 									x - 50,
@@ -105,7 +114,10 @@ export default function RegisterFace() {
 								];
 								loading("Loading", "Registering Face...");
 								apiXML
-									.postInput('facecam',getFormData(key, values))
+									.postInput(
+										"facecam",
+										getFormData(key, values),
+									)
 									.then((res) => {
 										res = JSON.parse(res);
 										Cookies.set("csrf", res.csrfHash);
@@ -119,8 +131,14 @@ export default function RegisterFace() {
 															"setpassword",
 														),
 												)
-											: alert(res.info, res.title, res.message, () =>
-													window.location.replace(res.location),
+											: alert(
+													res.info,
+													res.title,
+													res.message,
+													() =>
+														window.location.replace(
+															res.location,
+														),
 												);
 									})
 									.catch((err) => {
@@ -129,21 +147,27 @@ export default function RegisterFace() {
 												"error",
 												"Credential Expired",
 												"Your credentials has expired. Please try again later.",
-												() => window.location.replace("/facereg"),
+												() =>
+													window.location.replace(
+														"/facereg",
+													),
 											);
 										} else {
 											alert(
 												"error",
 												"Input Error",
 												"Something went wrong. Please refresh the page.",
-												() => window.location.replace("/facereg"),
+												() =>
+													window.location.replace(
+														"/facereg",
+													),
 											);
 										}
 									});
 							} else {
 								barRef.current.style.width = percentage;
 								textRef.current.innerText = percentage;
-							}							
+							}
 						});
 					});
 			}

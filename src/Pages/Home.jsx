@@ -46,7 +46,7 @@ const Home = () => {
             values = [...values, Cookies.get("csrf")];
 
             const response = await apiXML.usersPost(
-                'profile',
+                "profile",
                 values[0],
                 getFormData(keys, values),
             );
@@ -75,7 +75,7 @@ const Home = () => {
                 values = [...values, Cookies.get("csrf")];
 
                 const res = await apiXML.authPost(
-                    'sessTime',
+                    "sessTime",
                     values[1],
                     getFormData(keys, values),
                 );
@@ -148,11 +148,7 @@ const Home = () => {
                 const notificationOptions = {
                     body: payload.notification.body,
                 };
-                alert(
-                    "success",
-                    notificationTitle,
-                    notificationOptions.body,
-                );
+                alert("success", notificationTitle, notificationOptions.body);
             });
         }
     }, []);
@@ -175,11 +171,8 @@ const Home = () => {
             );
         } else {
             err = JSON.parse(err.responseText || "{}");
-            alert(
-                err.data.info,
-                err.data.title,
-                err.data.message,
-                () => window.location.replace("/login"),
+            alert(err.data.info, err.data.title, err.data.message, () =>
+                window.location.replace("/login"),
             );
         }
     };
@@ -198,7 +191,11 @@ const Home = () => {
             values = [...values, res.csrfHash];
 
             apiXML
-                .notificationsPost('registerToken', values[0], getFormData(keys, values))
+                .notificationsPost(
+                    "registerToken",
+                    values[0],
+                    getFormData(keys, values),
+                )
                 .then((response) => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
@@ -212,6 +209,15 @@ const Home = () => {
         if (e.pageX > (screen.width * 75) / 100) {
             setShow(false);
         }
+    });
+
+    apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
+        // Parse JSON
+        res = JSON.parse(res);
+        // Akses data facecam
+        const facecamData = res.data.facecam;
+        Cookies.set("csrf", res.csrfHash);
+        console.log(res);
     });
 
     return !userData ? (
