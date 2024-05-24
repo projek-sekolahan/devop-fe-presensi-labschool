@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData, alert } from "../utils/utils";
+import { parseJwt, getFormData, handleSessionError } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 
@@ -69,21 +69,7 @@ export default function Riwayat() {
 				setLoad(false);
 			})
 			.catch((err) => {
-				if (err.status == 403) {
-					localStorage.clear();
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					err = JSON.parse(err.responseText);
-					localStorage.setItem("csrf", err.csrfHash);
-					alert(err.data.info, err.data.title, err.data.message, () =>
-						window.location.replace("/home"),
-					);
-				}
+				handleSessionError(err,"/login");
 			});
 
 	return (

@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
 import { useRef } from "react";
-import { getFormData, getFaceUrl, loading, alert } from "../utils/utils";
+import { getFormData, getFaceUrl, loading, alert, handleSessionError } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
@@ -142,27 +142,7 @@ export default function RegisterFace() {
 												);
 									})
 									.catch((err) => {
-										if (err.status == 403) {
-											alert(
-												"error",
-												"Credential Expired",
-												"Your credentials has expired. Please try again later.",
-												() =>
-													window.location.replace(
-														"/facereg",
-													),
-											);
-										} else {
-											alert(
-												"error",
-												"Input Error",
-												"Something went wrong. Please refresh the page.",
-												() =>
-													window.location.replace(
-														"/facereg",
-													),
-											);
-										}
+										handleSessionError(err,"/facereg");
 									});
 							} else {
 								barRef.current.style.width = percentage;
@@ -173,7 +153,6 @@ export default function RegisterFace() {
 			}
 		}, 1000);
 	};
-
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
 			<video

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert, loading } from "../utils/utils";
+import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function ChangePassword() {
@@ -34,21 +34,7 @@ export default function ChangePassword() {
 						);
 			})
 			.catch((err) => {
-				if (err.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/recover"),
-					);
-				} else {
-					alert(
-						"error",
-						"Input Error",
-						"Something went wrong. Please refresh the page.",
-						() => window.location.replace("/recover"),
-					);
-				}
+				handleSessionError(err,"/recover");
 			});
 	};
 

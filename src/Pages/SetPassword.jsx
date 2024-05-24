@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash, alert, loading } from "../utils/utils";
+import { getFormData, getHash, alert, loading, handleSessionError } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -53,21 +53,7 @@ export default function SetPassword() {
 						);
 			})
 			.catch((err) => {
-				if (err.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/setpassword"),
-					);
-				} else {
-					alert(
-						"error",
-						"Input Error",
-						"Something went wrong. Please refresh the page.",
-						() => window.location.replace("/setpassword"),
-					);
-				}
+				handleSessionError(err,"/setpassword");
 			});
 	};
 

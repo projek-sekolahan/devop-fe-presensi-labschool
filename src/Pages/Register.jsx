@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
-import { getFormData, alert, loading } from "../utils/utils";
+import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 
@@ -63,22 +63,7 @@ export default function Register() {
 						);
 			})
 			.catch((err) => {
-				localStorage.clear();
-				if (err.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/"),
-					);
-				} else {
-					alert(
-						"error",
-						"Input Error",
-						"Something went wrong. Please try again later.",
-						() => window.location.replace("/"),
-					);
-				}
+				handleSessionError(err,"/");
 			});
 	};
 	return (

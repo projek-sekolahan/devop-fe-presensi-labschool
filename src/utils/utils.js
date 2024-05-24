@@ -205,7 +205,7 @@ export const useClock = (timeRef, dateRef, dayRef) => {
 	}, [timeRef, dateRef, dayRef]);
 };
 
-export const clearCookies = () => {
+function clearCookies() {
 	localStorage.clear();
 	// Ambil semua cookies yang ada
 	var allCookies = Cookies.get();
@@ -215,7 +215,6 @@ export const clearCookies = () => {
 		.keys(allCookies)
 		.forEach(function (cookieName) {
 			var cookieValue = Cookies.get(cookieName);
-
 			// Periksa apakah cookie sudah kedaluwarsa
 			if (!cookieValue) {
 				// Hapus cookie yang sudah kedaluwarsa
@@ -226,3 +225,42 @@ export const clearCookies = () => {
 			}
 	});
 }
+
+export const handleSessionError = (err,location) => {
+	clearCookies();
+	if (err.status == 403 || err.status == 502) {
+		alertError(
+			"error",
+			"Credential Expired",
+			"Your credentials has expired. Please try again later.",
+			() => window.location.replace(location),
+		);
+	} else {
+		alertError(
+			"error",
+			"Input Error",
+			"Something went wrong. Please try again later.",
+			() => window.location.replace(location),
+		);
+	}
+};
+
+export const handleSessionExpired = (data) => {
+	clearCookies();
+	alertError("error", data.title, data.message, () => {
+		window.location.replace("/login");
+	});
+};
+
+function alertError(type, title, message, callback) {
+	Swal.fire({
+		titleText: title,
+		html: message,
+		icon: type,
+		allowOutsideClick: false,
+		allowEnterKey: false,
+		allowEscapeKey: false,
+	}).then(() => {
+		callback();
+	});
+};

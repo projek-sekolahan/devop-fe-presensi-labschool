@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Label, Textarea, FileInput } from "flowbite-react";
-import { HiInformationCircle } from "react-icons/hi";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -10,6 +9,7 @@ import {
 	loading,
 	alert,
 	parseJwt,
+	handleSessionError
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
@@ -80,21 +80,7 @@ export default function Izin() {
 				);
 			})
 			.catch((err) => {
-				if (err.status == 403 || err.status == 504) {
-					localStorage.clear();
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please login again.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					err = JSON.parse(err.responseText);
-					localStorage.setItem("csrf", err.csrfHash);
-					alert(err.data.info, err.data.title, err.data.message, () =>
-						window.location.replace("/home"),
-					);
-				}
+				handleSessionError(err,"/login");
 			});
 	};
 	return (

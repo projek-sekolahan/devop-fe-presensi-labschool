@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { parseJwt, getFormData, alert, clearCookies } from "../utils/utils";
+import { parseJwt, getFormData, alert, handleSessionError, handleSessionExpired } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
@@ -61,7 +61,7 @@ const Home = () => {
                 console.error("No data in API response:", res);
             }
         } catch (error) {
-            handleSessionError(error);
+            handleSessionError(error,"/login");
         }
     }, []);
 
@@ -87,7 +87,7 @@ const Home = () => {
                     handleSessionExpired(parsedRes.data);
                 }
             } catch (err) {
-                handleSessionError(err);
+                handleSessionError(err,"/login");
             }
         };
 
@@ -153,30 +153,6 @@ const Home = () => {
         }
     }, []);
 
-    const handleSessionExpired = (data) => {
-        clearCookies();
-        alert("error", data.title, data.message, () => {
-            window.location.replace("/login");
-        });
-    };
-
-    const handleSessionError = (err) => {
-        clearCookies();
-        if (err.status == 403 || err.status == 502) {
-            alert(
-                "error",
-                "Credential Expired",
-                "Your credentials has expired. Please try again later.",
-                () => window.location.replace("/login"),
-            );
-        } else {
-            err = JSON.parse(err.responseText || "{}");
-            alert(err.data.info, err.data.title, err.data.message, () =>
-                window.location.replace("/login"),
-            );
-        }
-    };
-
     const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
         let values = [
@@ -201,7 +177,7 @@ const Home = () => {
                     Cookies.set("csrf", res.csrfHash);
                     localStorage.setItem("token_registered", "done");
                 })
-                .catch(handleSessionError);
+                .catch((error) => {handleSessionError(error,"/login")});
         });
     };
 
@@ -340,22 +316,6 @@ const Home = () => {
                         </Link>
                     </div>
                 </main>
-                {/* <div className="absolute bottom-5 left-0 bg-white w-full h-fit py-2 px-4 rounded-s-full rounded-e-full flex justify-between">
-                    <Link
-                        to="/home"
-                        className="flex flex-col justify-center items-center text-primary-md"
-                    >
-                        <HomeIcon className="size-7" />
-                        <p className="text-center font-bold text-xs">Beranda</p>
-                    </Link>
-                    <Link
-                        to="/profile"
-                        className="flex flex-col justify-center items-center text-bg-2 hover:text-primary-md"
-                    >
-                        <UserIcon className="size-7" />
-                        <p className="text-center font-bold text-xs">Profile</p>
-                    </Link>
-                </div> */}
             </div>
             <SideMenu show={show} data={userData} />
         </div>

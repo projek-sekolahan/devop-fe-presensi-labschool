@@ -6,11 +6,9 @@ import Cookies from "js-cookie";
 export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
-
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${index}`).showModal();
 		setDatas(null);
-
 		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
 		let values = [
 			localStorage.getItem("AUTH_KEY"),

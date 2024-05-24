@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert, loading } from "../utils/utils";
+import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function OtpInput() {
@@ -41,21 +41,7 @@ export default function OtpInput() {
 						);
 			})
 			.catch((err) => {
-				if (err.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/verify"),
-					);
-				} else {
-					alert(
-						"error",
-						"Input Error",
-						"Something code went wrong. Please check the code in the email.",
-						() => window.location.replace("/verify"),
-					);
-				}
+				handleSessionError(err,"/verify");
 			});
 	};
 
@@ -106,21 +92,7 @@ export default function OtpInput() {
 				);
 			})
 			.catch((err) => {
-				if (err.status == 403) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/verify"),
-					);
-				} else {
-					alert(
-						"error",
-						"Input Error",
-						"Something went wrong. Please try again later.",
-						() => window.location.replace("/verify"),
-					);
-				}
+				handleSessionError(err,"/verify");
 			});
 	};
 
