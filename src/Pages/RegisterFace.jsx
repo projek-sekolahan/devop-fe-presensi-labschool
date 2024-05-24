@@ -41,7 +41,6 @@ export default function RegisterFace() {
 	};
 
 	//LOAD MODELS
-
 	Promise.all([
 		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
 		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
@@ -60,90 +59,93 @@ export default function RegisterFace() {
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
-
 			if (faceData) {
 				Swal.close();
 				const percentage = `${Math.round(
 					(faceData.detection.score / 0.9) * 100,
 				)}%`;
-				if (faceData.detection.score >= 0.9) {
-					clearInterval(registerFace);
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
-					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getFaceUrl(
-						videoRef.current,
-						x - 50,
-						y - 75,
-						height + 125,
-					);
-					// loadFace apixml
-					const keyLoad = ["devop-sso", "csrf_token"];
-					const valuesLoad = [localStorage.getItem("regist_token"),Cookies.get("csrf")];
-					apiXML
-						.postInput('loadFace',getFormData(keyLoad, valuesLoad))
-						.then((res) => {
-							// Parse JSON
-							res = JSON.parse(res);
-							// Akses data facecam
-							const facecamData = res.data.facecam;
-							Cookies.set("csrf", res.csrfHash);
-							facecamData.forEach(facecam => {
-								console.log(`Facecam ID: ${facecam.facecam_id}`);
-								console.log(`Level: ${facecam.level}`);
-							});
-						})
-					// Float 32 Array to String
-					const stringDescriptor = Array.from(
-						faceData.descriptor,
-					).join(", ");
-					const values = [
-						stringDescriptor,
-						`["${imgUrl}"]`,
-						localStorage.getItem("regist_token"),
-						Cookies.get("csrf"),
-					];
-					loading("Loading", "Registering Face...");
-					apiXML
-						.postInput('facecam',getFormData(key, values))
-						.then((res) => {
-							res = JSON.parse(res);
-							Cookies.set("csrf", res.csrfHash);
-							res.status
-								? alert(
-										res.data.info,
-										res.data.title,
-										res.data.message,
-										() =>
-											window.location.replace(
-												"setpassword",
-											),
-									)
-								: alert(res.info, res.title, res.message, () =>
-										window.location.replace(res.location),
-									);
-						})
-						.catch((err) => {
-							if (err.status == 403) {
-								alert(
-									"error",
-									"Credential Expired",
-									"Your credentials has expired. Please try again later.",
-									() => window.location.replace("/facereg"),
+				// loadFace apixml
+				const keyLoad = ["devop-sso", "csrf_token"];
+				const valuesLoad = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
+				apiXML
+					.postInput('loadFace', getFormData(keyLoad, valuesLoad))
+					.then((res) => {
+						// Parse JSON
+						res = JSON.parse(res);
+						// Akses data facecam
+						const facecamData = res.data.facecam;
+						Cookies.set("csrf", res.csrfHash);
+						facecamData.forEach(facecam => {
+							console.log(`Facecam ID: ${facecam.facecam_id}`);
+							console.log(`Level: ${facecam.level}`);
+							const distance = faceapi.euclideanDistance(
+								new Float32Array(facecam.facecam_id.split(", ")),
+								faceData.descriptor,
+							);
+							if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+								clearInterval(registerFace);
+								barRef.current.style.width = "100%";
+								textRef.current.innerText = "100%";
+								const { x, y, width, height } = faceData.detection.box;
+								const imgUrl = getFaceUrl(
+									videoRef.current,
+									x - 50,
+									y - 75,
+									height + 125,
 								);
+								// Float 32 Array to String
+								const stringDescriptor = Array.from(
+									faceData.descriptor,
+								).join(", ");
+								const values = [
+									stringDescriptor,
+									`["${imgUrl}"]`,
+									localStorage.getItem("regist_token"),
+									Cookies.get("csrf"),
+								];
+								loading("Loading", "Registering Face...");
+								apiXML
+									.postInput('facecam',getFormData(key, values))
+									.then((res) => {
+										res = JSON.parse(res);
+										Cookies.set("csrf", res.csrfHash);
+										res.status
+											? alert(
+													res.data.info,
+													res.data.title,
+													res.data.message,
+													() =>
+														window.location.replace(
+															"setpassword",
+														),
+												)
+											: alert(res.info, res.title, res.message, () =>
+													window.location.replace(res.location),
+												);
+									})
+									.catch((err) => {
+										if (err.status == 403) {
+											alert(
+												"error",
+												"Credential Expired",
+												"Your credentials has expired. Please try again later.",
+												() => window.location.replace("/facereg"),
+											);
+										} else {
+											alert(
+												"error",
+												"Input Error",
+												"Something went wrong. Please refresh the page.",
+												() => window.location.replace("/facereg"),
+											);
+										}
+									});
 							} else {
-								alert(
-									"error",
-									"Input Error",
-									"Something went wrong. Please refresh the page.",
-									() => window.location.replace("/facereg"),
-								);
-							}
+								barRef.current.style.width = percentage;
+								textRef.current.innerText = percentage;
+							}							
 						});
-				} else {
-					barRef.current.style.width = percentage;
-					textRef.current.innerText = percentage;
-				}
+					});
 			}
 		}, 1000);
 	};
@@ -165,7 +167,6 @@ export default function RegisterFace() {
 				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
 				<span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
 			</div>
-
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
