@@ -2,7 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
+import {
+	getFormData,
+	alert,
+	loading,
+	handleSessionError,
+} from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function OtpInput() {
@@ -28,6 +33,7 @@ export default function OtpInput() {
 				res = JSON.parse(res);
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.token);
+				Cookies.set("csrf", res.csrfHash);
 				apiXML
 					.postInput("loadFace", getFormData(keys, values))
 					.then((res) => {
@@ -35,7 +41,6 @@ export default function OtpInput() {
 
 						console.log(res);
 					});
-				Cookies.set("csrf", res.csrfHash);
 				res.status
 					? alert(
 							res.data.info,
@@ -48,7 +53,7 @@ export default function OtpInput() {
 						);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/verify");
+				handleSessionError(err, "/verify");
 			});
 	};
 
@@ -99,7 +104,7 @@ export default function OtpInput() {
 				);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/verify");
+				handleSessionError(err, "/verify");
 			});
 	};
 
