@@ -34,6 +34,13 @@ export default function OtpInput() {
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.token);
 				Cookies.set("csrf", res.csrfHash);
+
+				// -- Test Start
+				const keys = ["devop-sso", "csrf_token"];
+				const values = [
+					localStorage.getItem("regist_token"),
+					Cookies.get("csrf"),
+				];
 				apiXML
 					.postInput("loadFace", getFormData(keys, values))
 					.then((res) => {
@@ -41,6 +48,8 @@ export default function OtpInput() {
 
 						console.log(res);
 					});
+
+				// -- End
 				res.status
 					? alert(
 							res.data.info,
