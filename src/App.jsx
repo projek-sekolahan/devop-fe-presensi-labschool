@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import apiXML from "./utils/apiXML.js";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-
 import Register from "./Pages/Register";
 import Loading from "./Pages/Loading";
 
@@ -38,13 +37,9 @@ function App() {
 				title: "Allow Cookies",
 				text: "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
 				icon: "warning",
-				showCancelButton: false,
-				allowEscapeKey: false,
 				allowOutsideClick: false,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "Allow",
-				cancelButtonText: "Don't Allow",
+				allowEnterKey: false,
+				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
 					apiXML.getCsrf();

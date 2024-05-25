@@ -7,6 +7,7 @@ import {
 	loading,
 	alert,
 	parseJwt,
+	handleSessionError
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -168,24 +169,7 @@ export default function FaceCam() {
 					setTimeout(attemptMatch, 1000); // No face detected, retry
 				}
 			} catch (err) {
-				if (err.status === 403) {
-					localStorage.clear();
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials have expired. Please try again later.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					const error = JSON.parse(err.responseText);
-					localStorage.setItem("csrf", error.csrfHash);
-					alert(
-						error.data.info,
-						error.data.title,
-						error.data.message,
-						() => window.location.replace("/home"),
-					);
-				}
+				handleSessionError(err,"/login");
 			}
 		}
 

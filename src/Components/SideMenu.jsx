@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { getFormData, alert, clearCookies } from "../utils/utils";
+import { getFormData, alert } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
@@ -47,7 +47,7 @@ export default function SideMenu({ show, data }) {
 							getFormData(key, values),
 						)
 						.then((res) => {
-							clearCookies();
+							localStorage.clear();
 							res = JSON.parse(res);
 							alert(
 								"success",

@@ -6,6 +6,7 @@ import {
 	getFormData,
 	alert,
 	loading,
+	handleSessionError
 } from "../utils/utils.js";
 import { useRef, useEffect } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -38,24 +39,8 @@ export default function Login() {
 					window.location.replace("/home");
 				});
 			})
-			.catch((errorData) => {
-				localStorage.clear();
-				if (errorData.status == 403 || errorData.status == 502) {
-					alert(
-						"error",
-						"Credential Expired",
-						"Your credentials has expired. Please try again later.",
-						() => window.location.replace("/login"),
-					);
-				} else {
-					errorData = JSON.parse(errorData.responseText);
-					alert(
-						errorData.data.info,
-						errorData.data.title,
-						errorData.data.message,
-						() => window.location.replace(errorData.data.location),
-					);
-				}
+			.catch((err) => {
+				handleSessionError(err,"/login");
 			});
 	};
 
