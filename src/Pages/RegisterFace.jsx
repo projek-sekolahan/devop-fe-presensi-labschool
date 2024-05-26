@@ -98,7 +98,7 @@ const faceMyDetect = () => {
                                     facecamDescriptor,
                                     faceData.descriptor
                                 );
-
+								console.log(`Distance: ${distance}, Facecam ID: ${facecam.facecam_id}`);
                                 if (faceData.detection.score >= 0.9 && distance <= 0.6) {
                                     isFaceMatched = true;
                                     alert(
