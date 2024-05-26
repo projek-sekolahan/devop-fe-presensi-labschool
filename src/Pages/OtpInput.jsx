@@ -36,7 +36,7 @@ export default function OtpInput() {
 				Cookies.set("csrf", res.csrfHash);
 
 				// -- Test Start
-				const keys = ["devop-sso", "csrf_token"];
+				/* const keys = ["devop-sso", "csrf_token"];
 				const values = [
 					localStorage.getItem("regist_token"),
 					Cookies.get("csrf"),
@@ -47,8 +47,7 @@ export default function OtpInput() {
 						res = JSON.parse(res);
 
 						console.log(res);
-					});
-
+					}); */
 				// -- End
 				res.status
 					? alert(
