@@ -158,14 +158,14 @@ export default function RegisterFace() {
 							res.data.info,
 							res.data.title,
 							res.data.message,
-							() => window.location.replace("setpassword")
+							() => window.location.replace("/setpassword")
 						);
 					} else {
 						alert(
 							res.info,
 							res.title,
 							res.message,
-							() => window.location.replace(res.location)
+							() => window.location.replace("/facereg")
 						);
 					}
 				})

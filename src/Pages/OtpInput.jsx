@@ -34,21 +34,6 @@ export default function OtpInput() {
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.token);
 				Cookies.set("csrf", res.csrfHash);
-
-				// -- Test Start
-				/* const keys = ["devop-sso", "csrf_token"];
-				const values = [
-					localStorage.getItem("regist_token"),
-					Cookies.get("csrf"),
-				];
-				apiXML
-					.postInput("loadFace", getFormData(keys, values))
-					.then((res) => {
-						res = JSON.parse(res);
-
-						console.log(res);
-					}); */
-				// -- End
 				res.status
 					? alert(
 							res.data.info,
@@ -57,7 +42,7 @@ export default function OtpInput() {
 							() => window.location.replace("/facereg"),
 						)
 					: alert(res.info, res.title, res.message, () =>
-							window.location.replace(res.location),
+							window.location.replace("/verify"),
 						);
 			})
 			.catch((err) => {
@@ -108,7 +93,7 @@ export default function OtpInput() {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
 				alert(res.info, res.title, res.message, () =>
-					window.location.replace(res.location),
+					window.location.replace("/verify"),
 				);
 			})
 			.catch((err) => {
