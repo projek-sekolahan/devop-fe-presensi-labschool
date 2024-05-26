@@ -9,7 +9,6 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
-	const key = ["param", "img", "devop-sso", "csrf_token"];
 	loading("Loading", "Getting camera access...");
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -75,7 +74,6 @@ export default function RegisterFace() {
 						.withFaceDescriptor();
 
 					if (faceData) {
-						Swal.close();
 						if (facecamData.length > 1) {
 							let isFaceMatched = false;
 							for (const facecam of facecamData) {
@@ -88,7 +86,11 @@ export default function RegisterFace() {
 								);
 								if (faceData.detection.score >= 0.9 && distance <= 0.6) {
 									isFaceMatched = true;
-									alert("Wajah sudah terdaftar, harap gunakan wajah lain.");
+									alert(
+										"Error",
+										"Error",
+										"Wajah sudah terdaftar, harap gunakan wajah lain.",
+									);
 									clearInterval(registerFace);
 									break;
 								}
@@ -110,7 +112,11 @@ export default function RegisterFace() {
 								// Wajah cocok, lanjutkan proses pendaftaran
 								registerNewFace(faceData);
 							} else {
-								alert("Wajah tidak cocok, harap coba lagi.");
+								alert(
+									"Error",
+									"Error",
+									"Wajah tidak cocok, harap coba lagi.",
+								);
 								clearInterval(registerFace);
 							}
 						}
@@ -131,16 +137,16 @@ export default function RegisterFace() {
 					const stringDescriptor = Array
 						.from(faceData.descriptor)
 						.join(", ");
+					const registerKeys = ["param", "img","devop-sso", "csrf_token"];
 					const registerValues = [stringDescriptor, `["${imgUrl}"]`, localStorage.getItem("regist_token"), Cookies.get("csrf")];
 
 					// Panggil API untuk mendaftarkan wajah
 					loading("Loading", "Registering Face...");
 					apiXML
-						.postInput("facecam", getFormData(keys, registerValues))
+						.postInput("facecam", getFormData(registerKeys, registerValues))
 						.then((res) => {
 							res = JSON.parse(res); // Parse JSON response
 							Cookies.set("csrf", res.csrfHash); // Update csrf token
-
 							if (res.status) {
 								alert(
 									res.data.info,
