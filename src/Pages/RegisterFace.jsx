@@ -23,18 +23,18 @@ export default function RegisterFace() {
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
 					alert(
-						"Error",
+						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
-						"Error",
+						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
 					);
 				} else {
-					alert("Error", "Error", "Gagal mengakses webcam!");
+					alert("error", "Error", "Gagal mengakses webcam!");
 				}
 			});
 	};
@@ -87,9 +87,10 @@ export default function RegisterFace() {
 								if (faceData.detection.score >= 0.9 && distance <= 0.6) {
 									isFaceMatched = true;
 									alert(
-										"Error",
+										"error",
 										"Error",
 										"Wajah sudah terdaftar, harap gunakan wajah lain.",
+										() => window.location.replace("/facereg")
 									);
 									clearInterval(registerFace);
 									break;
@@ -113,9 +114,10 @@ export default function RegisterFace() {
 								registerNewFace(faceData);
 							} else {
 								alert(
-									"Error",
+									"error",
 									"Error",
 									"Wajah tidak cocok, harap coba lagi.",
+									() => window.location.replace("/facereg")
 								);
 								clearInterval(registerFace);
 							}
