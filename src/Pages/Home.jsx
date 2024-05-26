@@ -186,17 +186,6 @@ const Home = () => {
             setShow(false);
         }
     });
-    /* const keys = ["devop-sso", "csrf_token"];
-    const values = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
-
-    apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
-        // Parse JSON
-        res = JSON.parse(res);
-        // Akses data facecam
-        const facecamData = res.data.facecam;
-        Cookies.set("csrf", res.csrfHash);
-        console.log(res);
-    }); */
 
     return !userData ? (
         <Loading />
