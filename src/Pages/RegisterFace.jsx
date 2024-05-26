@@ -95,6 +95,7 @@ export default function RegisterFace() {
 								if (faceData.detection.score >= 0.9 && distance <= 0.6) {
 									isFaceMatched = true;
 									alert("Wajah sudah terdaftar, harap gunakan wajah lain.");
+									clearInterval(registerFace); // Hentikan interval
 									break;
 								}
 							}
@@ -118,6 +119,7 @@ export default function RegisterFace() {
 								registerNewFace(faceData);
 							} else {
 								alert("Wajah tidak cocok, harap coba lagi.");
+								clearInterval(registerFace); // Hentikan interval
 							}
 						}
 					})
