@@ -51,108 +51,128 @@ export default function RegisterFace() {
 
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
+
 		const registerFace = setInterval(async () => {
+			// Deteksi wajah menggunakan face-api.js
 			const faceData = await faceapi
 				.detectSingleFace(
 					videoRef.current,
-					new faceapi.TinyFaceDetectorOptions(),
+					new faceapi.TinyFaceDetectorOptions()
 				)
 				.withFaceLandmarks()
 				.withFaceDescriptor();
+
 			if (faceData) {
 				Swal.close();
-				const percentage = `${Math.round(
-					(faceData.detection.score / 0.9) * 100,
-				)}%`;
-				// loadFace apixml
+				const percentage = `${Math.round((faceData.detection.score / 0.9) * 100)}%`;
+
+				// Ambil token dan csrf dari localStorage dan Cookies
 				const keys = ["devop-sso", "csrf_token"];
-				const values = [
-					localStorage.getItem("regist_token"),
-					Cookies.get("csrf"),
-				];
+				const values = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
+
+				// Panggil API untuk loadFace
 				apiXML
 					.postInput("loadFace", getFormData(keys, values))
 					.then((res) => {
-						// Parse JSON
-						res = JSON.parse(res);
+						res = JSON.parse(res); // Parse JSON response
+
 						// Akses data facecam
 						const facecamData = res.data.facecam;
-						Cookies.set("csrf", res.csrfHash);
-						facecamData.forEach((facecam) => {
-							console.log(`Facecam ID: ${facecam.facecam_id}`);
-							console.log(`Level: ${facecam.level}`);
-							const distance = faceapi.euclideanDistance(
-								new Float32Array(
-									facecam.facecam_id.split(", "),
-								),
-								faceData.descriptor,
-							);
-							if (
-								faceData.detection.score >= 0.9 &&
-								distance <= 0.6
-							) {
-								clearInterval(registerFace);
-								barRef.current.style.width = "100%";
-								textRef.current.innerText = "100%";
-								const { x, y, width, height } =
-									faceData.detection.box;
-								const imgUrl = getFaceUrl(
-									videoRef.current,
-									x - 50,
-									y - 75,
-									height + 125,
+						Cookies.set("csrf", res.csrfHash); // Update csrf token
+
+						if (facecamData.length > 1) {
+							let isFaceMatched = false;
+
+							for (const facecam of facecamData) {
+								const facecamDescriptor = new Float32Array(
+									facecam.facecam_id.split(", ").map(Number)
 								);
-								// Float 32 Array to String
-								const stringDescriptor = Array.from(
-									faceData.descriptor,
-								).join(", ");
-								const values = [
-									stringDescriptor,
-									`["${imgUrl}"]`,
-									localStorage.getItem("regist_token"),
-									Cookies.get("csrf"),
-								];
-								loading("Loading", "Registering Face...");
-								apiXML
-									.postInput(
-										"facecam",
-										getFormData(key, values),
-									)
-									.then((res) => {
-										res = JSON.parse(res);
-										Cookies.set("csrf", res.csrfHash);
-										res.status
-											? alert(
-													res.data.info,
-													res.data.title,
-													res.data.message,
-													() =>
-														window.location.replace(
-															"setpassword",
-														),
-												)
-											: alert(
-													res.info,
-													res.title,
-													res.message,
-													() =>
-														window.location.replace(
-															res.location,
-														),
-												);
-									})
-									.catch((err) => {
-										handleSessionError(err,"/facereg");
-									});
-							} else {
-								barRef.current.style.width = percentage;
-								textRef.current.innerText = percentage;
+								const distance = faceapi.euclideanDistance(
+									facecamDescriptor,
+									faceData.descriptor
+								);
+
+								if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+									isFaceMatched = true;
+									alert("Wajah sudah terdaftar, harap gunakan wajah lain.");
+									break;
+								}
 							}
-						});
+
+							if (!isFaceMatched) {
+								// Tidak ada wajah yang cocok, lanjutkan proses pendaftaran
+								registerNewFace(faceData);
+							}
+						} else {
+							// Hanya ada satu wajah di facecamData
+							const facecamDescriptor = new Float32Array(
+								facecamData[0].facecam_id.split(", ").map(Number)
+							);
+							const distance = faceapi.euclideanDistance(
+								facecamDescriptor,
+								faceData.descriptor
+							);
+
+							if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+								// Wajah cocok, lanjutkan proses pendaftaran
+								registerNewFace(faceData);
+							} else {
+								alert("Wajah tidak cocok, harap coba lagi.");
+							}
+						}
+					})
+					.catch((err) => {
+						handleSessionError(err, "/facereg");
 					});
 			}
 		}, 1000);
+
+		const registerNewFace = (faceData) => {
+			clearInterval(registerFace); // Hentikan interval
+
+			// Update progress bar ke 100%
+			barRef.current.style.width = "100%";
+			textRef.current.innerText = "100%";
+
+			const {x, y, width, height} = faceData.detection.box;
+			const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
+
+			// Convert deskriptor wajah ke string
+			const stringDescriptor = Array
+				.from(faceData.descriptor)
+				.join(", ");
+			const registerValues = [stringDescriptor, `["${imgUrl}"]`, localStorage.getItem("regist_token"), Cookies.get("csrf")];
+
+			// Panggil API untuk mendaftarkan wajah
+			loading("Loading", "Registering Face...");
+			apiXML
+				.postInput("facecam", getFormData(keys, registerValues))
+				.then((res) => {
+					res = JSON.parse(res); // Parse JSON response
+					Cookies.set("csrf", res.csrfHash); // Update csrf token
+
+					if (res.status) {
+						alert(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+							() => window.location.replace("setpassword")
+						);
+					} else {
+						alert(
+							res.info,
+							res.title,
+							res.message,
+							() => window.location.replace(res.location)
+						);
+					}
+				})
+				.catch((err) => {
+					handleSessionError(err, "/facereg");
+				});
+		};
 	};
+	  
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
 			<video
