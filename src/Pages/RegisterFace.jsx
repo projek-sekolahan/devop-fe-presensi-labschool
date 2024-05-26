@@ -48,132 +48,148 @@ export default function RegisterFace() {
 		startVideo();
 	});
 
-	const faceMyDetect = () => {
-		loading("Loading", "Tetap arahkan wajah ke kamera...");
+const faceMyDetect = () => {
+    loading("Loading", "Tetap arahkan wajah ke kamera...");
+    let attempts = 0; // Menghitung jumlah upaya deteksi
+    const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
-		const keys = ["devop-sso", "csrf_token"];
-		const values = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
+    const keys = ["devop-sso", "csrf_token"];
+    const values = [localStorage.getItem("regist_token"), Cookies.get("csrf")];
 
-		// Panggil API untuk loadFace satu kali sebelum interval
-		apiXML
-			.postInput("loadFace", getFormData(keys, values))
-			.then((res) => {
-				res = JSON.parse(res); // Parse JSON response
-				Cookies.set("csrf", res.csrfHash); // Update csrf token
-				// Akses data facecam
-				const facecamData = res.data.facecam;
+    // Panggil API untuk loadFace satu kali sebelum interval
+    apiXML
+        .postInput("loadFace", getFormData(keys, values))
+        .then((res) => {
+            res = JSON.parse(res); // Parse JSON response
 
-				const registerFace = setInterval(async () => {
-					// Deteksi wajah menggunakan face-api.js
-					const faceData = await faceapi
-						.detectSingleFace(
-							videoRef.current,
-							new faceapi.TinyFaceDetectorOptions()
-						)
-						.withFaceLandmarks()
-						.withFaceDescriptor();
+            // Akses data facecam
+            const facecamData = res.data.facecam;
+            Cookies.set("csrf", res.csrfHash); // Update csrf token
 
-					if (faceData) {
-						if (facecamData.length > 1) {
-							let isFaceMatched = false;
-							for (const facecam of facecamData) {
-								const facecamDescriptor = new Float32Array(
-									facecam.facecam_id.split(", ").map(Number)
-								);
-								const distance = faceapi.euclideanDistance(
-									facecamDescriptor,
-									faceData.descriptor
-								);
-								if (faceData.detection.score >= 0.9 && distance <= 0.6) {
-									isFaceMatched = true;
-									alert(
+            async function attemptMatch() {
+                if (attempts >= maxAttempts) {
+                    alert(
+                        "error",
+                        "Matching Failed",
+                        "Failed to match face after several attempts."
+                    );
+                    return;
+                }
+                attempts++;
+
+                try {
+                    const faceData = await faceapi
+                        .detectSingleFace(
+                            videoRef.current,
+                            new faceapi.TinyFaceDetectorOptions()
+                        )
+                        .withFaceLandmarks()
+                        .withFaceDescriptor();
+
+                    if (faceData) {
+                        if (facecamData.length > 1) {
+                            let isFaceMatched = false;
+
+                            for (const facecam of facecamData) {
+                                const facecamDescriptor = new Float32Array(
+                                    facecam.facecam_id.split(", ").map(Number)
+                                );
+                                const distance = faceapi.euclideanDistance(
+                                    facecamDescriptor,
+                                    faceData.descriptor
+                                );
+
+                                if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+                                    isFaceMatched = true;
+                                    alert(
 										"error",
 										"Error",
 										"Wajah sudah terdaftar, harap gunakan wajah lain.",
 										() => window.location.replace("/facereg")
 									);
-									clearInterval(registerFace);
-									break;
-								}
-							}
-							if (!isFaceMatched) {
-								// Tidak ada wajah yang cocok, lanjutkan proses pendaftaran
-								registerNewFace(faceData);
-							}
-						} else {
-							// Hanya ada satu wajah di facecamData
-							const facecamDescriptor = new Float32Array(
-								facecamData[0].facecam_id.split(", ").map(Number)
-							);
-							const distance = faceapi.euclideanDistance(
-								facecamDescriptor,
-								faceData.descriptor
-							);
-							if (faceData.detection.score >= 0.9 && distance <= 0.6) {
-								// Wajah cocok, lanjutkan proses pendaftaran
-								registerNewFace(faceData);
-							} else {
-								alert(
+                                    return;
+                                }
+                            }
+
+                            if (!isFaceMatched) {
+                                registerNewFace(faceData);
+                            }
+                        } else {
+                            const facecamDescriptor = new Float32Array(
+                                facecamData[0].facecam_id.split(", ").map(Number)
+                            );
+                            const distance = faceapi.euclideanDistance(
+                                facecamDescriptor,
+                                faceData.descriptor
+                            );
+
+                            if (faceData.detection.score >= 0.9 && distance <= 0.6) {
+                                registerNewFace(faceData);
+                            } else {
+                                alert(
 									"error",
 									"Error",
 									"Wajah tidak cocok, harap coba lagi.",
 									() => window.location.replace("/facereg")
 								);
-								clearInterval(registerFace);
-							}
-						}
-					}
-				}, 1000);
+                                return;
+                            }
+                        }
+                    } else {
+                        setTimeout(attemptMatch, 1000); // No face detected, retry
+                    }
+                } catch (err) {
+                    handleSessionError(err, "/login");
+                }
+            }
 
-				const registerNewFace = (faceData) => {
-					clearInterval(registerFace); // Hentikan interval
+            const registerNewFace = (faceData) => {
+                barRef.current.style.width = "100%";
+                textRef.current.innerText = "100%";
 
-					// Update progress bar ke 100%
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
+                const {x, y, width, height} = faceData.detection.box;
+                const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
 
-					const {x, y, width, height} = faceData.detection.box;
-					const imgUrl = getFaceUrl(videoRef.current, x - 50, y - 75, height + 125);
+                const stringDescriptor = Array
+                    .from(faceData.descriptor)
+                    .join(", ");
+				const registerKeys = ["param", "img","devop-sso", "csrf_token"];
+                const registerValues = [stringDescriptor, `["${imgUrl}"]`, localStorage.getItem("regist_token"), Cookies.get("csrf")];
 
-					// Convert deskriptor wajah ke string
-					const stringDescriptor = Array
-						.from(faceData.descriptor)
-						.join(", ");
-					const registerKeys = ["param", "img","devop-sso", "csrf_token"];
-					const registerValues = [stringDescriptor, `["${imgUrl}"]`, localStorage.getItem("regist_token"), Cookies.get("csrf")];
+                loading("Loading", "Registering Face...");
+                apiXML
+                    .postInput("facecam", getFormData(registerKeys, registerValues))
+                    .then((response) => {
+                        const res = JSON.parse(response);
+                        Cookies.set("csrf", res.csrfHash); // Update csrf token
 
-					// Panggil API untuk mendaftarkan wajah
-					loading("Loading", "Registering Face...");
-					apiXML
-						.postInput("facecam", getFormData(registerKeys, registerValues))
-						.then((res) => {
-							res = JSON.parse(res); // Parse JSON response
-							Cookies.set("csrf", res.csrfHash); // Update csrf token
-							if (res.status) {
-								alert(
-									res.data.info,
-									res.data.title,
-									res.data.message,
-									() => window.location.replace("/setpassword")
-								);
-							} else {
-								alert(
-									res.info,
-									res.title,
-									res.message,
-									() => window.location.replace("/facereg")
-								);
-							}
-						})
-						.catch((err) => {
-							handleSessionError(err, "/facereg");
-						});
-				};
-			})
-			.catch((err) => {
-				handleSessionError(err, "/facereg");
-			});
-	};
+                        if (res.status) {
+                            alert(
+                                res.data.info,
+                                res.data.title,
+                                res.data.message,
+                                () => window.location.replace("/setpassword")
+                            );
+                        } else {
+                            alert(
+                                res.info,
+                                res.title,
+                                res.message,
+                                () => window.location.replace("/facereg")
+                            );
+                        }
+                    })
+                    .catch((err) => {
+                        handleSessionError(err, "/facereg");
+                    });
+            };
+
+            attemptMatch(); // Memulai percobaan pertama
+        })
+        .catch((err) => {
+            handleSessionError(err, "/facereg");
+        });
+};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
