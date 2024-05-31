@@ -112,6 +112,7 @@ const Home = () => {
     useEffect(() => {
         if (userData) {
             localStorage.setItem("group_id", userData.group_id);
+            console.log(userData);
         }
     }, [userData]);
 
