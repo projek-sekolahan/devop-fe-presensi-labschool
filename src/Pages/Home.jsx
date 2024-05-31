@@ -1,5 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { parseJwt, getFormData, alert, handleSessionError, handleSessionExpired } from "../utils/utils";
+import {
+    parseJwt,
+    getFormData,
+    alert,
+    handleSessionError,
+    handleSessionExpired,
+} from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
@@ -61,7 +67,7 @@ const Home = () => {
                 console.error("No data in API response:", res);
             }
         } catch (error) {
-            handleSessionError(error,"/login");
+            handleSessionError(error, "/login");
         }
     }, []);
 
@@ -87,7 +93,7 @@ const Home = () => {
                     handleSessionExpired(parsedRes.data);
                 }
             } catch (err) {
-                handleSessionError(err,"/login");
+                handleSessionError(err, "/login");
             }
         };
 
@@ -177,7 +183,9 @@ const Home = () => {
                     Cookies.set("csrf", res.csrfHash);
                     localStorage.setItem("token_registered", "done");
                 })
-                .catch((error) => {handleSessionError(error,"/login")});
+                .catch((error) => {
+                    handleSessionError(error, "/login");
+                });
         });
     };
 
@@ -279,7 +287,11 @@ const Home = () => {
                         </div>
                         <Link
                             id="presensi"
-                            to="/presensi/staff"
+                            to={
+                                localStorage.getItem("group_id")
+                                    ? "/presensi"
+                                    : "/presensi/staff"
+                            }
                             className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
                         >
                             <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
