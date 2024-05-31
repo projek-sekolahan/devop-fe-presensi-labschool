@@ -7,7 +7,7 @@ import {
 	loading,
 	alert,
 	parseJwt,
-	handleSessionError
+	handleSessionError,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -112,8 +112,11 @@ export default function FaceCam() {
 					"error",
 					"Matching Failed",
 					"Failed to match face after several attempts.",
+					() =>
+						navigate("/facecam", {
+							state: [...state],
+						}),
 				);
-				return;
 			}
 			attempts++;
 
@@ -150,7 +153,7 @@ export default function FaceCam() {
 						values.push(stringDescriptor, `["${imgUrl}"]`);
 
 						const response = await apiXML.presensiPost(
-							'process',
+							"process",
 							localStorage.getItem("AUTH_KEY"),
 							getFormData(keys, values),
 						);
@@ -169,7 +172,7 @@ export default function FaceCam() {
 					setTimeout(attemptMatch, 1000); // No face detected, retry
 				}
 			} catch (err) {
-				handleSessionError(err,"/login");
+				handleSessionError(err, "/login");
 			}
 		}
 
