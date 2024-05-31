@@ -75,18 +75,18 @@ export default function FaceCam() {
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
 					alert(
-						"Error",
+						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
-						"Error",
+						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
 					);
 				} else {
-					alert("Error", "Error", "Gagal mengakses webcam!");
+					alert("error", "Error", "Gagal mengakses webcam!");
 				}
 			});
 	};
