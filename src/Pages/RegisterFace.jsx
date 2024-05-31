@@ -1,6 +1,12 @@
 import * as faceapi from "face-api.js";
 import { useRef } from "react";
-import { getFormData, getFaceUrl, loading, alert, handleSessionError } from "../utils/utils";
+import {
+	getFormData,
+	getFaceUrl,
+	loading,
+	alert,
+	handleSessionError,
+} from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
@@ -10,6 +16,17 @@ export default function RegisterFace() {
 	const barRef = useRef();
 	const textRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
+	let oldFaceData;
+
+	apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
+		// Parse JSON
+		res = JSON.parse(res);
+		// Akses data facecam
+		const facecamData = res.data.facecam;
+
+		Cookies.set("csrf", res.csrfHash);
+	});
+
 	loading("Loading", "Getting camera access...");
 	const startVideo = () => {
 		navigator.mediaDevices
@@ -78,6 +95,7 @@ export default function RegisterFace() {
 						// Akses data facecam
 						const facecamData = res.data.facecam;
 						Cookies.set("csrf", res.csrfHash);
+
 						facecamData.forEach((facecam) => {
 							console.log(`Facecam ID: ${facecam.facecam_id}`);
 							console.log(`Level: ${facecam.level}`);
@@ -142,7 +160,7 @@ export default function RegisterFace() {
 												);
 									})
 									.catch((err) => {
-										handleSessionError(err,"/facereg");
+										handleSessionError(err, "/facereg");
 									});
 							} else {
 								barRef.current.style.width = percentage;
