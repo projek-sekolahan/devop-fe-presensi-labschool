@@ -67,23 +67,32 @@ export default function FaceVerification() {
 							latitude: latitude.toString(),
 						}),
 					],
-				})
+				}),
 			);
 		} else {
 			const distance = calculateDistance(
 				latitude,
 				longitude,
 				coordinat.latitude,
-				coordinat.longitude
+				coordinat.longitude,
 			);
 			alert(
 				"warning",
 				"",
 				`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 				() =>
-					navigate("/presensi/verif", {
-						state: [...state],
-					})
+					// navigate("/presensi/verif", {
+					// 	state: [...state],
+					// })
+					navigate("/facecam", {
+						state: [
+							...state,
+							JSON.stringify({
+								longitude: longitude.toString(),
+								latitude: latitude.toString(),
+							}),
+						],
+					}),
 			);
 		}
 	};
