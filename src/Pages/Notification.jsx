@@ -83,9 +83,9 @@ export default function Notification() {
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			}).catch((err) => {
-				res = JSON.parse(err.responseText);
-				setData(res.data);
-				Cookies.set("csrf", res.csrfHash);
+				err = JSON.parse(err.responseText);
+				setData(err.data);
+				Cookies.set("csrf", err.csrfHash);
 				setLoad(false);
 			});
 	return (
