@@ -83,7 +83,8 @@ export default function Notification() {
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			}).catch((err) => {
-				console.log(JSON.parse(err.responseText));
+				res = JSON.parse(err.responseText);
+				setData(res.data);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			});
@@ -101,12 +102,12 @@ export default function Notification() {
 					<div className="size-full flex justify-center items-center">
 						<span className="loading loading-spinner text-white"></span>
 					</div>
-				) : data ? (
-					<CardNotifikasi datas={data} />
-				) : (
+				) : data.info == "error" ? (
 					<div className="size-full flex justify-center items-center">
 						<p className="text-white">Belum ada notifikasi.</p>
 					</div>
+				) : (
+					<CardNotifikasi datas={data} />
 				)}
 			</main>
 		</div>
