@@ -86,6 +86,9 @@ export default function RegisterFace() {
 							"error",
 							"Matching Failed",
 							"Failed to match face after several attempts.",
+							() => {
+								window.location.reload(true);
+							},
 						);
 						return;
 					}
