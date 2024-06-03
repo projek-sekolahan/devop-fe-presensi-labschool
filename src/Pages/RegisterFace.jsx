@@ -120,8 +120,6 @@ export default function RegisterFace() {
 									"", "";
 									alert(
 										`Distance: ${distance}, Facecam ID: ${facecam.facecam_id}`,
-										"",
-										"",
 									);
 									if (
 										faceData.detection.score >= 0.9 &&
