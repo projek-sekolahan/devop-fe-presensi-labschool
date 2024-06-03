@@ -80,8 +80,6 @@ export default function RegisterFace() {
 				const facecamData = res.data.facecam;
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
 
-				console.log(res);
-
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
 						alert(
@@ -116,8 +114,11 @@ export default function RegisterFace() {
 										facecamDescriptor,
 										faceData.descriptor,
 									);
-									console.log(
+									"", "";
+									alert(
 										`Distance: ${distance}, Facecam ID: ${facecam.facecam_id}`,
+										"",
+										"",
 									);
 									if (
 										faceData.detection.score >= 0.9 &&
