@@ -18,6 +18,54 @@ export default function RegisterFace() {
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 	let oldFaceData;
 
+	let userData = {};
+	if (localStorage.getItem("token")) {
+		userData = parseJwt(localStorage.getItem("token"));
+	} else {
+		window.location.replace("/login");
+	}
+
+	loading("Loading", "Getting camera access...");
+
+	const startVideo = () => {
+		navigator.mediaDevices
+			.getUserMedia({ video: true })
+			.then((stream) => {
+				videoRef.current.srcObject = stream;
+				videoRef.current.setAttribute("autoplay", "");
+				videoRef.current.setAttribute("muted", "");
+				videoRef.current.setAttribute("playsinline", "");
+				Swal.close();
+			})
+			.catch(function (err) {
+				if (err.name === "NotAllowedError") {
+					alert(
+						"error",
+						"Error",
+						"Izin akses kamera ditolak oleh pengguna",
+					);
+				} else if (err.name === "NotFoundError") {
+					alert(
+						"error",
+						"Error",
+						"Tidak ada kamera yang tersedia pada perangkat",
+					);
+				} else {
+					alert("error", "Error", "Gagal mengakses webcam!");
+				}
+			});
+	};
+
+	//LOAD MODELS
+
+	Promise.all([
+		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+	]).then(() => {
+		startVideo();
+	});
+
 	const faceMyDetect = () => {
 		loading("Loading", "Tetap arahkan wajah ke kamera...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
@@ -202,7 +250,7 @@ export default function RegisterFace() {
 			<video
 				ref={videoRef}
 				crossOrigin="anonymous"
-				autoPlay
+				autoPlay={+true}
 				onPlay={faceMyDetect}
 				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
