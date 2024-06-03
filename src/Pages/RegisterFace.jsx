@@ -18,13 +18,6 @@ export default function RegisterFace() {
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 	let oldFaceData;
 
-	let userData = {};
-	if (localStorage.getItem("token")) {
-		userData = parseJwt(localStorage.getItem("token"));
-	} else {
-		window.location.replace("/login");
-	}
-
 	loading("Loading", "Getting camera access...");
 
 	const startVideo = () => {
