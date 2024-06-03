@@ -18,14 +18,14 @@ export default function RegisterFace() {
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 	let oldFaceData;
 
-	apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
-		// Parse JSON
-		res = JSON.parse(res);
-		// Akses data facecam
-		const facecamData = res.data.facecam;
+	// apiXML.postInput("loadFace", getFormData(keys, values)).then((res) => {
+	// 	// Parse JSON
+	// 	res = JSON.parse(res);
+	// 	// Akses data facecam
+	// 	const facecamData = res.data.facecam;
 
-		Cookies.set("csrf", res.csrfHash);
-	});
+	// 	Cookies.set("csrf", res.csrfHash);
+	// });
 	// const faceMyDetect = () => {
 	// 	loading("Loading", "Tetap arahkan wajah ke kamera...");
 	// 	const registerFace = setInterval(async () => {
@@ -151,6 +151,8 @@ export default function RegisterFace() {
 				// Akses data facecam
 				const facecamData = res.data.facecam;
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
+
+				console.log(res);
 
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
