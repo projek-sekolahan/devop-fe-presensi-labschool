@@ -82,6 +82,11 @@ export default function Notification() {
 				setData(parseJwt(res.data));
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
+			}).catch((err) => {
+				err = JSON.parse(err.responseText);
+				setData(err.data);
+				Cookies.set("csrf", err.csrfHash);
+				setLoad(false);
 			});
 	return (
 		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">
@@ -97,12 +102,12 @@ export default function Notification() {
 					<div className="size-full flex justify-center items-center">
 						<span className="loading loading-spinner text-white"></span>
 					</div>
-				) : data ? (
-					<CardNotifikasi datas={data} />
-				) : (
+				) : data.info == "error" ? (
 					<div className="size-full flex justify-center items-center">
 						<p className="text-white">Belum ada notifikasi.</p>
 					</div>
+				) : (
+					<CardNotifikasi datas={data} />
 				)}
 			</main>
 		</div>
