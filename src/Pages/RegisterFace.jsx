@@ -241,7 +241,7 @@ export default function RegisterFace() {
 				attemptMatch(); // Memulai percobaan pertama
 			})
 			.catch((err) => {
-				handleSessionError(err, "/facereg");
+				handleSessionError(err, "/login");
 			});
 	};
 	return (
