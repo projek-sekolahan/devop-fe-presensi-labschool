@@ -36,15 +36,24 @@ export default function RegisterFace() {
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
+						() => {
+							window.location.reload(true);
+						}
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
+						() => {
+							window.location.reload(true);
+						}
 					);
 				} else {
-					alert("error", "Error", "Gagal mengakses webcam!");
+					alert("error", "Error", "Gagal mengakses webcam!",
+					() => {
+						window.location.reload(true);
+					});
 				}
 			});
 	};
@@ -116,10 +125,6 @@ export default function RegisterFace() {
 									const distance = faceapi.euclideanDistance(
 										facecamDescriptor,
 										faceData.descriptor,
-									);
-									"", "";
-									alert(
-										`Distance: ${distance}, Facecam ID: ${facecam.facecam_id}`,
 									);
 									if (
 										faceData.detection.score >= 0.9 &&
@@ -233,7 +238,6 @@ export default function RegisterFace() {
 							handleSessionError(err, "/facereg");
 						});
 				};
-
 				attemptMatch(); // Memulai percobaan pertama
 			})
 			.catch((err) => {
