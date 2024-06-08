@@ -28,9 +28,11 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
+	const [height, seHeight] = useState(window.screen.height);
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);
+			setHeight(window.screen.height);
 		});
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
@@ -43,7 +45,9 @@ function App() {
 			}).then((result) => {
 				if (result.isConfirmed) {
 					apiXML.getCsrf();
-					Cookies.set("cookiesAccepted", "true", { expires: 2 * 60 * 60 * 1000 }); // Set cookie untuk 1 tahun
+					Cookies.set("cookiesAccepted", "true", {
+						expires: 2 * 60 * 60 * 1000,
+					}); // Set cookie untuk 1 tahun
 					localStorage.setItem("cookiesAccepted", "true");
 				}
 			});
@@ -51,7 +55,7 @@ function App() {
 	}, []);
 	return (
 		<Router>
-			{width && width > 500 ? (
+			{width && height && height >= width ? (
 				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
 					<div className="modal-box">
 						<h3 className="font-bold text-xl">Warning!</h3>
@@ -75,7 +79,10 @@ function App() {
 					<Route path="/bantuan" element={<Bantuan />} />
 					<Route path="/notifikasi" element={<Notification />} />
 					<Route path="/presensi/staff" element={<PresensiStaff />} />
-					<Route path="/presensi/verif" element={<FaceVerification />} />
+					<Route
+						path="/presensi/verif"
+						element={<FaceVerification />}
+					/>
 					<Route path="/presensi/izin" element={<Izin />} />
 					<Route path="/setting" element={<Pengaturan />} />
 					<Route path="/facecam" element={<FaceCam />} />
