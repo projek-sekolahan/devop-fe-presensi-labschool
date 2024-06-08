@@ -42,14 +42,12 @@ function App() {
 				allowOutsideClick: false,
 				allowEnterKey: false,
 				allowEscapeKey: false,
-			}).then((result) => {
-				if (result.isConfirmed) {
-					apiXML.getCsrf();
-					Cookies.set("cookiesAccepted", "true", {
-						expires: 2 * 60 * 60 * 1000,
-					}); // Set cookie untuk 1 tahun
-					localStorage.setItem("cookiesAccepted", "true");
-				}
+			}).then(() => {
+				apiXML.getCsrf();
+				Cookies.set("cookiesAccepted", "true", {
+					expires: 2 * 60 * 60 * 1000,
+				}); // Set cookie untuk 1 tahun
+				localStorage.setItem("cookiesAccepted", "true");
 			});
 		}
 	}, []);
