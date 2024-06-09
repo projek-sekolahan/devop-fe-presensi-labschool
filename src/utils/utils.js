@@ -211,29 +211,29 @@ function clearCookies() {
 	var allCookies = Cookies.get();
 
 	// Iterasi setiap cookie
-	Object
-		.keys(allCookies)
-		.forEach(function (cookieName) {
-			var cookieValue = Cookies.get(cookieName);
-			// Periksa apakah cookie sudah kedaluwarsa
-			if (!cookieValue) {
-				// Hapus cookie yang sudah kedaluwarsa
-				Cookies.remove(cookieName);
-				console.log(
-					'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.'
-				);
-			}
+	Object.keys(allCookies).forEach(function (cookieName) {
+		var cookieValue = Cookies.get(cookieName);
+		// Periksa apakah cookie sudah kedaluwarsa
+		if (!cookieValue) {
+			// Hapus cookie yang sudah kedaluwarsa
+			Cookies.remove(cookieName);
+			console.log(
+				'Cookie "' +
+					cookieName +
+					'" sudah dihapus karena sudah kedaluwarsa.',
+			);
+		}
 	});
 }
 
-export const handleSessionError = (err,location) => {
+export const handleSessionError = (err, location) => {
 	clearCookies();
-	console.log(err)
+	console.log(err);
 	if (err.status == 403 || err.status == 502) {
 		alertError(
 			"error",
 			"Password atau Username Salah",
-			"Periksa kembali password dan username."
+			"Periksa kembali password dan username.",
 			() => window.location.replace(location),
 		);
 	} else {
@@ -264,4 +264,4 @@ function alertError(type, title, message, callback) {
 	}).then(() => {
 		callback();
 	});
-};
+}
