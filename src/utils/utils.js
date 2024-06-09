@@ -231,8 +231,8 @@ export const handleSessionError = (err,location) => {
 	if (err.status == 403 || err.status == 502) {
 		alertError(
 			"error",
-			"Credential Expired",
-			"Your credentials has expired. Please try again later.",
+			"Password atau Username Salah",
+			"Periksa kembali password dan username."
 			() => window.location.replace(location),
 		);
 	} else {

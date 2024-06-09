@@ -34,6 +34,8 @@ function App() {
 			setWidth(window.screen.width);
 			setHeight(window.screen.height);
 		});
+		apiXML.getCsrf();
+
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",
@@ -42,13 +44,11 @@ function App() {
 				allowOutsideClick: false,
 				allowEnterKey: false,
 				allowEscapeKey: false,
-			}).then(() => {
-				apiXML.getCsrf();
-				Cookies.set("cookiesAccepted", "true", {
-					expires: 2 * 60 * 60 * 1000,
-				}); // Set cookie untuk 1 tahun
-				localStorage.setItem("cookiesAccepted", "true");
 			});
+			Cookies.set("cookiesAccepted", "true", {
+				expires: 2 * 60 * 60 * 1000,
+			}); // Set cookie untuk 1 tahun
+			localStorage.setItem("cookiesAccepted", "true");
 		}
 	}, []);
 	return (
