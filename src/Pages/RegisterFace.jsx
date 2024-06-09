@@ -148,7 +148,7 @@ export default function RegisterFace() {
 									registerNewFace(faceData);
 								}
 							} else {
-								if (facecamData[0] === false) {
+								if (facecamData[0] === undefined || facecamData[0] === 'undefined') {
 									registerNewFace(faceData);
 								} else {
 									const facecamDescriptor = new Float32Array(
