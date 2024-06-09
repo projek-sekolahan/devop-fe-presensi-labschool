@@ -88,7 +88,7 @@ export default function RegisterFace() {
 				// Akses data facecam
 				const facecamData = res.data.facecam;
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
-				console.log(facecamData[0]); return false;
+				
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
 						alert(
@@ -268,12 +268,8 @@ export default function RegisterFace() {
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
-					<p className="font-bold text-4xl" ref={textRef}>
-						0%
-					</p>
-					<p className="font-medium text-base">
-						Melakukan Registrasi Wajah Anda...
-					</p>
+					<p className="font-bold text-4xl" ref={textRef}> 0% </p>
+					<p className="font-medium text-base"> Melakukan Registrasi Wajah Anda... </p>
 				</div>
 				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
 					<span
