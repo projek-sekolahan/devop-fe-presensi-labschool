@@ -88,7 +88,7 @@ export default function RegisterFace() {
 				// Akses data facecam
 				const facecamData = res.data.facecam;
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
-				console.log(facecamData); return false;
+				console.log(facecamData[0].facecam_id); return false;
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
 						alert(
@@ -148,30 +148,34 @@ export default function RegisterFace() {
 									registerNewFace(faceData);
 								}
 							} else {
-								const facecamDescriptor = new Float32Array(
-									facecamData[0].facecam_id
-										.split(", ")
-										.map(Number),
-								);
-								const distance = faceapi.euclideanDistance(
-									facecamDescriptor,
-									faceData.descriptor,
-								);
-
-								if (
-									faceData.detection.score >= 0.9 &&
-									distance <= 0.6
-								) {
+								if (facecamData[0].facecam_id === "") {
 									registerNewFace(faceData);
 								} else {
-									alert(
-										"error",
-										"Error",
-										"Wajah tidak cocok, harap coba lagi.",
-										() =>
-											window.location.replace("/facereg"),
+									const facecamDescriptor = new Float32Array(
+										facecamData[0].facecam_id
+											.split(", ")
+											.map(Number),
 									);
-									return;
+									const distance = faceapi.euclideanDistance(
+										facecamDescriptor,
+										faceData.descriptor,
+									);
+	
+									if (
+										faceData.detection.score >= 0.9 &&
+										distance <= 0.6
+									) {
+										registerNewFace(faceData);
+									} else {
+										alert(
+											"error",
+											"Error",
+											"Wajah tidak cocok, harap coba lagi.",
+											() =>
+												window.location.replace("/facereg"),
+										);
+										return;
+									}
 								}
 							}
 						} else {
