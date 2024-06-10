@@ -228,14 +228,19 @@ function clearCookies() {
 
 export const handleSessionError = (err, location) => {
 	clearCookies();
-	console.log(err.responseText);
+	let res = JSON.parse(err.responseText);
+
 	if (err.status == 403 || err.status == 502) {
-		alertError(
-			"error",
-			"Password atau Username Salah",
-			"Periksa kembali password dan username.",
-			() => window.location.replace(location),
-		);
+		res.data
+			? alertError(res.data.info, res.data.title, res.data.message, () =>
+					window.location.replace(location),
+				)
+			: alertError(
+					"error",
+					"Password atau Username Salah",
+					"Periksa kembali password dan username.",
+					() => window.location.replace(location),
+				);
 	} else {
 		alertError(
 			"error",
