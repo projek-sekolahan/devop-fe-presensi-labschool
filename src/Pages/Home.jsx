@@ -288,7 +288,7 @@ const Home = () => {
                         <Link
                             id="presensi"
                             to={
-                                localStorage.getItem("group_id")
+                                localStorage.getItem("group_id") == "4"
                                     ? "/presensi"
                                     : "/presensi/staff"
                             }
