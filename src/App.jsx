@@ -28,7 +28,7 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
 	const [width, setWidth] = useState(window.screen.width);
-	const [height, seHeight] = useState(window.screen.height);
+	const [height, setHeight] = useState(window.screen.height);
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWidth(window.screen.width);

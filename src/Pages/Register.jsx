@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
-import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
+import {
+	getFormData,
+	alert,
+	loading,
+	handleSessionError,
+} from "../utils/utils";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Register() {
-	
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
@@ -38,8 +42,9 @@ export default function Register() {
 		loading("Loading", "Registering...");
 		localStorage.setItem("email", emailRef.current.value);
 		apiXML
-			.postInput('register',getFormData(keys, values))
+			.postInput("register", getFormData(keys, values))
 			.then((res) => {
+				console.log("not error : ", res);
 				res = JSON.parse(res);
 				setLoad(false);
 				Cookies.set("csrf", res.csrfHash);
@@ -52,7 +57,7 @@ export default function Register() {
 								navigate(
 									res.data.location === "register"
 										? "/"
-										: "/"+res.data.location,
+										: "/" + res.data.location,
 								),
 						)
 					: alert(
@@ -63,7 +68,7 @@ export default function Register() {
 						);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/");
+				handleSessionError(err, "/");
 			});
 	};
 	return (
