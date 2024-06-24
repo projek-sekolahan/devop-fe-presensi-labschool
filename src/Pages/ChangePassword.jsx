@@ -2,7 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
-import { getFormData, alert, loading, handleSessionError } from "../utils/utils";
+import {
+	getFormData,
+	alert,
+	loading,
+	handleSessionError,
+} from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function ChangePassword() {
@@ -17,8 +22,9 @@ export default function ChangePassword() {
 		const values = [emailRef.current.value, Cookies.get("csrf")];
 		localStorage.setItem("email", emailRef.current.value);
 		apiXML
-			.postInput('recover', getFormData(key, values))
+			.postInput("recover", getFormData(key, values))
 			.then((res) => {
+				console.log("not error : ", res);
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
@@ -34,7 +40,7 @@ export default function ChangePassword() {
 						);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/recover");
+				handleSessionError(err, "/recover");
 			});
 	};
 
@@ -77,20 +83,20 @@ export default function ChangePassword() {
 						</button>
 						<div
 							id="line"
-							className="w-full border-t-[0.25px] border-white h-0 relative top-4">
-							<p
-								className="absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10">
+							className="w-full border-t-[0.25px] border-white h-0 relative top-4"
+						>
+							<p className="absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10">
 								or
 							</p>
 						</div>
 					</form>
 				</div>
-				<p
-					className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
+				<p className="text-center text-sm font-light text-white dark:text-gray-400 mt-5">
 					Belum memiliki akun?{" "}
 					<Link
 						to="/"
-						className="font-medium underline text-white hover:underline dark:text-primary-500">
+						className="font-medium underline text-white hover:underline dark:text-primary-500"
+					>
 						Register
 					</Link>
 				</p>
