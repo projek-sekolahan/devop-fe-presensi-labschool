@@ -228,7 +228,6 @@ function clearCookies() {
 
 export const handleSessionError = (err, location) => {
 	clearCookies();
-	console.log("error : ", res);
 	let res = JSON.parse(err.responseText);
 
 	if (err.status == 403 || err.status == 502) {

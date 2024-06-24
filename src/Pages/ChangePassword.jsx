@@ -24,7 +24,6 @@ export default function ChangePassword() {
 		apiXML
 			.postInput("recover", getFormData(key, values))
 			.then((res) => {
-				console.log("not error : ", res);
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);

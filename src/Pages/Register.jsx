@@ -44,7 +44,6 @@ export default function Register() {
 		apiXML
 			.postInput("register", getFormData(keys, values))
 			.then((res) => {
-				console.log("not error : ", res);
 				res = JSON.parse(res);
 				setLoad(false);
 				Cookies.set("csrf", res.csrfHash);
