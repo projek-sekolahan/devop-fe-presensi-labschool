@@ -40,6 +40,8 @@ const SetPassword = lazy(() => import("./Pages/SetPassword"));
 // 	}
 // }
 
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(navigator.userAgent);
+
 function App() {
 	// isMobileCheck(
 	// 	() => (isMobile = true),
@@ -84,18 +86,15 @@ function App() {
 	}, []);
 	return (
 		<Router>
-			{(
-		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-			navigator.userAgent,
-		) ? (
-				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
-					<div className="modal-box">
-						<h3 className="font-bold text-xl">Warning!</h3>
-						<p className="py-4 text-lg">
-							Harap gunakan Handphone agar dapat mengakses website
-						</p>
-					</div>
+			{isMobileDevice && (
+                <div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
+                    <div className="modal-box">
+					<h3 className="font-bold text-xl">Warning!</h3>
+					<p className="py-4 text-lg">
+						Harap gunakan Handphone agar dapat mengakses website
+					</p>
 				</div>
+			</div>
 			) : null}
 			<Suspense fallback={<Loading />}>
 				<Routes>
