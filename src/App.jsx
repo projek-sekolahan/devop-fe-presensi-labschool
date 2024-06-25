@@ -41,7 +41,6 @@ function isMobileCheck(trueCallback, falseCallback) {
 }
 
 function App() {
-	const [isMobile, setIsMobile] = useState(false);
 	isMobileCheck(
 		() => (isMobile = true),
 		() => (isMobile = false),
