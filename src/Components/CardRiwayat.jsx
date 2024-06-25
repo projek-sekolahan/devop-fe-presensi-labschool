@@ -32,7 +32,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
 				})
-				.catch((e) => handleSessionError(e, "/riwayat"));
+				.catch((e) => console.log(e));
 	};
 	return (
 		<>
