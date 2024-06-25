@@ -26,6 +26,8 @@ const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
+let isMobile = false;
+
 function isMobileCheck(trueCallback, falseCallback) {
 	if (
 		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
@@ -41,10 +43,8 @@ function isMobileCheck(trueCallback, falseCallback) {
 function App() {
 	const [isMobile, setIsMobile] = useState(false);
 	isMobileCheck(
-		() => setIsMobile(true),
-		() => {
-			setIsMobile(false);
-		},
+		() => (isMobile = true),
+		() => (isMobile = false),
 	);
 	useEffect(() => {
 		apiXML.getCsrf();
@@ -66,8 +66,8 @@ function App() {
 
 		const handleResize = () => {
 			isMobileCheck(
-				() => setIsMobile(true),
-				() => setIsMobile(false),
+				() => (isMobile = true),
+				() => (isMobile = false),
 			);
 		};
 
