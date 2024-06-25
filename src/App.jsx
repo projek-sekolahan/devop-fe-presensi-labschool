@@ -59,7 +59,7 @@ function App() {
 			}); // Set cookie untuk 1 tahun
 			localStorage.setItem("cookiesAccepted", "true");
 		}
-	}, []);
+	}, [isMobile]);
 	return (
 		<Router>
 			{!isMobile ? (
