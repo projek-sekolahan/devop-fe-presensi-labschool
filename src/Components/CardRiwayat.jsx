@@ -1,6 +1,6 @@
 import { formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
-import { parseJwt, getFormData } from "../utils/utils";
+import { parseJwt, getFormData, handleSessionError } from "../utils/utils";
 import { useState } from "react";
 import Cookies from "js-cookie";
 export default function CardRiwayat({ index, history, biodata }) {
@@ -22,7 +22,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 			!datas &&
 			apiXML
 				.presensiPost(
-					'detail_presensi',
+					"detail_presensi",
 					localStorage.getItem("AUTH_KEY"),
 					getFormData(keys, values),
 				)
@@ -31,7 +31,8 @@ export default function CardRiwayat({ index, history, biodata }) {
 					Cookies.set("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
-				});
+				})
+				.catch((e) => handleSessionError(e, "/riwayat"));
 	};
 	return (
 		<>
