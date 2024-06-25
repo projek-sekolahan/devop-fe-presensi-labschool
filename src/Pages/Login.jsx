@@ -6,7 +6,7 @@ import {
 	getFormData,
 	alert,
 	loading,
-	handleSessionError
+	handleSessionError,
 } from "../utils/utils.js";
 import { useRef, useEffect } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -30,7 +30,11 @@ export default function Login() {
 		localStorage.setItem("devop-sso", token_key[1]);
 		loading("Loading", "Logging in...");
 		apiXML
-			.authPost('login', localStorage.getItem("AUTH_KEY"), getFormData(key, value))
+			.authPost(
+				"login",
+				localStorage.getItem("AUTH_KEY"),
+				getFormData(key, value),
+			)
 			.then((loginResponse) => {
 				const res = JSON.parse(loginResponse);
 				localStorage.setItem("login_token", res.data.Tokenjwt);
@@ -40,7 +44,7 @@ export default function Login() {
 				});
 			})
 			.catch((err) => {
-				handleSessionError(err,"/login");
+				handleSessionError(err, "/login");
 			});
 	};
 
@@ -90,6 +94,11 @@ export default function Login() {
 
 						<button
 							onClick={onSubmit}
+							onKeyPress={(e) => {
+								if (e.key === "Enter") {
+									onSubmit();
+								}
+							}}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
 							Login
