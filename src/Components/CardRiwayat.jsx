@@ -4,7 +4,7 @@ import {
 	parseJwt,
 	getFormData,
 	handleSessionError,
-	alertError,
+	alert,
 } from "../utils/utils";
 import { useState, useRef } from "react";
 import Cookies from "js-cookie";
@@ -43,11 +43,8 @@ export default function CardRiwayat({ index, history, biodata }) {
 					Cookies.set("csrf", res.csrfHash);
 					setLoading(false);
 					closeBtn.current.click();
-					alertError(
-						res.data.info,
-						res.data.title,
-						res.data.message,
-						() => window.location.replace("/riwayat"),
+					alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace("/riwayat"),
 					);
 				});
 	};
