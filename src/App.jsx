@@ -30,19 +30,21 @@ function App() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		try {
-			if (
-				/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-					navigator.userAgent,
-				)
-			) {
-				setIsMobile(true);
+		window.addEventListener("resize", () => {
+			try {
+				if (
+					/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+						navigator.userAgent,
+					)
+				) {
+					setIsMobile(true);
+				}
+				setIsMobile(false);
+			} catch (e) {
+				console.log("Error in isMobile");
+				setIsMobile(false);
 			}
-			setIsMobile(false);
-		} catch (e) {
-			console.log("Error in isMobile");
-			setIsMobile(false);
-		}
+		});
 		apiXML.getCsrf();
 
 		if (!localStorage.getItem("cookiesAccepted")) {
@@ -59,7 +61,7 @@ function App() {
 			}); // Set cookie untuk 1 tahun
 			localStorage.setItem("cookiesAccepted", "true");
 		}
-	}, [isMobile]);
+	}, []);
 	return (
 		<Router>
 			{!isMobile ? (
