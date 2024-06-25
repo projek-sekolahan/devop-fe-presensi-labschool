@@ -39,14 +39,13 @@ function isMobileCheck(trueCallback, falseCallback) {
 
 function App() {
 	const [isMobile, setIsMobile] = useState(false);
-
+	isMobileCheck(
+		() => setIsMobile(true),
+		() => {
+			setIsMobile(false);
+		},
+	);
 	useEffect(() => {
-		isMobileCheck(
-			() => setIsMobile(true),
-			() => {
-				setIsMobile(false);
-			},
-		);
 		window.addEventListener("resize", () => {
 			isMobileCheck(
 				() => setIsMobile(true),
