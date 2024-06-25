@@ -44,7 +44,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 					setLoading(false);
 					closeBtn.current.click();
 					alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace("/riwayat"),
+						Swal.close(),
 					);
 				});
 	};
