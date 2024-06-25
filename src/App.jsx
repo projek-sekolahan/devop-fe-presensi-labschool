@@ -45,6 +45,9 @@ function App() {
 		() => (isMobile = true),
 		() => (isMobile = false),
 	);
+
+	console.log(isMobile);
+
 	useEffect(() => {
 		apiXML.getCsrf();
 
