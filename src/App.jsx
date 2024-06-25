@@ -27,23 +27,29 @@ const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
+	const [change, setChange] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
-	useEffect(() => {
-		window.addEventListener("resize", () => {
-			try {
-				if (
-					/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-						navigator.userAgent,
-					)
-				) {
-					setIsMobile(true);
-				}
-				setIsMobile(false);
-			} catch (e) {
-				console.log("Error in isMobile");
-				setIsMobile(false);
+	const isMobileCheck = () => {
+		try {
+			if (
+				/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+					navigator.userAgent,
+				)
+			) {
+				setIsMobile(true);
 			}
+			setIsMobile(false);
+		} catch (e) {
+			console.log("Error in isMobile");
+			setIsMobile(false);
+		}
+	};
+
+	useEffect(() => {
+		isMobileCheck();
+		window.addEventListener("resize", () => {
+			setChange(true);
 		});
 		apiXML.getCsrf();
 
