@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
+	const submitBtn = useRef(null);
 	const onSubmit = (e) => {
 		e.preventDefault();
 
@@ -50,7 +51,7 @@ export default function Login() {
 	useEffect(() => {
 		window.addEventListener("keypress", (e) => {
 			if (e.key === "Enter") {
-				onSubmit();
+				submitBtn.current.click();
 			}
 		});
 	}, []);
@@ -101,6 +102,7 @@ export default function Login() {
 
 						<button
 							onClick={onSubmit}
+							ref={submitBtn}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
 							Login
