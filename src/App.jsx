@@ -26,27 +26,27 @@ const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
-let isMobile = false;
+// let isMobile = false;
 
-function isMobileCheck(trueCallback, falseCallback) {
-	if (
-		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-			navigator.userAgent,
-		)
-	) {
-		trueCallback();
-	} else {
-		falseCallback();
-	}
-}
+// function isMobileCheck(trueCallback, falseCallback) {
+// 	if (
+// 		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+// 			navigator.userAgent,
+// 		)
+// 	) {
+// 		trueCallback();
+// 	} else {
+// 		falseCallback();
+// 	}
+// }
 
 function App() {
-	isMobileCheck(
-		() => (isMobile = true),
-		() => (isMobile = false),
-	);
+	// isMobileCheck(
+	// 	() => (isMobile = true),
+	// 	() => (isMobile = false),
+	// );
 
-	console.log(isMobile);
+	// console.log(isMobile);
 
 	useEffect(() => {
 		apiXML.getCsrf();
@@ -66,25 +66,28 @@ function App() {
 			localStorage.setItem("cookiesAccepted", "true");
 		}
 
-		const handleResize = () => {
-			isMobileCheck(
-				() => (isMobile = true),
-				() => (isMobile = false),
-			);
-		};
+		// const handleResize = () => {
+		// 	isMobileCheck(
+		// 		() => (isMobile = true),
+		// 		() => (isMobile = false),
+		// 	);
+		// };
 
-		handleResize(); // Initial check
+		// handleResize(); // Initial check
 
-		window.addEventListener("resize", handleResize);
+		// window.addEventListener("resize", handleResize);
 
 		// Cleanup event listener on unmount
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
+		// return () => {
+		// 	window.removeEventListener("resize", handleResize);
+		// };
 	}, []);
 	return (
 		<Router>
-			{!isMobile ? (
+			{(
+		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+			navigator.userAgent,
+		) ? (
 				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
 					<div className="modal-box">
 						<h3 className="font-bold text-xl">Warning!</h3>
