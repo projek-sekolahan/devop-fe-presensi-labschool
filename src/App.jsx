@@ -26,24 +26,34 @@ const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
+function isMobileCheck(trueCallback, falseCallback) {
+	if (
+		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+			navigator.userAgent,
+		)
+	) {
+		trueCallback();
+	}
+	falseCallback();
+}
+
 function App() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
+		isMobileCheck(
+			() => setIsMobile(true),
+			() => {
+				setIsMobile(false);
+			},
+		);
 		window.addEventListener("resize", () => {
-			try {
-				if (
-					/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-						navigator.userAgent,
-					)
-				) {
-					setIsMobile(true);
-				}
-				setIsMobile(false);
-			} catch (e) {
-				console.log("Error in isMobile");
-				setIsMobile(false);
-			}
+			isMobileCheck(
+				() => setIsMobile(true),
+				() => {
+					setIsMobile(false);
+				},
+			);
 		});
 		apiXML.getCsrf();
 
