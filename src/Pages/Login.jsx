@@ -47,6 +47,11 @@ export default function Login() {
 				handleSessionError(err, "/login");
 			});
 	};
+	useEffect(() => {
+		window.addEventListener("keypress", (e) => {
+			console.log(e.key);
+		});
+	}, []);
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
@@ -94,11 +99,6 @@ export default function Login() {
 
 						<button
 							onClick={onSubmit}
-							onKeyPress={(e) => {
-								if (e.key === "Enter") {
-									onSubmit();
-								}
-							}}
 							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 						>
 							Login
