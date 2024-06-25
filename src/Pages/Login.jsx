@@ -49,7 +49,9 @@ export default function Login() {
 	};
 	useEffect(() => {
 		window.addEventListener("keypress", (e) => {
-			console.log(e.key);
+			if (e.key === "Enter") {
+				onSubmit();
+			}
 		});
 	}, []);
 
