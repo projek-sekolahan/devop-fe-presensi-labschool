@@ -33,8 +33,9 @@ function isMobileCheck(trueCallback, falseCallback) {
 		)
 	) {
 		trueCallback();
+	} else {
+		falseCallback();
 	}
-	falseCallback();
 }
 
 function App() {
@@ -46,14 +47,6 @@ function App() {
 		},
 	);
 	useEffect(() => {
-		window.addEventListener("resize", () => {
-			isMobileCheck(
-				() => setIsMobile(true),
-				() => {
-					setIsMobile(false);
-				},
-			);
-		});
 		apiXML.getCsrf();
 
 		if (!localStorage.getItem("cookiesAccepted")) {
@@ -70,6 +63,22 @@ function App() {
 			}); // Set cookie untuk 1 tahun
 			localStorage.setItem("cookiesAccepted", "true");
 		}
+
+		const handleResize = () => {
+			isMobileCheck(
+				() => setIsMobile(true),
+				() => setIsMobile(false),
+			);
+		};
+
+		handleResize(); // Initial check
+
+		window.addEventListener("resize", handleResize);
+
+		// Cleanup event listener on unmount
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
 	}, []);
 	return (
 		<Router>
