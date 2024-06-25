@@ -62,6 +62,7 @@ const Home = () => {
                 localStorage.setItem("token", res.data);
                 Cookies.set("csrf", res.csrfHash);
                 const user = parseJwt(res.data);
+                localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
                 console.error("No data in API response:", res);
@@ -108,12 +109,6 @@ const Home = () => {
             fetchUserData();
         }
     }, [fetchUserData]);
-
-    useEffect(() => {
-        if (userData) {
-            localStorage.setItem("group_id", userData.group_id);
-        }
-    }, [userData]);
 
     useEffect(() => {
         if (!localStorage.getItem("token_registered")) {
