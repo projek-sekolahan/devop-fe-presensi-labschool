@@ -27,10 +27,9 @@ const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
-	const [change, setChange] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
-	const isMobileCheck = () => {
+	useEffect(() => {
 		try {
 			if (
 				/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
@@ -44,13 +43,6 @@ function App() {
 			console.log("Error in isMobile");
 			setIsMobile(false);
 		}
-	};
-
-	useEffect(() => {
-		isMobileCheck();
-		window.addEventListener("resize", () => {
-			setChange(true);
-		});
 		apiXML.getCsrf();
 
 		if (!localStorage.getItem("cookiesAccepted")) {
