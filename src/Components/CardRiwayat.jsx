@@ -1,11 +1,17 @@
 import { formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
-import { parseJwt, getFormData, handleSessionError } from "../utils/utils";
-import { useState } from "react";
+import {
+	parseJwt,
+	getFormData,
+	handleSessionError,
+	alertError,
+} from "../utils/utils";
+import { useState, useRef } from "react";
 import Cookies from "js-cookie";
 export default function CardRiwayat({ index, history, biodata }) {
 	const [datas, setDatas] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const closeBtn = useRef(null);
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${index}`).showModal();
 		setDatas(null);
@@ -32,7 +38,18 @@ export default function CardRiwayat({ index, history, biodata }) {
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
 				})
-				.catch((e) => console.log(JSON.parse(e.responseText)));
+				.catch((e) => {
+					const res = JSON.parse(e.responseText);
+					Cookies.set("csrf", res.csrfHash);
+					setLoading(false);
+					closeBtn.current.click();
+					alertError(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						() => window.location.replace("/riwayat"),
+					);
+				});
 	};
 	return (
 		<>
@@ -150,6 +167,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 									setLoading(true);
 								}}
 								className="btn"
+								ref={closeBtn}
 							>
 								Close
 							</button>
