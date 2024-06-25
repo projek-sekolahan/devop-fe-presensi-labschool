@@ -37,7 +37,6 @@ export default class apiXML {
 			);
 			xhr.setRequestHeader("Authorization", `Basic ${key}`);
 			xhr.withCredentials = true;
-			xhr.timeout = 10000;
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
@@ -46,7 +45,6 @@ export default class apiXML {
 				}
 			};
 			xhr.onerror = () => reject(xhr);
-			xhr.ontimeout = () => reject("request time out");
 			xhr.send(createRequestBody(formData));
 		});
 	}
@@ -59,7 +57,6 @@ export default class apiXML {
 				"application/x-www-form-urlencoded",
 			);
 			xhr.withCredentials = true;
-			xhr.timeout = 10000;
 			xhr.onload = () => {
 				if (xhr.status === 200 || xhr.status === 201) {
 					resolve(xhr.responseText);
@@ -68,7 +65,6 @@ export default class apiXML {
 				}
 			};
 			xhr.onerror = () => reject(xhr);
-			xhr.ontimeout = () => reject("request timeout");
 			xhr.send(createRequestBody(formData));
 		});
 	}

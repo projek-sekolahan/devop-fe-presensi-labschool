@@ -27,12 +27,23 @@ const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
 function App() {
-	const [width, setWidth] = useState(window.screen.width);
-	const [height, setHeight] = useState(window.screen.height);
+	const [isMobile, setIsMobile] = useState(false);
+
 	useEffect(() => {
 		window.addEventListener("resize", () => {
-			setWidth(window.screen.width);
-			setHeight(window.screen.height);
+			try {
+				if (
+					/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
+						navigator.userAgent,
+					)
+				) {
+					setIsMobile(true);
+				}
+				setIsMobile(false);
+			} catch (e) {
+				console.log("Error in isMobile");
+				setIsMobile(false);
+			}
 		});
 		apiXML.getCsrf();
 
@@ -53,7 +64,7 @@ function App() {
 	}, []);
 	return (
 		<Router>
-			{width && height && height <= width ? (
+			{isMobile ? (
 				<div className="font-primary w-screen h-screen absolute left-0 top-0 z-50 flex justify-center items-center before:size-full before:bg-black before:opacity-40 backdrop-blur-sm before:absolute">
 					<div className="modal-box">
 						<h3 className="font-bold text-xl">Warning!</h3>
