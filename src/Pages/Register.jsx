@@ -47,24 +47,17 @@ export default function Register() {
 				res = JSON.parse(res);
 				setLoad(false);
 				Cookies.set("csrf", res.csrfHash);
-				res.status
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() =>
-								navigate(
-									res.data.location === "register"
-										? "/"
-										: "/" + res.data.location,
-								),
-						)
-					: alert(
-							res.info,
-							res.title,
-							res.message,
-							window.location.replace(res.location),
-						);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() =>
+						navigate(
+							res.data.location === "register"
+								? "/"
+								: "/" + res.data.location,
+						),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err, "/");
