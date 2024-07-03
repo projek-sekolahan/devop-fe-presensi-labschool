@@ -26,7 +26,7 @@ export default function Login() {
 
 		const key = ["username", "password", "devop-sso", "csrf_token"];
 		const value = [emailValue, hash, token_key[1], Cookies.get("csrf")];
-console.log(window.location.host.split(".")[0]);
+
 		localStorage.setItem("AUTH_KEY", token_key[0]);
 		localStorage.setItem("devop-sso", token_key[1]);
 		loading("Loading", "Logging in...");
