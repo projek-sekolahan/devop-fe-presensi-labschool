@@ -47,7 +47,6 @@ export default function Register() {
 				res = JSON.parse(res);
 				setLoad(false);
 				Cookies.set("csrf", res.csrfHash);
-				console.log(res); return false;
 				res.status
 					? alert(
 							res.data.info,
