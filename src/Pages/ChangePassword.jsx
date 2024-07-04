@@ -31,10 +31,7 @@ export default function ChangePassword() {
 					res.data.info,
 					res.data.title,
 					res.data.message,
-					() =>
-						navigate(
-							 "/" + res.data.location,
-						),
+					() => window.location.replace("/"+res.data.location),
 				)
 			})
 			.catch((err) => {
