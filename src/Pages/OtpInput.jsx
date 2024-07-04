@@ -92,9 +92,12 @@ export default function OtpInput() {
 			.then((res) => {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
-				alert(res.info, res.title, res.message, () =>
-					window.location.replace("/verify"),
-				);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/"+res.data.location),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err, "/verify");
