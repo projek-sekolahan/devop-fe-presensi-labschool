@@ -38,7 +38,7 @@ export default function OtpInput() {
 					res.data.info,
 					res.data.title,
 					res.data.message,
-					() => window.location.replace("/"+res.data.location),
+					() => window.location.replace("/facereg"),
 				)
 			})
 			.catch((err) => {
