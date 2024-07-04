@@ -82,12 +82,11 @@ export default function RegisterFace() {
 		apiXML
 			.postInput("loadFace", getFormData(keys, values))
 			.then((res) => {
-				res = JSON.parse(res); // Parse JSON response
-
+			res = JSON.parse(res); // Parse JSON response
+			Cookies.set("csrf", res.csrfHash); // Update csrf token
+			if (res.status) {
 				// Akses data facecam
 				const facecamData = res.data.facecam;
-				Cookies.set("csrf", res.csrfHash); // Update csrf token
-
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
 						alert(
@@ -247,6 +246,14 @@ export default function RegisterFace() {
 						});
 				};
 				attemptMatch(); // Memulai percobaan pertama
+			} else {
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/"+res.data.location),
+				)
+			}
 			})
 			.catch((err) => {
 				handleSessionError(err, "/login");
