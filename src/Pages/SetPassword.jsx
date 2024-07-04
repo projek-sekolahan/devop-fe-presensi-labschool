@@ -41,16 +41,12 @@ export default function SetPassword() {
 				setDisabled(false);
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
-				res.status
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace("login"),
-						)
-					: alert(res.info, res.title, res.message, () =>
-							window.location.replace("setpassword"),
-						);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace(res.data.location),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err,"/setpassword");
