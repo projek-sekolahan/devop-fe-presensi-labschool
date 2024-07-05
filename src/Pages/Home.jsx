@@ -188,8 +188,8 @@ const Home = () => {
                     values[0],
                     getFormData(combinedKeys, values),
                 )
-                .then((response) => {
-                    const res = JSON.parse(response); console.log(res);
+                .then((response) => { console.log(response); return false;
+                    const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
                     localStorage.setItem("token_registered", "done");
                 })
