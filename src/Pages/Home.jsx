@@ -49,6 +49,7 @@ const Home = () => {
             let keys = ["AUTH_KEY", "login_token"];
             const combinedKeys = addDefaultKeys(keys);
             let values = combinedKeys.map((key) => localStorage.getItem(key));
+            console.log(values);
             values = [...values, Cookies.get("csrf")];
 
             const response = await apiXML.usersPost(
