@@ -48,9 +48,17 @@ const Home = () => {
         try {
             let keys = ["AUTH_KEY", "login_token"];
             const combinedKeys = addDefaultKeys(keys);
-            let values = combinedKeys.map((key) => localStorage.getItem(key));
-            console.log(values);
-            values = [...values, Cookies.get("csrf")];
+            // let values = combinedKeys.map((key) => localStorage.getItem(key));
+            // console.log(values);
+            // values = [...values, Cookies.get("csrf")];
+            // Fetch values from localStorage and Cookies
+            let values = combinedKeys.map((key) => {
+                let value = localStorage.getItem(key);
+                if (key === "csrf_token" && !value) {
+                    value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
+                }
+                return value;
+            });
 
             const response = await apiXML.usersPost(
                 "profile",
