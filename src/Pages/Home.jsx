@@ -5,6 +5,7 @@ import {
     alert,
     handleSessionError,
     handleSessionExpired,
+    addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
@@ -45,16 +46,15 @@ const Home = () => {
 
     const fetchUserData = useCallback(async () => {
         try {
-            let keys = ["AUTH_KEY", "devop-sso", "login_token"];
-            let values = keys.map((key) => localStorage.getItem(key));
-
-            keys = [...keys, "csrf_token"];
+            let keys = ["AUTH_KEY", "login_token"];
+            const combinedKeys = addDefaultKeys(keys);
+            let values = combinedKeys.map((key) => localStorage.getItem(key));
             values = [...values, Cookies.get("csrf")];
 
             const response = await apiXML.usersPost(
                 "profile",
                 values[0],
-                getFormData(keys, values),
+                getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
 
@@ -75,16 +75,15 @@ const Home = () => {
     useEffect(() => {
         const checkSession = async () => {
             try {
-                let keys = ["devop-sso", "AUTH_KEY"];
-                let values = keys.map((key) => localStorage.getItem(key));
-
-                keys = [...keys, "csrf_token"];
+                let keys = ["AUTH_KEY"];
+                const combinedKeys = addDefaultKeys(keys);
+                let values = combinedKeys.map((key) => localStorage.getItem(key));
                 values = [...values, Cookies.get("csrf")];
 
                 const res = await apiXML.authPost(
                     "sessTime",
                     values[1],
-                    getFormData(keys, values),
+                    getFormData(combinedKeys, values),
                 );
                 const parsedRes = JSON.parse(res);
 
@@ -155,23 +154,21 @@ const Home = () => {
     }, []);
 
     const registerToken = (currentToken) => {
-        let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
+        let keys = ["AUTH_KEY", "login_token", "token_fcm"];
+        const combinedKeys = addDefaultKeys(keys);
         let values = [
-            ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
+            ...combinedKeys.slice(0, -1).map((key) => localStorage.getItem(key)),
             currentToken,
         ];
         localStorage.setItem("token_fcm", currentToken);
-
         apiXML.getCsrf().then((res) => {
             res = JSON.parse(res);
-            keys = [...keys, "csrf_token"];
             values = [...values, res.csrfHash];
-
             apiXML
                 .notificationsPost(
                     "registerToken",
                     values[0],
-                    getFormData(keys, values),
+                    getFormData(combinedKeys, values),
                 )
                 .then((response) => {
                     const res = JSON.parse(response);
