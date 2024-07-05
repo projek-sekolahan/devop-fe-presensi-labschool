@@ -48,9 +48,6 @@ const Home = () => {
         try {
             let keys = ["AUTH_KEY", "login_token"];
             const combinedKeys = addDefaultKeys(keys);
-            // let values = combinedKeys.map((key) => localStorage.getItem(key));
-            // console.log(values);
-            // values = [...values, Cookies.get("csrf")];
             // Fetch values from localStorage and Cookies
             let values = combinedKeys.map((key) => {
                 let value = localStorage.getItem(key);
@@ -86,8 +83,14 @@ const Home = () => {
             try {
                 let keys = ["AUTH_KEY"];
                 const combinedKeys = addDefaultKeys(keys);
-                let values = combinedKeys.map((key) => localStorage.getItem(key));
-                values = [...values, Cookies.get("csrf")];
+                // Fetch values from localStorage and Cookies
+                let values = combinedKeys.map((key) => {
+                    let value = localStorage.getItem(key);
+                    if (key === "csrf_token" && !value) {
+                        value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
+                    }
+                    return value;
+                });
 
                 const res = await apiXML.authPost(
                     "sessTime",
@@ -165,14 +168,20 @@ const Home = () => {
     const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
         const combinedKeys = addDefaultKeys(keys);
-        let values = [
-            ...combinedKeys.slice(0, -1).map((key) => localStorage.getItem(key)),
-            currentToken,
-        ];
         localStorage.setItem("token_fcm", currentToken);
         apiXML.getCsrf().then((res) => {
             res = JSON.parse(res);
-            values = [...values, res.csrfHash];
+            // Fetch values from localStorage and Cookies
+            let values = combinedKeys.map((key) => {
+                let value = localStorage.getItem(key);
+                if (key === "csrf_token" && !value) {
+                    value = res.csrfHash; // Fallback to Cookies if csrf_token is null in localStorage
+                }
+                if (key === "token_fcm" && !value) {
+                    value = currentToken; // Fallback to Cookies if token_fcm is null in localStorage
+                }
+                return value;
+            });
             apiXML
                 .notificationsPost(
                     "registerToken",
