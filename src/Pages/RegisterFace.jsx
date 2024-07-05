@@ -6,6 +6,7 @@ import {
 	loading,
 	alert,
 	handleSessionError,
+	addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -15,9 +16,6 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
-	const key = ["param", "img", "devop-sso", "csrf_token"];
-	let oldFaceData;
-
 	loading("Loading", "Getting camera access...");
 
 	const startVideo = () => {
@@ -207,9 +205,8 @@ export default function RegisterFace() {
 					const registerKeys = [
 						"param",
 						"img",
-						"devop-sso",
-						"csrf_token",
 					];
+					const combinedKeys = addDefaultKeys(registerKeys);
 					const registerValues = [
 						stringDescriptor,
 						`["${imgUrl}"]`,
@@ -221,7 +218,7 @@ export default function RegisterFace() {
 					apiXML
 						.postInput(
 							"facecam",
-							getFormData(registerKeys, registerValues),
+							getFormData(combinedKeys, registerValues),
 						)
 						.then((response) => {
 							const res = JSON.parse(response);

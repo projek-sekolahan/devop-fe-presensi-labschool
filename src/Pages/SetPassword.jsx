@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash, alert, loading, handleSessionError } from "../utils/utils";
+import { getFormData, getHash, alert, loading, handleSessionError, addDefaultKeys, } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -29,14 +29,15 @@ export default function SetPassword() {
 		e.preventDefault();
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
-		const key = ["password", "devop-sso", "csrf_token"];
+		const key = ["password"];
+		const combinedKeys = addDefaultKeys(key);
 		const values = [
 			getHash(inputRef.current.value),
 			localStorage.getItem("regist_token"),
 			Cookies.get("csrf"),
 		];
 		apiXML
-			.postInput('setPassword',getFormData(key, values))
+			.postInput('setPassword',getFormData(combinedKeys, values))
 			.then((res) => {
 				setDisabled(false);
 				res = JSON.parse(res);

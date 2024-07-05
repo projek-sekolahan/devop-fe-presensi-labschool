@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import apiXML from "../utils/apiXML.js";
-import { getFormData, parseJwt } from "../utils/utils";
+import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
 import { useState } from "react";
 import Cookies from "js-cookie";
 
@@ -62,12 +62,13 @@ export default function Notification() {
 	const [data, setData] = useState(null);
 	const [load, setLoad] = useState(true);
 
-	const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token"];
+	const keys = ["AUTH_KEY", "token"];
+	const combinedKeys = addDefaultKeys(keys);
 	const values = [
 		localStorage.getItem("AUTH_KEY"),
+		localStorage.getItem("login_token"),
 		localStorage.getItem("devop-sso"),
 		Cookies.get("csrf"),
-		localStorage.getItem("login_token"),
 	];
 	load &&
 		!data &&
@@ -75,7 +76,7 @@ export default function Notification() {
 			.notificationsPost(
 				'detail',
 				localStorage.getItem("login_token"),
-				getFormData(keys, values),
+				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);
