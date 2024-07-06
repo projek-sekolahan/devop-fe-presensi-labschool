@@ -35,23 +35,13 @@ export default function Riwayat() {
 		}
 	});
 
-	/* const keys = [
+	const keys = [
 		"AUTH_KEY",
 		"token",
 		"table",
 		"key",
 	];
 	const combinedKeys = addDefaultKeys(keys);
-	let values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("login_token"),
-		"tab-presensi",
-		localStorage.getItem("devop-sso"),
-		Cookies.get("csrf"),
-	];
-	filter == "7 Hari"
-		? (values = [...values, "7 DAY"])
-		: (values = [...values, "14 DAY"]); */
 	// Fetch values from localStorage and Cookies
 	let values = combinedKeys.map((key) => {
 		let value = localStorage.getItem(key);

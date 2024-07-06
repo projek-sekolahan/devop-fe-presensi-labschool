@@ -40,12 +40,12 @@ export default function Izin() {
 			localStorage.getItem("devop-sso"),
 			Cookies.get("csrf"),
 		];
-
+		let updatedCombinedKeys = [...combinedKeys];
 		if (
 			localStorage.getItem("group_id") == "4" ||
 			state.ket[0] === "non-dinas"
 		) {
-			combinedKeys = [...combinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
+			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
 
 			values = [
 				...values,
@@ -54,12 +54,12 @@ export default function Izin() {
 				keteranganRef.current.value,
 			];
 		} else {
-			combinedKeys = [...combinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
+			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
 			values = [...values, "non-dinas", ...state.ket, keteranganRef.current.value];
 		}
 
 		if (imageUrl) {
-			combinedKeys = [...combinedKeys, "foto_surat"];
+			updatedCombinedKeys = [...updatedCombinedKeys, "foto_surat"];
 
 			values = [...values, `["${imageUrl}"]`];
 		}
@@ -68,7 +68,7 @@ export default function Izin() {
 			.presensiPost(
 				'process',
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(combinedKeys, values),
+				getFormData(updatedCombinedKeys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);
