@@ -145,6 +145,7 @@ const Home = () => {
                                 "error",
                                 "Notification",
                                 "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                                () => navigate("/home"),
                             ),
                         );
                 } else {
@@ -152,6 +153,7 @@ const Home = () => {
                         "error",
                         "Notification",
                         "Notification permission denied.",
+                        () => navigate("/home"),
                     );
                 }
             });
@@ -161,7 +163,7 @@ const Home = () => {
                 const notificationOptions = {
                     body: payload.notification.body,
                 };
-                alert("success", notificationTitle, notificationOptions.body);
+                alert("success", notificationTitle, notificationOptions.body, () => navigate("/home"));
             });
         }
     }, []);
