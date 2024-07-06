@@ -9,7 +9,7 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
 import {
     CheckCircleIcon,
@@ -43,7 +43,7 @@ const firebaseConfig = {
 const Home = () => {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
-
+    const navigate = useNavigate();
     const fetchUserData = useCallback(async () => {
         try {
             let keys = ["AUTH_KEY", "login_token"];
@@ -133,6 +133,7 @@ const Home = () => {
                         "success",
                         "Notification",
                         "Notification permission granted.",
+                        () => navigate("/home"),
                     );
                     getToken(messaging, {
                         vapidKey:
@@ -188,7 +189,7 @@ const Home = () => {
                     values[0],
                     getFormData(combinedKeys, values),
                 )
-                .then((response) => { console.log(response); return false;
+                .then((response) => {
                     const res = JSON.parse(response);
                     Cookies.set("csrf", res.csrfHash);
                     localStorage.setItem("token_registered", "done");
