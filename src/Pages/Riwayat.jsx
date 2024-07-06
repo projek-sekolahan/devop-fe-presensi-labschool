@@ -35,7 +35,7 @@ export default function Riwayat() {
 		}
 	});
 
-	const keys = [
+	/* const keys = [
 		"AUTH_KEY",
 		"token",
 		"table",
@@ -51,7 +51,25 @@ export default function Riwayat() {
 	];
 	filter == "7 Hari"
 		? (values = [...values, "7 DAY"])
-		: (values = [...values, "14 DAY"]);
+		: (values = [...values, "14 DAY"]); */
+	// Fetch values from localStorage and Cookies
+	let values = combinedKeys.map((key) => {
+		let value = localStorage.getItem(key);
+		if (key === "csrf_token" && !value) {
+			value = Cookies.get("csrf");
+		}
+		if (key === "table" && !value) {
+			value = "tab-presensi";
+		}
+		if (key === "key" && !value) {
+			if (filter === "7 Hari") {
+				value = "7 DAY";
+			} else {
+				value = "14 DAY";
+			}
+		}
+		return value;
+	});
 	!historys &&
 		load &&
 		apiXML

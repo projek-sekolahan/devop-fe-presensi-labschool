@@ -32,7 +32,6 @@ export default function Izin() {
 		let keys = [
 			"AUTH_KEY",
 			"token",
-			"status_dinas",
 		];
 		const combinedKeys = addDefaultKeys(keys);
 		let values = [
@@ -46,7 +45,7 @@ export default function Izin() {
 			localStorage.getItem("group_id") == "4" ||
 			state.ket[0] === "non-dinas"
 		) {
-			combinedKeys = [...combinedKeys, "status_kehadiran", "keterangan_kehadiran"];
+			combinedKeys = [...combinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
 
 			values = [
 				...values,
@@ -55,8 +54,8 @@ export default function Izin() {
 				keteranganRef.current.value,
 			];
 		} else {
-			combinedKeys = [...combinedKeys, "status_kehadiran", "keterangan_kehadiran"];
-			values = [...values, ...state.ket, keteranganRef.current.value];
+			combinedKeys = [...combinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
+			values = [...values, "non-dinas", ...state.ket, keteranganRef.current.value];
 		}
 
 		if (imageUrl) {
