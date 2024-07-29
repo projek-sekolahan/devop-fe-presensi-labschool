@@ -71,7 +71,7 @@ const Home = () => {
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
-                console.error("No data in API response:", res);
+                alert("error", "No data in API response:", "err");
             }
         } catch (error) {
             handleSessionError(error, "/login");
