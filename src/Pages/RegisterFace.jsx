@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
 import { loadFaceModels } from "../utils/loadModels";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import {
 	getFormData,
 	getFaceUrl,
@@ -338,7 +338,7 @@ export default function RegisterFace() {
 						<h3 className="font-bold text-lg">Hasil Potret</h3>
 						<img ref={imgRef} className="w-full" />
 						<div className="modal-action flex justify-center">
-							<form method="dialog flex gap-2">
+							<form method="dialog" className="flex gap-2">
 								{/* if there is a button in form, it will close the modal */}
 								<button className="btn">Cancel</button>
 								<button
