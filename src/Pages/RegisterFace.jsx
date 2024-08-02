@@ -17,10 +17,7 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const canvasRef = useRef();
 	const imgRef = useRef();
-	const modalRef = useRef();
-	const btnRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
-	const [load, setLoad] = useState(false);
 	let oldFaceData;
 
 	useEffect(() => {
@@ -111,9 +108,7 @@ export default function RegisterFace() {
 	}
 
 	const detectFace = () => {
-		// loading("Loading", "Tetap arahkan wajah ke kamera...");
-		btnRef.current.disabled = true;
-		setLoad(true);
+		loading("Loading", "Sedang melakukan deteksi wajah...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -134,7 +129,6 @@ export default function RegisterFace() {
 					const facecamData = res.data.facecam;
 					async function attemptMatch() {
 						if (attempts >= maxAttempts) {
-							modalRef.current.close();
 							alert(
 								"error",
 								"Matching Failed",
@@ -178,7 +172,7 @@ export default function RegisterFace() {
 											distance <= 0.6
 										) {
 											isFaceMatched = true;
-											modalRef.current.close();
+
 											alert(
 												"error",
 												"Error",
@@ -220,7 +214,6 @@ export default function RegisterFace() {
 										) {
 											registerNewFace(faceData);
 										} else {
-											modalRef.current.close();
 											alert(
 												"error",
 												"Error",
@@ -243,7 +236,6 @@ export default function RegisterFace() {
 					}
 
 					const registerNewFace = (faceData) => {
-						modalRef.current.close();
 						const stringDescriptor = Array.from(
 							faceData.descriptor,
 						).join(", ");
@@ -341,26 +333,21 @@ export default function RegisterFace() {
 				>
 					Ambil Gambar
 				</button>
-				<dialog id="my_modal_1" className="modal" ref={modalRef}>
+				<dialog id="my_modal_1" className="modal">
 					<div className="modal-box">
 						<h3 className="font-bold text-lg">Hasil Potret</h3>
 						<img ref={imgRef} className="w-full" />
-						<div className="modal-action flex justify-center gap-2">
-							<form method="dialog">
+						<div className="modal-action flex justify-center">
+							<form method="dialog flex gap-2">
 								{/* if there is a button in form, it will close the modal */}
 								<button className="btn">Cancel</button>
+								<button
+									className="btn bg-secondary-green"
+									onClick={detectFace}
+								>
+									Proses
+								</button>
 							</form>
-							<button
-								className="btn bg-secondary-green"
-								onClick={detectFace}
-								ref={btnRef}
-							>
-								{load ? (
-									<span className="loading loading-spinner loading-xs"></span>
-								) : (
-									"Proses"
-								)}
-							</button>
 						</div>
 					</div>
 				</dialog>
