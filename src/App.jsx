@@ -113,10 +113,7 @@ function App() {
 					<Route path="/bantuan" element={<Bantuan />} />
 					<Route path="/notifikasi" element={<Notification />} />
 					<Route path="/presensi/staff" element={<PresensiStaff />} />
-					<Route
-						path="/presensi/verif"
-						element={<FaceVerification />}
-					/>
+					<Route path="/presensi/verif" element={<FaceVerification />} />
 					<Route path="/presensi/izin" element={<Izin />} />
 					<Route path="/setting" element={<Pengaturan />} />
 					<Route path="/facecam" element={<FaceCam />} />

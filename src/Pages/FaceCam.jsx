@@ -8,6 +8,7 @@ import {
 	alert,
 	parseJwt,
 	handleSessionError,
+	addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -32,8 +33,6 @@ export default function FaceCam() {
 
 	const keys = [
 		"AUTH_KEY",
-		"devop-sso",
-		"csrf_token",
 		"token",
 		"status_dinas",
 		"status_kehadiran",
@@ -41,24 +40,25 @@ export default function FaceCam() {
 		"facecam_id",
 		"foto_presensi",
 	];
+	const combinedKeys = addDefaultKeys(keys);
 	let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
 
 	if (localStorage.getItem("group_id") == "4") {
 		values = [
 			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("devop-sso"),
-			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			"non-dinas",
 			...state,
+			localStorage.getItem("devop-sso"),
+			Cookies.get("csrf"),
 		];
 	} else {
 		values = [
 			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("devop-sso"),
-			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			...state,
+			localStorage.getItem("devop-sso"),
+			Cookies.get("csrf"),
 		];
 	}
 
@@ -78,15 +78,26 @@ export default function FaceCam() {
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
+						() =>
+							navigate("/facecam", {
+								state: [...state],
+							}),
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
+						() =>
+							navigate("/facecam", {
+								state: [...state],
+							}),
 					);
 				} else {
-					alert("error", "Error", "Gagal mengakses webcam!");
+					alert("error", "Error", "Gagal mengakses webcam!",() =>
+						navigate("/facecam", {
+							state: [...state],
+						}),);
 				}
 			});
 	};
@@ -155,7 +166,7 @@ export default function FaceCam() {
 						const response = await apiXML.presensiPost(
 							"process",
 							localStorage.getItem("AUTH_KEY"),
-							getFormData(keys, values),
+							getFormData(combinedKeys, values),
 						);
 						const res = JSON.parse(response);
 						Cookies.set("csrf", res.csrfHash);

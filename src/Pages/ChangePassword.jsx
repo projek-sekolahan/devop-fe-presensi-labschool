@@ -27,16 +27,12 @@ export default function ChangePassword() {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
-				res.status
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace("/verify"),
-						)
-					: alert(res.info, res.title, res.message, () =>
-							window.location.replace("/recover"),
-						);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/"+res.data.location),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err, "/recover");

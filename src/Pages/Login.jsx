@@ -7,6 +7,7 @@ import {
 	alert,
 	loading,
 	handleSessionError,
+	addDefaultKeys,
 } from "../utils/utils.js";
 import { useRef, useEffect } from "react";
 import PasswordShow from "../Components/PasswordShow";
@@ -24,7 +25,8 @@ export default function Login() {
 		const hash = getHash(passwordValue);
 		const token_key = getKey(emailValue, hash);
 
-		const key = ["username", "password", "devop-sso", "csrf_token"];
+		const key = ["username", "password"];
+		const combinedKeys = addDefaultKeys(key);
 		const value = [emailValue, hash, token_key[1], Cookies.get("csrf")];
 
 		localStorage.setItem("AUTH_KEY", token_key[0]);
@@ -34,7 +36,7 @@ export default function Login() {
 			.authPost(
 				"login",
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(key, value),
+				getFormData(combinedKeys, value),
 			)
 			.then((loginResponse) => {
 				const res = JSON.parse(loginResponse);

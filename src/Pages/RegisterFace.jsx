@@ -7,6 +7,7 @@ import {
 	loading,
 	alert,
 	handleSessionError,
+	addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -14,8 +15,6 @@ import Cookies from "js-cookie";
 
 export default function RegisterFace() {
 	const videoRef = useRef();
-	const barRef = useRef();
-	const textRef = useRef();
 	const canvasRef = useRef();
 	const imgRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
@@ -124,159 +123,169 @@ export default function RegisterFace() {
 			.postInput("loadFace", getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res); // Parse JSON response
-
-				// Akses data facecam
-				const facecamData = res.data.facecam;
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
+				if (res.status) {
+					// Akses data facecam
+					const facecamData = res.data.facecam;
+					async function attemptMatch() {
+						if (attempts >= maxAttempts) {
+							alert(
+								"error",
+								"Matching Failed",
+								"Failed to match face after several attempts.",
+								() => {
+									window.location.reload(true);
+								},
+							);
+							return;
+						}
+						attempts++;
 
-				async function attemptMatch() {
-					if (attempts >= maxAttempts) {
-						alert(
-							"error",
-							"Matching Failed",
-							"Failed to match face after several attempts.",
-							() => {
-								window.location.reload(true);
-							},
-						);
-						return;
-					}
-					attempts++;
+						try {
+							const faceData = await faceapi
+								.detectSingleFace(
+									imgRef.current,
+									new faceapi.TinyFaceDetectorOptions(),
+								)
+								.withFaceLandmarks()
+								.withFaceDescriptor();
 
-					try {
-						const faceData = await faceapi
-							.detectSingleFace(
-								imgRef.current,
-								new faceapi.TinyFaceDetectorOptions(),
-							)
-							.withFaceLandmarks()
-							.withFaceDescriptor();
+							if (faceData) {
+								if (facecamData.length > 1) {
+									let isFaceMatched = false;
 
-						if (faceData) {
-							if (facecamData.length > 1) {
-								let isFaceMatched = false;
-
-								for (const facecam of facecamData) {
-									const facecamDescriptor = new Float32Array(
-										facecam.facecam_id
-											.split(", ")
-											.map(Number),
-									);
-									const distance = faceapi.euclideanDistance(
-										facecamDescriptor,
-										faceData.descriptor,
-									);
-									if (
-										faceData.detection.score >= 0.9 &&
-										distance <= 0.6
-									) {
-										isFaceMatched = true;
-										alert(
-											"error",
-											"Error",
-											"Wajah sudah terdaftar, harap gunakan wajah lain.",
-											() =>
-												window.location.replace(
-													"/facereg",
-												),
-										);
-										return;
+									for (const facecam of facecamData) {
+										const facecamDescriptor =
+											new Float32Array(
+												facecam.facecam_id
+													.split(", ")
+													.map(Number),
+											);
+										const distance =
+											faceapi.euclideanDistance(
+												facecamDescriptor,
+												faceData.descriptor,
+											);
+										if (
+											faceData.detection.score >= 0.9 &&
+											distance <= 0.6
+										) {
+											isFaceMatched = true;
+											alert(
+												"error",
+												"Error",
+												"Wajah sudah terdaftar, harap gunakan wajah lain.",
+												() =>
+													window.location.replace(
+														"/facereg",
+													),
+											);
+											return;
+										}
 									}
-								}
 
-								if (!isFaceMatched) {
-									registerNewFace(faceData);
-								}
-							} else {
-								if (
-									facecamData[0] === undefined ||
-									facecamData[0] === "undefined"
-								) {
-									registerNewFace(faceData);
+									if (!isFaceMatched) {
+										registerNewFace(faceData);
+									}
 								} else {
-									const facecamDescriptor = new Float32Array(
-										facecamData[0].facecam_id
-											.split(", ")
-											.map(Number),
-									);
-									const distance = faceapi.euclideanDistance(
-										facecamDescriptor,
-										faceData.descriptor,
-									);
-
 									if (
-										faceData.detection.score >= 0.9 &&
-										distance <= 0.6
+										facecamData[0] === undefined ||
+										facecamData[0] === "undefined"
 									) {
 										registerNewFace(faceData);
 									} else {
-										alert(
-											"error",
-											"Error",
-											"Wajah tidak cocok, harap coba lagi.",
-											() =>
-												window.location.replace(
-													"/facereg",
-												),
-										);
-										return;
+										const facecamDescriptor =
+											new Float32Array(
+												facecamData[0].facecam_id
+													.split(", ")
+													.map(Number),
+											);
+										const distance =
+											faceapi.euclideanDistance(
+												facecamDescriptor,
+												faceData.descriptor,
+											);
+
+										if (
+											faceData.detection.score >= 0.9 &&
+											distance <= 0.6
+										) {
+											registerNewFace(faceData);
+										} else {
+											alert(
+												"error",
+												"Error",
+												"Wajah tidak cocok, harap coba lagi.",
+												() =>
+													window.location.replace(
+														"/facereg",
+													),
+											);
+											return;
+										}
 									}
 								}
-							}
-						} else {
-							setTimeout(attemptMatch, 1000); // No face detected, retry
-						}
-					} catch (err) {
-						handleSessionError(err, "/login");
-					}
-				}
-
-				const registerNewFace = (faceData) => {
-					const stringDescriptor = Array.from(
-						faceData.descriptor,
-					).join(", ");
-					const registerKeys = [
-						"param",
-						"img",
-						"devop-sso",
-						"csrf_token",
-					];
-					const registerValues = [
-						stringDescriptor,
-						`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
-						localStorage.getItem("regist_token"),
-						Cookies.get("csrf"),
-					];
-
-					loading("Loading", "Registering Face...");
-					apiXML
-						.postInput(
-							"facecam",
-							getFormData(registerKeys, registerValues),
-						)
-						.then((response) => {
-							const res = JSON.parse(response);
-							Cookies.set("csrf", res.csrfHash); // Update csrf token
-
-							if (res.status) {
-								alert(
-									res.data.info,
-									res.data.title,
-									res.data.message,
-									() =>
-										window.location.replace("/setpassword"),
-								);
 							} else {
-								alert(res.info, res.title, res.message, () =>
-									window.location.replace("/facereg"),
-								);
+								setTimeout(attemptMatch, 1000); // No face detected, retry
 							}
-						})
-						.catch((err) => {
-							handleSessionError(err, "/facereg");
-						});
-				};
-				attemptMatch(); // Memulai percobaan pertama
+						} catch (err) {
+							handleSessionError(err, "/login");
+						}
+					}
+
+					const registerNewFace = (faceData) => {
+						const stringDescriptor = Array.from(
+							faceData.descriptor,
+						).join(", ");
+						const registerKeys = ["param", "img"];
+						const combinedKeys = addDefaultKeys(registerKeys);
+						const registerValues = [
+							stringDescriptor,
+							`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+							localStorage.getItem("regist_token"),
+							Cookies.get("csrf"),
+						];
+
+						loading("Loading", "Registering Face...");
+						apiXML
+							.postInput(
+								"facecam",
+								getFormData(combinedKeys, registerValues),
+							)
+							.then((response) => {
+								const res = JSON.parse(response);
+								Cookies.set("csrf", res.csrfHash); // Update csrf token
+
+								if (res.status) {
+									alert(
+										res.data.info,
+										res.data.title,
+										res.data.message,
+										() =>
+											window.location.replace(
+												"/setpassword",
+											),
+									);
+								} else {
+									alert(
+										res.info,
+										res.title,
+										res.message,
+										() =>
+											window.location.replace("/facereg"),
+									);
+								}
+							})
+							.catch((err) => {
+								handleSessionError(err, "/facereg");
+							});
+					};
+					attemptMatch(); // Memulai percobaan pertama
+				} else {
+					alert(res.data.info, res.data.title, res.data.message, () =>
+						window.location.replace("/" + res.data.location),
+					);
+				}
 			})
 			.catch((err) => {
 				handleSessionError(err, "/login");

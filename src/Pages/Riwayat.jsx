@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
-import { parseJwt, getFormData, handleSessionError } from "../utils/utils";
+import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 
@@ -37,29 +37,36 @@ export default function Riwayat() {
 
 	const keys = [
 		"AUTH_KEY",
-		"devop-sso",
-		"csrf_token",
 		"token",
 		"table",
 		"key",
 	];
-	let values = [
-		localStorage.getItem("AUTH_KEY"),
-		localStorage.getItem("devop-sso"),
-		Cookies.get("csrf"),
-		localStorage.getItem("login_token"),
-		"tab-presensi",
-	];
-	filter == "7 Hari"
-		? (values = [...values, "7 DAY"])
-		: (values = [...values, "14 DAY"]);
+	const combinedKeys = addDefaultKeys(keys);
+	// Fetch values from localStorage and Cookies
+	let values = combinedKeys.map((key) => {
+		let value = localStorage.getItem(key);
+		if (key === "csrf_token" && !value) {
+			value = Cookies.get("csrf");
+		}
+		if (key === "table" && !value) {
+			value = "tab-presensi";
+		}
+		if (key === "key" && !value) {
+			if (filter === "7 Hari") {
+				value = "7 DAY";
+			} else {
+				value = "14 DAY";
+			}
+		}
+		return value;
+	});
 	!historys &&
 		load &&
 		apiXML
 			.presensiPost(
 				'reports',
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values),
+				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);

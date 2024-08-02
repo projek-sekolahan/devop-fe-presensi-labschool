@@ -9,7 +9,8 @@ import {
 	loading,
 	alert,
 	parseJwt,
-	handleSessionError
+	handleSessionError,
+	addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
@@ -30,23 +31,21 @@ export default function Izin() {
 
 		let keys = [
 			"AUTH_KEY",
-			"devop-sso",
-			"csrf_token",
 			"token",
-			"status_dinas",
 		];
+		const combinedKeys = addDefaultKeys(keys);
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
+			localStorage.getItem("login_token"),
 			localStorage.getItem("devop-sso"),
 			Cookies.get("csrf"),
-			localStorage.getItem("login_token"),
 		];
-
+		let updatedCombinedKeys = [...combinedKeys];
 		if (
 			localStorage.getItem("group_id") == "4" ||
 			state.ket[0] === "non-dinas"
 		) {
-			keys = [...keys, "status_kehadiran", "keterangan_kehadiran"];
+			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
 
 			values = [
 				...values,
@@ -55,12 +54,12 @@ export default function Izin() {
 				keteranganRef.current.value,
 			];
 		} else {
-			keys = [...keys, "status_kehadiran", "keterangan_kehadiran"];
-			values = [...values, ...state.ket, keteranganRef.current.value];
+			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
+			values = [...values, "non-dinas", ...state.ket, keteranganRef.current.value];
 		}
 
 		if (imageUrl) {
-			keys = [...keys, "foto_surat"];
+			updatedCombinedKeys = [...updatedCombinedKeys, "foto_surat"];
 
 			values = [...values, `["${imageUrl}"]`];
 		}
@@ -69,7 +68,7 @@ export default function Izin() {
 			.presensiPost(
 				'process',
 				localStorage.getItem("AUTH_KEY"),
-				getFormData(keys, values),
+				getFormData(updatedCombinedKeys, values),
 			)
 			.then((res) => {
 				res = JSON.parse(res);

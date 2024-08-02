@@ -5,10 +5,11 @@ import {
     alert,
     handleSessionError,
     handleSessionExpired,
+    addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import Loading from "./Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
 import {
     CheckCircleIcon,
@@ -42,19 +43,24 @@ const firebaseConfig = {
 const Home = () => {
     const [show, setShow] = useState(false);
     const [userData, setUserData] = useState(null);
-
+    const navigate = useNavigate();
     const fetchUserData = useCallback(async () => {
         try {
-            let keys = ["AUTH_KEY", "devop-sso", "login_token"];
-            let values = keys.map((key) => localStorage.getItem(key));
-
-            keys = [...keys, "csrf_token"];
-            values = [...values, Cookies.get("csrf")];
+            let keys = ["AUTH_KEY", "login_token"];
+            const combinedKeys = addDefaultKeys(keys);
+            // Fetch values from localStorage and Cookies
+            let values = combinedKeys.map((key) => {
+                let value = localStorage.getItem(key);
+                if (key === "csrf_token" && !value) {
+                    value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
+                }
+                return value;
+            });
 
             const response = await apiXML.usersPost(
                 "profile",
                 values[0],
-                getFormData(keys, values),
+                getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
 
@@ -65,7 +71,7 @@ const Home = () => {
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
-                console.error("No data in API response:", res);
+                alert("error", "No data in API response:", "err");
             }
         } catch (error) {
             handleSessionError(error, "/login");
@@ -75,16 +81,21 @@ const Home = () => {
     useEffect(() => {
         const checkSession = async () => {
             try {
-                let keys = ["devop-sso", "AUTH_KEY"];
-                let values = keys.map((key) => localStorage.getItem(key));
-
-                keys = [...keys, "csrf_token"];
-                values = [...values, Cookies.get("csrf")];
+                let keys = ["AUTH_KEY"];
+                const combinedKeys = addDefaultKeys(keys);
+                // Fetch values from localStorage and Cookies
+                let values = combinedKeys.map((key) => {
+                    let value = localStorage.getItem(key);
+                    if (key === "csrf_token" && !value) {
+                        value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
+                    }
+                    return value;
+                });
 
                 const res = await apiXML.authPost(
                     "sessTime",
                     values[1],
-                    getFormData(keys, values),
+                    getFormData(combinedKeys, values),
                 );
                 const parsedRes = JSON.parse(res);
 
@@ -122,6 +133,7 @@ const Home = () => {
                         "success",
                         "Notification",
                         "Notification permission granted.",
+                        () => navigate("/home"),
                     );
                     getToken(messaging, {
                         vapidKey:
@@ -133,6 +145,7 @@ const Home = () => {
                                 "error",
                                 "Notification",
                                 "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                                () => navigate("/home"),
                             ),
                         );
                 } else {
@@ -140,6 +153,7 @@ const Home = () => {
                         "error",
                         "Notification",
                         "Notification permission denied.",
+                        () => navigate("/home"),
                     );
                 }
             });
@@ -149,29 +163,33 @@ const Home = () => {
                 const notificationOptions = {
                     body: payload.notification.body,
                 };
-                alert("success", notificationTitle, notificationOptions.body);
+                alert("success", notificationTitle, notificationOptions.body, () => navigate("/home"));
             });
         }
     }, []);
 
     const registerToken = (currentToken) => {
-        let keys = ["AUTH_KEY", "devop-sso", "login_token", "token_fcm"];
-        let values = [
-            ...keys.slice(0, -1).map((key) => localStorage.getItem(key)),
-            currentToken,
-        ];
+        let keys = ["AUTH_KEY", "login_token", "token_fcm"];
+        const combinedKeys = addDefaultKeys(keys);
         localStorage.setItem("token_fcm", currentToken);
-
         apiXML.getCsrf().then((res) => {
             res = JSON.parse(res);
-            keys = [...keys, "csrf_token"];
-            values = [...values, res.csrfHash];
-
+            // Fetch values from localStorage and Cookies
+            let values = combinedKeys.map((key) => {
+                let value = localStorage.getItem(key);
+                if (key === "csrf_token" && !value) {
+                    value = res.csrfHash; // Fallback to Cookies if csrf_token is null in localStorage
+                }
+                if (key === "token_fcm" && !value) {
+                    value = currentToken; // Fallback to Cookies if token_fcm is null in localStorage
+                }
+                return value;
+            });
             apiXML
                 .notificationsPost(
                     "registerToken",
                     values[0],
-                    getFormData(keys, values),
+                    getFormData(combinedKeys, values),
                 )
                 .then((response) => {
                     const res = JSON.parse(response);

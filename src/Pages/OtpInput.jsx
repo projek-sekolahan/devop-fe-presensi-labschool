@@ -34,16 +34,12 @@ export default function OtpInput() {
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.token);
 				Cookies.set("csrf", res.csrfHash);
-				res.status
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace("/facereg"),
-						)
-					: alert(res.info, res.title, res.message, () =>
-							window.location.replace("/verify"),
-						);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/facereg"),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err, "/verify");
@@ -92,9 +88,12 @@ export default function OtpInput() {
 			.then((res) => {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
-				alert(res.info, res.title, res.message, () =>
-					window.location.replace("/verify"),
-				);
+				alert(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/"+res.data.location),
+				)
 			})
 			.catch((err) => {
 				handleSessionError(err, "/verify");

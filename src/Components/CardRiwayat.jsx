@@ -3,7 +3,7 @@ import apiXML from "../utils/apiXML";
 import {
 	parseJwt,
 	getFormData,
-	handleSessionError,
+	addDefaultKeys,
 	alert,
 } from "../utils/utils";
 import { useState, useRef } from "react";
@@ -15,13 +15,14 @@ export default function CardRiwayat({ index, history, biodata }) {
 	const clickHandler = () => {
 		document.getElementById(`my_modal_${index}`).showModal();
 		setDatas(null);
-		const keys = ["AUTH_KEY", "devop-sso", "csrf_token", "token", "param"];
+		const keys = ["AUTH_KEY", "token", "param"];
+		const combinedKeys = addDefaultKeys(keys);
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("devop-sso"),
-			Cookies.get("csrf"),
 			localStorage.getItem("login_token"),
 			biodata.id.concat(",", history["Tanggal Presensi"]),
+			localStorage.getItem("devop-sso"),
+			Cookies.get("csrf"),
 		];
 
 		loading &&
@@ -30,7 +31,7 @@ export default function CardRiwayat({ index, history, biodata }) {
 				.presensiPost(
 					"detail_presensi",
 					localStorage.getItem("AUTH_KEY"),
-					getFormData(keys, values),
+					getFormData(combinedKeys, values),
 				)
 				.then((res) => {
 					res = JSON.parse(res);

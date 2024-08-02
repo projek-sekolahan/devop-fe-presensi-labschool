@@ -45,6 +45,12 @@ export const getImageUrl = (fileInput, callback) => {
 	reader.readAsDataURL(fileInput);
 };
 
+export const defaultKeys = ["devop-sso", "csrf_token"];
+
+export const addDefaultKeys = (keys) => {
+  return [...keys, ...defaultKeys];
+};
+
 export const createFormData = (keys, values) => {
 	const formData = new FormData();
 	keys.forEach((key, index) => {
