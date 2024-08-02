@@ -328,13 +328,13 @@ export default function RegisterFace() {
 							<form method="dialog">
 								{/* if there is a button in form, it will close the modal */}
 								<button className="btn">Cancel</button>
+								<button
+									className="btn bg-secondary-green"
+									onClick={detectFace}
+								>
+									Proses
+								</button>
 							</form>
-							<button
-								className="btn bg-secondary-green"
-								onClick={detectFace}
-							>
-								Proses
-							</button>
 						</div>
 					</div>
 				</dialog>
