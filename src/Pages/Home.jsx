@@ -163,7 +163,12 @@ const Home = () => {
                 const notificationOptions = {
                     body: payload.notification.body,
                 };
-                alert("success", notificationTitle, notificationOptions.body, () => navigate("/home"));
+                alert(
+                    "success",
+                    notificationTitle,
+                    notificationOptions.body,
+                    () => navigate("/home"),
+                );
             });
         }
     }, []);
@@ -208,6 +213,11 @@ const Home = () => {
         }
     });
 
+    document.getElementById("photo_profile").addEventListener("click", () => {
+        document.getElementById("my_modal_1").showModal();
+        clickPhoto();
+    });
+
     return !userData ? (
         <Loading />
     ) : (
@@ -230,8 +240,20 @@ const Home = () => {
                         <img
                             src={userData.img_location}
                             alt="photo_profile"
+                            id="photo_profile"
                             className="size-12 rounded-full bg-white"
                         />
+                        <dialog id="my_modal_1" className="modal">
+                            <div className="modal-box">
+                                <img src={imgRef} className="w-full" />
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        {/* if there is a button in form, it will close the modal */}
+                                        <button className="btn">Close</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog>
                         <p className="font-semibold text-sm ">
                             {userData.nama_lengkap}
                         </p>
