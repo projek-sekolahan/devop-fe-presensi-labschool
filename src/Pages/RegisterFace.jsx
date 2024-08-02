@@ -133,9 +133,6 @@ export default function RegisterFace() {
 								"error",
 								"Matching Failed",
 								"Failed to match face after several attempts.",
-								() => {
-									window.location.reload(true);
-								},
 							);
 							return;
 						}
@@ -175,10 +172,6 @@ export default function RegisterFace() {
 												"error",
 												"Error",
 												"Wajah sudah terdaftar, harap gunakan wajah lain.",
-												() =>
-													window.location.replace(
-														"/facereg",
-													),
 											);
 											return;
 										}
@@ -216,10 +209,6 @@ export default function RegisterFace() {
 												"error",
 												"Error",
 												"Wajah tidak cocok, harap coba lagi.",
-												() =>
-													window.location.replace(
-														"/facereg",
-													),
 											);
 											return;
 										}
