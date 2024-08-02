@@ -215,7 +215,6 @@ const Home = () => {
 
     document.getElementById("photo_profile").addEventListener("click", () => {
         document.getElementById("my_modal_1").showModal();
-        clickPhoto();
     });
 
     return !userData ? (
