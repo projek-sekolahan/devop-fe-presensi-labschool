@@ -13,12 +13,11 @@ import {
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { loadFaceModels } from "../utils/loadModels";
 
-export default function RegisterFace() {
+export default function FaceCam() {
 	const videoRef = useRef();
-	const canvasRef = useRef();
-	const imgRef = useRef();
+	const barRef = useRef();
+	const textRef = useRef();
 	const { state } = useLocation();
 
 	let userData = {};
@@ -30,15 +29,7 @@ export default function RegisterFace() {
 
 	const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
-	useEffect(() => {
-		const init = async () => {
-			loading("Loading", "Getting camera access...");
-			await loadFaceModels(); // Load face models sebelum memulai video
-			startVideo();
-		};
-
-		init();
-	}, []);
+	loading("Loading", "Getting camera access...");
 
 	const keys = [
 		"AUTH_KEY",
@@ -73,13 +64,13 @@ export default function RegisterFace() {
 
 	const startVideo = () => {
 		navigator.mediaDevices
-			.getUserMedia({ video: true, audio: false })
+			.getUserMedia({ video: true })
 			.then((stream) => {
-				Swal.close();
 				videoRef.current.srcObject = stream;
 				videoRef.current.setAttribute("autoplay", "");
 				videoRef.current.setAttribute("muted", "");
 				videoRef.current.setAttribute("playsinline", "");
+				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -87,67 +78,43 @@ export default function RegisterFace() {
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
+						() =>
+							navigate("/facecam", {
+								state: [...state],
+							}),
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
+						() =>
+							navigate("/facecam", {
+								state: [...state],
+							}),
+					);
+				} else {
+					alert("error", "Error", "Gagal mengakses webcam!", () =>
+						navigate("/facecam", {
+							state: [...state],
+						}),
 					);
 				}
 			});
 	};
 
-	function clickPhoto() {
-		const context = canvasRef.current.getContext("2d");
-		const video = videoRef.current;
+	//LOAD MODELS
 
-		// Ukuran canvas untuk gambar akhir
-		const canvasWidth = 400;
-		const canvasHeight = 400;
+	Promise.all([
+		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+	]).then(() => {
+		startVideo();
+	});
 
-		// Ukuran asli video
-		const videoWidth = video.videoWidth;
-		const videoHeight = video.videoHeight;
-
-		// Menentukan titik tengah dari video
-		const videoCenterX = videoWidth / 2;
-		const videoCenterY = videoHeight / 2;
-
-		// Menentukan titik awal untuk memotong gambar (crop)
-		const cropX = videoCenterX - canvasWidth / 2;
-		const cropY = videoCenterY - canvasHeight / 2;
-
-		// Mengatur ukuran canvas
-		canvasRef.current.width = canvasWidth;
-		canvasRef.current.height = canvasHeight;
-
-		// Membalik gambar secara horizontal untuk menghindari mirror effect
-		context.save(); // Menyimpan state konteks canvas
-		context.scale(-1, 1); // Membalik gambar secara horizontal
-		context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
-
-		// Mengambil gambar dari video dan memotongnya tepat di tengah
-		context.drawImage(
-			video,
-			cropX,
-			50,
-			canvasWidth,
-			canvasHeight, // Area dari video yang akan diambil
-			0,
-			0,
-			canvasWidth,
-			canvasHeight, // Area di canvas tempat gambar akan digambar
-		);
-
-		context.restore(); // Mengembalikan state konteks canvas ke semula
-
-		let image_data_url = canvasRef.current.toDataURL("image/jpeg");
-
-		// Mengatur gambar hasil di img element
-		imgRef.current.src = image_data_url;
-
-		loading("Loading", "Sedang melakukan deteksi wajah...");
+	const faceMyDetect = () => {
+		loading("Loading", "Tetap arahkan wajah ke kamera...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -157,6 +124,10 @@ export default function RegisterFace() {
 					"error",
 					"Matching Failed",
 					"Failed to match face after several attempts.",
+					() =>
+						navigate("/facecam", {
+							state: [...state],
+						}),
 				);
 			}
 			attempts++;
@@ -164,7 +135,7 @@ export default function RegisterFace() {
 			try {
 				const faceData = await faceapi
 					.detectSingleFace(
-						imgRef.current,
+						videoRef.current,
 						new faceapi.TinyFaceDetectorOptions(),
 					)
 					.withFaceLandmarks()
@@ -175,15 +146,23 @@ export default function RegisterFace() {
 						descriptor,
 						faceData.descriptor,
 					);
+					const percentage = `${Math.round(((1 - distance) / 0.4) * 100)}%`;
 
 					if (distance <= 0.6) {
+						barRef.current.style.width = "100%";
+						textRef.current.innerText = "100%";
+
+						const { x, y, width, height } = faceData.detection.box;
+						const imgUrl = getFaceUrl(
+							videoRef.current,
+							x - 50,
+							y - 75,
+							height + 125,
+						);
 						const stringDescriptor = Array.from(
 							faceData.descriptor,
 						).join(", ");
-						values.push(
-							stringDescriptor,
-							`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
-						);
+						values.push(stringDescriptor, `["${imgUrl}"]`);
 
 						const response = await apiXML.presensiPost(
 							"process",
@@ -197,6 +176,8 @@ export default function RegisterFace() {
 							window.location.replace("/home"),
 						);
 					} else {
+						barRef.current.style.width = percentage;
+						textRef.current.innerText = percentage;
 						setTimeout(attemptMatch, 1000); // Schedule the next attempt
 					}
 				} else {
@@ -208,18 +189,17 @@ export default function RegisterFace() {
 		}
 
 		attemptMatch(); // Memulai percobaan pertama
-	}
+	};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
 			<video
 				ref={videoRef}
 				crossOrigin="anonymous"
-				className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
+				autoPlay
+				onPlay={faceMyDetect}
+				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
-			<canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-			<img ref={imgRef} className="absolute z-10 hidden" />
-
 			<div
 				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
 			>
@@ -228,19 +208,28 @@ export default function RegisterFace() {
 				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
 				<span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
 			</div>
+
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
+					<p className="font-bold text-4xl" ref={textRef}>
+						0%
+					</p>
 					<p className="font-medium text-base">
-						{" "}
-						Melakukan Registrasi Wajah Anda...{" "}
+						Melakukan Registrasi Wajah Anda...
 					</p>
 				</div>
-				<button className="btn" onClick={clickPhoto}>
-					Presensi
-				</button>
+				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
+					<span
+						id="bar"
+						style={{ transition: "width 0.5s" }}
+						className={`h-full rounded-r-full rounded-l-full bg-primary-md`}
+						ref={barRef}
+					></span>
+				</div>
 				<small>
-					Pastikan pencahayaan bagus untuk hasil gambar yang maksimal
+					Harap bersabar karena sistem kami sedang memproses wajah
+					anda. Pastikan anda melihat kamera
 				</small>
 			</div>
 		</div>

@@ -57,7 +57,7 @@ export default function RegisterFace() {
 			});
 	};
 
-	async function clickPhoto() {
+	function clickPhoto() {
 		const context = canvasRef.current.getContext("2d");
 		const video = videoRef.current;
 
@@ -301,7 +301,7 @@ export default function RegisterFace() {
 				className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
 			<canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-			<img ref={imgRef} className="absolute z-10 left-0 top-0 w-1/4" />
+			<img ref={imgRef} className="absolute z-10 hidden" />
 
 			<div
 				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
