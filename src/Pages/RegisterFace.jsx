@@ -1,6 +1,6 @@
 import * as faceapi from "face-api.js";
 import { loadFaceModels } from "../utils/loadModels";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
 	getFormData,
 	getFaceUrl,
@@ -20,6 +20,7 @@ export default function RegisterFace() {
 	const modalRef = useRef();
 	const btnRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
+	const [load, setLoad] = useState(false);
 	let oldFaceData;
 
 	useEffect(() => {
@@ -112,8 +113,7 @@ export default function RegisterFace() {
 	const detectFace = () => {
 		// loading("Loading", "Tetap arahkan wajah ke kamera...");
 		btnRef.current.disabled = true;
-		btnRef.current.innerHTML =
-			'<span className="loading loading-spinner loading-xs"></span>';
+		setLoad(true);
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -140,7 +140,7 @@ export default function RegisterFace() {
 								"Failed to match face after several attempts.",
 								() => {
 									btnRef.current.disabled = false;
-									btnRef.current.innerHTML = "Proses";
+									setLoad(false);
 								},
 							);
 							return;
@@ -183,8 +183,7 @@ export default function RegisterFace() {
 												"Wajah sudah terdaftar, harap gunakan wajah lain.",
 												() => {
 													btnRef.current.disabled = false;
-													btnRef.current.innerHTML =
-														"Proses";
+													setLoad(false);
 												},
 											);
 											return;
@@ -227,8 +226,7 @@ export default function RegisterFace() {
 												"Wajah tidak cocok, harap coba lagi.",
 												() => {
 													btnRef.current.disabled = false;
-													btnRef.current.innerHTML =
-														"Proses";
+													setLoad(false);
 												},
 											);
 											return;
@@ -355,7 +353,11 @@ export default function RegisterFace() {
 								onClick={detectFace}
 								ref={btnRef}
 							>
-								Proses
+								{load ? (
+									<span className="loading loading-spinner loading-xs"></span>
+								) : (
+									"Proses"
+								)}
 							</button>
 						</div>
 					</div>
