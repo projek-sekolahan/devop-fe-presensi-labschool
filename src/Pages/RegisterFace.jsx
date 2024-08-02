@@ -17,7 +17,9 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const canvasRef = useRef();
 	const imgRef = useRef();
+	const modalRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
+	let loadStatus = false;
 	let oldFaceData;
 
 	useEffect(() => {
@@ -109,6 +111,7 @@ export default function RegisterFace() {
 
 	const detectFace = () => {
 		// loading("Loading", "Tetap arahkan wajah ke kamera...");
+		loadStatus = true;
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -178,6 +181,7 @@ export default function RegisterFace() {
 									}
 
 									if (!isFaceMatched) {
+										modalRef.current.close();
 										registerNewFace(faceData);
 									}
 								} else {
@@ -203,6 +207,7 @@ export default function RegisterFace() {
 											faceData.detection.score >= 0.9 &&
 											distance <= 0.6
 										) {
+											modalRef.current.close();
 											registerNewFace(faceData);
 										} else {
 											alert(
@@ -320,19 +325,26 @@ export default function RegisterFace() {
 				>
 					Ambil Gambar
 				</button>
-				<dialog id="my_modal_1" className="modal">
+				<dialog id="my_modal_1" className="modal" ref={modalRef}>
 					<div className="modal-box">
 						<h3 className="font-bold text-lg">Hasil Potret</h3>
 						<img ref={imgRef} className="w-full" />
-						<div className="modal-action flex justify-center">
-							<form method="dialog">
+						<div className="modal-action">
+							<form
+								method="dialog"
+								className="flex justify-center gap-2"
+							>
 								{/* if there is a button in form, it will close the modal */}
 								<button className="btn">Cancel</button>
 								<button
 									className="btn bg-secondary-green"
 									onClick={detectFace}
 								>
-									Proses
+									{loadStatus ? (
+										<span className="loading loading-spinner loading-xs"></span>
+									) : (
+										"Proses"
+									)}
 								</button>
 							</form>
 						</div>
