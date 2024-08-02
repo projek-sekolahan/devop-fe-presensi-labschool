@@ -1,5 +1,6 @@
 import * as faceapi from "face-api.js";
-import { useRef } from "react";
+import { loadFaceModels } from "../utils/loadModels";
+import { useRef, useEffect } from "react";
 import {
 	getFormData,
 	getFaceUrl,
@@ -15,20 +16,30 @@ export default function RegisterFace() {
 	const videoRef = useRef();
 	const barRef = useRef();
 	const textRef = useRef();
+	const canvasRef = useRef();
+	const imgRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 	let oldFaceData;
 
-	loading("Loading", "Getting camera access...");
+	useEffect(() => {
+		const init = async () => {
+			loading("Loading", "Getting camera access...");
+			await loadFaceModels(); // Load face models sebelum memulai video
+			startVideo();
+		};
+
+		init();
+	}, []);
 
 	const startVideo = () => {
 		navigator.mediaDevices
-			.getUserMedia({ video: true })
+			.getUserMedia({ video: true, audio: false })
 			.then((stream) => {
+				Swal.close();
 				videoRef.current.srcObject = stream;
 				videoRef.current.setAttribute("autoplay", "");
 				videoRef.current.setAttribute("muted", "");
 				videoRef.current.setAttribute("playsinline", "");
-				Swal.close();
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
@@ -36,39 +47,69 @@ export default function RegisterFace() {
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
-						() => {
-							window.location.reload(true);
-						},
 					);
 				} else if (err.name === "NotFoundError") {
 					alert(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
-						() => {
-							window.location.reload(true);
-						},
 					);
-				} else {
-					alert("error", "Error", "Gagal mengakses webcam!", () => {
-						window.location.reload(true);
-					});
 				}
 			});
 	};
 
-	//LOAD MODELS
+	async function clickPhoto() {
+		const context = canvasRef.current.getContext("2d");
+		const video = videoRef.current;
 
-	Promise.all([
-		faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-		faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-		faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-	]).then(() => {
-		startVideo();
-	});
+		// Ukuran canvas untuk gambar akhir
+		const canvasWidth = 400;
+		const canvasHeight = 400;
 
-	const faceMyDetect = () => {
-		loading("Loading", "Tetap arahkan wajah ke kamera...");
+		// Ukuran asli video
+		const videoWidth = video.videoWidth;
+		const videoHeight = video.videoHeight;
+
+		// Menentukan titik tengah dari video
+		const videoCenterX = videoWidth / 2;
+		const videoCenterY = videoHeight / 2;
+
+		// Menentukan titik awal untuk memotong gambar (crop)
+		const cropX = videoCenterX - canvasWidth / 2;
+		const cropY = videoCenterY - canvasHeight / 2;
+
+		// Mengatur ukuran canvas
+		canvasRef.current.width = canvasWidth;
+		canvasRef.current.height = canvasHeight;
+
+		// Membalik gambar secara horizontal untuk menghindari mirror effect
+		context.save(); // Menyimpan state konteks canvas
+		context.scale(-1, 1); // Membalik gambar secara horizontal
+		context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+
+		// Mengambil gambar dari video dan memotongnya tepat di tengah
+		context.drawImage(
+			video,
+			cropX,
+			50,
+			canvasWidth,
+			canvasHeight, // Area dari video yang akan diambil
+			0,
+			0,
+			canvasWidth,
+			canvasHeight, // Area di canvas tempat gambar akan digambar
+		);
+
+		context.restore(); // Mengembalikan state konteks canvas ke semula
+
+		let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+
+		// Mengatur gambar hasil di img element
+		imgRef.current.src = image_data_url;
+	}
+
+	const detectFace = () => {
+		// loading("Loading", "Tetap arahkan wajah ke kamera...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -105,7 +146,7 @@ export default function RegisterFace() {
 					try {
 						const faceData = await faceapi
 							.detectSingleFace(
-								videoRef.current,
+								imgRef.current,
 								new faceapi.TinyFaceDetectorOptions(),
 							)
 							.withFaceLandmarks()
@@ -191,17 +232,6 @@ export default function RegisterFace() {
 				}
 
 				const registerNewFace = (faceData) => {
-					barRef.current.style.width = "100%";
-					textRef.current.innerText = "100%";
-
-					const { x, y, width, height } = faceData.detection.box;
-					const imgUrl = getFaceUrl(
-						videoRef.current,
-						x - 50,
-						y - 75,
-						height + 125,
-					);
-
 					const stringDescriptor = Array.from(
 						faceData.descriptor,
 					).join(", ");
@@ -213,7 +243,7 @@ export default function RegisterFace() {
 					];
 					const registerValues = [
 						stringDescriptor,
-						`["${imgUrl}"]`,
+						`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
 						localStorage.getItem("regist_token"),
 						Cookies.get("csrf"),
 					];
@@ -257,10 +287,11 @@ export default function RegisterFace() {
 			<video
 				ref={videoRef}
 				crossOrigin="anonymous"
-				autoPlay={+true}
-				onPlay={faceMyDetect}
-				className={`-scale-x-100 fixed w-auto max-w-screen-2xl h-[75vh]`}
+				className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
 			/>
+			<canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+			<img ref={imgRef} className="absolute z-10 left-0 top-0 w-1/4" />
+
 			<div
 				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
 			>
@@ -272,26 +303,45 @@ export default function RegisterFace() {
 			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
-					<p className="font-bold text-4xl" ref={textRef}>
-						{" "}
-						0%{" "}
-					</p>
 					<p className="font-medium text-base">
 						{" "}
 						Melakukan Registrasi Wajah Anda...{" "}
 					</p>
 				</div>
-				<div className="flex justify-start items-center w-full rounded-r-full rounded-l-full border-2 border-primary-md h-4">
-					<span
-						id="bar"
-						style={{ transition: "width 0.5s" }}
-						className={`h-full rounded-r-full rounded-l-full bg-primary-md`}
-						ref={barRef}
-					></span>
-				</div>
+
+				{/*<button className="btn" onClick={clickPhoto}>
+					Ambil Gambar
+				</button>*/}
+				{/* Open the modal using document.getElementById('ID').showModal() method */}
+				<button
+					className="btn"
+					onClick={() => {
+						document.getElementById("my_modal_1").showModal();
+						clickPhoto();
+					}}
+				>
+					Ambil Gambar
+				</button>
+				<dialog id="my_modal_1" className="modal">
+					<div className="modal-box">
+						<h3 className="font-bold text-lg">Hasil Potret</h3>
+						<img ref={imgRef} className="w-full" />
+						<div className="modal-action flex justify-center">
+							<form method="dialog">
+								{/* if there is a button in form, it will close the modal */}
+								<button className="btn">Cancel</button>
+							</form>
+							<button
+								className="btn bg-secondary-green"
+								onClick={detectFace}
+							>
+								Proses
+							</button>
+						</div>
+					</div>
+				</dialog>
 				<small>
-					Harap bersabar karena sistem kami sedang memproses wajah
-					anda. Pastikan anda melihat kamera
+					Pastikan pencahayaan bagus untuk hasil gambar yang maksimal
 				</small>
 			</div>
 		</div>
