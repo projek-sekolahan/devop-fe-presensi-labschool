@@ -35,12 +35,7 @@ export default function OtpInput() {
 				localStorage.setItem("regist_token", res.data.token);
 				Cookies.set("csrf", res.csrfHash);
 				res.data.info == "error"
-					? alert(
-							res.data.info,
-							res.data.title,
-							res.data.message,
-							() => window.location.replace("/verify"),
-						)
+					? alert(res.data.info, res.data.title, res.data.message)
 					: alert(
 							res.data.info,
 							res.data.title,
