@@ -18,8 +18,8 @@ export default function RegisterFace() {
 	const canvasRef = useRef();
 	const imgRef = useRef();
 	const modalRef = useRef();
+	const btnRef = useRef()
 	const key = ["param", "img", "devop-sso", "csrf_token"];
-	let loadStatus = false;
 	let oldFaceData;
 
 	useEffect(() => {
@@ -111,7 +111,8 @@ export default function RegisterFace() {
 
 	const detectFace = () => {
 		// loading("Loading", "Tetap arahkan wajah ke kamera...");
-		loadStatus = true;
+		btnRef.current.disabled = true;
+		btnRef.current.innerHTML = '<span className="loading loading-spinner loading-xs"></span>
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
@@ -329,24 +330,18 @@ export default function RegisterFace() {
 					<div className="modal-box">
 						<h3 className="font-bold text-lg">Hasil Potret</h3>
 						<img ref={imgRef} className="w-full" />
-						<div className="modal-action">
-							<form
-								method="dialog"
-								className="flex justify-center gap-2"
-							>
+						<div className="modal-action flex justify-center gap-2">
+							<form method="dialog">
 								{/* if there is a button in form, it will close the modal */}
 								<button className="btn">Cancel</button>
-								<button
-									className="btn bg-secondary-green"
-									onClick={detectFace}
-								>
-									{loadStatus ? (
-										<span className="loading loading-spinner loading-xs"></span>
-									) : (
-										"Proses"
-									)}
-								</button>
 							</form>
+							<button
+								className="btn bg-secondary-green"
+								onClick={detectFace}
+								ref={btnRef}
+							>
+								Proses
+							</button>
 						</div>
 					</div>
 				</dialog>
