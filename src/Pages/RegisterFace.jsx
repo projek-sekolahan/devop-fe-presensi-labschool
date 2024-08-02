@@ -18,7 +18,7 @@ export default function RegisterFace() {
 	const canvasRef = useRef();
 	const imgRef = useRef();
 	const modalRef = useRef();
-	const btnRef = useRef()
+	const btnRef = useRef();
 	const key = ["param", "img", "devop-sso", "csrf_token"];
 	let oldFaceData;
 
@@ -112,7 +112,8 @@ export default function RegisterFace() {
 	const detectFace = () => {
 		// loading("Loading", "Tetap arahkan wajah ke kamera...");
 		btnRef.current.disabled = true;
-		btnRef.current.innerHTML = '<span className="loading loading-spinner loading-xs"></span>
+		btnRef.current.innerHTML =
+			'<span className="loading loading-spinner loading-xs"></span>';
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
