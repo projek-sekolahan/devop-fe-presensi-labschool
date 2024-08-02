@@ -134,6 +134,7 @@ export default function RegisterFace() {
 					const facecamData = res.data.facecam;
 					async function attemptMatch() {
 						if (attempts >= maxAttempts) {
+							modalRef.current.close();
 							alert(
 								"error",
 								"Matching Failed",
@@ -177,6 +178,7 @@ export default function RegisterFace() {
 											distance <= 0.6
 										) {
 											isFaceMatched = true;
+											modalRef.current.close();
 											alert(
 												"error",
 												"Error",
@@ -191,7 +193,6 @@ export default function RegisterFace() {
 									}
 
 									if (!isFaceMatched) {
-										modalRef.current.close();
 										registerNewFace(faceData);
 									}
 								} else {
@@ -217,9 +218,9 @@ export default function RegisterFace() {
 											faceData.detection.score >= 0.9 &&
 											distance <= 0.6
 										) {
-											modalRef.current.close();
 											registerNewFace(faceData);
 										} else {
+											modalRef.current.close();
 											alert(
 												"error",
 												"Error",
@@ -242,6 +243,7 @@ export default function RegisterFace() {
 					}
 
 					const registerNewFace = (faceData) => {
+						modalRef.current.close();
 						const stringDescriptor = Array.from(
 							faceData.descriptor,
 						).join(", ");
