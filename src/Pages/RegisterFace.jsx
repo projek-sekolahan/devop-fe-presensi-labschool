@@ -138,6 +138,10 @@ export default function RegisterFace() {
 								"error",
 								"Matching Failed",
 								"Failed to match face after several attempts.",
+								() => {
+									btnRef.current.disabled = false;
+									btnRef.current.innerHTML = "Proses";
+								},
 							);
 							return;
 						}
@@ -177,6 +181,11 @@ export default function RegisterFace() {
 												"error",
 												"Error",
 												"Wajah sudah terdaftar, harap gunakan wajah lain.",
+												() => {
+													btnRef.current.disabled = false;
+													btnRef.current.innerHTML =
+														"Proses";
+												},
 											);
 											return;
 										}
@@ -216,6 +225,11 @@ export default function RegisterFace() {
 												"error",
 												"Error",
 												"Wajah tidak cocok, harap coba lagi.",
+												() => {
+													btnRef.current.disabled = false;
+													btnRef.current.innerHTML =
+														"Proses";
+												},
 											);
 											return;
 										}
