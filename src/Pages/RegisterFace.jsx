@@ -110,7 +110,7 @@ export default function RegisterFace() {
 	const detectFace = () => {
 		loading("Loading", "Sedang melakukan deteksi wajah...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
-		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
+		const maxAttempts = 5; // Maksimal upaya deteksi yang diizinkan
 
 		const keys = ["devop-sso", "csrf_token"];
 		const values = [
@@ -131,8 +131,8 @@ export default function RegisterFace() {
 						if (attempts >= maxAttempts) {
 							alert(
 								"error",
-								"Matching Failed",
-								"Failed to match face after several attempts.",
+								"Deteksi Gagal",
+								"Wajah tidak terdeteksi, pastikan pencahayaan memadai",
 								() => {
 									btnRef.current.disabled = false;
 									setLoad(false);
@@ -352,7 +352,8 @@ export default function RegisterFace() {
 					</div>
 				</dialog>
 				<small>
-					Pastikan pencahayaan bagus untuk hasil gambar yang maksimal
+					Pastikan pencahayaan memadai untuk hasil gambar yang
+					maksimal dan dapat dideteksi
 				</small>
 			</div>
 		</div>

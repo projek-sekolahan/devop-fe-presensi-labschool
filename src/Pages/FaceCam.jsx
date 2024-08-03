@@ -95,6 +95,7 @@ export default function RegisterFace() {
 	};
 
 	function clickPhoto() {
+		loading("Loading", "Mendapatkan data wajah...");
 		const context = canvasRef.current.getContext("2d");
 		const video = videoRef.current;
 
@@ -146,7 +147,6 @@ export default function RegisterFace() {
 	}
 
 	const detectFace = () => {
-		loading("Loading", "Sedang melakukan deteksi wajah...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 5; // Maksimal upaya deteksi yang diizinkan
 
@@ -154,8 +154,8 @@ export default function RegisterFace() {
 			if (attempts >= maxAttempts) {
 				alert(
 					"error",
-					"Matching Failed",
-					"Failed to match face after several attempts.",
+					"Deteksi Gagal",
+					"Wajah tidak terdeteksi, pastikan pencahayaan memadai",
 				);
 				return;
 			}
@@ -210,8 +210,8 @@ export default function RegisterFace() {
 					} else {
 						alert(
 							"error",
-							"Matching Failed",
-							"Face not match with registered before",
+							"Pencocokan Gagal",
+							"Wajah tidak terdaftar, harap ulangi proses",
 						);
 					}
 				} else {
@@ -247,14 +247,15 @@ export default function RegisterFace() {
 				<div>
 					<p className="font-medium text-base">
 						{" "}
-						Melakukan Registrasi Wajah Anda...{" "}
+						Tekan tombol "Presensi" untuk melakukan presensi{" "}
 					</p>
 				</div>
 				<button className="btn" onClick={clickPhoto}>
 					Presensi
 				</button>
 				<small>
-					Pastikan pencahayaan bagus untuk hasil gambar yang maksimal
+					Pastikan pencahayaan memadai agar proses dapat berjalan
+					lancar
 				</small>
 			</div>
 		</div>
