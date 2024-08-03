@@ -191,18 +191,24 @@ export default function RegisterFace() {
 						Swal.close();
 						loading("Loading", "Mengirim data presensi...");
 
-						const response = await apiXML.presensiPost(
-							"process",
-							localStorage.getItem("AUTH_KEY"),
-							getFormData(combinedKeys, values),
-						);
-						const res = JSON.parse(response);
-						Cookies.set("csrf", res.csrfHash);
-						const jwt = parseJwt(res.data);
-						Swal.close();
-						alert(jwt.info, jwt.title, jwt.message, () =>
-							window.location.replace("/home"),
-						);
+						apiXML
+							.presensiPost(
+								"process",
+								localStorage.getItem("AUTH_KEY"),
+								getFormData(combinedKeys, values),
+							)
+							.then((res) => {
+								res = JSON.parse(response);
+								Cookies.set("csrf", res.csrfHash);
+								const jwt = parseJwt(res.data);
+								Swal.close();
+								alert(jwt.info, jwt.title, jwt.message, () =>
+									window.location.replace("/home"),
+								);
+							})
+							.catch((err) => {
+								handleSessionError(err, "/facecam");
+							});
 					} else {
 						alert(
 							"error",
