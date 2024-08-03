@@ -203,7 +203,11 @@ export default function RegisterFace() {
 							window.location.replace("/home"),
 						);
 					} else {
-						setTimeout(attemptMatch, 100);
+						alert(
+							"error",
+							"Matching Failed",
+							"Face not match with registered before",
+						);
 					}
 				} else {
 					setTimeout(attemptMatch, 100);
