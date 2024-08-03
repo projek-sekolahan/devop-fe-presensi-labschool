@@ -58,16 +58,12 @@ export default function RegisterFace() {
 			localStorage.getItem("login_token"),
 			"non-dinas",
 			...state,
-			localStorage.getItem("devop-sso"),
-			Cookies.get("csrf"),
 		];
 	} else {
 		values = [
 			localStorage.getItem("AUTH_KEY"),
 			localStorage.getItem("login_token"),
 			...state,
-			localStorage.getItem("devop-sso"),
-			Cookies.get("csrf"),
 		];
 	}
 
@@ -187,6 +183,8 @@ export default function RegisterFace() {
 						values.push(
 							stringDescriptor,
 							`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+							localStorage.getItem("devop-sso"),
+							Cookies.get("csrf"),
 						);
 						Swal.close();
 						loading("Loading", "Mengirim data presensi...");
