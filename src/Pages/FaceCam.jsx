@@ -184,6 +184,8 @@ export default function RegisterFace() {
 							stringDescriptor,
 							`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
 						);
+						Swal.close();
+						loading("Loading", "Mengirim data presensi...");
 
 						const response = await apiXML.presensiPost(
 							"process",
@@ -193,6 +195,7 @@ export default function RegisterFace() {
 						const res = JSON.parse(response);
 						Cookies.set("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
+						Swal.close();
 						alert(jwt.info, jwt.title, jwt.message, () =>
 							window.location.replace("/home"),
 						);
