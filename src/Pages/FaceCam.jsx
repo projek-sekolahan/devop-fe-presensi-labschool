@@ -197,17 +197,15 @@ export default function RegisterFace() {
 							window.location.replace("/home"),
 						);
 					} else {
-						setTimeout(attemptMatch, 1000); // Schedule the next attempt
+						attemptMatch();
 					}
 				} else {
-					setTimeout(attemptMatch, 1000); // No face detected, retry
+					attemptMatch();
 				}
 			} catch (err) {
 				handleSessionError(err, "/login");
 			}
 		}
-
-		attemptMatch(); // Memulai percobaan pertama
 	}
 
 	return (
