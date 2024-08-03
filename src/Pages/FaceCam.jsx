@@ -161,6 +161,7 @@ export default function RegisterFace() {
 					"Matching Failed",
 					"Failed to match face after several attempts.",
 				);
+				return;
 			}
 			attempts++;
 
