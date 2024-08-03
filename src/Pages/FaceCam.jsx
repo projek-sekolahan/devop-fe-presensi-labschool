@@ -146,7 +146,10 @@ export default function RegisterFace() {
 
 		// Mengatur gambar hasil di img element
 		imgRef.current.src = image_data_url;
+		detectFace();
+	}
 
+	const detectFace = () => {
 		loading("Loading", "Sedang melakukan deteksi wajah...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 5; // Maksimal upaya deteksi yang diizinkan
@@ -200,17 +203,17 @@ export default function RegisterFace() {
 							window.location.replace("/home"),
 						);
 					} else {
-						attemptMatch();
+						setTimeout(attemptMatch, 100);
 					}
 				} else {
-					attemptMatch();
+					setTimeout(attemptMatch, 100);
 				}
 			} catch (err) {
 				handleSessionError(err, "/login");
 			}
 		}
 		attemptMatch();
-	}
+	};
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
