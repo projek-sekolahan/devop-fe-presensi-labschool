@@ -128,7 +128,6 @@ const Home = () => {
             const messaging = getMessaging(app);
 
             Notification.requestPermission().then((permission) => {
-                alert(permission);
                 if (permission === "granted") {
                     alertMessage(
                         "success",

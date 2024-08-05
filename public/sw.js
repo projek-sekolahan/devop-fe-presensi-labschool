@@ -8,6 +8,10 @@ importScripts(
 
 const offlineFallbackPage = "offline.html";
 
+const options = { tag: "user_alerts" };
+
+self.registration.getNotifications(options);
+
 self.addEventListener("message", (event) => {
 	if (event.data && event.data.type === "SKIP_WAITING") {
 		self.skipWaiting();
