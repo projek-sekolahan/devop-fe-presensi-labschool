@@ -196,10 +196,10 @@ export default function RegisterFace() {
 								getFormData(combinedKeys, values),
 							)
 							.then((res) => {
+								alert(res);
 								res = JSON.parse(response);
 								Cookies.set("csrf", res.csrfHash);
 								const jwt = parseJwt(res.data);
-								alert(jwt);
 								alertMessage(
 									jwt.info,
 									jwt.title,
