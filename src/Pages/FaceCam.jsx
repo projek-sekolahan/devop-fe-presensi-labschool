@@ -187,7 +187,7 @@ export default function RegisterFace() {
 							Cookies.get("csrf"),
 						);
 						Swal.close();
-						// loading("Loading", "Mengirim data presensi...");
+						loading("Loading", "Mengirim data presensi...");
 
 						apiXML
 							.presensiPost(
@@ -199,6 +199,7 @@ export default function RegisterFace() {
 								res = JSON.parse(res);
 								Cookies.set("csrf", res.csrfHash);
 								const jwt = parseJwt(res.data);
+								Swal.close();
 								alertMessage(
 									jwt.info,
 									jwt.title,
