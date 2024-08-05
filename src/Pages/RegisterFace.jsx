@@ -255,7 +255,7 @@ export default function RegisterFace() {
 								getFormData(combinedKeys, registerValues),
 							)
 							.then((response) => {
-								const res = JSON.parse(response);
+								const res = JSON.parse(response); console.log(res);
 								Cookies.set("csrf", res.csrfHash); // Update csrf token
 
 								if (res.status) {
