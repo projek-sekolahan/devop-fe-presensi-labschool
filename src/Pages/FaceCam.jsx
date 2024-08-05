@@ -148,7 +148,7 @@ export default function RegisterFace() {
 
 	const detectFace = () => {
 		let attempts = 0; // Menghitung jumlah upaya deteksi
-		const maxAttempts = 5; // Maksimal upaya deteksi yang diizinkan
+		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
 		async function attemptMatch() {
 			if (attempts >= maxAttempts) {
