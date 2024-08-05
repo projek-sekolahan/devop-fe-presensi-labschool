@@ -5,7 +5,7 @@ import {
 	getFormData,
 	getFaceUrl,
 	loading,
-	alert,
+	alertMessage,
 	parseJwt,
 	handleSessionError,
 	addDefaultKeys,
@@ -79,13 +79,13 @@ export default function RegisterFace() {
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					alert(
+					alertMessage(
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
 					);
 				} else if (err.name === "NotFoundError") {
-					alert(
+					alertMessage(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
@@ -152,7 +152,7 @@ export default function RegisterFace() {
 
 		async function attemptMatch() {
 			if (attempts >= maxAttempts) {
-				alert(
+				alertMessage(
 					"error",
 					"Deteksi Gagal",
 					"Wajah tidak terdeteksi, pastikan pencahayaan memadai",
@@ -200,15 +200,18 @@ export default function RegisterFace() {
 								Cookies.set("csrf", res.csrfHash);
 								const jwt = parseJwt(res.data);
 								Swal.close();
-								alert(jwt.info, jwt.title, jwt.message, () =>
-									window.location.replace("/home"),
+								alertMessage(
+									jwt.info,
+									jwt.title,
+									jwt.message,
+									() => window.location.replace("/home"),
 								);
 							})
 							.catch((err) => {
 								handleSessionError(err, "/facecam");
 							});
 					} else {
-						alert(
+						alertMessage(
 							"error",
 							"Pencocokan Gagal",
 							"Wajah tidak terdaftar, harap ulangi proses",

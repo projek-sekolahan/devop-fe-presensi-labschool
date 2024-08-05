@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
 import {
 	getFormData,
-	alert,
+	alertMessage,
 	loading,
 	handleSessionError,
 } from "../utils/utils";
@@ -35,8 +35,12 @@ export default function OtpInput() {
 				localStorage.setItem("regist_token", res.data.token);
 				Cookies.set("csrf", res.csrfHash);
 				res.data.info == "error"
-					? alert(res.data.info, res.data.title, res.data.message)
-					: alert(
+					? alertMessage(
+							res.data.info,
+							res.data.title,
+							res.data.message,
+						)
+					: alertMessage(
 							res.data.info,
 							res.data.title,
 							res.data.message,
@@ -90,8 +94,11 @@ export default function OtpInput() {
 			.then((res) => {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
-				alert(res.data.info, res.data.title, res.data.message, () =>
-					window.location.replace("/" + res.data.location),
+				alertMessage(
+					res.data.info,
+					res.data.title,
+					res.data.message,
+					() => window.location.replace("/" + res.data.location),
 				);
 			})
 			.catch((err) => {

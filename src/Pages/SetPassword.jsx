@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { getFormData, getHash, alert, loading, handleSessionError, addDefaultKeys, } from "../utils/utils";
+import {
+	getFormData,
+	getHash,
+	alertMessage,
+	loading,
+	handleSessionError,
+	addDefaultKeys,
+} from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -37,20 +44,20 @@ export default function SetPassword() {
 			Cookies.get("csrf"),
 		];
 		apiXML
-			.postInput('setPassword',getFormData(combinedKeys, values))
+			.postInput("setPassword", getFormData(combinedKeys, values))
 			.then((res) => {
 				setDisabled(false);
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
-				alert(
+				alertMessage(
 					res.data.info,
 					res.data.title,
 					res.data.message,
 					() => window.location.replace(res.data.location),
-				)
+				);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/setpassword");
+				handleSessionError(err, "/setpassword");
 			});
 	};
 

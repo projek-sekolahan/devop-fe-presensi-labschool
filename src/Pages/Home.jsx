@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
     parseJwt,
     getFormData,
-    alert,
+    alertMessage,
     handleSessionError,
     handleSessionExpired,
     addDefaultKeys,
@@ -71,7 +71,7 @@ const Home = () => {
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
-                alert("error", "No data in API response:", "err");
+                alertMessage("error", "No data in API response:", "err");
             }
         } catch (error) {
             handleSessionError(error, "/login");
@@ -129,7 +129,7 @@ const Home = () => {
 
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
-                    alert(
+                    alertMessage(
                         "success",
                         "Notification",
                         "Notification permission granted.",
@@ -141,7 +141,7 @@ const Home = () => {
                     })
                         .then((currentToken) => registerToken(currentToken))
                         .catch(() =>
-                            alert(
+                            alertMessage(
                                 "error",
                                 "Notification",
                                 "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
@@ -149,7 +149,7 @@ const Home = () => {
                             ),
                         );
                 } else {
-                    alert(
+                    alertMessage(
                         "error",
                         "Notification",
                         "Notification permission denied.",
@@ -163,7 +163,7 @@ const Home = () => {
                 const notificationOptions = {
                     body: payload.notification.body,
                 };
-                alert(
+                alertMessage(
                     "success",
                     notificationTitle,
                     notificationOptions.body,

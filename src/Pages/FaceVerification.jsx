@@ -1,7 +1,7 @@
 import { PiUserFocusThin } from "react-icons/pi";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { alert } from "../utils/utils";
+import { alertMessage } from "../utils/utils";
 
 export default function FaceVerification() {
 	const { state } = useLocation();
@@ -58,7 +58,7 @@ export default function FaceVerification() {
 			longitude <= coordinat.min_longitude &&
 			longitude >= coordinat.max_longitude
 		) {
-			alert("success", "Done", "Anda berada di area sekolah", () =>
+			alertMessage("success", "Done", "Anda berada di area sekolah", () =>
 				navigate("/facecam", {
 					state: [
 						...state,
@@ -76,7 +76,7 @@ export default function FaceVerification() {
 				coordinat.latitude,
 				coordinat.longitude,
 			);
-			alert("success", "Done", "Anda berada di area sekolah", () =>
+			alertMessage("success", "Done", "Anda berada di area sekolah", () =>
 				navigate("/facecam", {
 					state: [
 						...state,

@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { getFormData, alert, addDefaultKeys } from "../utils/utils";
+import { getFormData, alertMessage, addDefaultKeys } from "../utils/utils";
 import Swal from "sweetalert2";
 
 export default function SideMenu({ show, data }) {
@@ -28,10 +28,7 @@ export default function SideMenu({ show, data }) {
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
-					const key = [
-						"AUTH_KEY",
-						"token",
-					];
+					const key = ["AUTH_KEY", "token"];
 					const combinedKeys = addDefaultKeys(key);
 					const values = [
 						localStorage.getItem("AUTH_KEY"),
@@ -41,14 +38,14 @@ export default function SideMenu({ show, data }) {
 					];
 					apiXML
 						.authPost(
-							'logout',
+							"logout",
 							localStorage.getItem("AUTH_KEY"),
 							getFormData(combinedKeys, values),
 						)
 						.then((res) => {
 							localStorage.clear();
 							res = JSON.parse(res);
-							alert(
+							alertMessage(
 								"success",
 								"Logout Succesfully",
 								"You has been loged out!",

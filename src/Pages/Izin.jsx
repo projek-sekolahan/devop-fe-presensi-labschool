@@ -7,7 +7,7 @@ import {
 	getImageUrl,
 	getFormData,
 	loading,
-	alert,
+	alertMessage,
 	parseJwt,
 	handleSessionError,
 	addDefaultKeys,
@@ -29,10 +29,7 @@ export default function Izin() {
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		let keys = [
-			"AUTH_KEY",
-			"token",
-		];
+		let keys = ["AUTH_KEY", "token"];
 		const combinedKeys = addDefaultKeys(keys);
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
@@ -45,7 +42,12 @@ export default function Izin() {
 			localStorage.getItem("group_id") == "4" ||
 			state.ket[0] === "non-dinas"
 		) {
-			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
+			updatedCombinedKeys = [
+				...updatedCombinedKeys,
+				"status_dinas",
+				"status_kehadiran",
+				"keterangan_kehadiran",
+			];
 
 			values = [
 				...values,
@@ -54,8 +56,18 @@ export default function Izin() {
 				keteranganRef.current.value,
 			];
 		} else {
-			updatedCombinedKeys = [...updatedCombinedKeys, "status_dinas", "status_kehadiran", "keterangan_kehadiran"];
-			values = [...values, "non-dinas", ...state.ket, keteranganRef.current.value];
+			updatedCombinedKeys = [
+				...updatedCombinedKeys,
+				"status_dinas",
+				"status_kehadiran",
+				"keterangan_kehadiran",
+			];
+			values = [
+				...values,
+				"non-dinas",
+				...state.ket,
+				keteranganRef.current.value,
+			];
 		}
 
 		if (imageUrl) {
@@ -66,7 +78,7 @@ export default function Izin() {
 		loading("Loading", "Data sedang diproses...");
 		apiXML
 			.presensiPost(
-				'process',
+				"process",
 				localStorage.getItem("AUTH_KEY"),
 				getFormData(updatedCombinedKeys, values),
 			)
@@ -74,12 +86,12 @@ export default function Izin() {
 				res = JSON.parse(res);
 				const hasil = parseJwt(res.data);
 				Cookies.set("csrf", res.csrfHash);
-				alert(hasil.info, hasil.title, hasil.message, () =>
+				alertMessage(hasil.info, hasil.title, hasil.message, () =>
 					window.location.replace("/home"),
 				);
 			})
 			.catch((err) => {
-				handleSessionError(err,"/login");
+				handleSessionError(err, "/login");
 			});
 	};
 	return (

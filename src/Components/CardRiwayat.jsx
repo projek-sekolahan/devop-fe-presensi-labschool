@@ -4,7 +4,7 @@ import {
 	parseJwt,
 	getFormData,
 	addDefaultKeys,
-	alert,
+	alertMessage,
 } from "../utils/utils";
 import { useState, useRef } from "react";
 import Cookies from "js-cookie";
@@ -44,8 +44,11 @@ export default function CardRiwayat({ index, history, biodata }) {
 					Cookies.set("csrf", res.csrfHash);
 					setLoading(false);
 					closeBtn.current.click();
-					alert(res.data.info, res.data.title, res.data.message, () =>
-						Swal.close(),
+					alertMessage(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						() => Swal.close(),
 					);
 				});
 	};

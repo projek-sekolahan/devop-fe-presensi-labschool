@@ -5,7 +5,7 @@ import {
 	getFormData,
 	getFaceUrl,
 	loading,
-	alert,
+	alertMessage,
 	handleSessionError,
 	addDefaultKeys,
 } from "../utils/utils";
@@ -42,13 +42,13 @@ export default function RegisterFace() {
 			})
 			.catch(function (err) {
 				if (err.name === "NotAllowedError") {
-					alert(
+					alertMessage(
 						"error",
 						"Error",
 						"Izin akses kamera ditolak oleh pengguna",
 					);
 				} else if (err.name === "NotFoundError") {
-					alert(
+					alertMessage(
 						"error",
 						"Error",
 						"Tidak ada kamera yang tersedia pada perangkat",
@@ -129,7 +129,7 @@ export default function RegisterFace() {
 					const facecamData = res.data.facecam;
 					async function attemptMatch() {
 						if (attempts >= maxAttempts) {
-							alert(
+							alertMessage(
 								"error",
 								"Deteksi Gagal",
 								"Wajah tidak terdeteksi, pastikan pencahayaan memadai",
@@ -173,7 +173,7 @@ export default function RegisterFace() {
 										) {
 											isFaceMatched = true;
 
-											alert(
+											alertMessage(
 												"error",
 												"Error",
 												"Wajah sudah terdaftar, harap gunakan wajah lain.",
@@ -214,7 +214,7 @@ export default function RegisterFace() {
 										) {
 											registerNewFace(faceData);
 										} else {
-											alert(
+											alertMessage(
 												"error",
 												"Error",
 												"Wajah tidak cocok, harap coba lagi.",
@@ -255,11 +255,12 @@ export default function RegisterFace() {
 								getFormData(combinedKeys, registerValues),
 							)
 							.then((response) => {
-								const res = JSON.parse(response); console.log(res);
+								const res = JSON.parse(response);
+								console.log(res);
 								Cookies.set("csrf", res.csrfHash); // Update csrf token
 
 								if (res.status) {
-									alert(
+									alertMessage(
 										res.data.info,
 										res.data.title,
 										res.data.message,
@@ -269,7 +270,7 @@ export default function RegisterFace() {
 											),
 									);
 								} else {
-									alert(
+									alertMessage(
 										res.info,
 										res.title,
 										res.message,
@@ -284,8 +285,11 @@ export default function RegisterFace() {
 					};
 					attemptMatch(); // Memulai percobaan pertama
 				} else {
-					alert(res.data.info, res.data.title, res.data.message, () =>
-						window.location.replace("/" + res.data.location),
+					alertMessage(
+						res.data.info,
+						res.data.title,
+						res.data.message,
+						() => window.location.replace("/" + res.data.location),
 					);
 				}
 			})

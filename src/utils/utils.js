@@ -3,9 +3,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 
 export const getHash = (pass) => {
-	const keycode = CryptoJS.enc.Hex.parse(
-		CryptoJS.SHA1(btoa(pass)).toString(),
-	);
+	const keycode = CryptoJS.enc.Hex.parse(CryptoJS.SHA1(btoa(pass)).toString());
 	const authcode = CryptoJS.enc.Hex.parse(CryptoJS.SHA1(pass).toString());
 	const hash = CryptoJS.AES.encrypt(pass, keycode, { iv: authcode })
 		.toString()
@@ -48,7 +46,7 @@ export const getImageUrl = (fileInput, callback) => {
 export const defaultKeys = ["devop-sso", "csrf_token"];
 
 export const addDefaultKeys = (keys) => {
-  return [...keys, ...defaultKeys];
+	return [...keys, ...defaultKeys];
 };
 
 export const createFormData = (keys, values) => {
@@ -63,9 +61,7 @@ export const getFormData = (keys, values) => {
 	return keys
 		.map(
 			(key, index) =>
-				`${encodeURIComponent(key)}=${encodeURIComponent(
-					values[index],
-				)}`,
+				`${encodeURIComponent(key)}=${encodeURIComponent(values[index])}`,
 		)
 		.join("&");
 };
@@ -111,7 +107,7 @@ function decrypt(param, from) {
 	return JSON.parse(decryptedText);
 }
 
-export const alert = (type, title, message, callback) => {
+export const alertMessage = (type, title, message, callback) => {
 	Swal.fire({
 		titleText: title,
 		html: message,
@@ -142,15 +138,7 @@ export const formatDate = (inputDate) => {
 	const date = new Date(inputDate);
 
 	// Array nama hari dalam Bahasa Indonesia
-	const days = [
-		"Minggu",
-		"Senin",
-		"Selasa",
-		"Rabu",
-		"Kamis",
-		"Jumat",
-		"Sabtu",
-	];
+	const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
 	// Array nama bulan dalam Bahasa Indonesia
 	const months = [
@@ -180,15 +168,7 @@ export const formatDate = (inputDate) => {
 
 // Fungsi untuk mengatur waktu dan tanggal
 export const useClock = (timeRef, dateRef, dayRef) => {
-	const days = [
-		"Minggu",
-		"Senin",
-		"Selasa",
-		"Rabu",
-		"Kamis",
-		"Jumat",
-		"Sabtu",
-	];
+	const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -224,9 +204,7 @@ function clearCookies() {
 			// Hapus cookie yang sudah kedaluwarsa
 			Cookies.remove(cookieName);
 			console.log(
-				'Cookie "' +
-					cookieName +
-					'" sudah dihapus karena sudah kedaluwarsa.',
+				'Cookie "' + cookieName + '" sudah dihapus karena sudah kedaluwarsa.',
 			);
 		}
 	});

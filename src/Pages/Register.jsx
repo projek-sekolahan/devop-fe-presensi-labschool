@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import apiXML from "../utils/apiXML.js";
 import {
 	getFormData,
-	alert,
+	alertMessage,
 	loading,
 	handleSessionError,
 } from "../utils/utils";
@@ -20,7 +20,7 @@ export default function Register() {
 		e.preventDefault();
 		setLoad(true);
 		if (!role) {
-			alert("error", "Input Error", "Harap pilih role", () =>
+			alertMessage("error", "Input Error", "Harap pilih role", () =>
 				window.location.replace("/"),
 			);
 			return;
@@ -47,7 +47,7 @@ export default function Register() {
 				res = JSON.parse(res);
 				setLoad(false);
 				Cookies.set("csrf", res.csrfHash);
-				alert(
+				alertMessage(
 					res.data.info,
 					res.data.title,
 					res.data.message,
@@ -57,7 +57,7 @@ export default function Register() {
 								? "/"
 								: "/" + res.data.location,
 						),
-				)
+				);
 			})
 			.catch((err) => {
 				handleSessionError(err, "/");

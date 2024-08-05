@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import apiXML from "../utils/apiXML";
 import {
 	getFormData,
-	alert,
+	alertMessage,
 	loading,
 	handleSessionError,
 } from "../utils/utils";
@@ -27,12 +27,12 @@ export default function ChangePassword() {
 				res = JSON.parse(res);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
-				alert(
+				alertMessage(
 					res.data.info,
 					res.data.title,
 					res.data.message,
-					() => window.location.replace("/"+res.data.location),
-				)
+					() => window.location.replace("/" + res.data.location),
+				);
 			})
 			.catch((err) => {
 				handleSessionError(err, "/recover");
