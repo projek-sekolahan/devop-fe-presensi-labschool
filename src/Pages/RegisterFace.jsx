@@ -168,7 +168,7 @@ export default function RegisterFace() {
 												faceData.descriptor,
 											);
 										if (
-											faceData.detection.score >= 0.9 &&
+											faceData.detection.score >= 0.99 &&
 											distance <= 0.6
 										) {
 											isFaceMatched = true;
