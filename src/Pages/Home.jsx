@@ -113,13 +113,13 @@ const Home = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    // useEffect(() => {
-    //     if (!localStorage.getItem("login_token")) {
-    //         window.location.replace("/login");
-    //     } else {
-    //         fetchUserData();
-    //     }
-    // }, [fetchUserData]);
+    useEffect(() => {
+        if (!localStorage.getItem("login_token")) {
+            window.location.replace("/login");
+        } else {
+            fetchUserData();
+        }
+    }, [fetchUserData]);
 
     // useEffect(() => {
     //     if (!localStorage.getItem("token_registered")) {
