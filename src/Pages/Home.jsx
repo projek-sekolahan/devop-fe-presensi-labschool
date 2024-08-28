@@ -113,99 +113,99 @@ const Home = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    useEffect(() => {
-        if (!localStorage.getItem("login_token")) {
-            window.location.replace("/login");
-        } else {
-            fetchUserData();
-        }
-    }, [fetchUserData]);
+    // useEffect(() => {
+    //     if (!localStorage.getItem("login_token")) {
+    //         window.location.replace("/login");
+    //     } else {
+    //         fetchUserData();
+    //     }
+    // }, [fetchUserData]);
 
-    useEffect(() => {
-        if (!localStorage.getItem("token_registered")) {
-            const app = initializeApp(firebaseConfig);
-            const analytics = getAnalytics(app);
-            const messaging = getMessaging(app);
+    // useEffect(() => {
+    //     if (!localStorage.getItem("token_registered")) {
+    //         const app = initializeApp(firebaseConfig);
+    //         const analytics = getAnalytics(app);
+    //         const messaging = getMessaging(app);
 
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    alertMessage(
-                        "success",
-                        "Notification",
-                        "Notification permission granted.",
-                        () => navigate("/home"),
-                    );
-                    getToken(messaging, {
-                        vapidKey:
-                            "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
-                    })
-                        .then((currentToken) => registerToken(currentToken))
-                        .catch(() =>
-                            alertMessage(
-                                "error",
-                                "Notification",
-                                "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                                () => navigate("/home"),
-                            ),
-                        );
-                } else {
-                    alertMessage(
-                        "error",
-                        "Notification",
-                        "Notification permission denied.",
-                        () => navigate("/home"),
-                    );
-                }
-            });
+    //         Notification.requestPermission().then((permission) => {
+    //             if (permission === "granted") {
+    //                 alertMessage(
+    //                     "success",
+    //                     "Notification",
+    //                     "Notification permission granted.",
+    //                     () => navigate("/home"),
+    //                 );
+    //                 getToken(messaging, {
+    //                     vapidKey:
+    //                         "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
+    //                 })
+    //                     .then((currentToken) => registerToken(currentToken))
+    //                     .catch(() =>
+    //                         alertMessage(
+    //                             "error",
+    //                             "Notification",
+    //                             "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+    //                             () => navigate("/home"),
+    //                         ),
+    //                     );
+    //             } else {
+    //                 alertMessage(
+    //                     "error",
+    //                     "Notification",
+    //                     "Notification permission denied.",
+    //                     () => navigate("/home"),
+    //                 );
+    //             }
+    //         });
 
-            onMessage(messaging, (payload) => {
-                const notificationTitle = payload.notification.title;
-                const notificationOptions = {
-                    body: payload.notification.body,
-                };
-                alertMessage(
-                    "success",
-                    notificationTitle,
-                    notificationOptions.body,
-                    () => navigate("/home"),
-                );
-            });
-        }
-    }, []);
+    //         onMessage(messaging, (payload) => {
+    //             const notificationTitle = payload.notification.title;
+    //             const notificationOptions = {
+    //                 body: payload.notification.body,
+    //             };
+    //             alertMessage(
+    //                 "success",
+    //                 notificationTitle,
+    //                 notificationOptions.body,
+    //                 () => navigate("/home"),
+    //             );
+    //         });
+    //     }
+    // }, []);
 
-    const registerToken = (currentToken) => {
-        let keys = ["AUTH_KEY", "login_token", "token_fcm"];
-        const combinedKeys = addDefaultKeys(keys);
-        localStorage.setItem("token_fcm", currentToken);
-        apiXML.getCsrf().then((res) => {
-            res = JSON.parse(res);
-            // Fetch values from localStorage and Cookies
-            let values = combinedKeys.map((key) => {
-                let value = localStorage.getItem(key);
-                if (key === "csrf_token" && !value) {
-                    value = res.csrfHash; // Fallback to Cookies if csrf_token is null in localStorage
-                }
-                if (key === "token_fcm" && !value) {
-                    value = currentToken; // Fallback to Cookies if token_fcm is null in localStorage
-                }
-                return value;
-            });
-            apiXML
-                .notificationsPost(
-                    "registerToken",
-                    values[0],
-                    getFormData(combinedKeys, values),
-                )
-                .then((response) => {
-                    const res = JSON.parse(response);
-                    Cookies.set("csrf", res.csrfHash);
-                    localStorage.setItem("token_registered", "done");
-                })
-                .catch((error) => {
-                    handleSessionError(error, "/login");
-                });
-        });
-    };
+    // const registerToken = (currentToken) => {
+    //     let keys = ["AUTH_KEY", "login_token", "token_fcm"];
+    //     const combinedKeys = addDefaultKeys(keys);
+    //     localStorage.setItem("token_fcm", currentToken);
+    //     apiXML.getCsrf().then((res) => {
+    //         res = JSON.parse(res);
+    //         // Fetch values from localStorage and Cookies
+    //         let values = combinedKeys.map((key) => {
+    //             let value = localStorage.getItem(key);
+    //             if (key === "csrf_token" && !value) {
+    //                 value = res.csrfHash; // Fallback to Cookies if csrf_token is null in localStorage
+    //             }
+    //             if (key === "token_fcm" && !value) {
+    //                 value = currentToken; // Fallback to Cookies if token_fcm is null in localStorage
+    //             }
+    //             return value;
+    //         });
+    //         apiXML
+    //             .notificationsPost(
+    //                 "registerToken",
+    //                 values[0],
+    //                 getFormData(combinedKeys, values),
+    //             )
+    //             .then((response) => {
+    //                 const res = JSON.parse(response);
+    //                 Cookies.set("csrf", res.csrfHash);
+    //                 localStorage.setItem("token_registered", "done");
+    //             })
+    //             .catch((error) => {
+    //                 handleSessionError(error, "/login");
+    //             });
+    //     });
+    // };
 
     window.addEventListener("click", (e) => {
         if (e.pageX > (screen.width * 75) / 100) {
