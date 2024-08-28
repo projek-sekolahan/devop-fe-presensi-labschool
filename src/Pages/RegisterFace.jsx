@@ -209,7 +209,7 @@ export default function RegisterFace() {
 											);
 
 										if (
-											faceData.detection.score >= 0.9 &&
+											faceData.detection.score >= 0.8 &&
 											distance <= 0.5
 										) {
 											registerNewFace(faceData);
