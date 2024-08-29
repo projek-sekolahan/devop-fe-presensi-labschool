@@ -44,8 +44,8 @@ export default function FaceVerification() {
 
 	const options = {
 		enableHighAccuracy: true,
-		timeout: 5000,
-		maximumAge: 0,
+		timeout: 30000,
+		maximumAge: 30000,
 	};
 
 	const success = (position) => {
