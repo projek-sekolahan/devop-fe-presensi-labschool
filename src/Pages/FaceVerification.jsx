@@ -123,12 +123,14 @@ export default function FaceVerification() {
 						presensi
 					</p>
 				</div>
-				<button
-					onClick={click}
-					className="w-full px-6 absolute bottom-16 btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
-				>
-					Verifikasi
-				</button>
+				<div className="w-full px-6 absolute bottom-16">
+					<button
+						onClick={click}
+						className="btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
+					>
+						Verifikasi
+					</button>
+				</div>
 			</div>
 		</div>
 	);
