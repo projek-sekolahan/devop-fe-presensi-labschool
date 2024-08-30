@@ -100,7 +100,7 @@ export default function FaceVerification() {
 	};
 
 	const error = (err) => {
-		console.warn(`ERROR(${err.code}): ${err.message}`);
+		alert(`ERROR(${err.code}): ${err.message}`);
 	};
 
 	const click = () => {
