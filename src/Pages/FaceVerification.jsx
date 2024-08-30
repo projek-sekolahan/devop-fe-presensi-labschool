@@ -122,12 +122,13 @@ export default function FaceVerification() {
 						Wajah anda akan diverifikasi untuk memenuhi syarat
 						presensi
 					</p>
-					<button
-						onClick={click}
-						className="w-full px-6 absolute bottom-16 btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
-					>
-						Verifikasi
-					</button>
+				</div>
+				<button
+					onClick={click}
+					className="w-full px-6 absolute bottom-16 btn border-none w-full text-primary-md font-semibold bg-white rounded-xl text-sm px-4 py-2 text-center"
+				>
+					Verifikasi
+				</button>
 			</div>
 		</div>
 	);
