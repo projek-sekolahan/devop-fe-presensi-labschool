@@ -35,7 +35,6 @@ export default class apiXML {
                 "Content-Type",
                 "application/x-www-form-urlencoded"
             );
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
             xhr.setRequestHeader("Authorization", `Basic ${key}`);
             xhr.withCredentials = true;
             xhr.onload = () => {
@@ -57,8 +56,8 @@ export default class apiXML {
                 "Content-Type",
                 "application/x-www-form-urlencoded"
             );
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
             xhr.withCredentials = true;
+
             xhr.onload = () => {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
