@@ -17,12 +17,14 @@ jobs:
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
-                node-version: 20
-                cache: 'npm'
+                  node-version: 20
+                  cache: "npm"
             - name: Install dependencies
               run: npm ci
             - name: Build
               run: npm run build
+            - name: Fix vulnerabilities
+              run: npm audit fix
             - name: Deploy
               uses: SamKirkland/web-deploy@v1
               with:
@@ -30,5 +32,5 @@ jobs:
                   remote-user: smalabsc
                   private-ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  soruce-path: ./dist/
+                  source-path: ./dist/
                   ssh-port: 45022
