@@ -23,8 +23,6 @@ jobs:
               run: npm ci
             - name: Build
               run: npm run build
-            - name: Fix vulnerabilities
-              run: npm audit fix
             - name: Deploy
               uses: SamKirkland/web-deploy@v1
               with:
