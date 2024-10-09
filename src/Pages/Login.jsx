@@ -40,6 +40,8 @@ export default function Login() {
             )
             .then((loginResponse) => {
                 console.log(loginResponse);
+                console.log(loginResponse.title);
+                console.log(JSON.parse(loginResponse));
                 const res = JSON.parse(loginResponse);
                 localStorage.setItem("login_token", res.data.Tokenjwt);
                 Cookies.set("csrf", res.csrfHash);
