@@ -41,16 +41,11 @@ export default function Login() {
             .then((loginResponse) => {
                 const res = JSON.parse(loginResponse);
                 console.log(res.Tokenjwt);
-                localStorage.setItem("login_token", res.data.Tokenjwt);
-                Cookies.set("csrf", res.csrfHash);
-                alertMessage(
-                    res.data.info,
-                    res.data.title,
-                    res.data.message,
-                    () => {
-                        window.location.replace("/home");
-                    }
-                );
+                localStorage.setItem("login_token", res.Tokenjwt);
+                // Cookies.set("csrf", res.csrfHash);
+                alertMessage(res.info, res.title, res.message, () => {
+                    window.location.replace("/home");
+                });
             })
             .catch((err) => {
                 handleSessionError(err, "/login");
