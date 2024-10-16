@@ -39,8 +39,8 @@ export default function Login() {
                 getFormData(combinedKeys, value)
             )
             .then((loginResponse) => {
-                console.log(loginResponse);
                 const res = JSON.parse(loginResponse);
+                console.log(res.data.Tokenjwt);
                 localStorage.setItem("login_token", res.data.Tokenjwt);
                 Cookies.set("csrf", res.csrfHash);
                 alertMessage(
