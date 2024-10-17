@@ -29,6 +29,8 @@ export default function Login() {
         const combinedKeys = addDefaultKeys(key);
         const value = [emailValue, hash, token_key[1], Cookies.get("csrf")];
 
+        //test
+
         localStorage.setItem("AUTH_KEY", token_key[0]);
         localStorage.setItem("devop-sso", token_key[1]);
         loading("Loading", "Logging in...");
