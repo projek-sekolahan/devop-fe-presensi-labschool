@@ -42,10 +42,9 @@ export default function Login() {
             )
             .then((loginResponse) => {
                 const res = JSON.parse(loginResponse);
-                console.log(res.Tokenjwt);
-                localStorage.setItem("login_token", res.Tokenjwt);
-                // Cookies.set("csrf", res.csrfHash);
-                alertMessage(res.info, res.title, res.message, () => {
+                console.log(res.data.token);
+                localStorage.setItem("login_token", res.data.token);
+                alertMessage(res.data.info, res.data.title, res.data.message, () => {
                     window.location.replace("/home");
                 });
             })
