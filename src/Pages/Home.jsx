@@ -63,7 +63,7 @@ const Home = () => {
                 getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
-
+            console.log(res); return false;
             if (res?.data) {
                 localStorage.setItem("token", res.data);
                 Cookies.set("csrf", res.csrfHash);
