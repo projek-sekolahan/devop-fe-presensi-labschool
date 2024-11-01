@@ -63,11 +63,11 @@ const Home = () => {
                 getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
-            console.log(res); return false;
+            
             if (res?.data) {
-                localStorage.setItem("token", res.data);
-                Cookies.set("csrf", res.csrfHash);
-                const user = parseJwt(res.data);
+                localStorage.setItem("token", res.data.token);
+                Cookies.set("csrf", res.data.csrfHash);
+                const user = parseJwt(res.data.token); console.log(user); return false;
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
