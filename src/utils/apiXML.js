@@ -9,7 +9,7 @@ const createRequestBody = (formData) => {
 // const reqTimeout = JSON.stringify({status })
 
 export default class apiXML {
-    static getCsrf() {
+    static getCsrf() { console.log(Cookies.get("cf_clearance"))
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
