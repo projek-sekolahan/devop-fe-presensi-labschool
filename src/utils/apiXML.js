@@ -14,6 +14,11 @@ export default class apiXML {
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
             xhr.withCredentials = true;
+            // Menambahkan cf_clearance ke header
+            const cf_clearance_value = Cookies.get("cf_clearance"); // Ambil cf_clearance dari cookies
+            if (cf_clearance_value) {
+                xhr.setRequestHeader("cf_clearance", cf_clearance_value); // Menambahkan header
+            }
             xhr.onload = () => {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
