@@ -323,11 +323,6 @@ export default function RegisterFace() {
 						Melakukan Registrasi Wajah Anda...{" "}
 					</p>
 				</div>
-
-				{/*<button className="btn" onClick={clickPhoto}>
-					Ambil Gambar
-				</button>*/}
-				{/* Open the modal using document.getElementById('ID').showModal() method */}
 				<button
 					className="btn"
 					onClick={() => {
