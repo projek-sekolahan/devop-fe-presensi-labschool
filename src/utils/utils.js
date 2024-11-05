@@ -91,13 +91,13 @@ export function parseJwt(token) {
 function decrypt(param, from) { 
     let keyEnkrip, ivEnkrip;
     if (from == "fromToken") {
-        keyEnkrip = "smalabschoolunesa1";
-        ivEnkrip = "smalabschoolunesa1";
-    } else if (from == "fromData") {
-        var decodeToken = parseJwt(localStorage.getItem("login_token")); console.log(decodeToken, from); return false;
+        keyEnkrip = "devop-sso";
+        ivEnkrip = "devop-sso";
+    } else if (from == "fromData") { 
+        var decodeToken = parseJwt(localStorage.getItem("login_token")); 
         keyEnkrip = decodeToken.apikey;
         ivEnkrip = decodeToken.session_hash;
-    }
+    } console.log(keyEnkrip, ivEnkrip, from); return false;
     const keyHex = CryptoJS.SHA256(keyEnkrip).toString().substring(0, 32);
     const ivHex = CryptoJS.SHA256(ivEnkrip).toString().substring(0, 16);
     const key = CryptoJS.enc.Utf8.parse(keyHex);
