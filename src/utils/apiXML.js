@@ -12,7 +12,7 @@ export default class apiXML {
     static getCsrf() {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `${api_url}/view/tokenSendCsrf`);
+            xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
             xhr.withCredentials = true;
             xhr.onload = () => {
                 if (xhr.status === 200 || xhr.status === 201) {
