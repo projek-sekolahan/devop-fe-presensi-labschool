@@ -94,10 +94,10 @@ function decrypt(param, from) {
         keyEnkrip = "devop-sso";
         ivEnkrip = "devop-sso";
     } else if (from == "fromData") { 
-        var decodeToken = parseJwt(localStorage.getItem("login_token")); 
+        var decodeToken = parseJwt(localStorage.getItem("login_token")); console.log(decodeToken, from);
         keyEnkrip = decodeToken.apikey;
         ivEnkrip = decodeToken.session_hash;
-    } console.log(keyEnkrip, ivEnkrip, from); return false;
+    } console.log(keyEnkrip, ivEnkrip, from);
     const keyHex = CryptoJS.SHA256(keyEnkrip).toString().substring(0, 32);
     const ivHex = CryptoJS.SHA256(ivEnkrip).toString().substring(0, 16);
     const key = CryptoJS.enc.Utf8.parse(keyHex);
