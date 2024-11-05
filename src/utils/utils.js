@@ -88,13 +88,13 @@ export function parseJwt(token) {
     }
 }
 
-function decrypt(param, from) { console.log(param, from); return false;
+function decrypt(param, from) { 
     let keyEnkrip, ivEnkrip;
     if (from == "fromToken") {
         keyEnkrip = "smalabschoolunesa1";
         ivEnkrip = "smalabschoolunesa1";
     } else if (from == "fromData") {
-        var decodeToken = parseJwt(localStorage.getItem("login_token"));
+        var decodeToken = parseJwt(localStorage.getItem("login_token")); console.log(decodeToken, from); return false;
         keyEnkrip = decodeToken.apikey;
         ivEnkrip = decodeToken.session_hash;
     }
