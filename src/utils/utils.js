@@ -88,7 +88,7 @@ export function parseJwt(token) {
     }
 }
 
-function decrypt(param, from) {
+function decrypt(param, from) { console.log(param, from); return false;
     let keyEnkrip, ivEnkrip;
     if (from == "fromToken") {
         keyEnkrip = "smalabschoolunesa1";
