@@ -32,7 +32,7 @@ export default function OtpInput() {
 			.then((res) => {
 				res = JSON.parse(res);
 				setLoad(false);
-				localStorage.setItem("regist_token", res.data.token);
+				localStorage.setItem("regist_token", res.data.data.token);
 				Cookies.set("csrf", res.csrfHash);
 				res.data.info == "error"
 					? alertMessage(
