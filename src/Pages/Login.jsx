@@ -19,7 +19,7 @@ export default function Login() {
     const submitBtn = useRef(null);
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(Cookies.get("csrf")); return false;
+        // console.log(Cookies.get("csrf")); return false;
         const emailValue = emailRef.current.value;
         const passwordValue = passwordRef.current.value;
         const hash = getHash(passwordValue);

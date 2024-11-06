@@ -49,6 +49,7 @@ const Home = () => {
             let keys = ["AUTH_KEY", "login_token"];
             const combinedKeys = addDefaultKeys(keys);
             // Fetch values from localStorage and Cookies
+            console.log(Cookies.get("csrf")); return false;
             let values = combinedKeys.map((key) => {
                 let value = localStorage.getItem(key);
                 if (key === "csrf_token" && !value) {
