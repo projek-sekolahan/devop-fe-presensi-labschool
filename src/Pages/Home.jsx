@@ -52,7 +52,7 @@ const Home = () => {
             let values = combinedKeys.map((key) => {
                 let value = localStorage.getItem(key);
                 if (key === "csrf_token" && !value) {
-                    value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
+                    value = Cookies.get("ci_sso_csrf_cookie"); // Fallback to Cookies if csrf_token is null in localStorage
                 }
                 return value;
             });
@@ -66,7 +66,7 @@ const Home = () => {
             
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
-                Cookies.set("csrf", res.csrfHash);
+                // Cookies.set("csrf", res.csrfHash);
                 const user = parseJwt(res.data.token); 
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
@@ -100,7 +100,7 @@ const Home = () => {
                 const parsedRes = JSON.parse(res);
 
                 if (parsedRes.data.title === "Your Session OK") {
-                    Cookies.set("csrf", parsedRes.csrfHash);
+                    // Cookies.set("csrf", parsedRes.csrfHash);
                 } else {
                     handleSessionExpired(parsedRes.data);
                 }

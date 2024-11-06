@@ -27,7 +27,7 @@ export default function Login() {
 
         const key = ["username", "password"];
         const combinedKeys = addDefaultKeys(key);
-        const value = [emailValue, hash, token_key[1], Cookies.get("csrf")];
+        const value = [emailValue, hash, token_key[1], Cookies.get("ci_sso_csrf_cookie")];
 
         //test
 
