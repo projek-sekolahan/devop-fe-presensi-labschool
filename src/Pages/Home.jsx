@@ -49,11 +49,10 @@ const Home = () => {
             let keys = ["AUTH_KEY", "login_token"];
             const combinedKeys = addDefaultKeys(keys);
             // Fetch values from localStorage and Cookies
-            console.log(Cookies.get("csrf")); return false;
             let values = combinedKeys.map((key) => {
                 let value = localStorage.getItem(key);
                 if (key === "csrf_token" && !value) {
-                    value = Cookies.get("ci_sso_csrf_cookie"); // Fallback to Cookies if csrf_token is null in localStorage
+                    value = Cookies.get("csrf"); // Fallback to Cookies if csrf_token is null in localStorage
                 }
                 return value;
             });
@@ -64,7 +63,7 @@ const Home = () => {
                 getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
-            
+            console.log(res); return false;
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
                 // Cookies.set("csrf", res.csrfHash);
