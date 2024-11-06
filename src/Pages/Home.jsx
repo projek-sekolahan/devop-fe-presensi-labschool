@@ -63,10 +63,10 @@ const Home = () => {
                 getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
-            console.log(res); return false;
+            
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
-                // Cookies.set("csrf", res.csrfHash);
+                Cookies.set("csrf", res.csrfHash);
                 const user = parseJwt(res.data.token); 
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
@@ -91,7 +91,7 @@ const Home = () => {
                     }
                     return value;
                 });
-
+                console.log(Cookies.get("csrf")); return false;
                 const res = await apiXML.authPost(
                     "sessTime",
                     values[1],
