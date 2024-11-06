@@ -19,7 +19,7 @@ export default function Login() {
     const submitBtn = useRef(null);
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(Cookies.get("ci_sso_csrf_cookie")); return false;
+        console.log(Cookies.get("csrf")); return false;
         const emailValue = emailRef.current.value;
         const passwordValue = passwordRef.current.value;
         const hash = getHash(passwordValue);
@@ -27,7 +27,7 @@ export default function Login() {
 
         const key = ["username", "password"];
         const combinedKeys = addDefaultKeys(key);
-        const value = [emailValue, hash, token_key[1], Cookies.get("ci_sso_csrf_cookie")];
+        const value = [emailValue, hash, token_key[1], Cookies.get("csrf")];
 
         //test
 

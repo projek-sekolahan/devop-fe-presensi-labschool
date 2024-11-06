@@ -18,7 +18,7 @@ export default class apiXML {
                 if (xhr.status === 200 || xhr.status === 201) {
                     resolve(xhr.responseText);
                     let res = JSON.parse(xhr.responseText);
-                    // Cookies.set("csrf", res.csrfHash);
+                    Cookies.set("csrf", res.csrfHash);
                 } else {
                     reject(xhr.statusText);
                 }
