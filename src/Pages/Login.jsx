@@ -14,6 +14,7 @@ import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 
 export default function Login() {
+    apiXML.getCsrf();
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const submitBtn = useRef(null);
