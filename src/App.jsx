@@ -33,7 +33,7 @@ const isMobileDevice =
 
 function App() {
 	useEffect(() => {
-
+		apiXML.getCsrf();
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",

@@ -14,7 +14,7 @@ import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 
 export default function Login() {
-    apiXML.getCsrf();
+    // apiXML.getCsrf();
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const submitBtn = useRef(null);
@@ -44,7 +44,7 @@ export default function Login() {
             .then((loginResponse) => {
                 const res = JSON.parse(loginResponse);
                 localStorage.setItem("login_token", res.data.token);
-                Cookies.set("csrf", res.csrfHash);
+                // Cookies.set("csrf", res.csrfHash);
                 alertMessage(res.data.info, res.data.title, res.data.message, () => {
                     window.location.replace("/home");
                 });

@@ -66,7 +66,7 @@ const Home = () => {
             console.log(Cookies.get("res"));
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
-                Cookies.set("csrf", res.csrfHash);
+                // Cookies.set("csrf", res.csrfHash);
                 const user = parseJwt(res.data.token); 
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);

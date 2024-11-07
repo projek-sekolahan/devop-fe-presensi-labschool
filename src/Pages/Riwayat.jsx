@@ -70,7 +70,7 @@ export default function Riwayat() {
 			)
 			.then((res) => {
 				res = JSON.parse(res);
-				Cookies.set("csrf", res.csrfHash);
+				// Cookies.set("csrf", res.csrfHash);
 				const { data } = parseJwt(res.data);
 				setHistorys(data);
 				setLoad(false);

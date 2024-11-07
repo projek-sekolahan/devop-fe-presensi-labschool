@@ -123,7 +123,7 @@ export default function RegisterFace() {
 			.postInput("loadFace", getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res); // Parse JSON response
-				Cookies.set("csrf", res.csrfHash); // Update csrf token
+				// Cookies.set("csrf", res.csrfHash); // Update csrf token
 				if (res.status) {
 					// Akses data facecam
 					const facecamData = res.data.facecam;
@@ -257,7 +257,7 @@ export default function RegisterFace() {
 							.then((response) => {
 								const res = JSON.parse(response);
 								console.log(res);
-								Cookies.set("csrf", res.csrfHash); // Update csrf token
+								// Cookies.set("csrf", res.csrfHash); // Update csrf token
 
 								if (res.status) {
 									alertMessage(

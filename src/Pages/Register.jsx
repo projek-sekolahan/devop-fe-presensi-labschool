@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Register() {
-	apiXML.getCsrf();
+	// apiXML.getCsrf();
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();
@@ -47,7 +47,7 @@ export default function Register() {
 			.then((res) => {
 				res = JSON.parse(res);
 				setLoad(false);
-				Cookies.set("csrf", res.csrfHash);
+				// Cookies.set("csrf", res.csrfHash);
 				alertMessage(
 					res.data.info,
 					res.data.title,
