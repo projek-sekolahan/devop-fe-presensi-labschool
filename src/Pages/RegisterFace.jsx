@@ -192,7 +192,7 @@ export default function RegisterFace() {
 								} else { console.log('facecamData',facecamData);
 									if (
 										facecamData[0] === undefined ||
-										facecamData[0] === "undefined"
+										facecamData[0] === "undefined" || facecamData.length === 0
 									) {
 										registerNewFace(faceData);
 									} else {
