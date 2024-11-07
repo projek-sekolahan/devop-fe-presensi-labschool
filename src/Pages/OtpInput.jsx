@@ -30,7 +30,7 @@ export default function OtpInput() {
 		apiXML
 			.postInput("verify", getFormData(keys, values))
 			.then((res) => {
-				res = JSON.parse(res);
+				res = JSON.parse(res); console.log(res.data.data.token);
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.data.token);
 				Cookies.set("csrf", res.csrfHash);
