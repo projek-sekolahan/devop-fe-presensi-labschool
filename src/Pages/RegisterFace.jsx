@@ -126,7 +126,7 @@ export default function RegisterFace() {
 				// Cookies.set("csrf", res.csrfHash); // Update csrf token
 				if (res.status) {
 					// Akses data facecam
-					const facecamData = res.data.facecam;
+					const facecamData = res.data.facecam; console.log(facecamData);
 					async function attemptMatch() {
 						if (attempts >= maxAttempts) {
 							alertMessage(
@@ -154,8 +154,8 @@ export default function RegisterFace() {
 							if (faceData) {
 								if (facecamData.length > 1) {
 									let isFaceMatched = false;
-
-									for (const facecam of facecamData) {
+									
+									for (const facecam of facecamData) { console.log(facecam);
 										const facecamDescriptor =
 											new Float32Array(
 												facecam.facecam_id
@@ -189,7 +189,7 @@ export default function RegisterFace() {
 									if (!isFaceMatched) {
 										registerNewFace(faceData);
 									}
-								} else {
+								} else { console.log(facecamData);
 									if (
 										facecamData[0] === undefined ||
 										facecamData[0] === "undefined"
@@ -207,7 +207,7 @@ export default function RegisterFace() {
 												facecamDescriptor,
 												faceData.descriptor,
 											);
-
+											console.log(facecamDescriptor,distance);
 										if (
 											faceData.detection.score >= 0.8 &&
 											distance <= 0.5
@@ -247,7 +247,7 @@ export default function RegisterFace() {
 							localStorage.getItem("regist_token"),
 							Cookies.get("csrf"),
 						];
-
+						console.log(registerValues);
 						loading("Loading", "Registering Face...");
 						apiXML
 							.postInput(
