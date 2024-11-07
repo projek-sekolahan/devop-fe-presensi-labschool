@@ -10,6 +10,7 @@ import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Register() {
+	apiXML.getCsrf();
 	const [role, setRole] = useState("");
 	const [load, setLoad] = useState(false);
 	const nameRef = useRef();

@@ -11,6 +11,7 @@ import {
 import Cookies from "js-cookie";
 
 export default function ChangePassword() {
+	apiXML.getCsrf();
 	const emailRef = useRef();
 	const [load, setLoad] = useState(false);
 
