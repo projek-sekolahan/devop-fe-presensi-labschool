@@ -11,6 +11,7 @@ import {
 import Cookies from "js-cookie";
 
 export default function ChangePassword() {
+	// apiXML.getCsrf();
 	const emailRef = useRef();
 	const [load, setLoad] = useState(false);
 
@@ -25,7 +26,7 @@ export default function ChangePassword() {
 			.postInput("recover", getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
-				Cookies.set("csrf", res.csrfHash);
+				// Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 				alertMessage(
 					res.data.info,

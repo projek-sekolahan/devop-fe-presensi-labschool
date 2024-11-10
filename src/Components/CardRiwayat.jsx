@@ -35,13 +35,13 @@ export default function CardRiwayat({ index, history, biodata }) {
 				)
 				.then((res) => {
 					res = JSON.parse(res);
-					Cookies.set("csrf", res.csrfHash);
+					// Cookies.set("csrf", res.csrfHash);
 					setDatas(parseJwt(res.data).result);
 					setLoading(false);
 				})
 				.catch((e) => {
 					const res = JSON.parse(e.responseText);
-					Cookies.set("csrf", res.csrfHash);
+					// Cookies.set("csrf", res.csrfHash);
 					setLoading(false);
 					closeBtn.current.click();
 					alertMessage(

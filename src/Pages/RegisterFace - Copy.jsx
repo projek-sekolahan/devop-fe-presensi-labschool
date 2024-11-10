@@ -86,7 +86,7 @@ export default function RegisterFace() {
 
 				// Akses data facecam
 				const facecamData = res.data.facecam;
-				Cookies.set("csrf", res.csrfHash); // Update csrf token
+				// Cookies.set("csrf", res.csrfHash); // Update csrf token
 
 				async function attemptMatch() {
 					if (attempts >= maxAttempts) {
@@ -226,7 +226,7 @@ export default function RegisterFace() {
 						)
 						.then((response) => {
 							const res = JSON.parse(response);
-							Cookies.set("csrf", res.csrfHash); // Update csrf token
+							// Cookies.set("csrf", res.csrfHash); // Update csrf token
 
 							if (res.status) {
 								alert(

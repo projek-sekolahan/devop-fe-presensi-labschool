@@ -63,11 +63,11 @@ const Home = () => {
                 getFormData(combinedKeys, values),
             );
             const res = JSON.parse(response);
-
+            console.log(Cookies.get("res"));
             if (res?.data) {
-                localStorage.setItem("token", res.data);
-                Cookies.set("csrf", res.csrfHash);
-                const user = parseJwt(res.data);
+                localStorage.setItem("token", res.data.token);
+                // Cookies.set("csrf", res.csrfHash);
+                const user = parseJwt(res.data.token); 
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
@@ -91,7 +91,7 @@ const Home = () => {
                     }
                     return value;
                 });
-
+                console.log(Cookies.get("csrf")); return false;
                 const res = await apiXML.authPost(
                     "sessTime",
                     values[1],
@@ -100,7 +100,7 @@ const Home = () => {
                 const parsedRes = JSON.parse(res);
 
                 if (parsedRes.data.title === "Your Session OK") {
-                    Cookies.set("csrf", parsedRes.csrfHash);
+                    // Cookies.set("csrf", parsedRes.csrfHash);
                 } else {
                     handleSessionExpired(parsedRes.data);
                 }

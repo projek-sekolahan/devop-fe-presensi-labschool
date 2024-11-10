@@ -30,10 +30,10 @@ export default function OtpInput() {
 		apiXML
 			.postInput("verify", getFormData(keys, values))
 			.then((res) => {
-				res = JSON.parse(res);
+				res = JSON.parse(res); console.log(res.data.data.token);
 				setLoad(false);
-				localStorage.setItem("regist_token", res.data.token);
-				Cookies.set("csrf", res.csrfHash);
+				localStorage.setItem("regist_token", res.data.data.token);
+				// Cookies.set("csrf", res.csrfHash);
 				res.data.info == "error"
 					? alertMessage(
 							res.data.info,
@@ -93,7 +93,7 @@ export default function OtpInput() {
 			.postInput("sendOTP", getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
-				Cookies.set("csrf", res.csrfHash);
+				// Cookies.set("csrf", res.csrfHash);
 				alertMessage(
 					res.data.info,
 					res.data.title,

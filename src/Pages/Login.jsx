@@ -14,12 +14,13 @@ import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 
 export default function Login() {
+    // apiXML.getCsrf();
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const submitBtn = useRef(null);
     const onSubmit = (e) => {
         e.preventDefault();
-
+        // console.log(Cookies.get("csrf")); return false;
         const emailValue = emailRef.current.value;
         const passwordValue = passwordRef.current.value;
         const hash = getHash(passwordValue);

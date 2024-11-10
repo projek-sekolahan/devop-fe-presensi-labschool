@@ -81,12 +81,12 @@ export default function Notification() {
 			.then((res) => {
 				res = JSON.parse(res);
 				setData(parseJwt(res.data));
-				Cookies.set("csrf", res.csrfHash);
+				// Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			}).catch((err) => {
 				err = JSON.parse(err.responseText);
 				setData(err.data);
-				Cookies.set("csrf", err.csrfHash);
+				// Cookies.set("csrf", err.csrfHash);
 				setLoad(false);
 			});
 	return (

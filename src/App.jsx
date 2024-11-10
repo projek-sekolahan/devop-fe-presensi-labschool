@@ -26,36 +26,14 @@ const Errors = lazy(() => import("./Pages/Error"));
 const RegisterFace = lazy(() => import("./Pages/RegisterFace"));
 const SetPassword = lazy(() => import("./Pages/SetPassword"));
 
-// let isMobile = false;
-
-// function isMobileCheck(trueCallback, falseCallback) {
-// 	if (
-// 		/Android|webOS|iPhone|iPad|iPod|pocket|psp|kindle|avantgo|blazer|midori|Tablet|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
-// 			navigator.userAgent,
-// 		)
-// 	) {
-// 		trueCallback();
-// 	} else {
-// 		falseCallback();
-// 	}
-// }
-
 const isMobileDevice =
 	/Android|webOS|iPhone|iPod|pocket|psp|kindle|avantgo|blazer|midori|Palm|maemo|plucker|phone|BlackBerry|symbian|IEMobile|mobile|ZuneWP7|Windows Phone|Opera Mini/i.test(
 		navigator.userAgent,
 	);
 
 function App() {
-	// isMobileCheck(
-	// 	() => (isMobile = true),
-	// 	() => (isMobile = false),
-	// );
-
-	// console.log(isMobile);
-
 	useEffect(() => {
 		apiXML.getCsrf();
-
 		if (!localStorage.getItem("cookiesAccepted")) {
 			Swal.fire({
 				title: "Allow Cookies",
@@ -70,22 +48,6 @@ function App() {
 			}); // Set cookie untuk 1 tahun
 			localStorage.setItem("cookiesAccepted", "true");
 		}
-
-		// const handleResize = () => {
-		// 	isMobileCheck(
-		// 		() => (isMobile = true),
-		// 		() => (isMobile = false),
-		// 	);
-		// };
-
-		// handleResize(); // Initial check
-
-		// window.addEventListener("resize", handleResize);
-
-		// Cleanup event listener on unmount
-		// return () => {
-		// 	window.removeEventListener("resize", handleResize);
-		// };
 	}, []);
 	return (
 		<Router>

@@ -170,7 +170,7 @@ export default function FaceCam() {
 							getFormData(combinedKeys, values),
 						);
 						const res = JSON.parse(response);
-						Cookies.set("csrf", res.csrfHash);
+						// Cookies.set("csrf", res.csrfHash);
 						const jwt = parseJwt(res.data);
 						alert(jwt.info, jwt.title, jwt.message, () =>
 							window.location.replace("/home"),
