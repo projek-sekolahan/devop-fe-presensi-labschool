@@ -150,12 +150,12 @@ export default function RegisterFace() {
 								)
 								.withFaceLandmarks()
 								.withFaceDescriptor();
-
+								console.log('faceData ',faceData)
 							if (faceData) {
 								if (facecamData.length > 1) {
 									let isFaceMatched = false;
 									
-									for (const facecam of facecamData) { console.log('facecam',facecam);
+									for (const facecam of facecamData) { console.log('facecam if',facecam);
 										const facecamDescriptor =
 											new Float32Array(
 												facecam.facecam_id
@@ -189,10 +189,9 @@ export default function RegisterFace() {
 									if (!isFaceMatched) {
 										registerNewFace(faceData);
 									}
-								} else { console.log('facecamData',facecamData);
+								} else { console.log('facecamData else',facecamData);
 									if (
-										facecamData[0] === undefined ||
-										facecamData[0] === "undefined" || facecamData.length === 0
+										facecamData[0] === undefined || facecamData[0] === "undefined" || facecamData.length === 0 || facecamData === undefined || facecamData === "undefined"
 									) {
 										registerNewFace(faceData);
 									} else {
