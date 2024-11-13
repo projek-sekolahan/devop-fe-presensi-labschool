@@ -72,12 +72,11 @@ export default function Riwayat() {
                 res = JSON.parse(res);
                 // Cookies.set("csrf", res.csrfHash);
                 const { data } = parseJwt(res.data);
-                data
-                    ? setHistorys(data)
-                    : setHistorys("Can't get data from server");
+                setHistorys(data);
                 setLoad(false);
             })
             .catch((err) => {
+                console.log(err);
                 handleSessionError(err, "/login");
             });
 
