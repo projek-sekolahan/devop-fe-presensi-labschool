@@ -128,6 +128,7 @@ export default function RegisterFace() {
 					// Akses data facecam
 					const facecamData = res.data.facecam; console.log('facecamData response',facecamData);
 					async function attemptMatch() {
+						console.log('attemptMatch ',attempts,maxAttempts)
 						if (attempts >= maxAttempts) {
 							alertMessage(
 								"error",
