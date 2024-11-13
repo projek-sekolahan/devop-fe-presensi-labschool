@@ -126,7 +126,7 @@ export default function RegisterFace() {
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
 				if (res.status) { console.log('response',res);
 					// Akses data facecam
-					const facecamData = res.data.facecam; console.log('facecamData',facecamData);
+					const facecamData = res.data.facecam; console.log('facecamData response',facecamData);
 					async function attemptMatch() {
 						if (attempts >= maxAttempts) {
 							alertMessage(
@@ -152,10 +152,15 @@ export default function RegisterFace() {
 								.withFaceDescriptor();
 								console.log('faceData ',faceData)
 							if (faceData) {
-								if (facecamData.length > 1) {
+								if (
+									facecamData[0] === undefined || facecamData[0] === "undefined" || facecamData.length === 0 || facecamData === undefined || facecamData === "undefined"
+								) { console.log('facecam undefined',facecam);
+									registerNewFace(faceData);
+								}
+								else if (facecamData.length > 1) { console.log('facecam found',facecam);
 									let isFaceMatched = false;
 									
-									for (const facecam of facecamData) { console.log('facecam if',facecam);
+									for (const facecam of facecamData) { 
 										const facecamDescriptor =
 											new Float32Array(
 												facecam.facecam_id
@@ -189,41 +194,36 @@ export default function RegisterFace() {
 									if (!isFaceMatched) {
 										registerNewFace(faceData);
 									}
-								} else { console.log('facecamData else',facecamData);
+								}
+								else {
+									const facecamDescriptor =
+										new Float32Array(
+											facecamData[0].facecam_id
+												.split(", ")
+												.map(Number),
+										);
+									const distance =
+										faceapi.euclideanDistance(
+											facecamDescriptor,
+											faceData.descriptor,
+										);
+										console.log(facecamDescriptor,distance);
 									if (
-										facecamData[0] === undefined || facecamData[0] === "undefined" || facecamData.length === 0 || facecamData === undefined || facecamData === "undefined"
+										faceData.detection.score >= 0.8 &&
+										distance <= 0.5
 									) {
 										registerNewFace(faceData);
 									} else {
-										const facecamDescriptor =
-											new Float32Array(
-												facecamData[0].facecam_id
-													.split(", ")
-													.map(Number),
-											);
-										const distance =
-											faceapi.euclideanDistance(
-												facecamDescriptor,
-												faceData.descriptor,
-											);
-											console.log(facecamDescriptor,distance);
-										if (
-											faceData.detection.score >= 0.8 &&
-											distance <= 0.5
-										) {
-											registerNewFace(faceData);
-										} else {
-											alertMessage(
-												"error",
-												"Error",
-												"Wajah tidak cocok, harap coba lagi.",
-												() => {
-													btnRef.current.disabled = false;
-													setLoad(false);
-												},
-											);
-											return;
-										}
+										alertMessage(
+											"error",
+											"Error",
+											"Wajah tidak cocok, harap coba lagi.",
+											() => {
+												btnRef.current.disabled = false;
+												setLoad(false);
+											},
+										);
+										return;
 									}
 								}
 							} else {
