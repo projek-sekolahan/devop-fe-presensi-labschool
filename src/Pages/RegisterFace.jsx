@@ -111,24 +111,28 @@ export default function RegisterFace() {
 		loading("Loading", "Sedang melakukan deteksi wajah...");
 		let attempts = 0; // Menghitung jumlah upaya deteksi
 		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
-
+	
 		const keys = ["devop-sso", "csrf_token"];
 		const values = [
 			localStorage.getItem("regist_token"),
 			Cookies.get("csrf"),
 		];
-
+	
 		// Panggil API untuk loadFace satu kali sebelum interval
 		apiXML
 			.postInput("loadFace", getFormData(keys, values))
 			.then((res) => {
+				console.log("API loadFace response:", res); // Debug respons API awal
 				res = JSON.parse(res); // Parse JSON response
 				Cookies.set("csrf", res.csrfHash); // Update csrf token
-				if (res.status) { console.log('response',res);
-					// Akses data facecam
-					const facecamData = res.data.facecam; console.log('facecamData response',facecamData);
+				if (res.status) {
+					const facecamData = res.data.facecam; 
+					console.log("Loaded facecamData:", facecamData); // Debug data facecam dari respons
+	
+					// Fungsi percobaan mencocokkan wajah
 					async function attemptMatch() {
-						console.log('attemptMatch ',attempts,maxAttempts)
+						console.log("Attempt number:", attempts); // Debug jumlah percobaan
+						
 						if (attempts >= maxAttempts) {
 							alertMessage(
 								"error",
@@ -142,8 +146,9 @@ export default function RegisterFace() {
 							return;
 						}
 						attempts++;
-
+	
 						try {
+							console.log("Attempting to detect face on image element:", imgRef.current); // Debug elemen gambar
 							const faceData = await faceapi
 								.detectSingleFace(
 									imgRef.current,
@@ -151,34 +156,30 @@ export default function RegisterFace() {
 								)
 								.withFaceLandmarks()
 								.withFaceDescriptor();
-								console.log('faceData ',faceData)
+							console.log("Detected faceData:", faceData); // Debug hasil deteksi wajah
+	
 							if (faceData) {
 								if (
-									facecamData[0] === undefined || facecamData[0] === "undefined" || facecamData.length === 0 || facecamData === undefined || facecamData === "undefined" || facecamData === null
-								) { console.log('facecam undefined',facecam);
+									!facecamData || facecamData.length === 0
+								) {
+									console.log("No existing facecamData found, registering new face"); // Debug kondisi tanpa data wajah
 									registerNewFace(faceData);
-								}
-								else if (facecamData.length > 1) { console.log('facecam found',facecam);
+								} else {
+									console.log("Checking against existing facecamData:", facecamData); // Debug data facecam yang ada
 									let isFaceMatched = false;
-									
+	
 									for (const facecam of facecamData) { 
-										const facecamDescriptor =
-											new Float32Array(
-												facecam.facecam_id
-													.split(", ")
-													.map(Number),
-											);
-										const distance =
-											faceapi.euclideanDistance(
-												facecamDescriptor,
-												faceData.descriptor,
-											);
-										if (
-											faceData.detection.score >= 0.99 &&
-											distance <= 0.6
-										) {
+										const facecamDescriptor = new Float32Array(
+											facecam.facecam_id.split(", ").map(Number)
+										);
+										const distance = faceapi.euclideanDistance(
+											facecamDescriptor,
+											faceData.descriptor
+										);
+										console.log("Comparing with facecam:", facecam, "Distance:", distance); // Debug perbandingan jarak
+	
+										if (faceData.detection.score >= 0.99 && distance <= 0.6) {
 											isFaceMatched = true;
-
 											alertMessage(
 												"error",
 												"Error",
@@ -191,50 +192,22 @@ export default function RegisterFace() {
 											return;
 										}
 									}
-
+	
 									if (!isFaceMatched) {
 										registerNewFace(faceData);
 									}
 								}
-								else {
-									const facecamDescriptor =
-										new Float32Array(
-											facecamData[0].facecam_id
-												.split(", ")
-												.map(Number),
-										);
-									const distance =
-										faceapi.euclideanDistance(
-											facecamDescriptor,
-											faceData.descriptor,
-										);
-										console.log(facecamDescriptor,distance);
-									if (
-										faceData.detection.score >= 0.8 &&
-										distance <= 0.5
-									) {
-										registerNewFace(faceData);
-									} else {
-										alertMessage(
-											"error",
-											"Error",
-											"Wajah tidak cocok, harap coba lagi.",
-											() => {
-												btnRef.current.disabled = false;
-												setLoad(false);
-											},
-										);
-										return;
-									}
-								}
 							} else {
+								console.log("No face detected, retrying..."); // Debug jika wajah tidak terdeteksi
 								setTimeout(attemptMatch, 1000); // No face detected, retry
 							}
 						} catch (err) {
+							console.error("Error during face detection:", err); // Debug kesalahan deteksi wajah
 							handleSessionError(err, "/login");
 						}
 					}
-
+	
+					// Fungsi untuk mendaftarkan wajah baru
 					const registerNewFace = (faceData) => {
 						const stringDescriptor = Array.from(
 							faceData.descriptor,
@@ -247,8 +220,9 @@ export default function RegisterFace() {
 							localStorage.getItem("regist_token"),
 							Cookies.get("csrf"),
 						];
-						console.log('registerValues',registerValues);
+						console.log("Registering new face with values:", registerValues); // Debug nilai saat pendaftaran wajah
 						loading("Loading", "Registering Face...");
+	
 						apiXML
 							.postInput(
 								"facecam",
@@ -256,9 +230,8 @@ export default function RegisterFace() {
 							)
 							.then((response) => {
 								const res = JSON.parse(response);
-								console.log('response register',res);
-								// Cookies.set("csrf", res.csrfHash); // Update csrf token
-
+								console.log("Face registration response:", res); // Debug respons pendaftaran wajah
+	
 								if (res.status) {
 									alertMessage(
 										res.data.info,
@@ -280,10 +253,13 @@ export default function RegisterFace() {
 								}
 							})
 							.catch((err) => {
+								console.error("Error during face registration:", err); // Debug kesalahan saat pendaftaran wajah
 								handleSessionError(err, "/facereg");
 							});
 					};
-					attemptMatch(); // Memulai percobaan pertama
+	
+					// Mulai percobaan pertama
+					attemptMatch(); 
 				} else {
 					alertMessage(
 						res.data.info,
@@ -294,9 +270,10 @@ export default function RegisterFace() {
 				}
 			})
 			.catch((err) => {
+				console.error("Error during API call to loadFace:", err); // Debug kesalahan saat memanggil loadFace API
 				handleSessionError(err, "/login");
 			});
-	};
+	};	
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
 			<video
