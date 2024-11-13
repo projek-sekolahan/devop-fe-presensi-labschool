@@ -88,12 +88,12 @@ export function parseJwt(token) {
     }
 }
 
-function decrypt(param, from) { 
+function decrypt(param, from) {
     let keyEnkrip, ivEnkrip;
     if (from == "fromToken") {
         keyEnkrip = "devop-sso";
         ivEnkrip = "devop-sso";
-    } else if (from == "fromData") { 
+    } else if (from == "fromData") {
         var decodeToken = parseJwt(localStorage.getItem("login_token"));
         keyEnkrip = decodeToken.apikey;
         ivEnkrip = decodeToken.session_hash;
