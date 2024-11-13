@@ -58,54 +58,51 @@ export default function RegisterFace() {
 	};
 
 	function clickPhoto() {
+		console.log("Starting photo capture...");
 		const context = canvasRef.current.getContext("2d");
 		const video = videoRef.current;
-
-		// Ukuran canvas untuk gambar akhir
+	 
 		const canvasWidth = 400;
 		const canvasHeight = 400;
-
-		// Ukuran asli video
+		console.log("Canvas size:", canvasWidth, canvasHeight);
+	 
 		const videoWidth = video.videoWidth;
 		const videoHeight = video.videoHeight;
-
-		// Menentukan titik tengah dari video
+		console.log("Video size:", videoWidth, videoHeight);
+	 
 		const videoCenterX = videoWidth / 2;
 		const videoCenterY = videoHeight / 2;
-
-		// Menentukan titik awal untuk memotong gambar (crop)
 		const cropX = videoCenterX - canvasWidth / 2;
 		const cropY = videoCenterY - canvasHeight / 2;
-
-		// Mengatur ukuran canvas
+		console.log("Crop coordinates:", cropX, cropY);
+	 
 		canvasRef.current.width = canvasWidth;
 		canvasRef.current.height = canvasHeight;
-
-		// Membalik gambar secara horizontal untuk menghindari mirror effect
-		context.save(); // Menyimpan state konteks canvas
-		context.scale(-1, 1); // Membalik gambar secara horizontal
-		context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
-
-		// Mengambil gambar dari video dan memotongnya tepat di tengah
+	 
+		context.save();
+		context.scale(-1, 1);
+		context.translate(-canvasWidth, 0);
+		console.log("Drawing and flipping image on canvas...");
+	 
 		context.drawImage(
 			video,
 			cropX,
-			50,
+			cropY,
 			canvasWidth,
-			canvasHeight, // Area dari video yang akan diambil
+			canvasHeight,
 			0,
 			0,
 			canvasWidth,
-			canvasHeight, // Area di canvas tempat gambar akan digambar
+			canvasHeight
 		);
-
-		context.restore(); // Mengembalikan state konteks canvas ke semula
-
+	 
+		context.restore();
 		let image_data_url = canvasRef.current.toDataURL("image/jpeg");
-
-		// Mengatur gambar hasil di img element
+		console.log("Captured image data URL:", image_data_url);
+	 
 		imgRef.current.src = image_data_url;
-	}
+		console.log("Photo capture complete. Image set to img element.");
+	 }	 
 
 	const detectFace = () => {
 		loading("Loading", "Sedang melakukan deteksi wajah...");
@@ -148,6 +145,10 @@ export default function RegisterFace() {
 						attempts++;
 	
 						try {
+							if (!imgRef.current || imgRef.current.src === "") {
+								console.error("Image reference is invalid or missing.");
+								return;
+							}
 							console.log("Attempting to detect face on image element:", imgRef.current); // Debug elemen gambar
 							const faceData = await faceapi
 								.detectSingleFace(
@@ -198,6 +199,7 @@ export default function RegisterFace() {
 									}
 								}
 							} else {
+								console.warn("Face detection failed on attempt", attempts);
 								console.log("No face detected, retrying..."); // Debug jika wajah tidak terdeteksi
 								setTimeout(attemptMatch, 1000); // No face detected, retry
 							}
