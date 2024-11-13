@@ -23,15 +23,12 @@ export default function ChangePassword() {
         const key = ["username", "csrf_token"];
         const values = [emailRef.current.value, Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
-        axios
-            .post(
-                "https://devop-sso.smalabschoolunesa1.sch.id/input/recover",
-                getFormData(key, values)
-            )
+
+        apiXML
+            .postInput("recover", getFormData(key, values))
             .then((res) => {
                 res = JSON.parse(res);
                 // Cookies.set("csrf", res.csrfHash);
-                console.log("this is axios");
                 setLoad(false);
                 alertMessage(
                     res.data.info,
@@ -43,22 +40,6 @@ export default function ChangePassword() {
             .catch((err) => {
                 handleSessionError(err, "/recover");
             });
-        // apiXML
-        // 	.postInput("recover", getFormData(key, values))
-        // 	.then((res) => {
-        // 		res = JSON.parse(res);
-        // 		// Cookies.set("csrf", res.csrfHash);
-        // 		setLoad(false);
-        // 		alertMessage(
-        // 			res.data.info,
-        // 			res.data.title,
-        // 			res.data.message,
-        // 			() => window.location.replace("/" + res.data.location),
-        // 		);
-        // 	})
-        // 	.catch((err) => {
-        // 		handleSessionError(err, "/recover");
-        // 	});
     };
 
     return (
