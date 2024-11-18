@@ -72,8 +72,7 @@ export default function Riwayat() {
                 res = JSON.parse(res);
                 Cookies.set("csrf", res.csrfHash);
                 const parsedToken = parseJwt(res.data.token);
-                console.log(parsedToken);
-                setHistorys(parsedToken);
+                setHistorys(parsedToken.data);
                 setLoad(false);
             })
             .catch((err) => {
