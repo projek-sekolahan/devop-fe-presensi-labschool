@@ -70,9 +70,9 @@ export default function Riwayat() {
             )
             .then((res) => {
                 res = JSON.parse(res);
-                // Cookies.set("csrf", res.csrfHash);
-                const { data } = parseJwt(res.data);
-                setHistorys(data);
+                Cookies.set("csrf", res.csrfHash);
+                const { token } = parseJwt(res.data);
+                setHistorys(token);
                 setLoad(false);
             })
             .catch((err) => {
