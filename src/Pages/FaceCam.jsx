@@ -2,13 +2,13 @@ import * as faceapi from "face-api.js";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
-	getFormData,
-	getFaceUrl,
-	loading,
-	alertMessage,
-	parseJwt,
-	handleSessionError,
-	addDefaultKeys,
+    getFormData,
+    getFaceUrl,
+    loading,
+    alertMessage,
+    parseJwt,
+    handleSessionError,
+    addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -16,251 +16,252 @@ import Cookies from "js-cookie";
 import { loadFaceModels } from "../utils/loadModels";
 
 export default function RegisterFace() {
-	const videoRef = useRef();
-	const canvasRef = useRef();
-	const imgRef = useRef();
-	const { state } = useLocation();
+    const videoRef = useRef();
+    const canvasRef = useRef();
+    const imgRef = useRef();
+    const { state } = useLocation();
 
-	let userData = {};
-	if (localStorage.getItem("token")) {
-		userData = parseJwt(localStorage.getItem("token"));
-	} else {
-		window.location.replace("/login");
-	}
+    let userData = {};
+    if (localStorage.getItem("token")) {
+        userData = parseJwt(localStorage.getItem("token"));
+    } else {
+        window.location.replace("/login");
+    }
 
-	const descriptor = new Float32Array(userData.facecam_id.split(", "));
+    const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
-	useEffect(() => {
-		const init = async () => {
-			loading("Loading", "Getting camera access...");
-			await loadFaceModels(); // Load face models sebelum memulai video
-			startVideo();
-		};
+    useEffect(() => {
+        const init = async () => {
+            loading("Loading", "Getting camera access...");
+            await loadFaceModels(); // Load face models sebelum memulai video
+            startVideo();
+        };
 
-		init();
-	}, []);
+        init();
+    }, []);
 
-	const keys = [
-		"AUTH_KEY",
-		"token",
-		"status_dinas",
-		"status_kehadiran",
-		"geolocation",
-		"facecam_id",
-		"foto_presensi",
-	];
-	const combinedKeys = addDefaultKeys(keys);
-	let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
+    const keys = [
+        "AUTH_KEY",
+        "token",
+        "status_dinas",
+        "status_kehadiran",
+        "geolocation",
+        "facecam_id",
+        "foto_presensi",
+    ];
+    const combinedKeys = addDefaultKeys(keys);
+    let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
 
-	if (localStorage.getItem("group_id") == "4") {
-		values = [
-			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("login_token"),
-			"non-dinas",
-			...state,
-		];
-	} else {
-		values = [
-			localStorage.getItem("AUTH_KEY"),
-			localStorage.getItem("login_token"),
-			...state,
-		];
-	}
+    if (localStorage.getItem("group_id") == "4") {
+        values = [
+            localStorage.getItem("AUTH_KEY"),
+            localStorage.getItem("login_token"),
+            "non-dinas",
+            ...state,
+        ];
+    } else {
+        values = [
+            localStorage.getItem("AUTH_KEY"),
+            localStorage.getItem("login_token"),
+            ...state,
+        ];
+    }
 
-	const startVideo = () => {
-		navigator.mediaDevices
-			.getUserMedia({ video: true, audio: false })
-			.then((stream) => {
-				Swal.close();
-				videoRef.current.srcObject = stream;
-				videoRef.current.setAttribute("autoplay", "");
-				videoRef.current.setAttribute("muted", "");
-				videoRef.current.setAttribute("playsinline", "");
-			})
-			.catch(function (err) {
-				if (err.name === "NotAllowedError") {
-					alertMessage(
-						"error",
-						"Error",
-						"Izin akses kamera ditolak oleh pengguna",
-					);
-				} else if (err.name === "NotFoundError") {
-					alertMessage(
-						"error",
-						"Error",
-						"Tidak ada kamera yang tersedia pada perangkat",
-					);
-				}
-			});
-	};
+    const startVideo = () => {
+        navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then((stream) => {
+                Swal.close();
+                videoRef.current.srcObject = stream;
+                videoRef.current.setAttribute("autoplay", "");
+                videoRef.current.setAttribute("muted", "");
+                videoRef.current.setAttribute("playsinline", "");
+            })
+            .catch(function (err) {
+                if (err.name === "NotAllowedError") {
+                    alertMessage(
+                        "error",
+                        "Error",
+                        "Izin akses kamera ditolak oleh pengguna"
+                    );
+                } else if (err.name === "NotFoundError") {
+                    alertMessage(
+                        "error",
+                        "Error",
+                        "Tidak ada kamera yang tersedia pada perangkat"
+                    );
+                }
+            });
+    };
 
-	function clickPhoto() {
-		loading("Loading", "Mendapatkan data wajah...");
-		const context = canvasRef.current.getContext("2d");
-		const video = videoRef.current;
+    function clickPhoto() {
+        loading("Loading", "Mendapatkan data wajah...");
+        const context = canvasRef.current.getContext("2d");
+        const video = videoRef.current;
 
-		// Ukuran canvas untuk gambar akhir
-		const canvasWidth = 400;
-		const canvasHeight = 400;
+        // Ukuran canvas untuk gambar akhir
+        const canvasWidth = 400;
+        const canvasHeight = 400;
 
-		// Ukuran asli video
-		const videoWidth = video.videoWidth;
-		const videoHeight = video.videoHeight;
+        // Ukuran asli video
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
 
-		// Menentukan titik tengah dari video
-		const videoCenterX = videoWidth / 2;
-		const videoCenterY = videoHeight / 2;
+        // Menentukan titik tengah dari video
+        const videoCenterX = videoWidth / 2;
+        const videoCenterY = videoHeight / 2;
 
-		// Menentukan titik awal untuk memotong gambar (crop)
-		const cropX = videoCenterX - canvasWidth / 2;
-		const cropY = videoCenterY - canvasHeight / 2;
+        // Menentukan titik awal untuk memotong gambar (crop)
+        const cropX = videoCenterX - canvasWidth / 2;
+        const cropY = videoCenterY - canvasHeight / 2;
 
-		// Mengatur ukuran canvas
-		canvasRef.current.width = canvasWidth;
-		canvasRef.current.height = canvasHeight;
+        // Mengatur ukuran canvas
+        canvasRef.current.width = canvasWidth;
+        canvasRef.current.height = canvasHeight;
 
-		// Membalik gambar secara horizontal untuk menghindari mirror effect
-		context.save(); // Menyimpan state konteks canvas
-		context.scale(-1, 1); // Membalik gambar secara horizontal
-		context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+        // Membalik gambar secara horizontal untuk menghindari mirror effect
+        context.save(); // Menyimpan state konteks canvas
+        context.scale(-1, 1); // Membalik gambar secara horizontal
+        context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
 
-		// Mengambil gambar dari video dan memotongnya tepat di tengah
-		context.drawImage(
-			video,
-			cropX,
-			50,
-			canvasWidth,
-			canvasHeight, // Area dari video yang akan diambil
-			0,
-			0,
-			canvasWidth,
-			canvasHeight, // Area di canvas tempat gambar akan digambar
-		);
+        // Mengambil gambar dari video dan memotongnya tepat di tengah
+        context.drawImage(
+            video,
+            cropX,
+            50,
+            canvasWidth,
+            canvasHeight, // Area dari video yang akan diambil
+            0,
+            0,
+            canvasWidth,
+            canvasHeight // Area di canvas tempat gambar akan digambar
+        );
 
-		context.restore(); // Mengembalikan state konteks canvas ke semula
+        context.restore(); // Mengembalikan state konteks canvas ke semula
 
-		let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
 
-		// Mengatur gambar hasil di img element
-		imgRef.current.src = image_data_url;
-		detectFace();
-	}
+        // Mengatur gambar hasil di img element
+        imgRef.current.src = image_data_url;
+        detectFace();
+    }
 
-	const detectFace = () => {
-		let attempts = 0; // Menghitung jumlah upaya deteksi
-		const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
+    const detectFace = () => {
+        let attempts = 0; // Menghitung jumlah upaya deteksi
+        const maxAttempts = 10; // Maksimal upaya deteksi yang diizinkan
 
-		async function attemptMatch() {
-			if (attempts >= maxAttempts) {
-				alertMessage(
-					"error",
-					"Deteksi Gagal",
-					"Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-				);
-				return;
-			}
-			attempts++;
+        async function attemptMatch() {
+            if (attempts >= maxAttempts) {
+                alertMessage(
+                    "error",
+                    "Deteksi Gagal",
+                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai"
+                );
+                return;
+            }
+            attempts++;
 
-			try {
-				const faceData = await faceapi
-					.detectSingleFace(
-						imgRef.current,
-						new faceapi.TinyFaceDetectorOptions(),
-					)
-					.withFaceLandmarks()
-					.withFaceDescriptor();
+            try {
+                const faceData = await faceapi
+                    .detectSingleFace(
+                        imgRef.current,
+                        new faceapi.TinyFaceDetectorOptions()
+                    )
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
 
-				if (faceData) {
-					const distance = faceapi.euclideanDistance(
-						descriptor,
-						faceData.descriptor,
-					);
+                if (faceData) {
+                    const distance = faceapi.euclideanDistance(
+                        descriptor,
+                        faceData.descriptor
+                    );
 
-					if (distance <= 0.6) {
-						const stringDescriptor = Array.from(
-							faceData.descriptor,
-						).join(", ");
-						values.push(
-							stringDescriptor,
-							`["${canvasRef.current.toDataURL("image/jpeg")}"]`,
-							localStorage.getItem("devop-sso"),
-							Cookies.get("csrf"),
-						);
-						Swal.close();
-						loading("Loading", "Mengirim data presensi...");
+                    if (distance <= 0.6) {
+                        const stringDescriptor = Array.from(
+                            faceData.descriptor
+                        ).join(", ");
+                        values.push(
+                            stringDescriptor,
+                            `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+                            localStorage.getItem("devop-sso"),
+                            Cookies.get("csrf")
+                        );
+                        Swal.close();
+                        loading("Loading", "Mengirim data presensi...");
 
-						apiXML
-							.presensiPost(
-								"process",
-								localStorage.getItem("AUTH_KEY"),
-								getFormData(combinedKeys, values),
-							)
-							.then((res) => {
-								res = JSON.parse(res);
-								// Cookies.set("csrf", res.csrfHash);
-								const jwt = parseJwt(res.data);
-								Swal.close();
-								alertMessage(
-									jwt.info,
-									jwt.title,
-									jwt.message,
-									() => window.location.replace("/home"),
-								);
-							})
-							.catch((err) => {
-								handleSessionError(err, "/facecam");
-							});
-					} else {
-						alertMessage(
-							"error",
-							"Pencocokan Gagal",
-							"Wajah tidak terdaftar, harap ulangi proses",
-						);
-					}
-				} else {
-					setTimeout(attemptMatch, 100);
-				}
-			} catch (err) {
-				handleSessionError(err, "/login");
-			}
-		}
-		attemptMatch();
-	};
+                        apiXML
+                            .presensiPost(
+                                "process",
+                                localStorage.getItem("AUTH_KEY"),
+                                getFormData(combinedKeys, values)
+                            )
+                            .then((res) => {
+                                res = JSON.parse(res);
+                                // Cookies.set("csrf", res.csrfHash);
+                                const jwt = parseJwt(res.data);
+                                Swal.close();
+                                alertMessage(
+                                    jwt.info,
+                                    jwt.title,
+                                    jwt.message,
+                                    () => window.location.replace("/home")
+                                );
+                            })
+                            .catch((err) => {
+                                handleSessionError(err, "/facecam");
+                            });
+                    } else {
+                        alertMessage(
+                            "error",
+                            "Pencocokan Gagal",
+                            "Wajah tidak terdaftar, harap ulangi proses"
+                        );
+                    }
+                } else {
+                    setTimeout(attemptMatch, 100);
+                }
+            } catch (err) {
+                handleSessionError(err, "/login");
+            }
+        }
+        attemptMatch();
+    };
 
-	return (
-		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
-			<video
-				ref={videoRef}
-				crossOrigin="anonymous"
-				className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
-			/>
-			<canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-			<img ref={imgRef} className="absolute z-10 hidden" />
+    return (
+        <div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
+            <video
+                ref={videoRef}
+                crossOrigin="anonymous"
+                className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
+            />
+            <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+            <img ref={imgRef} className="absolute z-10" />
 
-			<div
-				className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
-			>
-				<span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
-				<span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
-				<span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
-				<span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
-			</div>
-			<div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
-			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
-				<div>
-					<p className="font-medium text-base">
-						{" "}
-						Tekan tombol "Presensi" untuk melakukan presensi{" "}
-					</p>
-				</div>
-				<button className="btn" onClick={clickPhoto}>
-					Presensi
-				</button>
-				<small>
-					Pastikan pencahayaan memadai agar proses dapat berjalan
-					lancar
-				</small>
-			</div>
-		</div>
-	);
+            <div
+                className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
+            >
+                <span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
+                <span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
+                <span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
+                <span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
+            </div>
+            <div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
+            <div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
+                <div>
+                    <p className="font-medium text-base">
+                        {" "}
+                        Tekan tombol &quot;Presensi&quot; untuk melakukan
+                        presensi{" "}
+                    </p>
+                </div>
+                <button className="btn" onClick={clickPhoto}>
+                    Presensi
+                </button>
+                <small>
+                    Pastikan pencahayaan memadai agar proses dapat berjalan
+                    lancar
+                </small>
+            </div>
+        </div>
+    );
 }
