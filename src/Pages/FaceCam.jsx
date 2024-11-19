@@ -197,7 +197,7 @@ export default function RegisterFace() {
                             )
                             .then((res) => {
                                 res = JSON.parse(res);
-                                // Cookies.set("csrf", res.csrfHash);
+                                Cookies.set("csrf", res.csrfHash);
                                 const jwt = parseJwt(res.data);
                                 Swal.close();
                                 alertMessage(
@@ -235,7 +235,7 @@ export default function RegisterFace() {
                 className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
             />
             <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-            <img ref={imgRef} className="absolute z-10" />
+            <img ref={imgRef} className="absolute z-10 hidden" />
 
             <div
                 className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
