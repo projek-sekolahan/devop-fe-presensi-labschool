@@ -276,8 +276,7 @@ export default function RegisterFace() {
 					</div>
 				</dialog>
                 <small>
-                    Pastikan pencahayaan memadai agar proses dapat berjalan
-                    lancar
+                    Pastikan pencahayaan memadai agar proses dapat berjalan lancar
                 </small>
             </div>
         </div>

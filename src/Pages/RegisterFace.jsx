@@ -298,8 +298,7 @@ export default function RegisterFace() {
 			<div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
 				<div>
 					<p className="font-medium text-base">
-						{" "}
-						Melakukan Registrasi Wajah Anda...{" "}
+						{" "}Melakukan Registrasi Wajah Anda...{" "}
 					</p>
 				</div>
 				<button
@@ -330,8 +329,7 @@ export default function RegisterFace() {
 					</div>
 				</dialog>
 				<small>
-					Pastikan pencahayaan memadai untuk hasil gambar yang
-					maksimal dan dapat dideteksi
+					Pastikan pencahayaan memadai untuk hasil gambar yang maksimal dan dapat dideteksi
 				</small>
 			</div>
 		</div>
