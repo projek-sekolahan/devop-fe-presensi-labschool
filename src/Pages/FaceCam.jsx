@@ -188,7 +188,7 @@ export default function RegisterFace() {
                         );
                         Swal.close();
                         loading("Loading", "Mengirim data presensi...");
-
+						console.log(getFormData(combinedKeys, values)); return false;
                         apiXML
                             .presensiPost(
                                 "process",
