@@ -127,14 +127,14 @@ export default function RegisterFace() {
         // Mengambil gambar dari video dan memotongnya tepat di tengah
         context.drawImage(
             video,
-            cropX,
-            50,
-            canvasWidth,
-            canvasHeight, // Area dari video yang akan diambil
-            0,
-            0,
-            canvasWidth,
-            canvasHeight // Area di canvas tempat gambar akan digambar
+			cropX,
+			cropY,
+			canvasWidth,
+			canvasHeight,
+			0,
+			0,
+			canvasWidth,
+			canvasHeight
         );
 
         context.restore(); // Mengembalikan state konteks canvas ke semula
@@ -143,7 +143,6 @@ export default function RegisterFace() {
 
         // Mengatur gambar hasil di img element
         imgRef.current.src = image_data_url;
-        detectFace();
     }
 
     const detectFace = () => {
@@ -188,7 +187,7 @@ export default function RegisterFace() {
                         );
                         Swal.close();
                         loading("Loading", "Mengirim data presensi...");
-
+						// console.log(getFormData(combinedKeys, values)); return false;
                         apiXML
                             .presensiPost(
                                 "process",
@@ -249,17 +248,35 @@ export default function RegisterFace() {
             <div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
                 <div>
                     <p className="font-medium text-base">
-                        {" "}
-                        Tekan tombol &quot;Presensi&quot; untuk melakukan
-                        presensi{" "}
+                        {" "}Tekan tombol untuk melakukan presensi{" "}
                     </p>
                 </div>
-                <button className="btn" onClick={clickPhoto}>
+                <button className="btn" onClick={() => {
+						document.getElementById("my_modal_1").showModal();
+						clickPhoto();
+					}}>
                     Presensi
                 </button>
+				<dialog id="my_modal_1" className="modal">
+					<div className="modal-box">
+						<h3 className="font-bold text-lg">Hasil Potret</h3>
+						<img ref={imgRef} className="w-full" />
+						<div className="modal-action flex justify-center">
+							<form method="dialog" className="flex gap-2">
+								{/* if there is a button in form, it will close the modal */}
+								<button className="btn">Cancel</button>
+								<button
+									className="btn bg-secondary-green"
+									onClick={detectFace}
+								>
+									Proses
+								</button>
+							</form>
+						</div>
+					</div>
+				</dialog>
                 <small>
-                    Pastikan pencahayaan memadai agar proses dapat berjalan
-                    lancar
+                    Pastikan pencahayaan memadai agar proses dapat berjalan lancar
                 </small>
             </div>
         </div>
