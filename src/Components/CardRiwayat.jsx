@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import {
@@ -8,6 +9,8 @@ import {
 } from "../utils/utils";
 import { useState, useRef } from "react";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
+// eslint-disable-next-line react/prop-types
 export default function CardRiwayat({ index, history, biodata }) {
     const [datas, setDatas] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -20,6 +23,7 @@ export default function CardRiwayat({ index, history, biodata }) {
         let values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
+            // eslint-disable-next-line react/prop-types
             biodata.id.concat(",", history["Tanggal Presensi"]),
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf"),
