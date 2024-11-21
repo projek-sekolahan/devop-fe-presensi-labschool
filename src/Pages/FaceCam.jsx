@@ -195,10 +195,11 @@ export default function RegisterFace() {
                                 getFormData(combinedKeys, values)
                             )
                             .then((res) => {
+                                Swal.close();
                                 res = JSON.parse(res);
                                 Cookies.set("csrf", res.csrfHash);
                                 const parsedToken = parseJwt(res.data.token);
-                                Swal.close();
+
                                 alertMessage(
                                     parsedToken.info,
                                     parsedToken.title,
