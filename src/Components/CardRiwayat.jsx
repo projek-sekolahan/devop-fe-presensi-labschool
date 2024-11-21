@@ -38,8 +38,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                     getFormData(combinedKeys, values)
                 )
                 .then((res) => {
-                    console.log(res.responseText);
-                    res = JSON.parse(res.responseText);
+                    res = JSON.parse(res);
                     Cookies.set("csrf", res.csrfHash);
                     setDatas(parseJwt(res.data.token).result);
                     setLoading(false);
