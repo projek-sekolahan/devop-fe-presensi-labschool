@@ -2,94 +2,87 @@ import Cookies from "js-cookie";
 
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
-const createRequestBody = (formData) => {
-    return formData.toString();
-};
-
-// const reqTimeout = JSON.stringify({status })
+const createRequestBody = (formData) => formData.toString();
 
 export default class apiXML {
-    static getCsrf() {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `${api_url}/view/tokenGetCsrf`);
-            xhr.withCredentials = true;
-            xhr.onload = () => {
-                if (xhr.status === 200 || xhr.status === 201) {
-                    resolve(xhr.responseText);
-                    let res = JSON.parse(xhr.responseText);
-                    Cookies.set("csrf", res.csrfHash);
-                } else {
-                    reject(xhr.statusText);
-                }
-            };
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send();
-        });
-    }
-    static postWithAuth(endpoint, key, formData) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `${api_url}${endpoint}`);
-            xhr.setRequestHeader(
-                "Content-Type",
-                "application/x-www-form-urlencoded"
-            );
-            xhr.setRequestHeader("Authorization", `Basic ${key}`);
-            xhr.withCredentials = true;
-            xhr.onload = () => {
-                if (xhr.status === 200 || xhr.status === 201) {
-                    resolve(xhr.responseText);
-                } else {
-                    reject(xhr);
-                }
-            };
-            xhr.onerror = () => reject(xhr);
-            xhr.send(createRequestBody(formData));
-        });
-    }
-    static post(endpoint, formData) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `${api_url}${endpoint}`);
-            xhr.setRequestHeader(
-                "Content-Type",
-                "application/x-www-form-urlencoded"
-            );
-            xhr.withCredentials = true;
+    static csrfToken = null;
 
-            xhr.onload = () => {
-                if (xhr.status === 200 || xhr.status === 201) {
-                    resolve(xhr.responseText);
-                } else {
-                    reject(xhr);
-                }
-            };
-            xhr.onerror = () => reject(xhr);
-            xhr.send(createRequestBody(formData));
-        });
+    /**
+     * Fetch CSRF Token and cache it.
+     */
+    static async getCsrf() {
+        if (this.csrfToken) return this.csrfToken; // Use cached token if available
+
+        try {
+            const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
+                method: "GET",
+                credentials: "include",
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch CSRF token: ${response.status}`);
+            }
+            const res = await response.json();
+            this.csrfToken = res.csrfHash;
+            Cookies.set("csrf", res.csrfHash); // Save in cookies for backup
+            return this.csrfToken;
+        } catch (error) {
+            console.error("Error fetching CSRF token:", error);
+            throw error;
+        }
     }
-    static authPost(url, key, formData) {
-        return apiXML.postWithAuth("/api/client/auth/" + url, key, formData);
+
+    /**
+     * Generic POST request with optional timeout and authorization.
+     */
+    static async post(endpoint, formData, key = null, timeout = 10000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        const headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            ...(key && { Authorization: `Basic ${key}` }),
+        };
+
+        try {
+            const response = await fetch(`${api_url}${endpoint}`, {
+                method: "POST",
+                headers,
+                credentials: "include",
+                body: createRequestBody(formData),
+                signal: controller.signal,
+            });
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.text();
+        } catch (error) {
+            console.error("Error or timeout in POST request:", error);
+            throw error;
+        }
     }
-    static usersPost(url, key, formData) {
-        return apiXML.postWithAuth("/api/client/users/" + url, key, formData);
+
+    /**
+     * Specific POST requests for different purposes.
+     */
+    static async authPost(url, key, formData) {
+        return this.post(`/api/client/auth/${url}`, formData, key);
     }
-    static presensiPost(url, key, formData) {
-        return apiXML.postWithAuth(
-            "/api/client/presensi/" + url,
-            key,
-            formData
-        );
+
+    static async usersPost(url, key, formData) {
+        return this.post(`/api/client/users/${url}`, formData, key);
     }
-    static notificationsPost(url, key, formData) {
-        return apiXML.postWithAuth(
-            "/api/client/notifications/" + url,
-            key,
-            formData
-        );
+
+    static async presensiPost(url, key, formData) {
+        return this.post(`/api/client/presensi/${url}`, formData, key);
     }
-    static postInput(url, formData) {
-        return apiXML.post("/input/" + url, formData);
+
+    static async notificationsPost(url, key, formData) {
+        return this.post(`/api/client/notifications/${url}`, formData, key);
+    }
+
+    static async postInput(url, formData) {
+        return this.post(`/input/${url}`, formData);
     }
 }
