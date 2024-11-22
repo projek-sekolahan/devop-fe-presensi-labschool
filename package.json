@@ -10,7 +10,8 @@
 		"preview": "vite preview",
 		"lint": "eslint . --ext js,jsx --max-warnings 0",
 		"test": "jest",
-		"test:watch": "jest --watch"
+		"test:watch": "jest --watch",
+		"clean": "rimraf build"
 	},
 	"dependencies": {
 		"@fluentui/react-icons": "^2.0.226",

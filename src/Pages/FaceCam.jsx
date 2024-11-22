@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { loadFaceModels } from "../utils/loadModels";
 
-export default function RegisterFace() {
+export default function FaceCam() {
     const videoRef = useRef();
     const canvasRef = useRef();
     const imgRef = useRef();
