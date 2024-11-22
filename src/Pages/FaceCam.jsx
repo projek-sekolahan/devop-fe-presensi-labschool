@@ -20,10 +20,10 @@ export default function RegisterFace() {
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
-
+    console.log(localStorage.getItem("token")); return false;
     let userData = {};
     if (localStorage.getItem("token")) {
-        userData = parseparsedToken(localStorage.getItem("token")); console.log(userData);
+        userData = parseparsedToken(localStorage.getItem("token")); console.log(userData); return false;
     } else {
         window.location.replace("/login");
     }
