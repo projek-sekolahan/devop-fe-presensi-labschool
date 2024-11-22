@@ -23,7 +23,7 @@ export default function RegisterFace() {
 
     let userData = {};
     if (localStorage.getItem("token")) {
-        userData = parseparsedToken(localStorage.getItem("token"));
+        userData = parseparsedToken(localStorage.getItem("token")); console.log(userData);
     } else {
         window.location.replace("/login");
     }
