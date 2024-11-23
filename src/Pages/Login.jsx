@@ -63,7 +63,7 @@ export default function Login() {
         // Save temporary keys in secure storage
         localStorage.setItem("AUTH_KEY", tokenKey[0]);
         localStorage.setItem("devop-sso", tokenKey[1]);
-
+        console.log(formData); return false;
         try {
             // Show loading indicator
             loading("Loading", "Logging in...");
