@@ -9,6 +9,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { getCsrf } from "./utils/api";
 import Register from "./Pages/Register";
+import Cookies from "js-cookie";
 // import OtpInput from "./Pages/OtpInput";
 import Loading from "./Pages/Loading";
 // import Login from "./Pages/Login";
@@ -55,12 +56,18 @@ function App() {
 			setWidth(window.screen.width);
 		});
 		getCsrf().then((result) => {
-			if (!localStorage.getItem("csrf")) {
-				localStorage.setItem("csrf", result.csrfHash);
-			} else {
-				localStorage.removeItem("csrf");
-				localStorage.setItem("csrf", result.csrfHash);
-			}
+			// Data cookie yang diberikan
+			const cookieData = {
+				ci_sso_csrf_cookie: result.data.csrfHash,
+				"Max-Age": "7200",
+			};
+			// Set cookie menggunakan js-cookies
+			Object.keys(cookieData).forEach((key) => {
+				const cookieValue = cookieData[key];
+				Cookies.set(key, cookieValue, {
+					expires: parseInt(cookieData["Max-Age"]), // Konversi Max-Age menjadi jumlah detik
+				});
+			});
 		});
 	}, []);
 

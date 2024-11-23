@@ -1,39 +1,40 @@
-import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
+// import { LaptopBriefcaseRegular } from "@fluentui/react-icons";
 import { Link } from "react-router-dom";
-import { getCsrf } from "../utils/api.js";
-import { useEffect, useRef, useState } from "react";
+import { register } from "../utils/api.js";
+import { getFormData } from "../utils/utils.js";
+import { useRef, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function Register() {
-	const [click, setClick] = useState(false);
-	const [csrf, setCsrf] = useState("");
 	const api_url = import.meta.env.VITE_API_URL;
-
-	const formRef = useRef(null);
+	const [role, setRole] = useState("");
+	const nameRef = useRef();
+	const numberRef = useRef();
+	const emailRef = useRef();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		setClick(true);
-		const data = localStorage.getItem("csrf");
-		const formData = new FormData(formRef.current);
-		formData.append("csrf_token", data);
-		if (!formData.get("sebagai")) {
-			alert("harap pilih role");
-		}
-		console.log(formData);
+		console.log(role);
+		console.log(nameRef.current.value);
+		console.log(numberRef.current.value);
+		console.log(emailRef.current.value);
+		const keys = [
+			"username",
+			"phone",
+			"namaLengkap",
+			"sebagai",
+			"csrf_token",
+		];
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
+		const values = [
+			emailRef.current.value,
+			numberRef.current.value,
+			nameRef.current.value,
+			role,
+			csrf_token,
+		];
+		register(getFormData(keys, values));
 	};
-
-	useEffect(() => {
-		if (click == true) {
-			getCsrf().then((result) => {
-				setCsrf(result.csrfHash);
-				setClick(false);
-				if (!localStorage.getItem("csrf")) {
-					localStorage.setItem("csrf", result.csrfHash);
-				}
-			});
-		}
-	}, [click]);
-
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-16 relative">
 			<h1 className="text-center text-4xl font-bold text-white ">
@@ -45,7 +46,6 @@ export default function Register() {
 			<div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 lef-0 p-4 pb-8">
 				<form
 					className="p-6 space-y-4 md:space-y-6 sm:p-8"
-					ref={formRef}
 					onSubmit={submitHandler}
 				>
 					<div className="flex justify-center gap-8">
@@ -53,6 +53,7 @@ export default function Register() {
 							<input
 								type="radio"
 								name="sebagai"
+								onClick={(e) => setRole(e.target.value)}
 								id="siswa"
 								value="4"
 								className="hidden peer"
@@ -71,6 +72,7 @@ export default function Register() {
 							<input
 								type="radio"
 								name="sebagai"
+								onClick={(e) => setRole(e.target.value)}
 								id="guru"
 								value="5"
 								className="hidden peer"
@@ -89,6 +91,7 @@ export default function Register() {
 							<input
 								type="radio"
 								name="sebagai"
+								onClick={(e) => setRole(e.target.value)}
 								id="karyawan"
 								value="6"
 								className="hidden peer"
@@ -108,6 +111,7 @@ export default function Register() {
 						<input
 							id="name"
 							name="namaLengkap"
+							ref={nameRef}
 							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="Nama Lengkap"
 							required={+true}
@@ -115,6 +119,7 @@ export default function Register() {
 						<input
 							id="number"
 							name="phone"
+							ref={numberRef}
 							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4 autofill:bg-red-500"
 							placeholder="No. Telepon"
 							required={+true}
@@ -123,6 +128,7 @@ export default function Register() {
 						<input
 							type="email"
 							name="username"
+							ref={emailRef}
 							id="username"
 							className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
 							placeholder="Email"

@@ -16,21 +16,6 @@ export const getKey = (email, hash) => {
 };
 
 export const getFormData = (keys, values) => {
-	// key.username = emailRef.current.value;
-	// key.password = getHash(passwordRef.current.value);
-	// key["devop-sso"] = getKey(
-	// 	emailRef.current.value,
-	// 	getHash(passwordRef.current.value)
-	// )[1];
-	// key.csrf_token = csrf;
-
-	// return Object.keys(key)
-	// 	.map(
-	// 		(i) =>
-	// 			`${encodeURIComponent(i)}=${encodeURIComponent(key[i])}`
-	// 	)
-	// 	.join("&");
-
 	return keys
 		.map(
 			(key, index) =>

@@ -1,46 +1,32 @@
 import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { getCsrf, toLogin } from "../utils/api.js";
+import { toLogin } from "../utils/api.js";
 import { getHash, getKey, getFormData } from "../utils/utils.js";
+<<<<<<< HEAD
 import { 
 	// useEffect, 
 	useRef, 
 	// useState 
 } from "react";
+=======
+import { useRef } from "react";
+import Cookies from "js-cookie";
+>>>>>>> 171365253ba629b9e08314be6420fb035390b85c
 
 export default function Login() {
-	// const [csrf, setCsrf] = useState("");
-	// const [click, setClick] = useState(false);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	// const api_url = import.meta.env.VITE_API_URL;
-	// getCsrf().then((result) => setCsrf(result.csrfHash));
-	const cookies = document.cookie;
-	console.log(cookies);
-
 	const submitHandler = async () => {
-		// setClick(true);
 		const keys = ["username", "password", "devop-sso", "csrf_token"];
 		const hash = getHash(passwordRef.current.value);
 		const token_key = getKey(emailRef.current.value, hash)[1];
-		// const csrf_token = Cookies.get("ci_sso_csrf_cookie", {
-		// 	domain: "https://devop-sso.smalabschoolunesa1.sch.id",
-		// });
-		const csrf_token = localStorage.getItem("csrf");
-		getCsrf();
+		const csrf_token = Cookies.get("ci_sso_csrf_cookie");
 		const values = [emailRef.current.value, hash, token_key, csrf_token];
 		toLogin(
 			getKey(emailRef.current.value, hash)[0],
 			getFormData(keys, values)
 		);
 	};
-
-	/* useEffect(() => {
-		if (click == true) {
-			getCsrf().then((result) => setCsrf(result.csrfHash));
-			setClick(false);
-		}
-	}, [click]); */
 
 	return (
 		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
