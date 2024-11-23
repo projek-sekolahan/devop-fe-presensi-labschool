@@ -2,7 +2,11 @@ import { Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { getCsrf, toLogin } from "../utils/api.js";
 import { getHash, getKey, getFormData } from "../utils/utils.js";
-import { useEffect, useRef, useState } from "react";
+import { 
+	// useEffect, 
+	useRef, 
+	// useState 
+} from "react";
 
 export default function Login() {
 	// const [csrf, setCsrf] = useState("");
