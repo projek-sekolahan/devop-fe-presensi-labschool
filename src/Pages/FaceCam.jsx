@@ -15,15 +15,15 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { loadFaceModels } from "../utils/loadModels";
 
-export default function RegisterFace() {
+export default function FaceCam() {
     const videoRef = useRef();
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
-
+    console.log(localStorage.getItem("token")); return false;
     let userData = {};
     if (localStorage.getItem("token")) {
-        userData = parseparsedToken(localStorage.getItem("token"));
+        userData = parseparsedToken(localStorage.getItem("token")); console.log(userData); return false;
     } else {
         window.location.replace("/login");
     }
