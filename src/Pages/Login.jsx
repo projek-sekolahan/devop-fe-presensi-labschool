@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef, useEffect } from "react";
-import PasswordShow from "../Components/PasswordShow";
+import { useRef, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import apiXML from "../utils/apiXML.js";
 import {
@@ -14,15 +13,15 @@ import {
 } from "../utils/utils.js";
 
 export default function Login() {
-    // Refs for input elements
+    // Refs untuk elemen input
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const submitBtnRef = useRef(null);
 
-    /**
-     * Validate form inputs before submitting.
-     * @returns {string|null} - Error message if validation fails, otherwise null.
-     */
+    // State untuk mengatur visibilitas password
+    const [showPassword, setShowPassword] = useState(false);
+
+    // Fungsi untuk memvalidasi form
     const validateForm = () => {
         const emailValue = emailRef.current.value.trim();
         const passwordValue = passwordRef.current.value;
@@ -36,21 +35,17 @@ export default function Login() {
         return null;
     };
 
-    /**
-     * Handle form submission.
-     * @param {Event} e - Form submit event.
-     */
+    // Fungsi untuk menangani login
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Validate form
+        // Validasi form
         const errorMessage = validateForm();
         if (errorMessage) {
             alertMessage("Validasi Gagal", errorMessage, "error");
             return;
         }
 
-        // Prepare data for login
         const emailValue = emailRef.current.value.trim();
         const passwordValue = passwordRef.current.value;
         const hash = getHash(passwordValue);
@@ -60,15 +55,14 @@ export default function Login() {
         const values = [emailValue, hash, tokenKey[1], Cookies.get("csrf")];
         const formData = getFormData(addDefaultKeys(keys), values);
 
-        // Save temporary keys in secure storage
         localStorage.setItem("AUTH_KEY", tokenKey[0]);
         localStorage.setItem("devop-sso", tokenKey[1]);
-        console.log(formData); return false;
+
         try {
-            // Show loading indicator
+            // Tampilkan loading
             loading("Loading", "Logging in...");
 
-            // Perform login request
+            // Kirim permintaan login
             const response = await apiXML.authPost(
                 "login",
                 localStorage.getItem("AUTH_KEY"),
@@ -76,11 +70,14 @@ export default function Login() {
             );
             const loginResponse = JSON.parse(response);
 
-            // Save token securely
+            // Simpan token
             localStorage.setItem("login_token", loginResponse.data.token);
-            Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
+            Cookies.set("csrf", loginResponse.csrfHash, {
+                secure: true,
+                sameSite: "Strict",
+            });
 
-            // Show success message and redirect
+            // Tampilkan pesan sukses dan alihkan
             alertMessage(
                 "Berhasil",
                 loginResponse.data.message,
@@ -88,14 +85,12 @@ export default function Login() {
                 () => window.location.replace("/home")
             );
         } catch (error) {
-            // Handle errors (e.g., server or network errors)
+            // Tangani error
             handleSessionError(error, "/login");
         }
     };
 
-    /**
-     * Add global event listener for the Enter key.
-     */
+    // Tambahkan listener untuk menekan tombol "Enter"
     useEffect(() => {
         const handleKeyPress = (e) => {
             if (e.key === "Enter") {
@@ -132,7 +127,7 @@ export default function Login() {
                         />
                         <div className="flex gap-2">
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 name="password"
                                 id="password"
                                 ref={passwordRef}
@@ -140,7 +135,13 @@ export default function Login() {
                                 className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
                                 required
                             />
-                            <PasswordShow ref={passwordRef} />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="text-white bg-primary-md p-2 rounded"
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
                         </div>
                         <Link
                             to="/recover"
