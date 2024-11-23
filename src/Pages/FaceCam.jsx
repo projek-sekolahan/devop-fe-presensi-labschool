@@ -199,7 +199,6 @@ export default function RegisterFace() {
                                 res = JSON.parse(res);
                                 Cookies.set("csrf", res.csrfHash);
                                 const parsedToken = parseJwt(res.data.token);
-
                                 alertMessage(
                                     parsedToken.info,
                                     parsedToken.title,
