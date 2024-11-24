@@ -77,7 +77,14 @@ export default function Riwayat() {
             })
             .catch((err) => {
                 console.log(err);
-                handleSessionError(err, "/login");
+                err = JSON.parse(err);
+                if (err.status == 500) {
+                    setLoad(false);
+                    setHistorys("no data found");
+                    console.log("no data found");
+                } else {
+                    handleSessionError(err, "/login");
+                }
             });
 
     return (

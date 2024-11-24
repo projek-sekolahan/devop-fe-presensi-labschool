@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import * as faceapi from "face-api.js";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -21,6 +22,7 @@ export default function FaceCam() {
     const imgRef = useRef();
     const { state } = useLocation();
     console.log(localStorage.getItem("token")); return false;
+
     let userData = {};
     if (localStorage.getItem("token")) {
         userData = parseparsedToken(localStorage.getItem("token")); console.log(userData); return false;
