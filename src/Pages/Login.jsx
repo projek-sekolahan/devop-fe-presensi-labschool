@@ -112,7 +112,7 @@ export default function Login() {
                 className="w-full h-[60vh] absolute top-0 left-0 z-0"
             />
             <div className="w-full h-fit bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute z-10">
-                <h2 className="font-bold text-4xl">Login</h2>
+                <h2 className="font-bold text-4xl">Login Dulu</h2>
                 <p className="font-light text-xs">{"Selamat datang kembali!!!"}</p>
                 <form className="my-6 space-y-4 md:space-y-6" onSubmit={handleLogin}>
                     <div className="space-y-4 md:space-y-6 flex flex-col gap-2">
