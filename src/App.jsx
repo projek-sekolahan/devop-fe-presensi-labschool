@@ -1,10 +1,10 @@
 import { useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { isMobile } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import Loading from "./components/Loading";
-// import DesktopWarning from "./components/DesktopWarning";
+import DesktopWarning from "./components/DesktopWarning";
 import { routes } from "./utils/routes";
 import apiXML from "./utils/apiXML";
 
@@ -33,7 +33,7 @@ function App() {
 
   return (
     <Router>
-      {/* {!isMobile && <DesktopWarning />} */}
+      {!isMobile && <DesktopWarning />}
       <Suspense fallback={<Loading />}>
         <Routes>
           {routes.map(({ path, component: Component }, index) => (
