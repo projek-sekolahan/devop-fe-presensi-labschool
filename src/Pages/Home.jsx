@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useCallback } from "react";
 import {
     parseJwt,
@@ -8,7 +9,6 @@ import {
     addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
-import Loading from "./Loading";
 import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
 import {
@@ -213,9 +213,10 @@ const Home = () => {
         }
     });
 
-    return !userData ? (
-        <Loading />
-    ) : (
+    return (
+    // !userData ? (
+    //     <Loading />
+    // ) : 
         <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
             <img
                 src="/Icons/elipse.svg"

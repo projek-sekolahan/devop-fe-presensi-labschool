@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-unreachable */
 import * as faceapi from "face-api.js";
 import { useState, useRef, useEffect } from "react";
@@ -7,9 +8,9 @@ import {
     getFaceUrl,
     loading,
     alertMessage,
-    parseparsedToken,
     handleSessionError,
     addDefaultKeys,
+    parseJwt,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
@@ -25,7 +26,9 @@ export default function FaceCam() {
 
     let userData = {};
     if (localStorage.getItem("token")) {
-        userData = parseparsedToken(localStorage.getItem("token")); console.log(userData); return false;
+        userData = parseJwt(localStorage.getItem("token"));
+        console.log(userData);
+        return false;
     } else {
         window.location.replace("/login");
     }

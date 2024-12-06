@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import * as faceapi from "face-api.js";
 import { loadFaceModels, detectSingleFace } from "../utils/faceUtils";
-import { apiXML } from "../utils/apiXML";
+import apiXML from "../utils/apiXML";
 import { alertMessage, loading, handleSessionError } from "../utils/utils";
 
 export default function RegisterFace() {
