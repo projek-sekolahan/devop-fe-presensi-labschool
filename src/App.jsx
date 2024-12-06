@@ -37,13 +37,22 @@ function App() {
             {/* {!isMobile && <DesktopWarning />} */}
             <Suspense fallback={<Loading />}>
                 <Routes>
-                    {routes.map(({ path, component: Component }, index) => (
-                        <Route
-                            key={index}
-                            path={path}
-                            element={<Component />}
-                        />
-                    ))}
+                    {routes.map(({ path, component: Component }, index) =>
+                        path == "/register" ? (
+                            <Route
+                                key={index}
+                                exact
+                                path={path}
+                                element={<Component />}
+                            />
+                        ) : (
+                            <Route
+                                key={index}
+                                path={path}
+                                element={<Component />}
+                            />
+                        )
+                    )}
                 </Routes>
             </Suspense>
         </Router>
