@@ -47,7 +47,6 @@ export default function Login() {
         const errorMessage = validateForm();
         if (errorMessage) {
             alertMessage("Validasi Gagal", errorMessage, "error");
-            return;
         }
 
         // Prepare data for login
@@ -63,7 +62,8 @@ export default function Login() {
         // Save temporary keys in secure storage
         localStorage.setItem("AUTH_KEY", tokenKey[0]);
         localStorage.setItem("devop-sso", tokenKey[1]);
-        console.log(formData); return false;
+        console.log(formData);
+
         try {
             // Show loading indicator
             loading("Loading", "Logging in...");
@@ -78,7 +78,10 @@ export default function Login() {
 
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
-            Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
+            Cookies.set("csrf", loginResponse.csrfHash, {
+                secure: true,
+                sameSite: "Strict",
+            });
 
             // Show success message and redirect
             alertMessage(
@@ -118,8 +121,13 @@ export default function Login() {
             />
             <div className="w-full h-fit bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute z-10">
                 <h2 className="font-bold text-4xl">Login Dulu</h2>
-                <p className="font-light text-xs">{"Selamat datang kembali!!!"}</p>
-                <form className="my-6 space-y-4 md:space-y-6" onSubmit={handleLogin}>
+                <p className="font-light text-xs">
+                    {"Selamat datang kembali!!!"}
+                </p>
+                <form
+                    className="my-6 space-y-4 md:space-y-6"
+                    onSubmit={handleLogin}
+                >
                     <div className="space-y-4 md:space-y-6 flex flex-col gap-2">
                         <input
                             type="email"
