@@ -1,44 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/Icons/splash.png" />
-		<meta name="description" content="SmartApps Labschool Unesa" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="theme-color" content="#fff" />
-		<link rel="icon" type="image/png" href="./Icons/favicon.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="manifest" href="manifest.json" />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
-			rel="stylesheet"
-		/>
-		<title>labschool-unesa</title>
-	</head>
-	<body data-theme="light">
-		<div id="root"></div>
-		<script type="module" src="/src/main.jsx"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
-			integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"
-		></script>
-		<script>
-			window.addEventListener("load", () => {
-				if ('serviceWorker' in navigator) {
-					navigator.serviceWorker.register('/firebase-messaging-sw.js')
-					.then((registration) => {
-						console.log('Pendaftaran Service Worker berhasil dengan cakupan: ', registration.scope);
-					}).catch((err) => {
-						console.log('Pendaftaran Service Worker gagal: ', err);
-					});
-				}
-				else {
-					console.log("No service-worker on this browser");
-				}
-			});			  
-		</script>
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/Icons/splash.png" />
+        <meta name="description" content="SmartApps Labschool Unesa" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#fff" />
+        <link rel="icon" type="image/png" href="./Icons/favicon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="manifest" href="manifest.json" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <title>labschool-unesa</title>
+    </head>
+    <body data-theme="light">
+        <div id="root"></div>
+        <script type="module" src="/src/main.jsx"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+            integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script>
+            window.addEventListener("load", () => {
+                if ("serviceWorker" in navigator) {
+                    navigator.serviceWorker
+                        .register("/firebase-messaging-sw.js")
+                        .then((registration) => {
+                            console.log(
+                                "Pendaftaran Service Worker berhasil dengan cakupan: ",
+                                registration.scope
+                            );
+                        })
+                        .catch((err) => {
+                            console.log(
+                                "Pendaftaran Service Worker gagal: ",
+                                err
+                            );
+                        });
+                } else {
+                    console.log("No service-worker on this browser");
+                }
+            });
+        </script>
+    </body>
 </html>
