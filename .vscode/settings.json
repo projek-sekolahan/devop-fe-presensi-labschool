@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.commandsToSkipShell": [
+        "\"terminal.integrated.shellArgs.windows\": [\"-NoExit\", \"-Command\", \"$env:Path += \\\";C:\\\\Users\\\\IntelNUC\\\\AppData\\\\Roaming\\\\nvm\\\"; $env:Path += \\\";C:\\\\Users\\\\IntelNUC\\\\AppData\\\\Roaming\\\\nvm\\\\nodejs\\\"\"]"
+    ]
+}
