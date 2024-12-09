@@ -69,23 +69,23 @@ export default function SideMenu({ show, data }) {
 			<div className="relative w-3/4 h-full bg-white">
 				<div className="size-full px-4">
 					<img
-						src="/Icons/Ellipse 190.svg"
+						src="/frontend/Icons/Ellipse 190.svg"
 						alt=""
 						className="w-full absolute left-0 top-0"
 					/>
 					<div className="flex absolute top-0 left-0 justify-between w-full">
 						<img
-							src="/Icons/Group 117.svg"
+							src="/frontend/Icons/Group 117.svg"
 							alt=""
 							className="w-1/3"
 						/>
 						<img
-							src="/Icons/Group 116.svg"
+							src="/frontend/Icons/Group 116.svg"
 							alt=""
 							className="w-1/3"
 						/>
 						<img
-							src="/Icons/Group 115.svg"
+							src="/frontend/Icons/Group 115.svg"
 							alt=""
 							className="w-1/3"
 						/>

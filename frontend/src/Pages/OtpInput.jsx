@@ -112,7 +112,7 @@ export default function OtpInput() {
 				<ArrowLeftIcon className="size-7 absolute top-8 left-6" />
 			</Link>
 			<img
-				src="/Icons/splash.svg"
+				src="/frontend/Icons/splash.svg"
 				alt="labschool-unesa-logo"
 				className="size-[241px] m-auto mt-24"
 			/>

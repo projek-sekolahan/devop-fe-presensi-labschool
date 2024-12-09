@@ -15,37 +15,37 @@
 	},
 	"icons": [
 		{
-			"src": "/Icons/splash.png",
+			"src": "/frontend/Icons/splash.png",
 			"type": "image/png",
 			"sizes": "2160x2160",
 			"purpose": "maskable"
 		},
 		{
-			"src": "/Icons/favicon.png",
+			"src": "/frontend/Icons/favicon.png",
 			"type": "image/png",
 			"sizes": "144x144",
 			"purpose": "any"
 		},
 		{
-			"src": "/Icons/student.svg",
+			"src": "/frontend/Icons/student.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/Icons/teacher.svg",
+			"src": "/frontend/Icons/teacher.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/Icons/employee.svg",
+			"src": "/frontend/Icons/employee.svg",
 			"type": "image/svg+xml",
 			"sizes": "72x70",
 			"purpose": "any"
 		},
 		{
-			"src": "/Icons/unesa-logo.svg",
+			"src": "/frontend/Icons/unesa-logo.svg",
 			"type": "image/svg+xml",
 			"sizes": "417x491",
 			"purpose": "any"

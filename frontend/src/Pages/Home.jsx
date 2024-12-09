@@ -219,7 +219,7 @@ const Home = () => {
     // ) : 
         <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
             <img
-                src="/Icons/elipse.svg"
+                src="/frontend/Icons/elipse.svg"
                 alt="elipse"
                 className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] "
             />
@@ -273,10 +273,10 @@ const Home = () => {
                             rightControl=" "
                             className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]"
                         >
-                            <img src="/img/news.png" className="" />
-                            <img src="/img/news.png" className="" />
-                            <img src="/img/news.png" className="" />
-                            <img src="/img/news.png" className="" />
+                            <img src="/frontend/img/news.png" className="" />
+                            <img src="/frontend/img/news.png" className="" />
+                            <img src="/frontend/img/news.png" className="" />
+                            <img src="/frontend/img/news.png" className="" />
                         </Carousel>
                         <div
                             id="rekap"

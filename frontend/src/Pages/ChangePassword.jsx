@@ -48,7 +48,7 @@ export default function ChangePassword() {
                 <ArrowLeftIcon className="size-7 absolute top-8 left-6 z-[2]" />
             </Link>
             <img
-                src="/img/reset_pwd.png"
+                src="/frontend/img/reset_pwd.png"
                 alt="reset"
                 className="w-screen h-2/3 absolute top-0 left-0 z-0"
             />

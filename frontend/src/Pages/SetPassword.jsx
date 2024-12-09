@@ -67,7 +67,7 @@ export default function SetPassword() {
 				<ArrowLeftIcon className="size-7 absolute top-8 left-6 z-[2]" />
 			</Link>
 			<img
-				src="/img/reset_pwd.png"
+				src="/frontend/img/reset_pwd.png"
 				alt="reset"
 				className="h-[57.5%] w-full absolute top-0 left-0"
 			/>

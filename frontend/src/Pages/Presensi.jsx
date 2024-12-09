@@ -57,7 +57,7 @@ export default function Presensi() {
 							className="p-5 bg-secondary-green rounded-md flex flex-col justify-center items-center"
 						>
 							<img
-								src="/Icons/exit-run.svg"
+								src="/frontend/Icons/exit-run.svg"
 								className="size-20"
 							/>
 							<p className="text-center font-semibold">Pulang</p>
