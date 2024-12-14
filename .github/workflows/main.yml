@@ -15,7 +15,7 @@ jobs:
             - name: Checkout
               uses: actions/che1ckout@v4
               with:
-                  repository: frontend
+                  repository: projek-sekolahan/devop-fe-presensi-labschool/frontend
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
