@@ -13,17 +13,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                  repository: projek-sekolahan/devop-fe-presensi-labschool
+              uses: actions/checkout@v4ww
             - name: Set up Node
+              working-directory: frontend
               uses: actions/setup-node@v4
               with:
                   node-version: 20
                   cache: "npm"
             - name: Install dependencies
+              working-directory: frontend
               run: npm ci
             - name: Build
+              working-directory: frontend
               run: npm run build
             - name: Deploy
               uses: SamKirkland/web-deploy@v1
@@ -32,5 +33,5 @@ jobs:
                   remote-user: smalabsc
                   private-ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./dist/
+                  source-path: ./
                   ssh-port: 45022
