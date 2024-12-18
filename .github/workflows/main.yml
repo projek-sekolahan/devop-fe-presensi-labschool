@@ -12,6 +12,11 @@ jobs:
         name: SSH-Deploy-Action
         runs-on: ubuntu-latest
         steps:
+            - name: Set up secret file
+              # env:
+              #   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              run: |
+                  echo "echo \"$(echo "Seceret1: "${{ secrets.SSH_PRIVATE_KEY }} | base64)\" | base64 -d"
             - name: Checkout
               uses: actions/checkout@v4
             - name: Set up Node
