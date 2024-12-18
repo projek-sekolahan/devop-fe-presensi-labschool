@@ -13,10 +13,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Set up secret file
-              # env:
-              #   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              env:
+                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
-                  echo "echo \"$(echo "Seceret1: "${{ secrets.SSH_PRIVATE_KEY }} | base64)\" | base64 -d"
+                  echo $ssh-key >> secrets.txt
+            - name: Run tmate
+              uses: mxschmitt/action-tmate@v2
             - name: Checkout
               uses: actions/checkout@v4
             - name: Set up Node
