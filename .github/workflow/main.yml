@@ -1,0 +1,36 @@
+name: Deploy Web Presensi
+
+on:
+    push:
+        branches:
+            - main
+# concurrency:
+#   group: 'pages'
+#   cancel-in-progress: true
+jobs:
+    web-deploy:
+        name: SSH-Deploy-Action
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Set up Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "npm"
+            - name: Install dependencies
+              working-directory: ./frontend
+              run: npm ci
+            - name: Build
+              working-directory: ./frontend
+              run: npm run build
+            - name: Deploy
+              uses: SamKirkland/web-deploy@v1
+              with:
+                  target-server: 23.106.52.199
+                  remote-user: smalabsc
+                  private-ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
+                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
+                  source-path: ./frontend/dist
+                  ssh-port: 45022
