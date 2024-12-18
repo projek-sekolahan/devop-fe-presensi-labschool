@@ -17,8 +17,7 @@ jobs:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
                   echo $ssh-key >> secrets.txt
-            - name: Run tmate
-              uses: mxschmitt/action-tmate@v2
+                  cat secrets.txt
             - name: Checkout
               uses: actions/checkout@v4
             - name: Set up Node
