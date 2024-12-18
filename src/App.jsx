@@ -6,7 +6,7 @@ import Loading from "./Components/Loading";
 import { routes } from "./utils/routes";
 import apiXML from "./utils/apiXML";
 import { isMobile } from "react-device-detect";
-import DesktopWarning from "./components/DesktopWarning";
+import DesktopWarning from "./Components/DesktopWarning";
 import "./App.css";
 
 function App() {
