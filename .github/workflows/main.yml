@@ -32,6 +32,9 @@ jobs:
             - name: Build
               working-directory: ./frontend
               run: npm run build
+            - name: Change dir name
+              working-directory: ./frontend
+              run: mv dist frontend
             - name: Deploy
               uses: SamKirkland/web-deploy@v1
               with:
@@ -39,5 +42,5 @@ jobs:
                   remote-user: smalabsc
                   private-ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./frontend/dist
+                  source-path: ./frontend/frontend
                   ssh-port: 45022
