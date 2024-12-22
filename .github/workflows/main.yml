@@ -4,43 +4,54 @@ on:
     push:
         branches:
             - main
-# concurrency:
-#   group: 'pages'
-#   cancel-in-progress: true
+
 jobs:
     web-deploy:
         name: SSH-Deploy-Action
         runs-on: ubuntu-latest
         steps:
+            # Setup SSH Key
             - name: Set up secret file
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
                   echo $ssh-key >> secrets.txt
                   cat secrets.txt
+
+            # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
+
+            # Set up Node.js environment
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
                   cache-dependency-path: ./frontend/package-lock.json
                   node-version: 20
                   cache: "npm"
+
+            # Install project dependencies
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
+
+            # Build the project
             - name: Build
               working-directory: ./frontend
               run: npm run build
-            - name: Change dir name
+
+            # Rename build directory for clarity
+            - name: Rename build directory
               working-directory: ./frontend
-              run: mv dist frontend
+              run: mv dist build
+
+            # Deploy built files to the server
             - name: Deploy
               uses: SamKirkland/web-deploy@v1
               with:
                   target-server: 23.106.52.199
                   remote-user: smalabsc
-                  private-ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
-                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./frontend/frontend
+                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/frontend/
+                  source-path: ./frontend/build
                   ssh-port: 45022
