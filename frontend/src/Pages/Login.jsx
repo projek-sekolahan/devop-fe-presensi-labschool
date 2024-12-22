@@ -112,7 +112,7 @@ export default function Login() {
     return (
         <div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
             <img
-                src="/img/login.png"
+                src="/frontend/img/login.png"
                 alt="labschool-unesa-logo"
                 className="w-full h-[60vh] absolute top-0 left-0 z-0"
             />
