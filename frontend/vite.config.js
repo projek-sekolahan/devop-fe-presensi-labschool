@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import tailwindcss from "tailwindcss";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/frontend/", // Menentukan base URL untuk semua path build
@@ -19,7 +20,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist", // Menentukan direktori output untuk build
+    outDir: ".", // Output build langsung di folder frontend/
+    emptyOutDir: false, // Jangan hapus isi folder sebelum build
     sourcemap: true, // Mengaktifkan sourcemap untuk debugging
     rollupOptions: {
       output: {
