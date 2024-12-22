@@ -15,8 +15,8 @@ jobs:
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
-                  echo "$ssh-key" > ~/.ssh/id_rsa
-                  chmod 600 ~/.ssh/id_rsa
+                  echo $ssh-key >> secrets.txt
+                  cat secrets.txt
 
             # Checkout source code
             - name: Checkout
