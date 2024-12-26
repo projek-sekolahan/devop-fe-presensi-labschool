@@ -11,25 +11,29 @@ export default class apiXML {
      * Fetch CSRF Token and cache it.
      */
     static async getCsrf() {
-        if (this.csrfToken) return this.csrfToken; // Use cached token if available
-
+        if (this.csrfToken) return this.csrfToken; // Gunakan token yang sudah di-cache
+    
         try {
             const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
                 method: "GET",
                 credentials: "include",
             });
+    
             if (!response.ok) {
-                throw new Error(`Failed to fetch CSRF token: ${response.status}`);
+                // Ambil detail response body jika ada
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
+    
             const res = await response.json();
             this.csrfToken = res.csrfHash;
-            Cookies.set("csrf", res.csrfHash); // Save in cookies for backup
+            Cookies.set("csrf", res.csrfHash); // Simpan di cookies
             return this.csrfToken;
         } catch (error) {
-            console.error("Error fetching CSRF token:", error);
+            console.error("Error fetching CSRF token:", error.message);
             throw error;
         }
-    }
+    }    
 
     /**
      * Generic POST request with optional timeout and authorization.
