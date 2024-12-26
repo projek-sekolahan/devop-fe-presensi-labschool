@@ -14,14 +14,18 @@ export default class apiXML {
         if (this.csrfToken) return this.csrfToken; // Gunakan token yang sudah di-cache
     
         try {
+            console.log("Fetching CSRF token from:", `${api_url}/view/tokenGetCsrf`);
+            
             const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
                 method: "GET",
                 credentials: "include",
             });
     
+            console.log("Response status:", response.status, response.statusText);
+    
             if (!response.ok) {
-                // Ambil detail response body jika ada
                 const errorText = await response.text();
+                console.error("Error response body:", errorText);
                 throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
@@ -30,10 +34,10 @@ export default class apiXML {
             Cookies.set("csrf", res.csrfHash); // Simpan di cookies
             return this.csrfToken;
         } catch (error) {
-            console.log("Error fetching CSRF token:", error.message);
+            console.log("Error fetching CSRF token:", error);
             throw error;
         }
-    }    
+    }       
 
     /**
      * Generic POST request with optional timeout and authorization.
