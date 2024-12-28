@@ -118,7 +118,7 @@ export const alertMessage = (type, title, message, callback) => {
         html: message,
         icon: type,
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
     }).then(() => {
         callback();
@@ -131,7 +131,7 @@ export const loading = (title, text) => {
         html: text,
         icon: "info",
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
         didOpen: () => {
             Swal.showLoading();
@@ -271,7 +271,7 @@ function alertError(type, title, message, callback) {
         html: message,
         icon: type,
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
     }).then(() => {
         callback();

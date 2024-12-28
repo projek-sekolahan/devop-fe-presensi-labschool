@@ -63,7 +63,7 @@ export default function Login() {
         // Save temporary keys in secure storage
         localStorage.setItem("AUTH_KEY", tokenKey[0]);
         localStorage.setItem("devop-sso", tokenKey[1]);
-        // console.log(formData); return false;
+        
         try {
             // Show loading indicator
             loading("Loading", "Logging in...");
@@ -75,7 +75,7 @@ export default function Login() {
                 formData
             );
             const loginResponse = JSON.parse(response);
-
+console.log(loginResponse); return false;
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
             Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
