@@ -168,7 +168,7 @@ console.log(loginResponse); return false;
                 <p className="text-center text-sm font-light text-white dark:text-gray-400 mt-10">
                     Belum memiliki akun?{" "}
                     <Link
-                        to="/"
+                        to="/register"
                         className="font-medium underline text-white hover:underline dark:text-primary-500"
                     >
                         Register
