@@ -75,7 +75,7 @@ export default function Login() {
                 formData
             );
             const loginResponse = JSON.parse(response);
-console.log(loginResponse); return false;
+// console.log(loginResponse); return false;
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
             Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
