@@ -111,7 +111,7 @@ function decrypt(param, from) {
     return JSON.parse(decryptedText);
 }
 
-export const alertMessage = (type, title, message, callback) => {
+export const alertMessage = (title, message, type, callback) => {
     Swal.close();
     Swal.fire({
         titleText: title,
@@ -265,7 +265,7 @@ export const handleSessionExpired = (data) => {
     });
 };
 
-function alertError(type, title, message, callback) {
+function alertError(title, message, type, callback) {
     Swal.fire({
         titleText: title,
         html: message,
