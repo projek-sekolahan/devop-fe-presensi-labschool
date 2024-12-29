@@ -212,7 +212,7 @@ const Home = () => {
             setShow(false);
         }
     });
-    console.log(userData); return false;
+    console.log(userData.img_location); return false;
     return (
     !userData ? (
         <Loading />
