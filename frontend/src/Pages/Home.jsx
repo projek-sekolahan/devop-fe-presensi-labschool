@@ -124,6 +124,10 @@ const Home = () => {
         }
     }, [fetchUserData]);
 
+    useEffect(() => {
+        console.log("UserData State:", userData);
+      }, [userData]);
+    
     // Mengatur tampilan berdasarkan state userData
     return !userData ? (
         <Loading />
@@ -145,7 +149,7 @@ const Home = () => {
                     </button>
                     <div id="profile" className="flex items-center gap-2">
                         <img
-                            src={userData?.img_location || "/frontend/img/default_profile.jpg"}
+                            src={userData?.img_location || "/frontend/Icons/profile.svg"}
                             alt="photo_profile"
                             id="photo_profile"
                             className="size-12 rounded-full bg-white cursor-pointer"
@@ -156,7 +160,7 @@ const Home = () => {
                         <dialog id="my_modal_1" className="modal">
                             <div className="modal-box">
                                 <img
-                                    src={userData?.img_location || "/frontend/img/default_profile.jpg"}
+                                    src={userData?.img_location || "/frontend/Icons/profile.svg"}
                                     alt="User Profile"
                                     className="w-full"
                                 />
