@@ -51,7 +51,7 @@ const Home = () => {
         getFormData(combinedKeys, values)
       );
       const res = JSON.parse(response);
-
+      console.log("API Response:", res);
       if (res?.data) {
         // Simpan token dan csrf baru
         localStorage.setItem("token", res.data.token);
@@ -60,6 +60,7 @@ const Home = () => {
         // Parse token untuk mendapatkan data user
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
+        console.log("Parsed User Data:", user);
         setUserData(user); // Set state userData
       } else {
         alertMessage("error", "No data in API response", "err");

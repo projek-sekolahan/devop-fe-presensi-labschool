@@ -24,7 +24,7 @@ export default function SideMenu({ show, data }) {
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Yes, logout!",
 				allowOutsideClick: false,
-				allowEnterKey: false,
+				showConfirmButton: true,
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {

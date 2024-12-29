@@ -21,7 +21,7 @@ function App() {
                 text: "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
                 icon: "warning",
                 allowOutsideClick: false,
-                allowEnterKey: false,
+                showConfirmButton: true,
                 allowEscapeKey: false,
             });
             Cookies.set("cookiesAccepted", "true", {
