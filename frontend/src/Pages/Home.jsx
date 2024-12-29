@@ -227,7 +227,7 @@ const Home = () => {
           </div>
         </main>
       </div>
-      <SideMenu show={show} setShow={setShow} />
+      <SideMenu show={show} setShow={setShow} userData={userData} />
     </div>
   );
 };
