@@ -20,7 +20,7 @@ import { Carousel } from "flowbite-react";
 import { HomeIcon, UserIcon } from "@heroicons/react/20/solid";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
-import Loading from "./Components/Loading";
+import Loading from "../Components/Loading";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 import {
