@@ -67,7 +67,7 @@ const Home = () => {
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
                 Cookies.set("csrf", res.csrfHash);
-                const user = parseJwt(res.data.token); console.log(user); return false;
+                const user = parseJwt(res.data.token);
                 localStorage.setItem("group_id", user.group_id);
                 setUserData(user);
             } else {
@@ -212,7 +212,7 @@ const Home = () => {
             setShow(false);
         }
     });
-
+    console.log(userData); return false;
     return (
     !userData ? (
         <Loading />
