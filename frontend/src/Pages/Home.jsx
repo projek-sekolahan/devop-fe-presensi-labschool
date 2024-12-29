@@ -127,8 +127,8 @@ const Home = () => {
   }, [userData]);
 
   // Render loading atau error
-  if (loading) return <Loading />;
-  if (error) return <p>Error: {error}</p>;
+    if (loading) return <Loading />;
+    if (!userData) return <p>Data pengguna tidak tersedia.</p>;
 
   // Render komponen utama
   return (
