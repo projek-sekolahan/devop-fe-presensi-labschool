@@ -234,7 +234,7 @@ const Home = () => {
                     </button>
                     <div id="profile" className="flex items-center gap-2">
                         <img
-                            src={/* userData.img_location */}
+                            
                             alt="photo_profile"
                             id="photo_profile"
                             className="size-12 rounded-full bg-white cursor-pointer"
@@ -247,7 +247,7 @@ const Home = () => {
                         <dialog id="my_modal_1" className="modal">
                             <div className="modal-box">
                                 <img
-                                    src={/* userData.img_location */}
+                                   
                                     className="w-full"
                                 />
                                 <div className="modal-action">
