@@ -214,9 +214,9 @@ const Home = () => {
     });
 
     return (
-    // !userData ? (
-    //     <Loading />
-    // ) : 
+    !userData ? (
+        <Loading />
+    ) : 
         <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
             <img
                 src="/frontend/Icons/elipse.svg"
