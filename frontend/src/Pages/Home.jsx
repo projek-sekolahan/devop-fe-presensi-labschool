@@ -224,6 +224,36 @@ const Home = () => {
                 </div>
               </div>
             </div>
+                        <Link
+                            id="presensi"
+                            to={
+                                localStorage.getItem("group_id") == "4"
+                                    ? "/presensi"
+                                    : "/presensi/staff"
+                            }
+                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+                        >
+                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+                                <CheckCircleIcon className="size-6" />
+                            </div>
+                            <p className="text-primary-md text-center font-bold text-sm">
+                                Presensi
+                            </p>
+                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+                        </Link>
+                        <Link
+                            id="riwayat_presensi"
+                            to="/riwayat"
+                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
+                        >
+                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+                                <ClockIcon className="size-6" />
+                            </div>
+                            <p className="text-primary-md text-center font-bold text-sm">
+                                Riwayat Presensi
+                            </p>
+                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+                        </Link>
           </div>
         </main>
       </div>
