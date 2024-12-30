@@ -16,7 +16,15 @@ export default {
                 primary: ["Inter", "sans-serif"],
             },
             colors: {
-                primary: { low: "#3F99F2", high: "#0066FF", md: "#1976D2",  300: '#93C5FD', 600: '#2563EB',},
+                primary: { 
+                    low: "#3F99F2", 
+                    high: "#0066FF", 
+                    md: "#1976D2", 
+                    300: '#93C5FD', 
+                    600: '#2563EB',
+                    700: '#1D4ED8',
+                    800: '#1E3A8A',
+                },
                 secondary: {
                     red: "#ff0000",
                     green: "#03aa00",
