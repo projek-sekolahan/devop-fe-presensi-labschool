@@ -110,91 +110,77 @@ export default function Login() {
     }, []);
 
     return (
-<div className="login-container flex flex-col h-screen w-full sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-    {/* Background Image */}
-    <img
-        src="/frontend/img/login.png"
-        alt="labschool-unesa-logo"
-        className="absolute inset-0 h-full w-full object-cover opacity-70"
-    />
+        <div className="login-container flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+            {/* Background Image */}
+            <img
+                src="/frontend/img/login.png"
+                alt="labschool-unesa-logo"
+                className="login-bg-image"
+            />
 
-    {/* Login Form */}
-    <div className="login-form-container bg-white p-8 rounded-lg shadow-md relative z-10">
-        <h2 className="text-2xl font-bold text-center text-blue-700 mb-2">Login Dulu</h2>
-        <p className="text-center text-gray-600 mb-6">Selamat datang kembali!!!</p>
+            {/* Login Form */}
+            <div className="login-form-container">
+                <h2 className="text-title">Yuk Login!</h2>
+                <p className="text-subtitle">Selamat datang kembali!</p>
+                <form
+                    className="login-form"
+                    onSubmit={handleLogin}
+                >
+                    {/* Email Input */}
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            ref={emailRef}
+                            className="input-field"
+                            placeholder="Email"
+                            required
+                        />
+                    </div>
 
-        <form
-            className="space-y-4"
-            onSubmit={handleLogin}
-        >
-            {/* Email Input */}
-            <div className="input-group">
-                <label htmlFor="email" className="input-label block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    ref={emailRef}
-                    className="input-field w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Email"
-                    required
-                />
+                    {/* Password Input */}
+                    <div className="input-group">
+                        <label htmlFor="password" className="input-label">
+                            Password
+                        </label>
+                        <div className="password-container">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                ref={passwordRef}
+                                placeholder="Password (8 or more characters)"
+                                className="input-field flex-1"
+                                required
+                            />
+                            <PasswordShow ref={passwordRef} />
+                        </div>
+                    </div>
+
+                    {/* Forgot Password and Register Link */}
+                    <div className="flex justify-between items-center">
+                        <Link to="/register" className="text-link">
+                            Belum memiliki akun?
+                        </Link>
+                        <Link to="/recover" className="text-link">
+                            Lupa password?
+                        </Link>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        ref={submitBtnRef}
+                        className="btn-submit"
+                    >
+                        Login
+                    </button>
+                </form>
             </div>
-
-            {/* Password Input */}
-            <div className="input-group">
-                <label htmlFor="password" className="input-label block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                </label>
-                <div className="password-container flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500">
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        ref={passwordRef}
-                        placeholder="Password (8 or more characters)"
-                        className="flex-1 px-4 py-2 rounded-l-lg focus:outline-none"
-                        required
-                    />
-                    <PasswordShow ref={passwordRef} />
-                </div>
-            </div>
-
-            {/* Forgot Password */}
-            <div className="text-right">
-                <Link to="/recover" className="text-sm text-blue-500 hover:underline">
-                    Lupa password?
-                </Link>
-            </div>
-
-            {/* Submit Button */}
-            <button
-                type="submit"
-                ref={submitBtnRef}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-                Login
-            </button>
-
-            {/* Separator Line */}
-            <div className="relative flex items-center py-4">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-4 text-sm text-gray-500">or</span>
-                <div className="flex-grow border-t border-gray-300"></div>
-            </div>
-        </form>
-
-        {/* Register Link */}
-        <p className="text-center text-sm font-light">
-            Belum memiliki akun?{' '}
-            <Link to="/register" className="text-blue-500 font-medium hover:underline">
-                Register
-            </Link>
-        </p>
-    </div>
-</div>
-
+        </div>
     );
 }
