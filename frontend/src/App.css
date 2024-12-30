@@ -19,3 +19,71 @@ input[type=number] {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+/* Login Container */
+.login-container {
+  @apply bg-primary-low font-primary text-white relative z-[1];
+}
+
+/* Background Image */
+.login-bg-image {
+  @apply w-full h-[60vh] absolute top-0 left-0 z-0;
+}
+
+/* Login Form Container */
+.login-form-container {
+  @apply w-full h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute bottom-0 z-10;
+}
+
+/* Titles and Subtitles */
+.text-title {
+  @apply font-bold text-4xl;
+}
+
+.text-subtitle {
+  @apply font-light text-xs;
+}
+
+/* Form Styles */
+.login-form {
+  @apply my-6 space-y-4 md:space-y-6;
+}
+
+.input-group {
+  @apply flex flex-col gap-2;
+}
+
+.input-label {
+  @apply text-sm font-light;
+}
+
+.input-field {
+  @apply bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4;
+}
+
+.password-container {
+  @apply flex gap-2;
+}
+
+.text-link {
+  @apply text-sm font-light text-end;
+}
+
+/* Button Styles */
+.btn-submit {
+  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
+}
+
+/* Separator */
+.separator {
+  @apply w-full border-t-[0.25px] border-white h-0 relative top-4;
+}
+
+.separator-text {
+  @apply absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10;
+}
+
+/* Register Link */
+.text-register-link {
+  @apply font-medium underline text-white hover:underline dark:text-primary-500;
+}

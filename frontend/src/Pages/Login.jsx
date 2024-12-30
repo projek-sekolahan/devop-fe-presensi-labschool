@@ -110,67 +110,82 @@ export default function Login() {
     }, []);
 
     return (
-        <div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+        <div className="login-container flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+            {/* Background Image */}
             <img
                 src="/frontend/img/login.png"
                 alt="labschool-unesa-logo"
-                className="w-full h-[60vh] absolute top-0 left-0 z-0"
+                className="login-bg-image"
             />
-            <div className="w-full h-fit bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute z-10">
-                <h2 className="font-bold text-4xl">Login Dulu</h2>
-                <p className="font-light text-xs">{"Selamat datang kembali!!!"}</p>
-                <form className="my-6 space-y-4 md:space-y-6" onSubmit={handleLogin}>
-                    <div className="space-y-4 md:space-y-6 flex flex-col gap-2">
+
+            {/* Login Form */}
+            <div className="login-form-container">
+                <h2 className="text-title">Login Dulu</h2>
+                <p className="text-subtitle">Selamat datang kembali!!!</p>
+
+                <form
+                    className="login-form"
+                    onSubmit={handleLogin}
+                >
+                    {/* Email Input */}
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">
+                            Email
+                        </label>
                         <input
                             type="email"
                             name="email"
                             id="email"
                             ref={emailRef}
-                            className="bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4"
+                            className="input-field"
                             placeholder="Email"
                             required
                         />
-                        <div className="flex gap-2">
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="input-group">
+                        <label htmlFor="password" className="input-label">
+                            Password
+                        </label>
+                        <div className="password-container">
                             <input
                                 type="password"
                                 name="password"
                                 id="password"
                                 ref={passwordRef}
                                 placeholder="Password (8 or more characters)"
-                                className="flex-1 bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+                                className="input-field flex-1"
                                 required
                             />
                             <PasswordShow ref={passwordRef} />
                         </div>
-                        <Link
-                            to="/recover"
-                            className="text-sm font-light text-end"
-                        >
-                            Lupa password?
-                        </Link>
-                        <button
-                            type="submit"
-                            ref={submitBtnRef}
-                            className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        >
-                            Login
-                        </button>
                     </div>
-                    <div
-                        id="line"
-                        className="w-full border-t-[0.25px] border-white h-0 relative top-4"
+
+                    {/* Forgot Password */}
+                    <Link to="/recover" className="text-link">
+                        Lupa password?
+                    </Link>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        ref={submitBtnRef}
+                        className="btn-submit"
                     >
-                        <p className="absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10">
-                            or
-                        </p>
+                        Login
+                    </button>
+
+                    {/* Separator Line */}
+                    <div className="separator">
+                        <p className="separator-text">or</p>
                     </div>
                 </form>
-                <p className="text-center text-sm font-light text-white dark:text-gray-400 mt-10">
-                    Belum memiliki akun?{" "}
-                    <Link
-                        to="/register"
-                        className="font-medium underline text-white hover:underline dark:text-primary-500"
-                    >
+
+                {/* Register Link */}
+                <p className="text-center text-sm font-light mt-10">
+                    Belum memiliki akun?{' '}
+                    <Link to="/register" className="text-register-link">
                         Register
                     </Link>
                 </p>
