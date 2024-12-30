@@ -121,7 +121,7 @@ export default function Login() {
             {/* Login Form */}
             <div className="login-form-container">
                 <h2 className="text-title">Yuk Login!</h2>
-                <p className="text-subtitle">SmartApps School: Solusi Pintar Sekolah Digital</p>
+                <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
                 <form
                     className="login-form"
                     onSubmit={handleLogin}
