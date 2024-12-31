@@ -176,9 +176,9 @@ const Home = () => {
         <BellIcon className="fill-white size-8" />
       </Link>
     </nav>
-    <main className="mt-4 h-auto sm:h-52">
+    <main className="mt-8 h-56 sm:h-52">
       <div id="news" className="relative size-full">
-        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg w-full h-auto">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
           <img src="https://via.placeholder.com/300x150" alt="slide_1" />
           <img src="https://via.placeholder.com/300x150" alt="slide_2" />
           <img src="https://via.placeholder.com/300x150" alt="slide_3" />
