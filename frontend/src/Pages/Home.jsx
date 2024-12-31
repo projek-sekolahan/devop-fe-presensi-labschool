@@ -178,7 +178,7 @@ const Home = () => {
     </nav>
     <main className="mt-4 h-auto sm:h-52">
       <div id="news" className="size-full">
-        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
           <img src="/frontend/img/news.png" alt="News" />
           <img src="/frontend/img/news.png" alt="News" />
           <img src="/frontend/img/news.png" alt="News" />
@@ -198,7 +198,7 @@ const Home = () => {
                   {userData?.hadir || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-primary-md">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Hadir
               </h4>
             </div>
@@ -208,7 +208,7 @@ const Home = () => {
                   {userData?.tidak_hadir || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-primary-md">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Izin / Sakit
               </h4>
             </div>
@@ -218,7 +218,7 @@ const Home = () => {
                   {userData?.terlambat_pulang_cepat || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-primary-md">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Terlambat
               </h4>
             </div>
