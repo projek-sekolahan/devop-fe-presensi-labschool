@@ -176,7 +176,7 @@ const Home = () => {
                     <BellIcon className="fill-white size-8" />
                 </Link>
             </nav>
-                <main className="mt-8 h-auto sm:h-52">
+                <main className="mt-8 h-56 sm:h-52">
                     <div id="news" className="size-full">
                         <Carousel
                             leftControl=" "
