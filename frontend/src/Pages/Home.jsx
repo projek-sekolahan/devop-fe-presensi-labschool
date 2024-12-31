@@ -133,132 +133,128 @@ const Home = () => {
 
   // Render komponen utama
   return (
-    <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
-      <img
-        src="/frontend/Icons/elipse.svg"
-        alt="elipse"
-        className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
-      />
-      <div id="core" className="relative z-[2] size-full">
-        <nav className="flex items-center justify-between">
-          <button onClick={() => setShow(true)}>
-            <Bars3Icon className="fill-white size-8" />
-          </button>
-          <div id="profile" className="flex items-center gap-2">
+<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
+  <img
+    src="/frontend/Icons/elipse.svg"
+    alt="elipse"
+    className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
+  />
+  <div id="core" className="relative z-[2] size-full">
+    <nav className="flex items-center justify-between">
+      <button onClick={() => setShow(true)}>
+        <Bars3Icon className="fill-white size-8" />
+      </button>
+      <div id="profile" className="flex items-center gap-3">
+        <img
+          src={userData?.img_location || "/frontend/Icons/profile.svg"}
+          alt="photo_profile"
+          id="photo_profile"
+          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md"
+          onClick={() =>
+            document.getElementById("my_modal_1").showModal()
+          }
+        />
+        <dialog id="my_modal_1" className="modal">
+          <div className="modal-box">
             <img
               src={userData?.img_location || "/frontend/Icons/profile.svg"}
-              alt="photo_profile"
-              id="photo_profile"
-              className="size-12 rounded-full bg-white cursor-pointer"
-              onClick={() =>
-                document.getElementById("my_modal_1").showModal()
-              }
+              alt="User Profile"
+              className="w-full"
             />
-            <dialog id="my_modal_1" className="modal">
-              <div className="modal-box">
-                <img
-                  src={userData?.img_location || "/frontend/Icons/profile.svg"}
-                  alt="User Profile"
-                  className="w-full"
-                />
-                <div className="modal-action">
-                  <form method="dialog">
-                    <button className="btn">Close</button>
-                  </form>
-                </div>
-              </div>
-            </dialog>
-            <p className="font-semibold text-sm">
-              {userData?.nama_lengkap || "Guest"}
-            </p>
-          </div>
-          <Link to="/notifikasi">
-            <BellIcon className="fill-white size-8" />
-          </Link>
-        </nav>
-        <main className="mt-8 h-56 sm:h-52">
-          <div id="news" className="size-full">
-            <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)]">
-              <img src="/frontend/img/news.png" alt="News" />
-              <img src="/frontend/img/news.png" alt="News" />
-              <img src="/frontend/img/news.png" alt="News" />
-              <img src="/frontend/img/news.png" alt="News" />
-            </Carousel>
-            <div
-              id="rekap"
-              className="bg-white h-3/5 mt-5 rounded-2xl px-3 py-2"
-            >
-              <h3 className="text-primary-md font-bold text-base">
-                {"Rekapan Presensi (Bulan Ini)"}
-              </h3>
-              <div className="flex justify-between mt-2">
-                <div id="hadir" className="w-24">
-                  <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
-                    <p className="text-center text-lg font-bold">
-                      {userData?.hadir || 0}
-                    </p>
-                  </div>
-                  <h4 className="text-center text-xs font-bold text-primary-md">
-                    Hadir
-                  </h4>
-                </div>
-                <div id="izin" className="w-24">
-                  <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
-                    <p className="text-center text-lg font-bold">
-                      {userData?.tidak_hadir || 0}
-                    </p>
-                  </div>
-                  <h4 className="text-center text-xs font-bold text-primary-md">
-                    Izin / Sakit
-                  </h4>
-                </div>
-                <div id="terlambat" className="w-24">
-                  <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
-                    <p className="text-center text-lg font-bold">
-                      {userData?.terlambat_pulang_cepat || 0}
-                    </p>
-                  </div>
-                  <h4 className="text-center text-xs font-bold text-primary-md">
-                    Terlambat
-                  </h4>
-                </div>
-              </div>
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
             </div>
-                        <Link
-                            id="presensi"
-                            to={
-                                localStorage.getItem("group_id") == "4"
-                                    ? "/presensi"
-                                    : "/presensi/staff"
-                            }
-                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-                        >
-                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-                                <CheckCircleIcon className="size-6" />
-                            </div>
-                            <p className="text-primary-md text-center font-bold text-sm">
-                                Presensi
-                            </p>
-                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-                        </Link>
-                        <Link
-                            id="riwayat_presensi"
-                            to="/riwayat"
-                            className="bg-white w-full h-fit mt-5 rounded-2xl px-3 py-2 flex gap-2 items-center"
-                        >
-                            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-                                <ClockIcon className="size-6" />
-                            </div>
-                            <p className="text-primary-md text-center font-bold text-sm">
-                                Riwayat Presensi
-                            </p>
-                            <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-                        </Link>
           </div>
-        </main>
+        </dialog>
+        <p className="font-semibold text-sm text-primary-md">
+          {userData?.nama_lengkap || "Guest"}
+        </p>
       </div>
-      <SideMenu show={show} setShow={setShow} userData={userData} />
-    </div>
+      <Link to="/notifikasi">
+        <BellIcon className="fill-white size-8" />
+      </Link>
+    </nav>
+    <main className="mt-4 h-auto sm:h-52">
+      <div id="news" className="size-full">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden">
+          <img src="/frontend/img/news.png" alt="News" />
+          <img src="/frontend/img/news.png" alt="News" />
+          <img src="/frontend/img/news.png" alt="News" />
+          <img src="/frontend/img/news.png" alt="News" />
+        </Carousel>
+        <div
+          id="rekap"
+          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md"
+        >
+          <h3 className="text-primary-md font-bold text-base">
+            {"Rekapan Presensi (Bulan Ini)"}
+          </h3>
+          <div className="flex justify-between mt-4">
+            <div id="hadir" className="w-24">
+              <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
+                <p className="text-center text-lg font-bold">
+                  {userData?.hadir || 0}
+                </p>
+              </div>
+              <h4 className="text-center text-xs font-bold text-primary-md">
+                Hadir
+              </h4>
+            </div>
+            <div id="izin" className="w-24">
+              <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
+                <p className="text-center text-lg font-bold">
+                  {userData?.tidak_hadir || 0}
+                </p>
+              </div>
+              <h4 className="text-center text-xs font-bold text-primary-md">
+                Izin / Sakit
+              </h4>
+            </div>
+            <div id="terlambat" className="w-24">
+              <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
+                <p className="text-center text-lg font-bold">
+                  {userData?.terlambat_pulang_cepat || 0}
+                </p>
+              </div>
+              <h4 className="text-center text-xs font-bold text-primary-md">
+                Terlambat
+              </h4>
+            </div>
+          </div>
+        </div>
+        <Link
+          id="presensi"
+          to={
+            localStorage.getItem("group_id") == "4"
+              ? "/presensi"
+              : "/presensi/staff"
+          }
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+        >
+          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+            <CheckCircleIcon className="size-6" />
+          </div>
+          <p className="text-primary-md font-bold text-sm">Presensi</p>
+          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+        </Link>
+        <Link
+          id="riwayat_presensi"
+          to="/riwayat"
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+        >
+          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+            <ClockIcon className="size-6" />
+          </div>
+          <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
+          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
+        </Link>
+      </div>
+    </main>
+  </div>
+  <SideMenu show={show} setShow={setShow} userData={userData} />
+</div>
   );
 };
 
