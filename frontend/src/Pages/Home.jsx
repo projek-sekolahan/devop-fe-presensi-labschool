@@ -179,10 +179,10 @@ const Home = () => {
     <main className="mt-8 h-56 sm:h-52">
       <div id="news" className="relative size-full">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
-          <img src="https://via.placeholder.com/300x150" alt="slide_1" />
-          <img src="https://via.placeholder.com/300x150" alt="slide_2" />
-          <img src="https://via.placeholder.com/300x150" alt="slide_3" />
-          <img src="https://via.placeholder.com/300x150" alt="slide_4" />
+          <img src="/frontend/img/news.png" alt="slide_1" />
+          <img src="/frontend/img/news.png" alt="slide_2" />
+          <img src="/frontend/img/news.png" alt="slide_3" />
+          <img src="/frontend/img/news.png" alt="slide_4" />
         </Carousel>
         <div
           id="rekap"
