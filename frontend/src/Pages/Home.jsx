@@ -34,7 +34,7 @@ const Home = () => {
       setLoading(true); // Aktifkan loading
       const keys = ["AUTH_KEY", "login_token"];
       const combinedKeys = addDefaultKeys(keys);
-
+      alert("masuk homepage");
       // Ambil nilai dari localStorage dan Cookies
       const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);

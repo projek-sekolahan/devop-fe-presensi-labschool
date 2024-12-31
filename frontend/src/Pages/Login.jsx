@@ -79,7 +79,7 @@ export default function Login() {
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
             Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
-
+            alert("menuju homepage");
             // Show success message and redirect
             alertMessage(
                 "Berhasil",
