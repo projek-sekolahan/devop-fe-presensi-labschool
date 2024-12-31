@@ -186,12 +186,12 @@ const Home = () => {
         </Carousel>
         <div
           id="rekap"
-          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md"
+          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center"
         >
-          <h3 className="text-primary-md font-bold text-base">
+          <h3 className="text-primary-md font-bold text-base mb-4">
             {"Rekapan Presensi (Bulan Ini)"}
           </h3>
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between w-full px-6">
             <div id="hadir" className="w-24">
               <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
                 <p className="text-center text-lg font-bold">
