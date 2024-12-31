@@ -178,7 +178,7 @@ const Home = () => {
     </nav>
     <main className="mt-4 h-auto sm:h-52">
       <div id="news" className="size-full">
-        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg w-full h-auto">
           <img src="/frontend/img/news.png" alt="News" />
           <img src="/frontend/img/news.png" alt="News" />
           <img src="/frontend/img/news.png" alt="News" />
