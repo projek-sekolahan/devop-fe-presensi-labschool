@@ -191,9 +191,9 @@ const Home = () => {
           <h3 className="text-primary-md font-bold text-base mb-4">
             {"Rekapan Presensi (Bulan Ini)"}
           </h3>
-          <div className="flex justify-between w-full px-6">
-            <div id="hadir" className="w-24">
-              <div className="mx-auto bg-secondary-green size-[50px] rounded-full p-[10px]">
+          <div className="flex justify-center w-full px-6 gap-6">
+            <div id="hadir" className="w-24 flex flex-col items-center">
+              <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.hadir || 0}
                 </p>
@@ -202,8 +202,8 @@ const Home = () => {
                 Hadir
               </h4>
             </div>
-            <div id="izin" className="w-24">
-              <div className="mx-auto bg-secondary-yellow size-[50px] rounded-full p-[10px]">
+            <div id="izin" className="w-24 flex flex-col items-center">
+              <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.tidak_hadir || 0}
                 </p>
@@ -212,8 +212,8 @@ const Home = () => {
                 Izin / Sakit
               </h4>
             </div>
-            <div id="terlambat" className="w-24">
-              <div className="mx-auto bg-secondary-red size-[50px] rounded-full p-[10px]">
+            <div id="terlambat" className="w-24 flex flex-col items-center">
+              <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.terlambat_pulang_cepat || 0}
                 </p>
