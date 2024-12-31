@@ -192,7 +192,7 @@ const Home = () => {
             {"Rekapan Presensi (Bulan Ini)"}
           </h3>
           <div className="flex justify-center w-full px-6 gap-6">
-            <div id="hadir" className="w-24 flex flex-col items-center">
+            <div id="hadir" className="w-24 flex flex-col items-center gap-2">
               <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.hadir || 0}
@@ -202,7 +202,7 @@ const Home = () => {
                 Hadir
               </h4>
             </div>
-            <div id="izin" className="w-24 flex flex-col items-center">
+            <div id="izin" className="w-24 flex flex-col items-center gap-2">
               <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.tidak_hadir || 0}
@@ -212,7 +212,7 @@ const Home = () => {
                 Izin / Sakit
               </h4>
             </div>
-            <div id="terlambat" className="w-24 flex flex-col items-center">
+            <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
               <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.terlambat_pulang_cepat || 0}
