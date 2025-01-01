@@ -205,11 +205,12 @@ const Home = () => {
           </div>
         </div>
       </div>
+
 <div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
   <Link
     id="presensi"
     to={localStorage.getItem("group_id") == "4" ? "/presensi" : "/presensi/staff"}
-    className="flex items-center gap-3 p-4 bg-primary-low rounded-lg hover:shadow-lg transition-shadow duration-300"
+    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
   >
     <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
       <CheckCircleIcon className="size-6" />
@@ -220,7 +221,7 @@ const Home = () => {
   <Link
     id="riwayat_presensi"
     to="/riwayat"
-    className="flex items-center gap-3 p-4 bg-primary-low rounded-lg hover:shadow-lg transition-shadow duration-300"
+    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
   >
     <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
       <ClockIcon className="size-6" />
