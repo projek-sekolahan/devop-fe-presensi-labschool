@@ -154,7 +154,7 @@ const Home = () => {
           alt="photo_profile"
           id="photo_profile"
           className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
-          onClick={() => document.getElementById("my_modal_1").showModal()}
+          onClick={() => window.location.replace("/profile")}
         />
         <Link to="/notifikasi">
           <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
