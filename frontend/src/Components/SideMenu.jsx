@@ -10,15 +10,8 @@ import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys } from "../utils/utils";
 import Swal from "sweetalert2";
-import { useState } from "react";
 
-export default function SideMenu({ show, userData }) {
-	const [show, setShow] = useState(true);
-	const closeMenu = () => {
-		setShow(false); // Menutup side menu dengan mengubah status show ke false
-	};
-	console.log("Data Pengguna di SideMenu:", userData); // Debug
-	// return false;
+export default function SideMenu({ show, userData, closeMenu }) {
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;

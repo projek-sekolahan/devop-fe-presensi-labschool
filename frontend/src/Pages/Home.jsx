@@ -28,6 +28,10 @@ const Home = () => {
   const [error, setError] = useState(null); // Status error
   const navigate = useNavigate();
 
+  const closeMenu = () => {
+    setShow(false); // Menutup side menu
+  };
+
   // Fungsi untuk mengambil data pengguna
   const fetchUserData = useCallback(async () => {
     try {
@@ -258,7 +262,7 @@ const Home = () => {
   </div>
 
   {/* Side Menu */}
-  <SideMenu show={show} userData={userData} />
+  <SideMenu show={show} userData={userData} closeMenu={closeMenu}/>
 </div>
 
   );
