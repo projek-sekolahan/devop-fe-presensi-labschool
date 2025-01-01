@@ -133,6 +133,7 @@ const Home = () => {
 
   // Render komponen utama
   return (
+
 <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
   {/* Background Elipse */}
   <img
@@ -174,7 +175,7 @@ const Home = () => {
       </div>
 
       {/* Rekapan dan Navigasi Presensi */}
-      <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-4">
+      <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-6">
         {/* Rekapan Presensi */}
         <div className="flex flex-col items-center justify-center">
           <h3 className="text-primary-md font-bold text-base mb-4">
@@ -244,6 +245,7 @@ const Home = () => {
   {/* Side Menu */}
   <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
+
 
   );
 };
