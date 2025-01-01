@@ -110,44 +110,44 @@ export default function SideMenu({ show, userData, closeMenu }) {
 						<XMarkIcon className="w-6 h-6 text-bg-2" />
 						</button>
 					</div>
-					<div
-						id="menu"
-						className="absolute top-40 w-[65vw] sm:w-[65%] text-primary-high flex flex-col gap-4"
-					>
-						<Link
-							to="/profile"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
-						>
-							<UserCircleIcon className="size-9" />
-							<p>Profil</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-						<Link
-							to="/setting"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
-						>
-							<Cog6ToothIcon className="size-9" />
-							<p>Pengaturan</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-						<Link
-							to="/bantuan"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
-						>
-							<QuestionMarkCircleIcon className="size-9" />
-							<p>Bantuan</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-		<Link
-          to="#"
-          onClick={clickHandler}
-          className="btn border-none text-white w-full p-2 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 items-center"
-        >
-          <PowerIcon className="w-5 h-5 size-9" />
-          <p>Logout</p>
-          <ArrowRightIcon  className="size-5 stroke-2 w-5 h-5 ml-auto" />
-        </Link>
-					</div>
+<div
+  id="menu"
+  className="absolute top-40 w-[65vw] sm:w-[65%] text-primary-high flex flex-col gap-4"
+>
+  <Link
+    to="/profile"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <UserCircleIcon className="w-6 h-6" />
+    <p className="text-base">Profil</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="/setting"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <Cog6ToothIcon className="w-6 h-6" />
+    <p className="text-base">Pengaturan</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="/bantuan"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <QuestionMarkCircleIcon className="w-6 h-6" />
+    <p className="text-base">Bantuan</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="#"
+    onClick={clickHandler}
+    className="btn border-none text-white w-full p-2 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 items-center text-base"
+  >
+    <PowerIcon className="w-6 h-6" />
+    <p className="text-base">Logout</p>
+    <ArrowRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+</div>
 				</div>
 			</div>
 		</div>
