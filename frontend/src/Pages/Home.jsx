@@ -148,10 +148,10 @@ const Home = () => {
       <button onClick={() => setShow(true)}>
         <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
-      <Link to="/notifikasi">
-        <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
-      </Link>
       <div id="profile" className="flex items-center gap-3">
+        <Link to="/notifikasi">
+          <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+        </Link>
         <img
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
