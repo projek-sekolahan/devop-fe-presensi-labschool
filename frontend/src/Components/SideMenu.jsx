@@ -4,6 +4,8 @@ import {
 	QuestionMarkCircleIcon,
 	ChevronRightIcon,
 	XMarkIcon,
+	PowerIcon,
+	ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
@@ -139,9 +141,11 @@ export default function SideMenu({ show, userData, closeMenu }) {
 		<Link
           to="#"
           onClick={clickHandler}
-          className="btn border-none w-full py-3 px-16 bg-primary-low text-center font-bold rounded-xl mt-4"
+          className="btn border-none w-full py-3 px-16 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 justify-center items-center"
         >
+          <PowerIcon className="w-5 h-5 text-white" />
           Logout
+          <ArrowRightIcon className="w-5 h-5 text-white ml-auto" />
         </Link>
 					</div>
 				</div>
