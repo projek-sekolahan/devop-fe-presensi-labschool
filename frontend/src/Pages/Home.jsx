@@ -159,7 +159,7 @@ const Home = () => {
         <BellIcon className="fill-white size-8" />
       </Link>
     </nav>
-    <main className="mt-8 h-56 sm:h-52">
+    <main className="mt-8 h-50 sm:h-40">
       <div id="news" className="relative size-full mb-2">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
           <img src="/frontend/img/news.png" alt="slide_1" />
@@ -168,7 +168,7 @@ const Home = () => {
           <img src="/frontend/img/news.png" alt="slide_4" />
         </Carousel>
       </div>
-      <div id="rekap" className="bg-white h-48 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-2">
+      <div id="rekap" className="bg-white h-40 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-2">
         <h3 className="text-primary-md font-bold text-base mb-4">
           {"Rekapan Presensi (Bulan Ini)"}
         </h3>
