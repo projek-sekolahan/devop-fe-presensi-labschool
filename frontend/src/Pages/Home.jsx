@@ -141,7 +141,7 @@ const Home = () => {
   />
   <div id="core" className="relative z-[2] size-full">
     <nav className="flex items-center justify-between">
-      <button onClick={() => setShow(true)}>
+      <button onClick={() => setShow(true)} className="hover:scale-105 transition-transform">
         <Bars3Icon className="fill-white size-8" />
       </button>
       <div id="profile" className="flex items-center gap-3">
@@ -149,51 +149,34 @@ const Home = () => {
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
           id="photo_profile"
-          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md"
+          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:border-secondary-green transition-colors"
           onClick={() =>
             document.getElementById("my_modal_1").showModal()
           }
         />
-        <dialog id="my_modal_1" className="modal">
-          <div className="modal-box">
-            <img
-              src={userData?.img_location || "/frontend/Icons/profile.svg"}
-              alt="User Profile"
-              className="w-full"
-            />
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn">Close</button>
-              </form>
-            </div>
-          </div>
-        </dialog>
-        <p className="font-semibold text-sm text-primary-md">
-          {userData?.nama_lengkap || "Guest"}
-        </p>
       </div>
       <Link to="/notifikasi">
-        <BellIcon className="fill-white size-8" />
+        <BellIcon className="fill-white size-8 hover:scale-105 transition-transform" />
       </Link>
     </nav>
     <main className="mt-8 h-56 sm:h-52">
       <div id="news" className="relative size-full">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
-          <img src="/frontend/img/news.png" alt="slide_1" />
-          <img src="/frontend/img/news.png" alt="slide_2" />
-          <img src="/frontend/img/news.png" alt="slide_3" />
-          <img src="/frontend/img/news.png" alt="slide_4" />
+          <img src="/frontend/img/news.png" alt="slide_1" className="hover:opacity-90 transition-opacity" />
+          <img src="/frontend/img/news.png" alt="slide_2" className="hover:opacity-90 transition-opacity" />
+          <img src="/frontend/img/news.png" alt="slide_3" className="hover:opacity-90 transition-opacity" />
+          <img src="/frontend/img/news.png" alt="slide_4" className="hover:opacity-90 transition-opacity" />
         </Carousel>
         <div
           id="rekap"
-          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center"
+          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow"
         >
           <h3 className="text-primary-md font-bold text-base mb-4">
             {"Rekapan Presensi (Bulan Ini)"}
           </h3>
           <div className="flex justify-center w-full px-6 gap-6">
             <div id="hadir" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center hover:scale-110 transition-transform">
                 <p className="text-center text-lg font-bold">
                   {userData?.hadir || 0}
                 </p>
@@ -203,7 +186,7 @@ const Home = () => {
               </h4>
             </div>
             <div id="izin" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center hover:scale-110 transition-transform">
                 <p className="text-center text-lg font-bold">
                   {userData?.tidak_hadir || 0}
                 </p>
@@ -213,7 +196,7 @@ const Home = () => {
               </h4>
             </div>
             <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center hover:scale-110 transition-transform">
                 <p className="text-center text-lg font-bold">
                   {userData?.terlambat_pulang_cepat || 0}
                 </p>
@@ -231,7 +214,7 @@ const Home = () => {
               ? "/presensi"
               : "/presensi/staff"
           }
-          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md hover:shadow-lg transition-shadow"
         >
           <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <CheckCircleIcon className="size-6" />
@@ -242,7 +225,7 @@ const Home = () => {
         <Link
           id="riwayat_presensi"
           to="/riwayat"
-          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md hover:shadow-lg transition-shadow"
         >
           <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <ClockIcon className="size-6" />
