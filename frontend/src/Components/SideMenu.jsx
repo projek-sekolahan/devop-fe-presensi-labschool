@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 
 export default function SideMenu({ show, setShow, userData }) {
 	console.log("Data Pengguna di SideMenu:", userData); // Debug
-	return false;
+	// return false;
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -94,13 +94,13 @@ export default function SideMenu({ show, setShow, userData }) {
 					</div>
 					<div id="bio" className="absolute top-9 left-4 flex gap-2">
 						<img
-							src={data.img_location || "/default-profile.png"}
+							src={userData?.img_location || "/default-profile.png"}
 							alt="photo_profile"
 							className="size-12 rounded-full bg-white"
 						/>
 						<div className="font-normal text-base text-bg-2">
 							<h4>Halo!</h4>
-							<p>{data.nama_lengkap}</p>
+							<p>{userData?.nama_lengkap}</p>
 						</div>
 					</div>
 					<div
