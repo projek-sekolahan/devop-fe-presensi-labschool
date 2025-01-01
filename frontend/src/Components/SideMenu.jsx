@@ -5,7 +5,7 @@ import {
 	ChevronRightIcon,
 	XMarkIcon,
 	PowerIcon,
-	ArrowRightOnRectangle,
+	ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
@@ -145,7 +145,7 @@ export default function SideMenu({ show, userData, closeMenu }) {
         >
           <PowerIcon className="w-5 h-5 text-white" />
           Logout
-          <ArrowRightOnRectangle className="w-5 h-5 text-white ml-auto" />
+          <ArrowRightIcon  className="w-5 h-5 text-white ml-auto" />
         </Link>
 					</div>
 				</div>
