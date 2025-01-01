@@ -132,7 +132,7 @@ export default function SideMenu({ show, userData, closeMenu }) {
 						</Link>
 						<Link
 							to="/bantuan"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center"
+							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
 						>
 							<QuestionMarkCircleIcon className="size-9" />
 							<p>Bantuan</p>
@@ -141,7 +141,7 @@ export default function SideMenu({ show, userData, closeMenu }) {
 		<Link
           to="#"
           onClick={clickHandler}
-          className="btn border-none w-full py-3 px-16 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 justify-center items-center"
+          className="btn border-none w-full p-2 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 items-center"
         >
           <PowerIcon className="w-5 h-5 text-white size-9" />
           Logout
