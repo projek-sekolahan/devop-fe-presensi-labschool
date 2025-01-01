@@ -172,6 +172,7 @@ const Home = () => {
             { src: "/frontend/img/news.png", title: "Berita Utama 2" },
             { src: "/frontend/img/news.png", title: "Berita Utama 3" },
             { src: "/frontend/img/news.png", title: "Berita Utama 4" },
+            { src: "/frontend/img/news.png", title: "Berita Utama 5" },
           ].map(({ src, title }, index) => (
             <div key={index} className="relative">
               <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto rounded-lg" />
