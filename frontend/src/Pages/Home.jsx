@@ -127,6 +127,12 @@ const Home = () => {
     console.log("UserData State Updated:", userData);
   }, [userData]);
 
+  window.addEventListener("click", (e) => {
+      if (e.pageX > (screen.width * 75) / 100) {
+          setShow(false);
+      }
+  });
+
   // Render loading atau error
     if (loading) return <Loading />;
     if (!userData) return <p>Data pengguna tidak tersedia.</p>;
@@ -252,7 +258,7 @@ const Home = () => {
   </div>
 
   {/* Side Menu */}
-  <SideMenu show={show} setShow={setShow} userData={userData} />
+  <SideMenu show={show} userData={userData} />
 </div>
 
   );
