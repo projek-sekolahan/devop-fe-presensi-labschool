@@ -160,7 +160,7 @@ const Home = () => {
       </Link>
     </nav>
     <main className="mt-8 h-56 sm:h-52">
-      <div id="news" className="relative size-full">
+      <div id="news" className="relative size-full mb-2">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
           <img src="/frontend/img/news.png" alt="slide_1" />
           <img src="/frontend/img/news.png" alt="slide_2" />
@@ -168,7 +168,7 @@ const Home = () => {
           <img src="/frontend/img/news.png" alt="slide_4" />
         </Carousel>
       </div>
-      <div id="rekap" className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center">
+      <div id="rekap" className="bg-white h-48 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-2">
         <h3 className="text-primary-md font-bold text-base mb-4">
           {"Rekapan Presensi (Bulan Ini)"}
         </h3>
@@ -212,7 +212,7 @@ const Home = () => {
             ? "/presensi"
             : "/presensi/staff"
         }
-        className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+        className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md mb-2"
       >
         <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
           <CheckCircleIcon className="size-6" />
@@ -223,7 +223,7 @@ const Home = () => {
       <Link
         id="riwayat_presensi"
         to="/riwayat"
-        className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
+        className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
       >
         <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
           <ClockIcon className="size-6" />
