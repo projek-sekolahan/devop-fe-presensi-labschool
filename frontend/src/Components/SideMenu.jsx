@@ -143,9 +143,9 @@ export default function SideMenu({ show, userData, closeMenu }) {
           onClick={clickHandler}
           className="btn border-none w-full py-3 px-16 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 justify-center items-center"
         >
-          <PowerIcon className="w-5 h-5 text-white" />
+          <PowerIcon className="w-5 h-5 text-white size-9" />
           Logout
-          <ArrowRightIcon  className="w-5 h-5 text-white ml-auto" />
+          <ArrowRightIcon  className="size-5 stroke-2 w-5 h-5 text-white ml-auto" />
         </Link>
 					</div>
 				</div>
