@@ -173,67 +173,70 @@ const Home = () => {
         </Carousel>
       </div>
 
-      {/* Rekapan Presensi */}
-      <div id="rekap" className="bg-white h-40 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-4">
-        <h3 className="text-primary-md font-bold text-base mb-4">
-          Rekapan Presensi (Bulan Ini)
-        </h3>
-        <div className="flex justify-center w-full px-6 gap-6">
-          {['hadir', 'tidak_hadir', 'terlambat_pulang_cepat'].map((key, index) => (
-            <div
-              key={key}
-              className="w-24 flex flex-col items-center gap-2"
-            >
+      {/* Rekapan dan Navigasi Presensi */}
+      <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-4">
+        {/* Rekapan Presensi */}
+        <div className="flex flex-col items-center justify-center">
+          <h3 className="text-primary-md font-bold text-base mb-4">
+            Rekapan Presensi (Bulan Ini)
+          </h3>
+          <div className="flex justify-center w-full px-6 gap-6">
+            {['hadir', 'tidak_hadir', 'terlambat_pulang_cepat'].map((key, index) => (
               <div
-                className={`size-[50px] rounded-full p-[10px] flex items-center justify-center ${
-                  index === 0
-                    ? 'bg-secondary-green'
-                    : index === 1
-                    ? 'bg-secondary-yellow'
-                    : 'bg-secondary-red'
-                }`}
+                key={key}
+                className="w-24 flex flex-col items-center gap-2"
               >
-                <p className="text-center text-lg font-bold">
-                  {userData?.[key] || 0}
-                </p>
+                <div
+                  className={`size-[50px] rounded-full p-[10px] flex items-center justify-center ${
+                    index === 0
+                      ? 'bg-secondary-green'
+                      : index === 1
+                      ? 'bg-secondary-yellow'
+                      : 'bg-secondary-red'
+                  }`}
+                >
+                  <p className="text-center text-lg font-bold">
+                    {userData?.[key] || 0}
+                  </p>
+                </div>
+                <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+                  {index === 0 ? 'Hadir' : index === 1 ? 'Izin / Sakit' : 'Terlambat'}
+                </h4>
               </div>
-              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-                {index === 0 ? 'Hadir' : index === 1 ? 'Izin / Sakit' : 'Terlambat'}
-              </h4>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigasi Presensi */}
+        <div className="flex flex-col gap-3">
+          {[
+            {
+              id: 'presensi',
+              link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
+              icon: <CheckCircleIcon className="size-6" />, 
+              text: 'Presensi',
+            },
+            {
+              id: 'riwayat_presensi',
+              link: '/riwayat',
+              icon: <ClockIcon className="size-6" />,
+              text: 'Riwayat Presensi',
+            },
+          ].map(({ id, link, icon, text }) => (
+            <Link
+              key={id}
+              id={id}
+              to={link}
+              className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
+            >
+              <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+                {icon}
+              </div>
+              <p className="text-primary-md font-bold text-sm">{text}</p>
+              <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+            </Link>
           ))}
         </div>
-      </div>
-
-      {/* Navigasi Presensi */}
-      <div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
-        {[
-          {
-            id: 'presensi',
-            link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
-            icon: <CheckCircleIcon className="size-6" />, 
-            text: 'Presensi',
-          },
-          {
-            id: 'riwayat_presensi',
-            link: '/riwayat',
-            icon: <ClockIcon className="size-6" />,
-            text: 'Riwayat Presensi',
-          },
-        ].map(({ id, link, icon, text }) => (
-          <Link
-            key={id}
-            id={id}
-            to={link}
-            className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
-          >
-            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-              {icon}
-            </div>
-            <p className="text-primary-md font-bold text-sm">{text}</p>
-            <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-          </Link>
-        ))}
       </div>
     </main>
   </div>
@@ -241,6 +244,7 @@ const Home = () => {
   {/* Side Menu */}
   <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
+
   );
 };
 
