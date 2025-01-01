@@ -136,13 +136,14 @@ export default function SideMenu({ show, userData, closeMenu }) {
 							<p>Bantuan</p>
 							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
 						</Link>
+		<Link
+          to="#"
+          onClick={clickHandler}
+          className="btn border-none w-full py-3 px-16 bg-primary-low text-center font-bold rounded-xl mt-4"
+        >
+          Logout
+        </Link>
 					</div>
-					<button
-						onClick={clickHandler}
-						className="btn border-none w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]"
-					>
-						Keluar
-					</button>
 				</div>
 			</div>
 		</div>
