@@ -151,26 +151,33 @@ const Home = () => {
       <Link to="/notifikasi">
         <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </Link>
-      <div id="profile" className="flex gap-3">
+      <div id="profile" className="flex items-center gap-3">
         <img
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
           id="photo_profile"
           className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
-          onClick={() => window.location.replace("/profile")}
+          onClick={() => document.getElementById("my_modal_1").showModal()}
         />
       </div>
     </nav>
 
     {/* Main Content */}
-    <main className="mt-8 h-46 sm:h-42">
+    <main className="mt-8 h-56 sm:h-52">
       {/* News Carousel */}
       <div id="news" className="relative size-full mb-4">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg hover:shadow-lg transition-shadow">
-          <img src="/frontend/img/news.png" alt="slide_1" />
-          <img src="/frontend/img/news.png" alt="slide_2" />
-          <img src="/frontend/img/news.png" alt="slide_3" />
-          <img src="/frontend/img/news.png" alt="slide_4" />
+          {[
+            { src: "/frontend/img/news.png", title: "Berita Utama 1" },
+            { src: "/frontend/img/news.png", title: "Berita Utama 2" },
+            { src: "/frontend/img/news.png", title: "Berita Utama 3" },
+            { src: "/frontend/img/news.png", title: "Berita Utama 4" },
+          ].map(({ src, title }, index) => (
+            <div key={index} className="relative">
+              <img src={src} alt={`slide_${index + 1}`} />
+              <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">{title}</p>
+            </div>
+          ))}
         </Carousel>
       </div>
 
@@ -182,7 +189,7 @@ const Home = () => {
             Rekapan Presensi (Bulan Ini)
           </h3>
           <div className="flex justify-center w-full px-6 gap-6">
-            {['hadir', 'tidak_hadir', 'terlambat_pulang_cepat'].map((key, index) => (
+            {["hadir", "tidak_hadir", "terlambat_pulang_cepat"].map((key, index) => (
               <div
                 key={key}
                 className="w-24 flex flex-col items-center gap-2"
@@ -190,10 +197,10 @@ const Home = () => {
                 <div
                   className={`size-[50px] rounded-full p-[10px] flex items-center justify-center ${
                     index === 0
-                      ? 'bg-secondary-green'
+                      ? "bg-secondary-green"
                       : index === 1
-                      ? 'bg-secondary-yellow'
-                      : 'bg-secondary-red'
+                      ? "bg-secondary-yellow"
+                      : "bg-secondary-red"
                   }`}
                 >
                   <p className="text-center text-lg font-bold">
@@ -201,7 +208,7 @@ const Home = () => {
                   </p>
                 </div>
                 <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-                  {index === 0 ? 'Hadir' : index === 1 ? 'Izin / Sakit' : 'Terlambat'}
+                  {index === 0 ? "Hadir" : index === 1 ? "Izin / Sakit" : "Terlambat"}
                 </h4>
               </div>
             ))}
@@ -212,16 +219,16 @@ const Home = () => {
         <div className="flex flex-col gap-3">
           {[
             {
-              id: 'presensi',
+              id: "presensi",
               link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
               icon: <CheckCircleIcon className="size-6" />, 
-              text: 'Presensi',
+              text: "Presensi",
             },
             {
-              id: 'riwayat_presensi',
-              link: '/riwayat',
+              id: "riwayat_presensi",
+              link: "/riwayat",
               icon: <ClockIcon className="size-6" />,
-              text: 'Riwayat Presensi',
+              text: "Riwayat Presensi",
             },
           ].map(({ id, link, icon, text }) => (
             <Link
@@ -245,7 +252,6 @@ const Home = () => {
   {/* Side Menu */}
   <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
-
 
   );
 };
