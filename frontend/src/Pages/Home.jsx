@@ -148,22 +148,22 @@ const Home = () => {
       <button onClick={() => setShow(true)}>
         <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
-      <div id="profile" className="flex items-center gap-3">
+      <Link to="/notifikasi">
+        <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+      </Link>
+      <div id="profile" className="flex gap-3">
         <img
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
           id="photo_profile"
           className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
-          onClick={() => document.getElementById("my_modal_1").showModal()}
+          onClick={() => window.location.replace("/profile")}
         />
       </div>
-      <Link to="/notifikasi">
-        <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
-      </Link>
     </nav>
 
     {/* Main Content */}
-    <main className="mt-8 h-56 sm:h-52">
+    <main className="mt-8 h-46 sm:h-42">
       {/* News Carousel */}
       <div id="news" className="relative size-full mb-4">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg hover:shadow-lg transition-shadow">
