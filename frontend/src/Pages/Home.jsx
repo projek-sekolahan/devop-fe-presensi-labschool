@@ -149,9 +149,6 @@ const Home = () => {
         <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
-        <Link to="/notifikasi">
-          <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
-        </Link>
         <img
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
@@ -159,13 +156,16 @@ const Home = () => {
           className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
           onClick={() => document.getElementById("my_modal_1").showModal()}
         />
+        <Link to="/notifikasi">
+          <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+        </Link>
       </div>
     </nav>
 
     {/* Main Content */}
-    <main className="mt-8 h-56 sm:h-52">
+    <main className="mt-8 h-fit">
       {/* News Carousel */}
-      <div id="news" className="relative size-full mb-4">
+      <div id="news" className="relative w-full h-fit mb-4">
         <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg hover:shadow-lg transition-shadow">
           {[
             { src: "/frontend/img/news.png", title: "Berita Utama 1" },
@@ -174,7 +174,7 @@ const Home = () => {
             { src: "/frontend/img/news.png", title: "Berita Utama 4" },
           ].map(({ src, title }, index) => (
             <div key={index} className="relative">
-              <img src={src} alt={`slide_${index + 1}`} />
+              <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto rounded-lg" />
               <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">{title}</p>
             </div>
           ))}
