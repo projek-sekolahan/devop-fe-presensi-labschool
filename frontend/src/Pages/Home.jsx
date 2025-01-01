@@ -213,7 +213,7 @@ const Home = () => {
               ? "/presensi"
               : "/presensi/staff"
           }
-          className="flex gap-3 items-center"
+          className="flex gap-3 items-center p-3 border-b-2 border-primary-low"
         >
           <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <CheckCircleIcon className="size-6" />
@@ -224,7 +224,7 @@ const Home = () => {
         <Link
           id="riwayat_presensi"
           to="/riwayat"
-          className="flex gap-3 items-center"
+          className="flex gap-3 items-center p-3 border-b-2 border-primary-low"
         >
           <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <ClockIcon className="size-6" />
