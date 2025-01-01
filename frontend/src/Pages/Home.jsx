@@ -133,15 +133,15 @@ const Home = () => {
 
   // Render komponen utama
   return (
-<div className="bg-gradient-to-br from-purple-500 to-indigo-600 font-sans flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
+<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
   <img
     src="/frontend/Icons/elipse.svg"
     alt="elipse"
-    className="w-full min-h-fit absolute z-[1] left-0 top-[-30px] opacity-50"
+    className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
   />
   <div id="core" className="relative z-[2] size-full">
-    <nav className="flex items-center justify-between pb-4 border-b border-white/30">
-      <button onClick={() => setShow(true)} className="hover:scale-110 transition-transform">
+    <nav className="flex items-center justify-between">
+      <button onClick={() => setShow(true)}>
         <Bars3Icon className="fill-white size-8" />
       </button>
       <div id="profile" className="flex items-center gap-3">
@@ -149,76 +149,76 @@ const Home = () => {
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
           id="photo_profile"
-          className="size-12 rounded-full bg-white cursor-pointer border-2 border-indigo-400 hover:shadow-lg transition-shadow"
+          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md"
           onClick={() =>
             document.getElementById("my_modal_1").showModal()
           }
         />
-        <dialog id="my_modal_1" className="modal w-[90%] max-w-md rounded-xl bg-gradient-to-br from-purple-700 to-indigo-800 text-white">
-          <div className="modal-box flex flex-col items-center gap-4">
+        <dialog id="my_modal_1" className="modal">
+          <div className="modal-box">
             <img
               src={userData?.img_location || "/frontend/Icons/profile.svg"}
               alt="User Profile"
-              className="rounded-full w-24 shadow-md border-4 border-white"
+              className="w-full"
             />
-            <h2 className="text-lg font-bold">{userData?.nama_lengkap || "Guest"}</h2>
-            <button className="btn bg-indigo-500 w-full hover:bg-indigo-600 text-white">Edit Profile</button>
             <div className="modal-action">
-              <button className="btn bg-purple-500 w-full hover:bg-purple-600 text-white">Close</button>
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
             </div>
           </div>
         </dialog>
-        <p className="font-semibold text-sm text-indigo-200">
+        <p className="font-semibold text-sm text-primary-md">
           {userData?.nama_lengkap || "Guest"}
         </p>
       </div>
-      <Link to="/notifikasi" className="relative hover:scale-110 transition-transform">
+      <Link to="/notifikasi">
         <BellIcon className="fill-white size-8" />
       </Link>
     </nav>
     <main className="mt-8 h-56 sm:h-52">
       <div id="news" className="relative size-full">
-        <Carousel className="rounded-xl drop-shadow-lg">
-          <img src="/frontend/img/news.png" alt="slide_1" className="rounded-xl" />
-          <img src="/frontend/img/news.png" alt="slide_2" className="rounded-xl" />
-          <img src="/frontend/img/news.png" alt="slide_3" className="rounded-xl" />
-          <img src="/frontend/img/news.png" alt="slide_4" className="rounded-xl" />
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
+          <img src="/frontend/img/news.png" alt="slide_1" />
+          <img src="/frontend/img/news.png" alt="slide_2" />
+          <img src="/frontend/img/news.png" alt="slide_3" />
+          <img src="/frontend/img/news.png" alt="slide_4" />
         </Carousel>
         <div
           id="rekap"
-          className="bg-white/10 h-48 mt-5 rounded-2xl px-4 py-3 shadow-lg flex flex-col items-center justify-center text-white"
+          className="bg-white h-48 mt-5 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center"
         >
-          <h3 className="text-indigo-200 font-bold text-base mb-4">
+          <h3 className="text-primary-md font-bold text-base mb-4">
             {"Rekapan Presensi (Bulan Ini)"}
           </h3>
           <div className="flex justify-center w-full px-6 gap-6">
             <div id="hadir" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-green-500 size-[50px] rounded-full p-[10px] flex items-center justify-center shadow">
+              <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.hadir || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-indigo-200 mt-2">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Hadir
               </h4>
             </div>
             <div id="izin" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-yellow-500 size-[50px] rounded-full p-[10px] flex items-center justify-center shadow">
+              <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.tidak_hadir || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-indigo-200 mt-2">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Izin / Sakit
               </h4>
             </div>
             <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
-              <div className="bg-red-500 size-[50px] rounded-full p-[10px] flex items-center justify-center shadow">
+              <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
                 <p className="text-center text-lg font-bold">
                   {userData?.terlambat_pulang_cepat || 0}
                 </p>
               </div>
-              <h4 className="text-center text-xs font-bold text-indigo-200 mt-2">
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
                 Terlambat
               </h4>
             </div>
@@ -231,36 +231,29 @@ const Home = () => {
               ? "/presensi"
               : "/presensi/staff"
           }
-          className="bg-white/20 w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-lg hover:scale-105 transition-transform"
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
         >
-          <div className="size-10 bg-indigo-500 rounded-full flex justify-center items-center">
+          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <CheckCircleIcon className="size-6" />
           </div>
-          <p className="text-indigo-200 font-bold text-sm">Presensi</p>
-          <ChevronRightIcon className="absolute size-4 stroke-white right-10" />
+          <p className="text-primary-md font-bold text-sm">Presensi</p>
+          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
         </Link>
         <Link
           id="riwayat_presensi"
           to="/riwayat"
-          className="bg-white/20 w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-lg hover:scale-105 transition-transform"
+          className="bg-white w-full h-fit mt-4 rounded-2xl px-4 py-3 flex gap-3 items-center shadow-md"
         >
-          <div className="size-10 bg-indigo-500 rounded-full flex justify-center items-center">
+          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
             <ClockIcon className="size-6" />
           </div>
-          <p className="text-indigo-200 font-bold text-sm">Riwayat Presensi</p>
-          <ChevronRightIcon className="absolute size-4 stroke-white right-10" />
+          <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
+          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
         </Link>
       </div>
     </main>
   </div>
-  <SideMenu
-    show={show}
-    setShow={setShow}
-    userData={userData}
-    className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-br from-purple-700 to-indigo-800 text-white transform ${
-      show ? "translate-x-0" : "-translate-x-full"
-    } transition-transform shadow-xl`}
-  />
+  <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
   );
 };
