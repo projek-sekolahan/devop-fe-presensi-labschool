@@ -3,14 +3,20 @@ import {
 	Cog6ToothIcon,
 	QuestionMarkCircleIcon,
 	ChevronRightIcon,
+	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys } from "../utils/utils";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 export default function SideMenu({ show, userData }) {
+	const [show, setShow] = useState(true);
+	const closeMenu = () => {
+		setShow(false); // Menutup side menu dengan mengubah status show ke false
+	};
 	console.log("Data Pengguna di SideMenu:", userData); // Debug
 	// return false;
 	let isLogout = false;
@@ -102,6 +108,12 @@ export default function SideMenu({ show, userData }) {
 							<h4>Halo!</h4>
 							<p>{userData?.nama_lengkap}</p>
 						</div>
+						<button
+						onClick={closeMenu}
+						className="absolute top-0 right-0 text-xl font-bold text-bg-2"
+						>
+						<XMarkIcon className="w-6 h-6 text-bg-2" />
+						</button>
 					</div>
 					<div
 						id="menu"
