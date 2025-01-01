@@ -149,15 +149,16 @@ const Home = () => {
         <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
-        <img
-          src={userData?.img_location || "/frontend/Icons/profile.svg"}
-          alt="photo_profile"
-          id="photo_profile"
-          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
-          onClick={() => window.location.replace("/profile")}
-        />
-        <Link to="/notifikasi">
+      <Link to="/notifikasi">
           <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+        </Link>
+        <Link to="/profile">
+          <img
+            src={userData?.img_location || "/frontend/Icons/profile.svg"}
+            alt="photo_profile"
+            id="photo_profile"
+            className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
+          />
         </Link>
       </div>
     </nav>
@@ -256,5 +257,4 @@ const Home = () => {
 
   );
 };
-
 export default Home;
