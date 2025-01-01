@@ -159,84 +159,79 @@ const Home = () => {
         <BellIcon className="fill-white size-8" />
       </Link>
     </nav>
-
-<main className="mt-8 h-56 sm:h-52">
-  <div id="news" className="relative size-full mb-4">
-    <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
-      <img src="/frontend/img/news.png" alt="slide_1" />
-      <img src="/frontend/img/news.png" alt="slide_2" />
-      <img src="/frontend/img/news.png" alt="slide_3" />
-      <img src="/frontend/img/news.png" alt="slide_4" />
-    </Carousel>
-  </div>
-  <div className="bg-white rounded-2xl px-4 py-4 shadow-md flex flex-col gap-4">
-    {/* Rekapan Presensi */}
-    <div id="rekap" className="flex flex-col items-center justify-center">
-      <h3 className="text-primary-md font-bold text-base mb-4">
-        {"Rekapan Presensi (Bulan Ini)"}
-      </h3>
-      <div className="flex justify-center w-full px-6 gap-6">
-        <div id="hadir" className="w-24 flex flex-col items-center gap-2">
-          <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
-            <p className="text-center text-lg font-bold">
-              {userData?.hadir || 0}
-            </p>
+    <main className="mt-8 h-56 sm:h-52">
+      <div id="news" className="relative size-full mb-2">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
+          <img src="/frontend/img/news.png" alt="slide_1" />
+          <img src="/frontend/img/news.png" alt="slide_2" />
+          <img src="/frontend/img/news.png" alt="slide_3" />
+          <img src="/frontend/img/news.png" alt="slide_4" />
+        </Carousel>
+      </div>
+      <div id="rekap" className="bg-white h-40 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-2">
+        <h3 className="text-primary-md font-bold text-base mb-4">
+          {"Rekapan Presensi (Bulan Ini)"}
+        </h3>
+        <div className="flex justify-center w-full px-6 gap-6">
+          <div id="hadir" className="w-24 flex flex-col items-center gap-2">
+            <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <p className="text-center text-lg font-bold">
+                {userData?.hadir || 0}
+              </p>
+            </div>
+            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+              Hadir
+            </h4>
           </div>
-          <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-            Hadir
-          </h4>
-        </div>
-        <div id="izin" className="w-24 flex flex-col items-center gap-2">
-          <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
-            <p className="text-center text-lg font-bold">
-              {userData?.tidak_hadir || 0}
-            </p>
+          <div id="izin" className="w-24 flex flex-col items-center gap-2">
+            <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <p className="text-center text-lg font-bold">
+                {userData?.tidak_hadir || 0}
+              </p>
+            </div>
+            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+              Izin / Sakit
+            </h4>
           </div>
-          <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-            Izin / Sakit
-          </h4>
-        </div>
-        <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
-          <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
-            <p className="text-center text-lg font-bold">
-              {userData?.terlambat_pulang_cepat || 0}
-            </p>
+          <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
+            <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
+              <p className="text-center text-lg font-bold">
+                {userData?.terlambat_pulang_cepat || 0}
+              </p>
+            </div>
+            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+              Terlambat
+            </h4>
           </div>
-          <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-            Terlambat
-          </h4>
         </div>
       </div>
-    </div>
-    {/* Tautan Presensi */}
-    <div className="flex flex-col gap-3">
-      <Link
-        id="presensi"
-        to={localStorage.getItem("group_id") == "4" ? "/presensi" : "/presensi/staff"}
-        className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
-      >
-        <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-          <CheckCircleIcon className="size-6" />
-        </div>
-        <p className="text-primary-md font-bold text-sm">Presensi</p>
-        <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-      </Link>
-      <Link
-        id="riwayat_presensi"
-        to="/riwayat"
-        className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
-      >
-        <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-          <ClockIcon className="size-6" />
-        </div>
-        <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
-        <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-      </Link>
-    </div>
-  </div>
-</main>
 
+<div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
+  <Link
+    id="presensi"
+    to={localStorage.getItem("group_id") == "4" ? "/presensi" : "/presensi/staff"}
+    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
+  >
+    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+      <CheckCircleIcon className="size-6" />
+    </div>
+    <p className="text-primary-md font-bold text-sm">Presensi</p>
+    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+  </Link>
+  <Link
+    id="riwayat_presensi"
+    to="/riwayat"
+    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
+  >
+    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+      <ClockIcon className="size-6" />
+    </div>
+    <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
+    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+  </Link>
+</div>
 
+    </main>
   </div>
   <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
