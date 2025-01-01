@@ -134,105 +134,111 @@ const Home = () => {
   // Render komponen utama
   return (
 <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
+  {/* Background Elipse */}
   <img
     src="/frontend/Icons/elipse.svg"
     alt="elipse"
     className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
   />
+  
   <div id="core" className="relative z-[2] size-full">
+    {/* Header Navigation */}
     <nav className="flex items-center justify-between">
       <button onClick={() => setShow(true)}>
-        <Bars3Icon className="fill-white size-8" />
+        <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
         <img
           src={userData?.img_location || "/frontend/Icons/profile.svg"}
           alt="photo_profile"
           id="photo_profile"
-          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md"
-          onClick={() =>
-            document.getElementById("my_modal_1").showModal()
-          }
+          className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
+          onClick={() => document.getElementById("my_modal_1").showModal()}
         />
       </div>
       <Link to="/notifikasi">
-        <BellIcon className="fill-white size-8" />
+        <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </Link>
     </nav>
+
+    {/* Main Content */}
     <main className="mt-8 h-56 sm:h-52">
-      <div id="news" className="relative size-full mb-2">
-        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg">
+      {/* News Carousel */}
+      <div id="news" className="relative size-full mb-4">
+        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg hover:shadow-lg transition-shadow">
           <img src="/frontend/img/news.png" alt="slide_1" />
           <img src="/frontend/img/news.png" alt="slide_2" />
           <img src="/frontend/img/news.png" alt="slide_3" />
           <img src="/frontend/img/news.png" alt="slide_4" />
         </Carousel>
       </div>
-      <div id="rekap" className="bg-white h-40 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-2">
+
+      {/* Rekapan Presensi */}
+      <div id="rekap" className="bg-white h-40 rounded-2xl px-4 py-3 shadow-md flex flex-col items-center justify-center mb-4">
         <h3 className="text-primary-md font-bold text-base mb-4">
-          {"Rekapan Presensi (Bulan Ini)"}
+          Rekapan Presensi (Bulan Ini)
         </h3>
         <div className="flex justify-center w-full px-6 gap-6">
-          <div id="hadir" className="w-24 flex flex-col items-center gap-2">
-            <div className="bg-secondary-green size-[50px] rounded-full p-[10px] flex items-center justify-center">
-              <p className="text-center text-lg font-bold">
-                {userData?.hadir || 0}
-              </p>
+          {['hadir', 'tidak_hadir', 'terlambat_pulang_cepat'].map((key, index) => (
+            <div
+              key={key}
+              className="w-24 flex flex-col items-center gap-2"
+            >
+              <div
+                className={`size-[50px] rounded-full p-[10px] flex items-center justify-center ${
+                  index === 0
+                    ? 'bg-secondary-green'
+                    : index === 1
+                    ? 'bg-secondary-yellow'
+                    : 'bg-secondary-red'
+                }`}
+              >
+                <p className="text-center text-lg font-bold">
+                  {userData?.[key] || 0}
+                </p>
+              </div>
+              <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+                {index === 0 ? 'Hadir' : index === 1 ? 'Izin / Sakit' : 'Terlambat'}
+              </h4>
             </div>
-            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-              Hadir
-            </h4>
-          </div>
-          <div id="izin" className="w-24 flex flex-col items-center gap-2">
-            <div className="bg-secondary-yellow size-[50px] rounded-full p-[10px] flex items-center justify-center">
-              <p className="text-center text-lg font-bold">
-                {userData?.tidak_hadir || 0}
-              </p>
-            </div>
-            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-              Izin / Sakit
-            </h4>
-          </div>
-          <div id="terlambat" className="w-24 flex flex-col items-center gap-2">
-            <div className="bg-secondary-red size-[50px] rounded-full p-[10px] flex items-center justify-center">
-              <p className="text-center text-lg font-bold">
-                {userData?.terlambat_pulang_cepat || 0}
-              </p>
-            </div>
-            <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-              Terlambat
-            </h4>
-          </div>
+          ))}
         </div>
       </div>
 
-<div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
-  <Link
-    id="presensi"
-    to={localStorage.getItem("group_id") == "4" ? "/presensi" : "/presensi/staff"}
-    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
-  >
-    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-      <CheckCircleIcon className="size-6" />
-    </div>
-    <p className="text-primary-md font-bold text-sm">Presensi</p>
-    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-  </Link>
-  <Link
-    id="riwayat_presensi"
-    to="/riwayat"
-    className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
-  >
-    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-      <ClockIcon className="size-6" />
-    </div>
-    <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
-    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-  </Link>
-</div>
-
+      {/* Navigasi Presensi */}
+      <div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
+        {[
+          {
+            id: 'presensi',
+            link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
+            icon: <CheckCircleIcon className="size-6" />, 
+            text: 'Presensi',
+          },
+          {
+            id: 'riwayat_presensi',
+            link: '/riwayat',
+            icon: <ClockIcon className="size-6" />,
+            text: 'Riwayat Presensi',
+          },
+        ].map(({ id, link, icon, text }) => (
+          <Link
+            key={id}
+            id={id}
+            to={link}
+            className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
+          >
+            <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+              {icon}
+            </div>
+            <p className="text-primary-md font-bold text-sm">{text}</p>
+            <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+          </Link>
+        ))}
+      </div>
     </main>
   </div>
+
+  {/* Side Menu */}
   <SideMenu show={show} setShow={setShow} userData={userData} />
 </div>
   );
