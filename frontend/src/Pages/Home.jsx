@@ -205,34 +205,31 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-2 shadow-md">
-        <Link
-          id="presensi"
-          to={
-            localStorage.getItem("group_id") == "4"
-              ? "/presensi"
-              : "/presensi/staff"
-          }
-          className="flex gap-3 items-center p-3 border-b-2 border-primary-low"
-        >
-          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-            <CheckCircleIcon className="size-6" />
-          </div>
-          <p className="text-primary-md font-bold text-sm">Presensi</p>
-          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-        </Link>
-        <Link
-          id="riwayat_presensi"
-          to="/riwayat"
-          className="flex gap-3 items-center p-3 border-b-2 border-primary-low"
-        >
-          <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
-            <ClockIcon className="size-6" />
-          </div>
-          <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
-          <ChevronRightIcon className="absolute size-4 stroke-bg-3 right-10" />
-        </Link>
-      </div>
+<div className="bg-white w-full h-fit rounded-2xl px-4 py-3 flex flex-col gap-3 shadow-md">
+  <Link
+    id="presensi"
+    to={localStorage.getItem("group_id") == "4" ? "/presensi" : "/presensi/staff"}
+    className="flex items-center gap-3 p-4 bg-primary-low rounded-lg hover:shadow-lg transition-shadow duration-300"
+  >
+    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+      <CheckCircleIcon className="size-6" />
+    </div>
+    <p className="text-primary-md font-bold text-sm">Presensi</p>
+    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+  </Link>
+  <Link
+    id="riwayat_presensi"
+    to="/riwayat"
+    className="flex items-center gap-3 p-4 bg-primary-low rounded-lg hover:shadow-lg transition-shadow duration-300"
+  >
+    <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+      <ClockIcon className="size-6" />
+    </div>
+    <p className="text-primary-md font-bold text-sm">Riwayat Presensi</p>
+    <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+  </Link>
+</div>
+
     </main>
   </div>
   <SideMenu show={show} setShow={setShow} userData={userData} />
