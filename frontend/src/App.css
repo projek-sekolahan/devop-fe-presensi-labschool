@@ -11,7 +11,9 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+  -moz-appearance: textfield; /* Untuk Firefox */
+  -webkit-appearance: none;  /* Untuk Safari dan Chrome */
+  appearance: none;          /* Properti standar */
 }
 
 .appearance-none{
