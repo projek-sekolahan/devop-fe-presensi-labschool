@@ -119,7 +119,7 @@ export default function Login() {
             />
 
             {/* Login Form */}
-            <div className="login-form-container bg-white px-6 py-8 rounded-lg shadow-md z-[2] relative max-w-[90%] mx-auto sm:max-w-full">
+            <div className="login-form-container bg-white p-6 rounded-lg shadow-md z-[2] relative">
                 <h2 className="text-title">Yuk Login!</h2>
                 <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
                 <form
