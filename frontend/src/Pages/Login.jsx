@@ -99,15 +99,16 @@ export default function Login() {
     useEffect(() => {
         const handleKeyPress = (e) => {
             if (e.key === "Enter") {
-                submitBtnRef.current.click();
+                e.preventDefault(); // Cegah reload form
+                submitBtnRef.current?.click(); // Pastikan referensi valid
             }
         };
-        window.addEventListener("keypress", handleKeyPress);
-
+        window.addEventListener("keydown", handleKeyPress); // Gunakan keydown
+    
         return () => {
-            window.removeEventListener("keypress", handleKeyPress);
+            window.removeEventListener("keydown", handleKeyPress);
         };
-    }, []);
+    }, []);    
 
     return (
         <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
@@ -119,68 +120,68 @@ export default function Login() {
             />
 
             {/* Login Form */}
-<div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative">
-    <h2 className="text-title">Yuk Login!</h2>
-    <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
-    <form
-        className="login-form"
-        onSubmit={handleLogin}
-    >
-        {/* Email Input */}
-        <div className="input-group">
-            <label htmlFor="email" className="input-label">
-                Email
-            </label>
-            <input
-                type="email"
-                name="email"
-                id="email"
-                ref={emailRef}
-                className="input-field"
-                placeholder="Email"
-                required
-            />
-        </div>
+            <div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative">
+                <h2 className="text-title">Yuk Login!</h2>
+                <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
+                <form
+                    className="login-form"
+                    onSubmit={handleLogin}
+                >
+                    {/* Email Input */}
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            ref={emailRef}
+                            className="input-field"
+                            placeholder="Email"
+                            required
+                        />
+                    </div>
 
-        {/* Password Input */}
-        <div className="input-group">
-            <label htmlFor="password" className="input-label">
-                Password
-            </label>
-            <div className="password-container">
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    ref={passwordRef}
-                    placeholder="Password (8 or more characters)"
-                    className="input-field flex-1"
-                    required
-                />
-                <PasswordShow ref={passwordRef} />
+                    {/* Password Input */}
+                    <div className="input-group">
+                        <label htmlFor="password" className="input-label">
+                            Password
+                        </label>
+                        <div className="password-container">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                ref={passwordRef}
+                                placeholder="Password (8 or more characters)"
+                                className="input-field flex-1"
+                                required
+                            />
+                            <PasswordShow ref={passwordRef} />
+                        </div>
+                    </div>
+
+                    {/* Forgot Password and Register Link */}
+                    <div className="flex justify-between items-center">
+                        <Link to="/register" className="text-link">
+                            Belum memiliki akun?
+                        </Link>
+                        <Link to="/recover" className="text-link">
+                            Lupa password?
+                        </Link>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        ref={submitBtnRef}
+                        className="btn-submit w-full mt-6"
+                    >
+                        Login
+                    </button>
+                </form>
             </div>
-        </div>
-
-        {/* Forgot Password and Register Link */}
-        <div className="flex justify-between items-center">
-            <Link to="/register" className="text-link">
-                Belum memiliki akun?
-            </Link>
-            <Link to="/recover" className="text-link">
-                Lupa password?
-            </Link>
-        </div>
-
-        {/* Submit Button */}
-        <button
-            type="submit"
-            ref={submitBtnRef}
-            className="btn-submit w-full mt-6"
-        >
-            Login
-        </button>
-    </form>
-</div>
 
         </div>
     );
