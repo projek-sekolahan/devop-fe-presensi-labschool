@@ -138,7 +138,7 @@ const Home = () => {
       }
   });
 
-  useEffect(() => {
+  /* useEffect(() => {
         if (!localStorage.getItem("token_registered")) {
             const app = initializeApp(firebaseConfig);
             const messaging = getMessaging(app);
@@ -187,7 +187,7 @@ const Home = () => {
                 );
             });
         }
-    }, []);
+    }, []); */
 
     const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
