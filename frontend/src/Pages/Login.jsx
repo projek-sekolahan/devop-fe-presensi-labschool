@@ -123,12 +123,12 @@ export default function Login() {
                 <h2 className="text-title">Yuk Login!</h2>
                 <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
                 <form
-                    className="login-form flex flex-col gap-4"
+                    className="login-form"
                     onSubmit={handleLogin}
                 >
                     {/* Email Input */}
                     <div className="input-group">
-                        <label htmlFor="email" className="input-label block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="email" className="input-label">
                             Email
                         </label>
                         <input
@@ -136,7 +136,7 @@ export default function Login() {
                             name="email"
                             id="email"
                             ref={emailRef}
-                            className="input-field w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                            className="input-field"
                             placeholder="Email"
                             required
                         />
@@ -144,17 +144,17 @@ export default function Login() {
 
                     {/* Password Input */}
                     <div className="input-group">
-                        <label htmlFor="password" className="input-label block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="password" className="input-label">
                             Password
                         </label>
-                        <div className="password-container flex items-center border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500">
+                        <div className="password-container">
                             <input
                                 type="password"
                                 name="password"
                                 id="password"
                                 ref={passwordRef}
                                 placeholder="Password (8 or more characters)"
-                                className="input-field w-full px-4 py-3 focus:outline-none text-sm"
+                                className="input-field flex-1"
                                 required
                             />
                             <PasswordShow ref={passwordRef} />
@@ -162,11 +162,11 @@ export default function Login() {
                     </div>
 
                     {/* Forgot Password and Register Link */}
-                    <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600 gap-2">
-                        <Link to="/register" className="text-link text-blue-500 hover:underline">
+                    <div className="flex justify-between items-center">
+                        <Link to="/register" className="text-link">
                             Belum memiliki akun?
                         </Link>
-                        <Link to="/recover" className="text-link text-blue-500 hover:underline">
+                        <Link to="/recover" className="text-link">
                             Lupa password?
                         </Link>
                     </div>
@@ -175,7 +175,7 @@ export default function Login() {
                     <button
                         type="submit"
                         ref={submitBtnRef}
-                        className="btn-submit w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+                        className="btn-submit"
                     >
                         Login
                     </button>
