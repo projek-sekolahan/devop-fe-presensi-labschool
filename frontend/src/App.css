@@ -34,7 +34,8 @@ input[type=number] {
 
 /* Login Form Container */
 .login-form-container {
-  @apply w-full h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 absolute bottom-0 z-10;
+  @apply w-full h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom)); /* Tambahan padding bawah */
 }
 
 /* Titles and Subtitles */

@@ -110,7 +110,7 @@ export default function Login() {
     }, []);
 
     return (
-        <div className="login-container flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+        <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
             {/* Background Image */}
             <img
                 src="/frontend/img/login.png"
@@ -119,7 +119,7 @@ export default function Login() {
             />
 
             {/* Login Form */}
-<div className="login-form-container bg-white p-6 pb-16 rounded-lg shadow-md z-[2] relative">
+<div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative">
     <h2 className="text-title">Yuk Login!</h2>
     <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
     <form
@@ -175,7 +175,7 @@ export default function Login() {
         <button
             type="submit"
             ref={submitBtnRef}
-            className="btn-submit mt-6"
+            className="btn-submit w-full mt-6"
         >
             Login
         </button>
