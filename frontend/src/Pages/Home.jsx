@@ -37,7 +37,7 @@ const Home = () => {
       setLoading(true); // Aktifkan loading
       const keys = ["AUTH_KEY", "login_token"];
       const combinedKeys = addDefaultKeys(keys);
-      alert("masuk homepage");
+      
       // Ambil nilai dari localStorage dan Cookies
       const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
@@ -55,20 +55,22 @@ const Home = () => {
       );
       const res = JSON.parse(response);
       console.log("API Response:", res);
+      
       if (res?.data) {
         // Simpan token dan csrf baru
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
-
+        alert("masuk homepage");
         // Parse token untuk mendapatkan data user
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
         console.log("Parsed User Data:", user);
         setUserData(user); // Set state userData
       } else {
-        alertMessage("error", "No data in API response", "err");
+        alertMessage("No data in API response", "err", "error");
       }
     } catch (error) {
+      alertMessage("Error saat mengambil data", error, "error");
       console.error("Error saat mengambil data pengguna:", error);
       handleSessionError(error, "/login");
     } finally {

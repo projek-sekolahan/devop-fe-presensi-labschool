@@ -236,23 +236,23 @@ function clearCookies() {
 export const handleSessionError = (err, location) => {
     clearCookies();
     let res = JSON.parse(err.responseText);
-
-    if (err.status == 403 || err.status == 502) {
+    console.log(err);
+    if (err.status == 400 || err.status == 401 || err.status == 403 || err.status == 502) {
         res.data
-            ? alertError(res.data.info, res.data.title, res.data.message, () =>
+            ? alertError(res.data.title, res.data.message, res.data.info, () =>
                   window.location.replace(location)
               )
             : alertError(
-                  "error",
                   "Password atau Username Salah",
                   "Periksa kembali password dan username.",
+                  "error",
                   () => window.location.replace(location)
               );
     } else {
         alertError(
-            "error",
             "Input Error",
             "Something went wrong. Please try again later.",
+            "error",
             () => window.location.replace(location)
         );
     }
@@ -260,7 +260,7 @@ export const handleSessionError = (err, location) => {
 
 export const handleSessionExpired = (data) => {
     clearCookies();
-    alertError("error", data.title, data.message, () => {
+    alertError(data.title, data.message, "error", () => {
         window.location.replace("/login");
     });
 };
