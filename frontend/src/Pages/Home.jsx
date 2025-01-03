@@ -10,11 +10,19 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import { Link, useNavigate } from "react-router-dom";
-import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck, FaCircleChevronRight } from "react-icons/fa6";
+import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Carousel } from "flowbite-react";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+import {
+    getMessaging,
+    getToken,
+    onMessage,
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
 const Home = () => {
   const [show, setShow] = useState(false);
@@ -140,7 +148,19 @@ const Home = () => {
     { src: "/frontend/img/news.png", title: "Berita Utama 4" },
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
-  /* useEffect(() => {
+
+  // Konfigurasi Firebase
+  const firebaseConfig = {
+      apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
+      authDomain: "projek-sekolah-1acb4.firebaseapp.com",
+      projectId: "projek-sekolah-1acb4",
+      storageBucket: "projek-sekolah-1acb4.appspot.com",
+      messagingSenderId: "796889279454",
+      appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
+      measurementId: "G-NWG3GGV7DF",
+  };
+
+  useEffect(() => {
         if (!localStorage.getItem("token_registered")) {
             const app = initializeApp(firebaseConfig);
             const messaging = getMessaging(app);
@@ -189,9 +209,9 @@ const Home = () => {
                 );
             });
         }
-    }, []); */
+    }, []);
 
-    /* const registerToken = (currentToken) => {
+    const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
         const combinedKeys = addDefaultKeys(keys);
         localStorage.setItem("token_fcm", currentToken);
@@ -224,7 +244,7 @@ const Home = () => {
                     handleSessionError(error, "/login");
                 });
         });
-    }; */
+    };
 
     useEffect(() => {
       const carousel = document.querySelector("[data-carousel-touch]");
@@ -347,7 +367,7 @@ const Home = () => {
                 {icon}
               </div>
               <p className="text-primary-md font-semibold text-sm">{text}</p>
-              <FaCircleChevronRight className="ml-auto size-4 stroke-bg-3" />
+              <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
             </Link>
           ))}
         </div>

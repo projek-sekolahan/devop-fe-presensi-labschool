@@ -140,6 +140,7 @@ export default function Login() {
                             ref={emailRef}
                             className="input-field"
                             placeholder="Email"
+                            autocomplete="username"
                             required
                         />
                     </div>
