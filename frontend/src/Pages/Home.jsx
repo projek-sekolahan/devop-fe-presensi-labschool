@@ -138,6 +138,13 @@ const Home = () => {
       }
   });
 
+  const newsItems = [
+    { src: "/frontend/img/news.png", title: "Berita Utama 1" },
+    { src: "/frontend/img/news.png", title: "Berita Utama 2" },
+    { src: "/frontend/img/news.png", title: "Berita Utama 3" },
+    { src: "/frontend/img/news.png", title: "Berita Utama 4" },
+    { src: "/frontend/img/news.png", title: "Berita Utama 5" },
+  ];
   /* useEffect(() => {
         if (!localStorage.getItem("token_registered")) {
             const app = initializeApp(firebaseConfig);
@@ -189,7 +196,7 @@ const Home = () => {
         }
     }, []); */
 
-    const registerToken = (currentToken) => {
+    /* const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
         const combinedKeys = addDefaultKeys(keys);
         localStorage.setItem("token_fcm", currentToken);
@@ -222,7 +229,7 @@ const Home = () => {
                     handleSessionError(error, "/login");
                 });
         });
-    };
+    }; */
 
   // Render loading atau error
     if (loading) return <Loading />;
@@ -263,22 +270,18 @@ const Home = () => {
     {/* Main Content */}
     <main className="mt-8 h-fit">
       {/* News Carousel */}
-      <div id="news" className="relative w-full h-fit mb-4">
-        <Carousel className="drop-shadow-[4px_4px_2px_rgba(0,0,0,0.5)] rounded-lg hover:shadow-lg transition-shadow">
-          {[
-            { src: "/frontend/img/news.png", title: "Berita Utama 1" },
-            { src: "/frontend/img/news.png", title: "Berita Utama 2" },
-            { src: "/frontend/img/news.png", title: "Berita Utama 3" },
-            { src: "/frontend/img/news.png", title: "Berita Utama 4" },
-            { src: "/frontend/img/news.png", title: "Berita Utama 5" },
-          ].map(({ src, title }, index) => (
-            <div key={index} className="relative">
-              <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto rounded-lg" />
-              <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">{title}</p>
-            </div>
-          ))}
-        </Carousel>
-      </div>
+    <div id="news" className="relative w-full overflow-hidden mb-4">
+      <Carousel slideInterval={3000} className="rounded-lg shadow-lg">
+        {newsItems.map(({ src, title }, index) => (
+          <div key={index} className="relative">
+            <img src={src} alt={`slide_${index + 1}`} className="w-full h-64 object-cover rounded-lg" />
+            <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
+              {title}
+            </p>
+          </div>
+        ))}
+      </Carousel>
+    </div>
 
       {/* Rekapan dan Navigasi Presensi */}
       <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-6">
