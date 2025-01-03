@@ -100,6 +100,7 @@ export default function Login() {
         const handleKeyPress = (e) => {
             if (e.key === "Enter") {
                 e.preventDefault(); // Cegah reload form
+                alert("Press Enter start detected");
                 submitBtnRef.current?.click(); // Pastikan referensi valid
             }
         };

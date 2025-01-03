@@ -1,4 +1,3 @@
-// import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { forwardRef } from "react";
 

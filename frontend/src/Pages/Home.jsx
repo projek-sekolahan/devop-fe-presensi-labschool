@@ -10,12 +10,7 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import { Link, useNavigate } from "react-router-dom";
-import { Bars3Icon, BellIcon } from "@heroicons/react/24/solid";
-import {
-  CheckCircleIcon,
-  ClockIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck, FaChevronRight } from "react-icons/fa6";
 import { Carousel } from "flowbite-react";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
@@ -235,7 +230,7 @@ const Home = () => {
       const carousel = document.querySelector("[data-carousel-touch]");
       if (carousel) {
         carousel.addEventListener("touchstart", (e) => {
-          console.log("Touch start detected");
+          alert("Touch start detected");
         });
       }
     }, []);
@@ -259,11 +254,11 @@ const Home = () => {
     {/* Header Navigation */}
     <nav className="flex items-center justify-between">
       <button onClick={() => setShow(true)}>
-        <Bars3Icon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+        <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
       <Link to="/notifikasi">
-          <BellIcon className="fill-white size-8 hover:opacity-80 transition-opacity" />
+          <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
         <Link to="/profile">
           <img
@@ -332,13 +327,13 @@ const Home = () => {
             {
               id: "presensi",
               link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
-              icon: <CheckCircleIcon className="size-6" />, 
+              icon: <FaPersonCircleCheck className="size-6" />, 
               text: "Presensi",
             },
             {
               id: "riwayat_presensi",
               link: "/riwayat",
-              icon: <ClockIcon className="size-6" />,
+              icon: <FaCalendarCheck className="size-6" />,
               text: "Riwayat Presensi",
             },
           ].map(({ id, link, icon, text }) => (
@@ -352,7 +347,7 @@ const Home = () => {
                 {icon}
               </div>
               <p className="text-primary-md font-semibold text-sm">{text}</p>
-              <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+              <FaChevronRight className="ml-auto size-4 stroke-bg-3" />
             </Link>
           ))}
         </div>
