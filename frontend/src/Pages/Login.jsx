@@ -157,6 +157,7 @@ export default function Login() {
                                 ref={passwordRef}
                                 placeholder="Password (8 or more characters)"
                                 className="input-field flex-1"
+                                autocomplete="current-password"
                                 required
                             />
                             <PasswordShow ref={passwordRef} />

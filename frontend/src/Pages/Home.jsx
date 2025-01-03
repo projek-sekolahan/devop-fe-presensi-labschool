@@ -10,7 +10,7 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
 import { Link, useNavigate } from "react-router-dom";
-import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck, FaChevronRight } from "react-icons/fa6";
+import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck, FaCircleChevronRight } from "react-icons/fa6";
 import { Carousel } from "flowbite-react";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
@@ -347,7 +347,7 @@ const Home = () => {
                 {icon}
               </div>
               <p className="text-primary-md font-semibold text-sm">{text}</p>
-              <FaChevronRight className="ml-auto size-4 stroke-bg-3" />
+              <FaCircleChevronRight className="ml-auto size-4 stroke-bg-3" />
             </Link>
           ))}
         </div>
