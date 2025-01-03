@@ -29,7 +29,7 @@
             window.addEventListener("load", () => {
                 if ("serviceWorker" in navigator) {
                     navigator.serviceWorker
-                        .register("/frontend/firebase-messaging-sw.js")
+                        .register("/frontend/public/firebase-messaging-sw.js")
                         .then((registration) => {
                             console.log(
                                 "Pendaftaran Service Worker berhasil dengan cakupan: ",
