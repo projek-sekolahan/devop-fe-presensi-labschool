@@ -231,6 +231,15 @@ const Home = () => {
         });
     }; */
 
+    useEffect(() => {
+      const carousel = document.querySelector("[data-carousel-touch]");
+      if (carousel) {
+        carousel.addEventListener("touchstart", (e) => {
+          console.log("Touch start detected");
+        });
+      }
+    }, []);
+
   // Render loading atau error
     if (loading) return <Loading />;
     if (!userData) return <p>Data pengguna tidak tersedia.</p>;
@@ -271,7 +280,7 @@ const Home = () => {
     <main className="mt-8 h-fit">
       {/* News Carousel */}
       <div id="news" className="relative w-full h-fit mb-4">
-        <Carousel slideInterval={3000} className="rounded-lg shadow-lg">
+        <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
           {newsItems.map(({ src, title }, index) => (
             <div key={index} className="relative">
               <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
@@ -337,12 +346,12 @@ const Home = () => {
               key={id}
               id={id}
               to={link}
-              className="flex items-center gap-3 p-4 border border-primary-low rounded-lg hover:shadow-lg hover:border-primary-md transition-all duration-300"
+              className="flex items-center gap-3 px-6 py-3 bg-white border border-primary-low rounded-full shadow-md hover:shadow-lg hover:border-primary-md transition-all duration-300"
             >
-              <div className="size-10 bg-primary-md rounded-full flex justify-center items-center">
+              <div className="size-10 bg-primary-md text-white rounded-full flex justify-center items-center shadow-sm">
                 {icon}
               </div>
-              <p className="text-primary-md font-bold text-sm">{text}</p>
+              <p className="text-primary-md font-semibold text-sm">{text}</p>
               <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
             </Link>
           ))}
