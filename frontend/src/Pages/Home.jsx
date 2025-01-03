@@ -270,7 +270,7 @@ const Home = () => {
     {/* Main Content */}
     <main className="mt-8 h-fit">
       {/* News Carousel */}
-    <div id="news" className="relative w-full overflow-hidden mb-2 h-56 sm:h-64 xl:h-80 2xl:h-96">
+    <div id="news" className="h-56 sm:h-64 xl:h-80 2xl:h-96">
       <Carousel slideInterval={3000} className="rounded-lg shadow-lg">
         {newsItems.map(({ src, title }, index) => (
           <div key={index} className="relative">
