@@ -274,7 +274,7 @@ const Home = () => {
         <Carousel slideInterval={3000} className="rounded-lg shadow-lg">
           {newsItems.map(({ src, title }, index) => (
             <div key={index} className="relative">
-              <img src={src} alt={`slide_${index + 1}`} className="w-full h-64 object-cover rounded-lg" />
+              <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
               <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
                 {title}
               </p>
