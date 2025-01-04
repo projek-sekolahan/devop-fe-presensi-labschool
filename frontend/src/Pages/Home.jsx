@@ -185,14 +185,15 @@ const Home = () => {
                                 console.error("Failed to generate token.");
                             }
                         })
-                        .catch(() =>
-                            alertMessage(
-                                "Notification",
-                                "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                                "error",
-                                () => navigate("/home"),
-                            ),
-                        );
+                        .catch((error) => {
+                            console.error("Error getting token:", error);
+                            /* alertMessage(
+                              "Notification",
+                              "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                              "error",
+                              () => navigate("/home"),
+                            ), */
+                        });
                 } else {
                     alertMessage(
                         "Notification",
