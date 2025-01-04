@@ -1,34 +1,29 @@
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here. Other Firebase libraries
-// are not available in the service worker.
-importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js");
+let firebaseConfig = null;
 
-// Initialize the Firebase app in the service worker by passing in
-// your app's Firebase config object.
-// https://firebase.google.com/docs/web/setup#config-object
-firebase.initializeApp({
-	apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
-	authDomain: "projek-sekolah-1acb4.firebaseapp.com",
-	projectId: "projek-sekolah-1acb4",
-	storageBucket: "projek-sekolah-1acb4.appspot.com",
-	messagingSenderId: "796889279454",
-	appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
-	measurementId: "G-NWG3GGV7DF",
-});
+// Tunggu pesan dari aplikasi utama untuk menerima konfigurasi Firebase
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "INIT_FIREBASE") {
+    firebaseConfig = event.data.config;
 
-// Retrieve an instance of Firebase Messaging so that it can handle background messages.
-const messaging = firebase.messaging();
-messaging.onBackgroundMessage((payload) => {
-	console.log(
-		"[firebase-messaging-sw.js] Received background message ",
-		payload,
-	);
-	// Customize notification here
-	const notificationTitle = payload.notification.title;
-	const notificationOptions = {
-		body: payload.notification.body,
-	};
+    // Inisialisasi Firebase setelah menerima konfigurasi
+    importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
+    importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js");
 
-	self.registration.showNotification(notificationTitle, notificationOptions);
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.onBackgroundMessage((payload) => {
+      console.log(
+        "[firebase-messaging-sw.js] Received background message ",
+        payload
+      );
+
+      const notificationTitle = payload.notification.title;
+      const notificationOptions = {
+        body: payload.notification.body,
+      };
+
+      self.registration.showNotification(notificationTitle, notificationOptions);
+    });
+  }
 });

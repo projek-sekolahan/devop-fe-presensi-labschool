@@ -150,13 +150,13 @@ const Home = () => {
 
   // Konfigurasi Firebase
   const firebaseConfig = {
-      apiKey: "AIzaSyANCfphvM408UXtVutV3s3JUWcv50Wox4s",
-      authDomain: "projek-sekolah-1acb4.firebaseapp.com",
-      projectId: "projek-sekolah-1acb4",
-      storageBucket: "projek-sekolah-1acb4.appspot.com",
-      messagingSenderId: "796889279454",
-      appId: "1:796889279454:web:b9c53d12f01f3551f38b4f",
-      measurementId: "G-NWG3GGV7DF",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
   };
 
   useEffect(() => {
@@ -173,8 +173,7 @@ const Home = () => {
                         () => navigate("/home"),
                     );
                     getToken(messaging, {
-                        vapidKey:
-                            "BFqLY4iGEfoMqz7Hxrs9hvySKqpP9Qro59JFchE84HTJ1d2rHo1e4VElCN9X5wTvF-wkE0BTocea_3uWXx7PF8g",
+                      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
                     })
                         .then((currentToken) => {
                             console.log("Token received:", currentToken); return false;
@@ -203,7 +202,7 @@ const Home = () => {
                 }
             });
 
-            onMessage(messaging, (payload) => {
+            /* onMessage(messaging, (payload) => {
                 const notificationTitle = payload.notification.title;
                 const notificationOptions = {
                     body: payload.notification.body,
@@ -214,7 +213,7 @@ const Home = () => {
                     "success",
                     () => navigate("/home"),
                 );
-            });
+            }); */
         }
     }, []);
 
