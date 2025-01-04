@@ -175,9 +175,16 @@ const Home = () => {
                     );
                     getToken(messaging, {
                         vapidKey:
-                            "BLLw96Dsif69l4B9zOjil0_JLfwJn4En4E7FRz5n1U8jgWebZ-pWi7B0z7MTehhYZ7jM1c2sXo6E8J7ldrAAngw",
+                            "BFqLY4iGEfoMqz7Hxrs9hvySKqpP9Qro59JFchE84HTJ1d2rHo1e4VElCN9X5wTvF-wkE0BTocea_3uWXx7PF8g",
                     })
-                        .then((currentToken) => registerToken(currentToken))
+                        .then((currentToken) => {
+                            console.log("Token received:", currentToken); return false;
+                            if (currentToken) {
+                                registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
+                            } else {
+                                console.error("Failed to generate token.");
+                            }
+                        })
                         .catch(() =>
                             alertMessage(
                                 "Notification",
