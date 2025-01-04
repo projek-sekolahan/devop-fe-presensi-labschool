@@ -116,10 +116,10 @@ const Home = () => {
   }, []);
 
   // useEffect untuk memeriksa sesi pengguna setiap 1 jam
-  useEffect(() => {
+  /* useEffect(() => {
     const intervalId = setInterval(checkSession, 60 * 60 * 1000); // 1 jam
     return () => clearInterval(intervalId);
-  }, [checkSession]);
+  }, [checkSession]); */
 
   // useEffect untuk mengambil data pengguna saat komponen di-mount
   useEffect(() => {
@@ -215,6 +215,7 @@ const Home = () => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
         const combinedKeys = addDefaultKeys(keys);
         localStorage.setItem("token_fcm", currentToken);
+        console.log(currentToken); return false;
         apiXML.getCsrf().then((res) => {
             res = JSON.parse(res);
             // Fetch values from localStorage and Cookies
