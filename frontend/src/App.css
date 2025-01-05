@@ -36,7 +36,7 @@ input[type=number] {
 
 /* Login Form Container */
 .login-form-container {
-  @apply w-full max-w-[400px] px-4 mx-auto h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
+  @apply w-full max-w-[400px] mx-auto h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
