@@ -2,9 +2,7 @@ const CACHE = "pwabuilder-offline-page";
 const offlineFallbackPage = "offline.html";
 
 // Workbox Setup
-importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
-);
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
 
 if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
@@ -25,7 +23,37 @@ workbox.routing.registerRoute(
   })
 );
 
-// Fallback untuk navigasi offline
+// Firebase Messaging Setup
+let firebaseConfig = null;
+
+self.addEventListener("message", async (event) => {
+  if (event.data && event.data.type === "INIT_FIREBASE") {
+    firebaseConfig = event.data.config;
+
+    try {
+      // Pastikan skrip Firebase dapat dimuat
+      importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js");
+      importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-messaging.js");
+
+      firebase.initializeApp(firebaseConfig);
+      const messaging = firebase.messaging();
+
+      // Setup untuk pesan latar belakang
+      messaging.onBackgroundMessage((payload) => {
+        console.log("[firebase-messaging-sw.js] Pesan background diterima:", payload);
+        const notificationTitle = payload.notification?.title || "Pesan Baru";
+        const notificationOptions = {
+          body: payload.notification?.body || "Anda memiliki pesan baru.",
+        };
+        self.registration.showNotification(notificationTitle, notificationOptions);
+      });
+    } catch (error) {
+      console.error("Error initializing Firebase in Service Worker:", error);
+    }
+  }
+});
+
+// Fallback navigasi offline
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
@@ -44,39 +72,5 @@ self.addEventListener("fetch", (event) => {
         }
       })()
     );
-  }
-});
-
-// Firebase Messaging Setup
-let firebaseConfig = null;
-
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "INIT_FIREBASE") {
-    firebaseConfig = event.data.config;
-
-    // Inisialisasi Firebase setelah menerima konfigurasi
-    try {
-      importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
-      importScripts(
-        "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"
-      );
-
-      firebase.initializeApp(firebaseConfig);
-      const messaging = firebase.messaging();
-
-      messaging.onBackgroundMessage((payload) => {
-        console.log(
-          "[firebase-messaging-sw.js] Received background message ",
-          payload
-        );
-        const notificationTitle = payload.notification.title;
-        const notificationOptions = {
-          body: payload.notification.body,
-        };
-        self.registration.showNotification(notificationTitle, notificationOptions);
-      });
-    } catch (error) {
-      console.error("Error initializing Firebase in service worker:", error);
-    }
   }
 });
