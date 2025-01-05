@@ -25,21 +25,34 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"></script>
         <script>
-            window.addEventListener("load", () => {
+            // Konfigurasi Firebase
+            const firebaseConfig = {
+              apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+              authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+              projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+              storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+              messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+              appId: import.meta.env.VITE_FIREBASE_APP_ID,
+              measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+            };
+            const app = firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+            function registerServiceWorker() {
+                // Check if service worker is supported in the browser
                 if ("serviceWorker" in navigator) {
                     // Periksa apakah firebaseConfig sudah terdefinisi
                     if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
                         console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
                         return;
                     }
-            
                     // Mendaftar service worker
                     navigator.serviceWorker
                         .register("./firebase-messaging-sw.js", { scope: "/" })
                         .then((registration) => {
                             console.log("Pendaftaran Service Worker berhasil dengan cakupan:", registration.scope);
-            
                             // Menunggu service worker siap
                             navigator.serviceWorker.ready
                                 .then((registration) => {
@@ -61,9 +74,65 @@
                             console.error("Pendaftaran Service Worker gagal:", err);
                         });
                 } else {
-                    console.log("Service Worker tidak didukung di browser ini.");
+                    console.log("Service Worker is not supported in this browser.");
                 }
-            });            
+            }
+            function requestNotificationPermission() {
+                // Request permission untuk notifikasi
+                Notification.requestPermission().then((permission) => {
+                    if (permission === "granted") {
+                        alertMessage(
+                            "Notification",
+                            "Notification permission granted.",
+                            "success",
+                        );
+                        // Get Firebase Messaging token
+                        messaging.getToken({
+                            vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+                        })
+                        .then((currentToken) => {
+                        console.log("Token received:", currentToken); return false;
+                        if (currentToken) {
+                            registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
+                        } else {
+                            console.error("Failed to generate token.");
+                        }
+                        })
+                        .catch((error) => {
+                        console.error("Error getting token:", error);
+                        /* alertMessage(
+                            "Notification",
+                            "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                            "error",
+                            () => navigate("/home"),
+                        ), */
+                        });
+                    } else {
+                        alertMessage(
+                            "Notification",
+                            "Notification permission denied.",
+                            "error",
+                        );
+                    }
+                });
+            }
+
+            window.addEventListener("load", () => {
+                registerServiceWorker();
+                requestNotificationPermission();                
+            });          
+            
+            messaging.onMessage((payload) => {
+                const notificationTitle = payload.notification.title;
+                const notificationOptions = {
+                    body: payload.notification.body,
+                };
+                alertMessage(
+                    notificationTitle,
+                    notificationOptions.body,
+                    "success",
+                );
+            });
         </script>
     </body>
 </html>

@@ -16,12 +16,6 @@ import { Carousel } from "flowbite-react";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import {
-    getMessaging,
-    getToken,
-    onMessage,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
 const Home = () => {
   const [show, setShow] = useState(false);
@@ -148,116 +142,7 @@ const Home = () => {
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
 
-  // Konfigurasi Firebase
-  const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-  };
-
-  useEffect(() => {
-        if (!localStorage.getItem("token_registered")) {
-            const app = initializeApp(firebaseConfig);
-            const messaging = getMessaging(app);
-
-            // Kirim konfigurasi ke Service Worker
-            if ("serviceWorker" in navigator) {
-              // Periksa apakah firebaseConfig sudah terdefinisi
-              if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
-                console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
-                return;
-              }
-              
-              navigator.serviceWorker
-                .register("/firebase-messaging-sw.js", { scope: "/" })
-                .then((registration) => {
-                  console.log("Service Worker berhasil didaftarkan:", registration.scope);
-
-                    // Menunggu service worker siap
-                    navigator.serviceWorker.ready
-                    .then((registration) => {
-                        if (registration.active) {
-                            // Kirim pesan untuk inisialisasi Firebase
-                            registration.active.postMessage({
-                                type: "INIT_FIREBASE",
-                                config: firebaseConfig,
-                            });
-                        } else {
-                            console.error("Service Worker tidak aktif.");
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("Error saat menunggu Service Worker siap:", err);
-                    });
-
-                })
-                .catch((err) => {
-                  console.error("Pendaftaran Service Worker gagal:", err);
-                });
-            }
-            else {
-              console.log("Service Worker tidak didukung di browser ini.");
-            }
-
-            // Request permission untuk notifikasi
-            Notification.requestPermission().then((permission) => {
-              if (permission === "granted") {
-                alertMessage(
-                  "Notification",
-                  "Notification permission granted.",
-                  "success",
-                  () => navigate("/home"),
-                );
-                getToken(messaging, {
-                  vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-                })
-                  .then((currentToken) => {
-                    console.log("Token received:", currentToken); return false;
-                    if (currentToken) {
-                      registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
-                    } else {
-                      console.error("Failed to generate token.");
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("Error getting token:", error);
-                    /* alertMessage(
-                      "Notification",
-                      "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                      "error",
-                      () => navigate("/home"),
-                    ), */
-                  });
-              } else {
-                alertMessage(
-                  "Notification",
-                  "Notification permission denied.",
-                  "error",
-                  () => navigate("/home"),
-                );
-              }
-            });            
-
-            /* onMessage(messaging, (payload) => {
-                const notificationTitle = payload.notification.title;
-                const notificationOptions = {
-                    body: payload.notification.body,
-                };
-                alertMessage(
-                    notificationTitle,
-                    notificationOptions.body,
-                    "success",
-                    () => navigate("/home"),
-                );
-            }); */
-        }
-    }, []);
-
-    const registerToken = (currentToken) => {
+    /* const registerToken = (currentToken) => {
         let keys = ["AUTH_KEY", "login_token", "token_fcm"];
         const combinedKeys = addDefaultKeys(keys);
         localStorage.setItem("token_fcm", currentToken);
@@ -291,7 +176,7 @@ const Home = () => {
                     handleSessionError(error, "/login");
                 });
         });
-    };
+    }; */
 
     useEffect(() => {
       const carousel = document.querySelector("[data-carousel-touch]");
