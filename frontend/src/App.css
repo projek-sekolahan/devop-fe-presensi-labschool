@@ -58,7 +58,7 @@ input[type=number] {
 }
 
 .input-label {
-  @apply text-sm font-medium text-primary-dark;
+  @apply text-sm font-medium text-primary-high;
 }
 
 .input-field {
