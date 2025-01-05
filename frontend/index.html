@@ -25,5 +25,45 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+        <script>
+            window.addEventListener("load", () => {
+                if ("serviceWorker" in navigator) {
+                    // Periksa apakah firebaseConfig sudah terdefinisi
+                    if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
+                        console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
+                        return;
+                    }
+            
+                    // Mendaftar service worker
+                    navigator.serviceWorker
+                        .register("./firebase-messaging-sw.js", { scope: "/" })
+                        .then((registration) => {
+                            console.log("Pendaftaran Service Worker berhasil dengan cakupan:", registration.scope);
+            
+                            // Menunggu service worker siap
+                            navigator.serviceWorker.ready
+                                .then((registration) => {
+                                    if (registration.active) {
+                                        // Kirim pesan untuk inisialisasi Firebase
+                                        registration.active.postMessage({
+                                            type: "INIT_FIREBASE",
+                                            config: firebaseConfig,
+                                        });
+                                    } else {
+                                        console.error("Service Worker tidak aktif.");
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.error("Error saat menunggu Service Worker siap:", err);
+                                });
+                        })
+                        .catch((err) => {
+                            console.error("Pendaftaran Service Worker gagal:", err);
+                        });
+                } else {
+                    console.log("Service Worker tidak didukung di browser ini.");
+                }
+            });            
+        </script>
     </body>
 </html>
