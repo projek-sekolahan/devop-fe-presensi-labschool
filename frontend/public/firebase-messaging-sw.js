@@ -55,24 +55,28 @@ self.addEventListener("message", (event) => {
     firebaseConfig = event.data.config;
 
     // Inisialisasi Firebase setelah menerima konfigurasi
-    importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
-    importScripts(
-      "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"
-    );
-
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    messaging.onBackgroundMessage((payload) => {
-      console.log(
-        "[firebase-messaging-sw.js] Received background message ",
-        payload
+    try {
+      importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
+      importScripts(
+        "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"
       );
-      const notificationTitle = payload.notification.title;
-      const notificationOptions = {
-        body: payload.notification.body,
-      };
-      self.registration.showNotification(notificationTitle, notificationOptions);
-    });
+
+      firebase.initializeApp(firebaseConfig);
+      const messaging = firebase.messaging();
+
+      messaging.onBackgroundMessage((payload) => {
+        console.log(
+          "[firebase-messaging-sw.js] Received background message ",
+          payload
+        );
+        const notificationTitle = payload.notification.title;
+        const notificationOptions = {
+          body: payload.notification.body,
+        };
+        self.registration.showNotification(notificationTitle, notificationOptions);
+      });
+    } catch (error) {
+      console.error("Error initializing Firebase in service worker:", error);
+    }
   }
 });

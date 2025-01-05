@@ -173,7 +173,7 @@ const Home = () => {
               }
               
               navigator.serviceWorker
-                .register("../../firebase-messaging-sw.js", { scope: "/" })
+                .register("/firebase-messaging-sw.js", { scope: "/" })
                 .then((registration) => {
                   console.log("Service Worker berhasil didaftarkan:", registration.scope);
 
