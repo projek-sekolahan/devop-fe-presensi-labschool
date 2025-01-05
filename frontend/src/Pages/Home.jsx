@@ -81,7 +81,7 @@ const Home = () => {
   }, []);
 
   // Fungsi untuk memeriksa sesi pengguna
-  const checkSession = useCallback(async () => {
+  /* const checkSession = useCallback(async () => {
     try {
       const keys = ["AUTH_KEY"];
       const combinedKeys = addDefaultKeys(keys);
@@ -112,7 +112,7 @@ const Home = () => {
       console.error("Error saat memeriksa sesi:", err);
       handleSessionError(err, "/login");
     }
-  }, []);
+  }, []); */
 
   // useEffect untuk memeriksa sesi pengguna setiap 1 jam
   /* useEffect(() => {
@@ -173,7 +173,7 @@ const Home = () => {
               }
               
               navigator.serviceWorker
-                .register("./firebase-messaging-sw.js", { scope: "/" })
+                .register("../../firebase-messaging-sw.js", { scope: "/" })
                 .then((registration) => {
                   console.log("Service Worker berhasil didaftarkan:", registration.scope);
 
