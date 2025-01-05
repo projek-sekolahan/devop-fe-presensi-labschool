@@ -6,7 +6,7 @@ import {
     handleSessionError,
     handleSessionExpired,
     addDefaultKeys,
-} from "./utils/utils";
+} from "../utils/utils";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
