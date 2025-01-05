@@ -11,7 +11,12 @@ if (workbox.navigationPreload.isSupported()) {
 // Caching offline.html
 self.addEventListener("install", async (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
+    caches.open(CACHE).then((cache) => {
+      console.log("Caching offline page:", offlineFallbackPage);
+      return cache.add(offlineFallbackPage);
+    }).catch((err) => {
+      console.error("Error caching offline page:", err);
+    })
   );
 });
 
@@ -29,9 +34,9 @@ let firebaseConfig = null;
 self.addEventListener("message", async (event) => {
   if (event.data && event.data.type === "INIT_FIREBASE") {
     firebaseConfig = event.data.config;
+    console.log("Menerima konfigurasi Firebase:", firebaseConfig);
 
     try {
-      // Pastikan skrip Firebase dapat dimuat
       importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js");
       importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-messaging.js");
 
@@ -68,7 +73,11 @@ self.addEventListener("fetch", (event) => {
         } catch (error) {
           const cache = await caches.open(CACHE);
           const cachedResp = await cache.match(offlineFallbackPage);
-          return cachedResp;
+          if (cachedResp) {
+            return cachedResp;
+          }
+          console.error("Tidak ada cache atau fallback yang ditemukan.");
+          return new Response("Tidak dapat mengakses halaman. Coba lagi nanti.", { status: 503 });
         }
       })()
     );
