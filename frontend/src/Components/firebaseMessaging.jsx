@@ -61,7 +61,7 @@ export const requestNotificationPermission = async () => {
                 vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
             });
             if (currentToken) {
-                console.log("Token received:", currentToken);
+                console.log("Token received:", currentToken); return false;
                 registerToken(currentToken); // Pastikan fungsi ini terdefinisi
             } else {
                 console.error("Failed to generate token.");
