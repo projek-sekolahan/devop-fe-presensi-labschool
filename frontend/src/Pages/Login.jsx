@@ -121,7 +121,7 @@ export default function Login() {
             />
 
             {/* Login Form */}
-<div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative">
+<div className="login-form-container bg-white pb-24 rounded-lg shadow-md">
     <h2 className="text-title text-center">Yuk Login!</h2>
     <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
     <form
