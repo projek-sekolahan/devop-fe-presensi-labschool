@@ -10,10 +10,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="manifest" href="/frontend/manifest.json" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet" />
         <title>labschool-unesa</title>
     </head>
     <body data-theme="light">
@@ -25,104 +22,5 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
-        <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"></script> -->
-        <!-- <script>
-            const app = firebase.initializeApp(firebaseConfig);
-            const messaging = firebase.messaging();
-            function registerServiceWorker() {
-                // Check if service worker is supported in the browser
-                if ("serviceWorker" in navigator) {
-                    // Periksa apakah firebaseConfig sudah terdefinisi
-                    if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
-                        console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
-                        return;
-                    }
-                    // Mendaftar service worker
-                    navigator.serviceWorker
-                        .register("./firebase-messaging-sw.js", { scope: "/" })
-                        .then((registration) => {
-                            console.log("Pendaftaran Service Worker berhasil dengan cakupan:", registration.scope);
-                            // Menunggu service worker siap
-                            navigator.serviceWorker.ready
-                                .then((registration) => {
-                                    if (registration.active) {
-                                        // Kirim pesan untuk inisialisasi Firebase
-                                        registration.active.postMessage({
-                                            type: "INIT_FIREBASE",
-                                            config: firebaseConfig,
-                                        });
-                                    } else {
-                                        console.error("Service Worker tidak aktif.");
-                                    }
-                                })
-                                .catch((err) => {
-                                    console.error("Error saat menunggu Service Worker siap:", err);
-                                });
-                        })
-                        .catch((err) => {
-                            console.error("Pendaftaran Service Worker gagal:", err);
-                        });
-                } else {
-                    console.log("Service Worker is not supported in this browser.");
-                }
-            }
-            function requestNotificationPermission() {
-                // Request permission untuk notifikasi
-                Notification.requestPermission().then((permission) => {
-                    if (permission === "granted") {
-                        alertMessage(
-                            "Notification",
-                            "Notification permission granted.",
-                            "success",
-                        );
-                        // Get Firebase Messaging token
-                        messaging.getToken({
-                            vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-                        })
-                        .then((currentToken) => {
-                        console.log("Token received:", currentToken); return false;
-                        if (currentToken) {
-                            registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
-                        } else {
-                            console.error("Failed to generate token.");
-                        }
-                        })
-                        .catch((error) => {
-                        console.error("Error getting token:", error);
-                        /* alertMessage(
-                            "Notification",
-                            "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                            "error",
-                            () => navigate("/home"),
-                        ), */
-                        });
-                    } else {
-                        alertMessage(
-                            "Notification",
-                            "Notification permission denied.",
-                            "error",
-                        );
-                    }
-                });
-            }
-
-            window.addEventListener("load", () => {
-                registerServiceWorker();
-                requestNotificationPermission();                
-            });          
-            
-            messaging.onMessage((payload) => {
-                const notificationTitle = payload.notification.title;
-                const notificationOptions = {
-                    body: payload.notification.body,
-                };
-                alertMessage(
-                    notificationTitle,
-                    notificationOptions.body,
-                    "success",
-                );
-            });
-        </script> -->
     </body>
 </html>

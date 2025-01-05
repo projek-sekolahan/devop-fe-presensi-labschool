@@ -23,4 +23,16 @@ window.addEventListener("load", async () => {
         const { title, body } = payload.notification;
         alert(`${title}: ${body}`);
     });
+
+    /* messaging.onMessage((payload) => {
+        const notificationTitle = payload.notification.title;
+        const notificationOptions = {
+            body: payload.notification.body,
+        };
+        alertMessage(
+            notificationTitle,
+            notificationOptions.body,
+            "success",
+        );
+    }); */
 });

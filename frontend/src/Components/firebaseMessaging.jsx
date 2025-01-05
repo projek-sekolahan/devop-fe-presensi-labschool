@@ -24,6 +24,22 @@ export const registerServiceWorker = async () => {
         try {
             const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
             console.log("Service Worker terdaftar dengan cakupan:", registration.scope);
+            // Menunggu service worker siap
+            navigator.serviceWorker.ready
+            .then((registration) => {
+                if (registration.active) {
+                    // Kirim pesan untuk inisialisasi Firebase
+                    registration.active.postMessage({
+                        type: "INIT_FIREBASE",
+                        config: firebaseConfig,
+                    });
+                } else {
+                    console.error("Service Worker tidak aktif.");
+                }
+            })
+            .catch((err) => {
+                console.error("Error saat menunggu Service Worker siap:", err);
+            });            
             return registration;
         } catch (err) {
             console.error("Pendaftaran Service Worker gagal:", err);
@@ -38,17 +54,27 @@ export const requestNotificationPermission = async () => {
     try {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
+            alertMessage(
+                "Notification",
+                "Notification permission granted.",
+                "success",
+            );
+            // Get Firebase Messaging token
             const currentToken = await getToken(messaging, {
                 vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
             });
+            console.log("Token received:", currentToken); return false;
             if (currentToken) {
-                console.log("Token diperoleh:", currentToken);
-                return currentToken;
+                registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
             } else {
-                console.error("Token tidak ditemukan.");
+                console.error("Failed to generate token.");
             }
         } else {
-            console.error("Izin notifikasi ditolak.");
+            alertMessage(
+                "Notification",
+                "Notification permission denied.",
+                "error",
+            );
         }
     } catch (err) {
         console.error("Error meminta izin notifikasi:", err);
