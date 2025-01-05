@@ -25,18 +25,19 @@ input[type=number] {
 
 /* Login Container */
 .login-container {
-  @apply bg-primary-low font-primary text-white relative z-[1];
+  @apply bg-primary-low font-primary text-white relative z-[1] overflow-hidden;
 }
 
 /* Background Image */
 .login-bg-image {
   @apply w-full h-[60vh] absolute top-0 left-0 z-0;
+  object-fit: cover;
 }
 
 /* Login Form Container */
 .login-form-container {
-  @apply w-full h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
-  padding-bottom: calc(24px + env(safe-area-inset-bottom)); /* Tambahan padding bawah */
+  @apply w-[calc(100vw-32px)] max-w-[400px] mx-auto h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
 /* Titles and Subtitles */
@@ -63,6 +64,7 @@ input[type=number] {
 
 .input-field {
   @apply bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4;
+  box-sizing: border-box;
 }
 
 .password-container {
@@ -75,16 +77,7 @@ input[type=number] {
 
 /* Button Styles */
 .btn-submit {
-  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
-}
-
-/* Separator */
-.separator {
-  @apply w-full border-t-[0.25px] border-white h-0 relative top-4;
-}
-
-.separator-text {
-  @apply absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10;
+  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center;
 }
 
 /* Register Link */
