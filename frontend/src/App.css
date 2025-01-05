@@ -36,8 +36,28 @@ input[type=number] {
 
 /* Login Form Container */
 .login-form-container {
-  @apply w-full max-w-[400px] mx-auto h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: fit-content;
+  background-color: #1976D2;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  padding: 1.5rem; /* sm:p-6 */
+  padding-top: 1.5rem;
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  
+  /* Tidak ada max-width pada layar kecil dan sedang */
+  max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
+}
+
+@media (min-width: 768px) {
+  .login-form-container {
+    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
+  }
 }
 
 /* Titles and Subtitles */
