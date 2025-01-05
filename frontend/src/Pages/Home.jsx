@@ -164,43 +164,83 @@ const Home = () => {
             const app = initializeApp(firebaseConfig);
             const messaging = getMessaging(app);
 
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    alertMessage(
-                        "Notification",
-                        "Notification permission granted.",
-                        "success",
-                        () => navigate("/home"),
-                    );
-                    getToken(messaging, {
-                      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
+            // Kirim konfigurasi ke Service Worker
+            if ("serviceWorker" in navigator) {
+              // Periksa apakah firebaseConfig sudah terdefinisi
+              if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
+                console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
+                return;
+              }
+              
+              navigator.serviceWorker
+                .register("./firebase-messaging-sw.js", { scope: "/" })
+                .then((registration) => {
+                  console.log("Service Worker berhasil didaftarkan:", registration.scope);
+
+                    // Menunggu service worker siap
+                    navigator.serviceWorker.ready
+                    .then((registration) => {
+                        if (registration.active) {
+                            // Kirim pesan untuk inisialisasi Firebase
+                            registration.active.postMessage({
+                                type: "INIT_FIREBASE",
+                                config: firebaseConfig,
+                            });
+                        } else {
+                            console.error("Service Worker tidak aktif.");
+                        }
                     })
-                        .then((currentToken) => {
-                            console.log("Token received:", currentToken); return false;
-                            if (currentToken) {
-                                registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
-                            } else {
-                                console.error("Failed to generate token.");
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error getting token:", error);
-                            /* alertMessage(
-                              "Notification",
-                              "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
-                              "error",
-                              () => navigate("/home"),
-                            ), */
-                        });
-                } else {
-                    alertMessage(
-                        "Notification",
-                        "Notification permission denied.",
-                        "error",
-                        () => navigate("/home"),
-                    );
-                }
-            });
+                    .catch((err) => {
+                        console.error("Error saat menunggu Service Worker siap:", err);
+                    });
+
+                })
+                .catch((err) => {
+                  console.error("Pendaftaran Service Worker gagal:", err);
+                });
+            }
+            else {
+              console.log("Service Worker tidak didukung di browser ini.");
+            }
+
+            // Request permission untuk notifikasi
+            Notification.requestPermission().then((permission) => {
+              if (permission === "granted") {
+                alertMessage(
+                  "Notification",
+                  "Notification permission granted.",
+                  "success",
+                  () => navigate("/home"),
+                );
+                getToken(messaging, {
+                  vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+                })
+                  .then((currentToken) => {
+                    console.log("Token received:", currentToken); return false;
+                    if (currentToken) {
+                      registerToken(currentToken); // Pastikan fungsi ini berjalan dengan baik.
+                    } else {
+                      console.error("Failed to generate token.");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error getting token:", error);
+                    /* alertMessage(
+                      "Notification",
+                      "Terjadi kesalahan saat mendapatkan token. Pastikan izin notifikasi diberikan.",
+                      "error",
+                      () => navigate("/home"),
+                    ), */
+                  });
+              } else {
+                alertMessage(
+                  "Notification",
+                  "Notification permission denied.",
+                  "error",
+                  () => navigate("/home"),
+                );
+              }
+            });            
 
             /* onMessage(messaging, (payload) => {
                 const notificationTitle = payload.notification.title;

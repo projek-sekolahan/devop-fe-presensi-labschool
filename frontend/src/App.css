@@ -35,22 +35,22 @@ input[type=number] {
 
 /* Login Form Container */
 .login-form-container {
-  @apply w-full h-fit bg-primary-md rounded-t-[2rem] p-6 sm:p-8 fixed bottom-0 z-10;
+  @apply w-full max-w-md mx-auto bg-primary-md rounded-lg p-6 shadow-lg z-[2] relative;
   padding-bottom: calc(24px + env(safe-area-inset-bottom)); /* Tambahan padding bawah */
 }
 
 /* Titles and Subtitles */
 .text-title {
-  @apply font-bold text-4xl;
+  @apply font-bold text-4xl text-center mb-2;
 }
 
 .text-subtitle {
-  @apply font-light text-xs;
+  @apply font-light text-sm text-center mb-4;
 }
 
 /* Form Styles */
 .login-form {
-  @apply my-6 space-y-4 md:space-y-6;
+  @apply space-y-4;
 }
 
 .input-group {
@@ -58,7 +58,7 @@ input[type=number] {
 }
 
 .input-label {
-  @apply text-sm font-light;
+  @apply text-sm font-medium text-primary-dark;
 }
 
 .input-field {
@@ -66,7 +66,7 @@ input[type=number] {
 }
 
 .password-container {
-  @apply flex gap-2;
+  @apply flex gap-2 items-center;
 }
 
 .text-link {
@@ -76,15 +76,6 @@ input[type=number] {
 /* Button Styles */
 .btn-submit {
   @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
-}
-
-/* Separator */
-.separator {
-  @apply w-full border-t-[0.25px] border-white h-0 relative top-4;
-}
-
-.separator-text {
-  @apply absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10;
 }
 
 /* Register Link */

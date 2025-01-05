@@ -121,70 +121,70 @@ export default function Login() {
             />
 
             {/* Login Form */}
-            <div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative">
-                <h2 className="text-title">Yuk Login!</h2>
-                <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
-                <form
-                    className="login-form"
-                    onSubmit={handleLogin}
-                >
-                    {/* Email Input */}
-                    <div className="input-group">
-                        <label htmlFor="email" className="input-label">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            ref={emailRef}
-                            className="input-field"
-                            placeholder="Email"
-                            autocomplete="username"
-                            required
-                        />
-                    </div>
+<div className="login-form-container bg-white p-6 pb-24 rounded-lg shadow-md z-[2] relative max-w-md mx-auto">
+    <h2 className="text-title text-center">Yuk Login!</h2>
+    <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
+    <form
+        className="login-form"
+        onSubmit={handleLogin}
+    >
+        {/* Email Input */}
+        <div className="input-group">
+            <label htmlFor="email" className="input-label">
+                Email
+            </label>
+            <input
+                type="email"
+                name="email"
+                id="email"
+                ref={emailRef}
+                className="input-field"
+                placeholder="Email"
+                autoComplete="username"
+                required
+            />
+        </div>
 
-                    {/* Password Input */}
-                    <div className="input-group">
-                        <label htmlFor="password" className="input-label">
-                            Password
-                        </label>
-                        <div className="password-container">
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                ref={passwordRef}
-                                placeholder="Password (8 or more characters)"
-                                className="input-field flex-1"
-                                autocomplete="current-password"
-                                required
-                            />
-                            <PasswordShow ref={passwordRef} />
-                        </div>
-                    </div>
-
-                    {/* Forgot Password and Register Link */}
-                    <div className="flex justify-between items-center">
-                        <Link to="/register" className="text-link">
-                            Belum memiliki akun?
-                        </Link>
-                        <Link to="/recover" className="text-link">
-                            Lupa password?
-                        </Link>
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        ref={submitBtnRef}
-                        className="btn-submit w-full mt-6"
-                    >
-                        Login
-                    </button>
-                </form>
+        {/* Password Input */}
+        <div className="input-group">
+            <label htmlFor="password" className="input-label">
+                Password
+            </label>
+            <div className="password-container">
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    ref={passwordRef}
+                    placeholder="Password (8 or more characters)"
+                    className="input-field flex-1"
+                    autoComplete="current-password"
+                    required
+                />
+                <PasswordShow ref={passwordRef} />
             </div>
+        </div>
+
+        {/* Forgot Password and Register Link */}
+        <div className="flex justify-between items-center text-sm">
+            <Link to="/register" className="text-link">
+                Belum memiliki akun?
+            </Link>
+            <Link to="/recover" className="text-link">
+                Lupa password?
+            </Link>
+        </div>
+
+        {/* Submit Button */}
+        <button
+            type="submit"
+            ref={submitBtnRef}
+            className="btn-submit w-full mt-6"
+        >
+            Login
+        </button>
+    </form>
+</div>
 
         </div>
     );
