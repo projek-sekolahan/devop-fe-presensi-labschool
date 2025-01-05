@@ -30,7 +30,7 @@ export const registerServiceWorker = async () => {
     }
 
     try {
-        const registration = await navigator.serviceWorker.register("./firebase-messaging-sw.js");
+        const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
         if (!registration) {
             console.error("Pendaftaran Service Worker gagal.");
