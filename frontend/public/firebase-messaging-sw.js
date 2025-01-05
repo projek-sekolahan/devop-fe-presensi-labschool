@@ -38,8 +38,8 @@ self.addEventListener("message", async (event) => {
     console.log("Menerima konfigurasi Firebase:", firebaseConfig);
 
     try {
-      importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js");
-      importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-messaging.js");
+      importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
+      importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js");
 
       firebase.initializeApp(firebaseConfig);
       const messaging = firebase.messaging();
