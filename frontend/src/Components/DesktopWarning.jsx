@@ -4,7 +4,7 @@ const DesktopWarning = () => {
       <div className="modal-box">
         <h3 className="font-bold text-xl">Warning!</h3>
         <p className="py-4 text-lg">
-          Gunakan Handphone Untuk Akses Aplikasi
+          Gunakan Smartphone Untuk Akses Aplikasi Presensi
         </p>
       </div>
     </div>
