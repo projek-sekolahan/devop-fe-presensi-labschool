@@ -18,7 +18,7 @@ self.addEventListener("install", async (event) => {
       console.error("Error caching offline page:", err);
     })
   );
-  // self.skipWaiting();
+  self.skipWaiting();
 });
 
 // Routing with Workbox
@@ -53,8 +53,18 @@ self.addEventListener("message", async (event) => {
         };
         self.registration.showNotification(notificationTitle, notificationOptions);
       });
+      // Kirim pesan ke aplikasi utama bahwa Firebase berhasil diinisialisasi
+      event.source.postMessage({
+        type: "FIREBASE_INITIALIZED",
+        success: true,
+      });
     } catch (error) {
       console.error("Error initializing Firebase in Service Worker:", error);
+      event.source.postMessage({
+        type: "FIREBASE_INITIALIZED",
+        success: false,
+        error: error.message,
+      });
     }
   }
 });

@@ -40,11 +40,22 @@ export const registerServiceWorker = async () => {
         const registrationReady = await navigator.serviceWorker.ready;
 
         if (registrationReady.active) {
+            console.log("Service Worker aktif. Mengirim pesan untuk inisialisasi Firebase.");
             registrationReady.active.postMessage({
                 type: "INIT_FIREBASE",
                 config: firebaseConfig,
             });
             console.log("Pesan dikirim ke Service Worker untuk inisialisasi Firebase.");
+            // Tunggu respons dari Service Worker
+            navigator.serviceWorker.addEventListener("message", (event) => {
+                if (event.data.type === "FIREBASE_INITIALIZED") {
+                    if (event.data.success) {
+                        console.log("Firebase berhasil diinisialisasi di Service Worker.");
+                    } else {
+                        console.error("Inisialisasi Firebase gagal:", event.data.error);
+                    }
+                }
+            });
         } else {
             console.error("Service Worker tidak aktif.");
             alertMessage("Error", "Service Worker tidak aktif.", "error");
@@ -69,6 +80,7 @@ export const requestNotificationPermission = async () => {
         const permission = await Notification.requestPermission();
 
         if (permission === "granted") {
+            console.log("Izin notifikasi diberikan.");
             alertMessage("Notification", "Notification permission granted.", "success");
 
             const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
