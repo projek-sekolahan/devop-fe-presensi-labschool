@@ -6,7 +6,7 @@ import {
     addDefaultKeys,
 } from "../utils/utils";
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from 'firebase/messaging/sw';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
