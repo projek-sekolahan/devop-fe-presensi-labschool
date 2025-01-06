@@ -5,7 +5,7 @@ import {
     alertMessage,
     addDefaultKeys,
 } from "../utils/utils";
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 // Validasi firebaseConfig
