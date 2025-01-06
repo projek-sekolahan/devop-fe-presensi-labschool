@@ -5,8 +5,8 @@ import {
     alertMessage,
     addDefaultKeys,
 } from "../utils/utils";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from 'firebase/messaging/sw';
 
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
@@ -21,22 +21,26 @@ const messaging = getMessaging(app);
 
 // Daftarkan Service Worker
 export const registerServiceWorker = async () => {
-    if (!("serviceWorker" in navigator)) {
-        console.warn("Service Worker tidak didukung di browser ini.");
-        alertMessage("Warning", "Service Worker tidak didukung di browser ini.", "warning");
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+        console.warn("Service Worker atau Push API tidak didukung di browser ini.");
+        alertMessage("Warning", "Service Worker atau Push API tidak didukung di browser ini.", "warning");
         return;
     }
 
     try {
-        const registration = await navigator.serviceWorker.register("https://smartapps.smalabschoolunesa1.sch.id/firebase-messaging-sw.js?v="+ new Date().getTime(), {
-            scope: "/",type: 'module'
-        });
+        const registration = await navigator.serviceWorker.register(
+            `https://smartapps.smalabschoolunesa1.sch.id/firebase-messaging-sw.js?v=${new Date().getTime()}`,
+            { scope: "/", type: "module" }
+        );
         
         if (!registration) {
             console.error("Pendaftaran Service Worker gagal.");
             alertMessage("Error", "Gagal mendaftarkan Service Worker.", "error");
             return;
         }
+
+        const registrationReady = await navigator.serviceWorker.ready;
+        console.log("Service Worker terdaftar dengan cakupan:", registration.scope);
 
         navigator.serviceWorker.getRegistration().then((registration) => {
             if (registration) {
@@ -50,8 +54,16 @@ export const registerServiceWorker = async () => {
             }
         });
         
-        console.log("Service Worker terdaftar dengan cakupan:", registration.scope);
-        const registrationReady = await navigator.serviceWorker.ready;
+        // Lanjutkan dengan proses langganan notifikasi
+        registrationReady.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
+        }).then(function(subscription) {
+            console.log('Pendaftaran notifikasi berhasil:', subscription);
+        }).catch(function(error) {
+            console.error('Gagal mendaftar notifikasi:', error);
+        });
+        console.log("Pesan dikirim ke Service Worker untuk inisialisasi Firebase.");        
 
         if (registrationReady.active) {
             console.log("Service Worker aktif. Mengirim pesan untuk inisialisasi Firebase.");
@@ -59,16 +71,6 @@ export const registerServiceWorker = async () => {
                 type: "INIT_FIREBASE",
                 config: firebaseConfig,
             });
-            // Lanjutkan dengan proses langganan notifikasi
-            registrationReady.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
-            }).then(function(subscription) {
-                console.log('Pendaftaran notifikasi berhasil:', subscription);
-            }).catch(function(error) {
-                console.error('Gagal mendaftar notifikasi:', error);
-            });
-            console.log("Pesan dikirim ke Service Worker untuk inisialisasi Firebase.");
             // Tunggu respons dari Service Worker
             navigator.serviceWorker.addEventListener("message", (event) => {
                 if (event.data.type === "FIREBASE_INITIALIZED") {
