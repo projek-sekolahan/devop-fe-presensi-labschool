@@ -1,45 +1,55 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getMessaging } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
-import { precacheAndRoute } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-precaching.prod.js";
-import { registerRoute } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-routing.prod.js";
-import { StaleWhileRevalidate } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-strategies.prod.js";
 
-const CACHE = "pwabuilder-offline-page";
-const offlineFallbackPage = "offline.html";
+const CACHE_NAME = "offline-cache-v1";
+const OFFLINE_URL = "offline.html";
 
-// Precache offline.html
-precacheAndRoute([
-  { url: offlineFallbackPage, revision: null },
-]);
-
-// Routing dengan Workbox untuk caching
-registerRoute(
-  ({ request }) => request.destination === "document",
-  new StaleWhileRevalidate({
-    cacheName: CACHE,
-  })
-);
-
-// Caching offline.html
-self.addEventListener("install", async (event) => {
+// Pre-cache offline.html
+self.addEventListener("install", (event) => {
+  console.log("Service Worker installing...");
   event.waitUntil(
-    caches.open(CACHE).then((cache) => {
-      console.log("Caching offline page:", offlineFallbackPage);
-      return cache.add(offlineFallbackPage);
-    }).catch((err) => {
-      console.error("Error caching offline page:", err);
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("Caching offline page...");
+      return cache.addAll([OFFLINE_URL]);
     })
   );
   self.skipWaiting();
 });
 
-// Routing with Workbox
-workbox.routing.registerRoute(
-  new RegExp("/*"),
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: CACHE,
-  })
-);
+// Activate Service Worker and clear old caches
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker activating...");
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            console.log("Deleting old cache:", cache);
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+// Intercept fetch requests
+self.addEventListener("fetch", (event) => {
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(OFFLINE_URL);
+      })
+    );
+  } else {
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
+      })
+    );
+  }
+});
 
 // Firebase Messaging Setup
 let firebaseConfig = null;
@@ -75,31 +85,5 @@ self.addEventListener("message", async (event) => {
         error: error.message,
       });
     }
-  }
-});
-
-// Fallback navigasi offline
-self.addEventListener("fetch", (event) => {
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      (async () => {
-        try {
-          const preloadResp = await event.preloadResponse;
-          if (preloadResp) {
-            return preloadResp;
-          }
-          const networkResp = await fetch(event.request);
-          return networkResp;
-        } catch (error) {
-          const cache = await caches.open(CACHE);
-          const cachedResp = await cache.match(offlineFallbackPage);
-          if (cachedResp) {
-            return cachedResp;
-          }
-          console.error("Tidak ada cache atau fallback yang ditemukan.");
-          return new Response("Tidak dapat mengakses halaman. Coba lagi nanti.", { status: 503 });
-        }
-      })()
-    );
   }
 });
