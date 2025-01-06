@@ -1,5 +1,8 @@
-import { initializeApp } from './firebase/app';
-import { getMessaging, onBackgroundMessage } from './firebase/messaging';
+// import { initializeApp } from './firebase/app';
+// import { getMessaging, onBackgroundMessage } from './firebase/messaging';
+importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js');
+
 
 const CACHE_NAME = "offline-cache-v1";
 const OFFLINE_URL = "offline.html";
@@ -61,10 +64,10 @@ self.addEventListener("message", async (event) => {
 
     try {
       const app = initializeApp(firebaseConfig);
-      const messaging = getMessaging(app);
+      const messaging = messaging(app);
 
       // Setup untuk pesan latar belakang
-      onBackgroundMessage(messaging, (payload) => {
+      messaging.setBackgroundMessageHandler(function (payload) {
         console.log("[firebase-messaging-sw.js] Pesan background diterima:", payload);
         const notificationTitle = payload.notification?.title || "Pesan Baru";
         const notificationOptions = {
