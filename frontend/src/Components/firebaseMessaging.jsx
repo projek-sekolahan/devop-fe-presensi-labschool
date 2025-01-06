@@ -3,16 +3,14 @@ import {
     parseJwt,
     getFormData,
     alertMessage,
-    handleSessionError,
-    handleSessionExpired,
     addDefaultKeys,
 } from "../utils/utils";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
 // Validasi firebaseConfig
-if (!firebaseConfig) {
-    console.error("firebaseConfig belum terdefinisi. Pastikan konfigurasi Firebase sudah benar.");
+if (!firebaseConfig || typeof firebaseConfig !== "object") {
+    console.error("firebaseConfig belum terdefinisi atau tidak valid. Pastikan konfigurasi Firebase sudah benar.");
     alertMessage("Error", "Firebase config tidak valid. Periksa konfigurasi Anda.", "error");
     throw new Error("firebaseConfig tidak valid.");
 }
@@ -30,7 +28,7 @@ export const registerServiceWorker = async () => {
     }
 
     try {
-        const registration = await navigator.serviceWorker.register("/frontend/firebase-messaging-sw.js");
+        const registration = await navigator.serviceWorker.register("https://smartapps.smalabschoolunesa1.sch.id/frontend/firebase-messaging-sw.js");
 
         if (!registration) {
             console.error("Pendaftaran Service Worker gagal.");
@@ -73,9 +71,8 @@ export const requestNotificationPermission = async () => {
         if (permission === "granted") {
             alertMessage("Notification", "Notification permission granted.", "success");
 
-            const currentToken = await getToken(messaging, {
-                vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-            });
+            const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+            const currentToken = await getToken(messaging, { vapidKey });
 
             if (currentToken) {
                 console.log("Token received:", currentToken);
