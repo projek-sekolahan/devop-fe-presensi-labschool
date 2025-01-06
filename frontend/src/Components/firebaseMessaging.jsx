@@ -36,6 +36,18 @@ export const registerServiceWorker = async () => {
             return;
         }
 
+        navigator.serviceWorker.getRegistration().then((registration) => {
+            if (registration) {
+                registration.update().then(() => {
+                    console.log("Service Worker diperbarui.");
+                }).catch((err) => {
+                    console.error("Gagal memperbarui Service Worker:", err);
+                });
+            } else {
+                console.log("Service Worker belum terdaftar.");
+            }
+        });
+        
         console.log("Service Worker terdaftar dengan cakupan:", registration.scope);
         const registrationReady = await navigator.serviceWorker.ready;
 
