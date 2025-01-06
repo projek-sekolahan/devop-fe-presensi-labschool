@@ -28,7 +28,7 @@ export const registerServiceWorker = async () => {
     }
 
     try {
-        const registration = await navigator.serviceWorker.register("https://smartapps.smalabschoolunesa1.sch.id/frontend/firebase-messaging-sw.js");
+        const registration = await navigator.serviceWorker.register("/frontend/firebase-messaging-sw.js");
 
         if (!registration) {
             console.error("Pendaftaran Service Worker gagal.");
