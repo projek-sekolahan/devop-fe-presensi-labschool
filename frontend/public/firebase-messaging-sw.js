@@ -1,15 +1,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getMessaging } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
+import { precacheAndRoute } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-precaching.prod.js";
+import { registerRoute } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-routing.prod.js";
+import { StaleWhileRevalidate } from "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-strategies.prod.js";
 
 const CACHE = "pwabuilder-offline-page";
 const offlineFallbackPage = "offline.html";
 
-// Workbox Setup
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
+// Precache offline.html
+precacheAndRoute([
+  { url: offlineFallbackPage, revision: null },
+]);
 
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
+// Routing dengan Workbox untuk caching
+registerRoute(
+  ({ request }) => request.destination === "document",
+  new StaleWhileRevalidate({
+    cacheName: CACHE,
+  })
+);
 
 // Caching offline.html
 self.addEventListener("install", async (event) => {
