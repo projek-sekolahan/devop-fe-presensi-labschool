@@ -5,8 +5,8 @@ import {
     alertMessage,
     addDefaultKeys,
 } from "../utils/utils";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
 
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
@@ -58,6 +58,15 @@ export const registerServiceWorker = async () => {
             registrationReady.active.postMessage({
                 type: "INIT_FIREBASE",
                 config: firebaseConfig,
+            });
+            // Lanjutkan dengan proses langganan notifikasi
+            registrationReady.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
+            }).then(function(subscription) {
+                console.log('Pendaftaran notifikasi berhasil:', subscription);
+            }).catch(function(error) {
+                console.error('Gagal mendaftar notifikasi:', error);
             });
             console.log("Pesan dikirim ke Service Worker untuk inisialisasi Firebase.");
             // Tunggu respons dari Service Worker
