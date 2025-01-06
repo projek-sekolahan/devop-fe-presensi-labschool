@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw';
+import { getMessaging, onBackgroundMessage } from 'firebase/messaging';
 
 const CACHE_NAME = "offline-cache-v1";
 const OFFLINE_URL = "offline.html";
