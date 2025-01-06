@@ -28,7 +28,7 @@ export const registerServiceWorker = async () => {
     }
 
     try {
-        const registration = await navigator.serviceWorker.register("https://smartapps.smalabschoolunesa1.sch.id/frontend/public/firebase-messaging-sw.js?v="+ new Date().getTime(), {
+        const registration = await navigator.serviceWorker.register("https://smartapps.smalabschoolunesa1.sch.id/firebase-messaging-sw.js?v="+ new Date().getTime(), {
             scope: "/"
         });
         
