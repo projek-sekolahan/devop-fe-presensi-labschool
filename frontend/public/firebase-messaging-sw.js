@@ -18,7 +18,7 @@ self.addEventListener("install", async (event) => {
       console.error("Error caching offline page:", err);
     })
   );
-  self.skipWaiting();
+  // self.skipWaiting();
 });
 
 // Routing with Workbox
