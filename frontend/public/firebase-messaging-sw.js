@@ -1,3 +1,6 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getMessaging } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+
 const CACHE = "pwabuilder-offline-page";
 const offlineFallbackPage = "offline.html";
 
@@ -38,11 +41,8 @@ self.addEventListener("message", async (event) => {
     console.log("Menerima konfigurasi Firebase:", firebaseConfig);
 
     try {
-      importScripts("https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js");
-      importScripts("https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js");
-
-      firebase.initializeApp(firebaseConfig);
-      const messaging = firebase.messaging();
+      const app = initializeApp(firebaseConfig);
+      const messaging = getMessaging(app);
 
       // Setup untuk pesan latar belakang
       messaging.onBackgroundMessage((payload) => {
