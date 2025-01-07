@@ -16,7 +16,6 @@ window.addEventListener("load", async () => {
 
     // Minta izin notifikasi
     const token = await requestNotificationPermission();
-    console.log("Token Firebase Messaging:", token);
 
     // Tangani pesan masuk
     handleOnMessage((payload) => {

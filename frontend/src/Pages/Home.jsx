@@ -142,42 +142,6 @@ const Home = () => {
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
 
-    /* const registerToken = (currentToken) => {
-        let keys = ["AUTH_KEY", "login_token", "token_fcm"];
-        const combinedKeys = addDefaultKeys(keys);
-        localStorage.setItem("token_fcm", currentToken);
-        console.log(currentToken); return false;
-        apiXML.getCsrf().then((res) => {
-            res = JSON.parse(res);
-            // Fetch values from localStorage and Cookies
-            let values = combinedKeys.map((key) => {
-                let value = localStorage.getItem(key);
-                if (key === "csrf_token" && !value) {
-                    value = res.csrfHash; // Fallback to Cookies if csrf_token is null in localStorage
-                }
-                if (key === "token_fcm" && !value) {
-                    value = currentToken; // Fallback to Cookies if token_fcm is null in localStorage
-                }
-                return value;
-            });
-            apiXML
-                .notificationsPost(
-                    "registerToken",
-                    values[0],
-                    getFormData(combinedKeys, values),
-                )
-                .then((response) => {
-                    const res = JSON.parse(response);
-                    Cookies.set("csrf", res.csrfHash);
-                    localStorage.setItem("token_registered", "done");
-                })
-                .catch((error) => {
-                    console.error("Error saat memeriksa regist token:", error);
-                    handleSessionError(error, "/login");
-                });
-        });
-    }; */
-
     useEffect(() => {
       const carousel = document.querySelector("[data-carousel-touch]");
       if (carousel) {

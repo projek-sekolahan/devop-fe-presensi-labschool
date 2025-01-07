@@ -81,11 +81,11 @@ export default function Register() {
                 res.data.message,
                 () =>
                     navigate(
-                        res.data.location === "register" ? "/" : `/${res.data.location}`
+                        res.data.location === "register" ? "/register" : `/${res.data.location}`
                     )
             );
         } catch (err) {
-            handleSessionError(err, "/");
+            handleSessionError(err, "/register");
         } finally {
             setIsLoading(false);
         }
