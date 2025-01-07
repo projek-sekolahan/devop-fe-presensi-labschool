@@ -4,12 +4,15 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import Loading from "./Components/Loading";
 import { routes } from "./utils/routes";
+import apiXML from "./utils/apiXML";
 import { isMobile } from "react-device-detect";
 import DesktopWarning from "./Components/DesktopWarning";
 import "./App.css";
 
 function App() {
     useEffect(() => {
+        // Mendapatkan CSRF Token
+        apiXML.getCsrf();
         // Memeriksa dan menetapkan cookie
         if (!Cookies.get("cookiesAccepted")) {
             Swal.fire({

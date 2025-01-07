@@ -12,7 +12,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 
 export default function ChangePassword() {
-    // apiXML.getCsrf();
     const emailRef = useRef();
     const [load, setLoad] = useState(false);
 
