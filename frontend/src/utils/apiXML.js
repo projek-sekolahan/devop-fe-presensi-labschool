@@ -16,7 +16,7 @@ export default class apiXML {
                 method: "GET",
                 credentials: "include",
             });
-    
+            console.log("Response headers:", [...response.headers]);
             console.log("Response status:", response.status, response.statusText);
     
             if (!response.ok) {
