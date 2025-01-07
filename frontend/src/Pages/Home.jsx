@@ -62,6 +62,7 @@ const Home = () => {
         localStorage.setItem("group_id", user.group_id);
         console.log("Parsed User Data:", user);
         setUserData(user); // Set state userData
+        registerToken();
       } else {
         alertMessage("No data in API response", "err", "error");
       }
@@ -73,6 +74,35 @@ const Home = () => {
       setLoading(false); // Matikan loading
     }
   }, []);
+
+  // Fungsi untuk mendaftarkan token ke server
+  const registerToken = () => {
+    const keys = ["AUTH_KEY", "login_token", "token_fcm"];
+    const combinedKeys = addDefaultKeys(keys);
+    const values = combinedKeys.map((key) => {
+        let value = localStorage.getItem(key);
+        if (key === "csrf_token" && !value) value = Cookies.get("csrf");
+        if (key === "token_fcm" && !value) value = localStorage.getItem("login_token");
+        return value;
+    }); console.log(getFormData(combinedKeys, values)); return false;
+    apiXML.notificationsPost(
+        "registerToken",
+        values[0],
+        getFormData(combinedKeys, values)
+    ).then((response) => {
+        const result = JSON.parse(response); console.log(result); return false;
+        Cookies.set("csrf", result.csrfHash);
+        localStorage.setItem("token_registered", "done");
+        console.log("Token berhasil terdaftar ke server.");
+    }).catch((error) => {
+        console.error("Gagal mendaftarkan token ke server:", error);
+        navigateToLogin();
+    });
+
+    apiXML.getCsrf().then((res) => { console.log(res); return false;
+        res = JSON.parse(res);
+    });
+  };
 
   // Fungsi untuk memeriksa sesi pengguna
   /* const checkSession = useCallback(async () => {

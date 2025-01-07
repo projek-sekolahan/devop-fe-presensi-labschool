@@ -1,11 +1,5 @@
 import firebaseConfig from "./firebaseConfig";
-import {
-    parseJwt,
-    getFormData,
-    alertMessage,
-    addDefaultKeys,
-} from "../utils/utils";
-import apiXML from "../utils/apiXML.js";
+import { alertMessage } from "../utils/utils";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
@@ -65,7 +59,9 @@ export const requestNotificationPermission = async () => {
 
             if (currentToken) {
                 console.log("Token notifikasi berhasil diperoleh:", currentToken);
-                registerToken(currentToken); // Pastikan token terdaftar di server
+                localStorage.setItem("token_fcm", currentToken);
+                console.log("Token FCM disimpan ke localStorage:", currentToken);
+                // registerToken(currentToken); // Pastikan token terdaftar di server
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");
@@ -82,40 +78,6 @@ export const requestNotificationPermission = async () => {
         navigateToLogin();
         return null;
     }
-};
-
-// Fungsi untuk mendaftarkan token ke server
-const registerToken = (currentToken) => {
-    const keys = ["AUTH_KEY", "login_token", "token_fcm"];
-    const combinedKeys = addDefaultKeys(keys);
-
-    localStorage.setItem("token_fcm", currentToken);
-
-    console.log("Token FCM disimpan ke localStorage:", currentToken);
-
-    apiXML.getCsrf().then((res) => { console.log(res); return false;
-        res = JSON.parse(res); 
-        const values = combinedKeys.map((key) => {
-            let value = localStorage.getItem(key);
-            if (key === "csrf_token" && !value) value = res.csrfHash;
-            if (key === "token_fcm" && !value) value = currentToken;
-            return value;
-        });
-
-        apiXML.notificationsPost(
-            "registerToken",
-            values[0],
-            getFormData(combinedKeys, values)
-        ).then((response) => {
-            const result = JSON.parse(response); console.log(result); return false;
-            Cookies.set("csrf", result.csrfHash);
-            localStorage.setItem("token_registered", "done");
-            console.log("Token berhasil terdaftar ke server.");
-        }).catch((error) => {
-            console.error("Gagal mendaftarkan token ke server:", error);
-            navigateToLogin();
-        });
-    });
 };
 
 // Menerima pesan notifikasi
