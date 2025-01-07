@@ -51,7 +51,7 @@ const Home = () => {
       if (res?.data) {
         // Simpan token dan csrf baru
         localStorage.setItem("token", res.data.token);
-        // Cookies.set("csrf", res.csrfHash);
+        Cookies.set("csrf", res.csrfHash);
         alert("masuk homepage");
         // Parse token untuk mendapatkan data user
         const user = parseJwt(res.data.token);
@@ -86,8 +86,8 @@ const Home = () => {
         values[0],
         getFormData(combinedKeys, values)
     ).then((response) => {
-        const result = JSON.parse(response);
-        // Cookies.set("csrf", result.csrfHash);
+        const result = JSON.parse(response); console.log(result);
+        Cookies.set("csrf", result.csrfHash);
         localStorage.setItem("token_registered", "done");
         console.log("Token berhasil terdaftar ke server.");
     }).catch((error) => {
