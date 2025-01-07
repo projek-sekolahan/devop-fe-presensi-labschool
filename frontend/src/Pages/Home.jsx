@@ -82,7 +82,8 @@ const Home = () => {
     const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
         if (key === "csrf_token" && !value) value = Cookies.get("csrf");
-        if (key === "token_fcm" && !value) value = localStorage.getItem("login_token");
+        if (key === "token_fcm" && !value) value = localStorage.getItem("token_fcm");
+        if (key === "token" && !value) value = localStorage.getItem("login_token");
         return value;
     });
     apiXML.notificationsPost(
@@ -96,7 +97,6 @@ const Home = () => {
         console.log("Token berhasil terdaftar ke server.");
     }).catch((error) => {
         console.error("Gagal mendaftarkan token ke server:", error);
-        navigateToLogin();
     });
   };
 
