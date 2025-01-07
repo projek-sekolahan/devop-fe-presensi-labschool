@@ -77,7 +77,7 @@ const Home = () => {
 
   // Fungsi untuk mendaftarkan token ke server
   const registerToken = () => {
-    const keys = ["AUTH_KEY", "login_token", "token_fcm"];
+    const keys = ["AUTH_KEY", "login_token", "token_fcm", "token"];
     const combinedKeys = addDefaultKeys(keys);
     const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
