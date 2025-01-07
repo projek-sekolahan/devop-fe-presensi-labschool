@@ -233,6 +233,11 @@ function clearCookies() {
     });
 }
 
+export const getCookieValue = (cookieName) => {
+    const match = document.cookie.match(new RegExp(`(?:^|; )${cookieName}=([^;]*)`));
+    return match ? decodeURIComponent(match[1]) : null;
+};
+
 export const handleSessionError = (err, location) => {
     clearCookies();
     let res = JSON.parse(err.responseText);

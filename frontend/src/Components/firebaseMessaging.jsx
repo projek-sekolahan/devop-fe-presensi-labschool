@@ -1,5 +1,5 @@
 import firebaseConfig from "./firebaseConfig";
-import { alertMessage } from "../utils/utils";
+import { alertMessage, getCookieValue } from "../utils/utils";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
@@ -59,6 +59,7 @@ export const requestNotificationPermission = async () => {
 
             if (currentToken) {
                 console.log("Available cookies:", document.cookie);
+                console.log("Available cookies CSRF Token:",  getCookieValue("ci_sso_csrf_cookie"));
                 console.log("Token notifikasi berhasil diperoleh:", currentToken);
                 localStorage.setItem("token_fcm", currentToken);
                 console.log("Token FCM disimpan ke localStorage:", currentToken);
