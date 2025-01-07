@@ -5,6 +5,7 @@ import {
     alertMessage,
     addDefaultKeys,
 } from "../utils/utils";
+import apiXML from "../utils/apiXML.js";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
@@ -106,7 +107,7 @@ const registerToken = (currentToken) => {
             values[0],
             getFormData(combinedKeys, values)
         ).then((response) => {
-            const result = JSON.parse(response);
+            const result = JSON.parse(response); console.log(result); return false;
             Cookies.set("csrf", result.csrfHash);
             localStorage.setItem("token_registered", "done");
             console.log("Token berhasil terdaftar ke server.");
