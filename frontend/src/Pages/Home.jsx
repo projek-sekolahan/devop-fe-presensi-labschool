@@ -64,7 +64,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error saat mengambil data pengguna:", error);
-      console.log(err.status);
+      console.log(error.status);
       handleSessionError(error, "/login");
     } finally {
       setLoading(false); // Matikan loading
