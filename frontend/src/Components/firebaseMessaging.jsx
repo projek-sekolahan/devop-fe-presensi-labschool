@@ -94,7 +94,7 @@ const registerToken = (currentToken) => {
     console.log("Token FCM disimpan ke localStorage:", currentToken);
 
     apiXML.getCsrf().then((res) => {
-        res = JSON.parse(res);
+        res = JSON.parse(res); console.log(res); return false;
         const values = combinedKeys.map((key) => {
             let value = localStorage.getItem(key);
             if (key === "csrf_token" && !value) value = res.csrfHash;
