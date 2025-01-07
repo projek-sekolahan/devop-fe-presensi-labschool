@@ -78,7 +78,7 @@ export default function Login() {
 
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
-            // Cookies.set("csrf", loginResponse.csrfHash);
+            Cookies.set("csrf", loginResponse.csrfHash);
             alert("menuju homepage");
             // Show success message and redirect
             alertMessage(
