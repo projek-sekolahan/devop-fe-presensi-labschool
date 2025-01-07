@@ -57,7 +57,7 @@ export default function Login() {
         const tokenKey = getKey(emailValue, hash);
 
         const keys = ["username", "password"];
-        const values = [emailValue, hash, tokenKey[1], Cookies.get("ci_sso_csrf_cookie")];
+        const values = [emailValue, hash, tokenKey[1], Cookies.get("csrf")];
         const formData = getFormData(addDefaultKeys(keys), values);
 
         // Save temporary keys in secure storage
@@ -78,7 +78,7 @@ export default function Login() {
 
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
-            // Cookies.set("csrf", loginResponse.csrfHash, { secure: true, sameSite: "Strict" });
+            // Cookies.set("csrf", loginResponse.csrfHash);
             alert("menuju homepage");
             // Show success message and redirect
             alertMessage(

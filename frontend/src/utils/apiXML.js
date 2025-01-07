@@ -26,7 +26,7 @@ export default class apiXML {
             }
     
             await response.json();
-            // Cookies.set("csrf", res.csrfHash); // Simpan di cookies
+            Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
             console.log("Error fetching CSRF token:", error);
             throw error;
