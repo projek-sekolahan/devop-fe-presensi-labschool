@@ -46,7 +46,7 @@ export default function Login() {
         // Validate form
         const errorMessage = validateForm();
         if (errorMessage) {
-            alertMessage("Validasi Gagal", errorMessage, "error");
+            alertMessage("Validasi Gagal", errorMessage, "error", () => window.location.replace("/login"));
             return;
         }
 
@@ -79,7 +79,7 @@ export default function Login() {
             // Save token securely
             localStorage.setItem("login_token", loginResponse.data.token);
             Cookies.set("csrf", loginResponse.csrfHash);
-            alert("menuju homepage");
+            // alert("menuju homepage");
             // Show success message and redirect
             alertMessage(
                 "Berhasil",
@@ -96,7 +96,7 @@ export default function Login() {
     /**
      * Add global event listener for the Enter key.
      */
-    useEffect(() => {
+    /* useEffect(() => {
         const handleKeyPress = (e) => {
             if (e.key === "Enter") {
                 e.preventDefault(); // Cegah reload form
@@ -109,7 +109,7 @@ export default function Login() {
         return () => {
             window.removeEventListener("keydown", handleKeyPress);
         };
-    }, []);    
+    }, []); */    
 
     return (
         <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">

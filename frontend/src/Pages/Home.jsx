@@ -52,7 +52,7 @@ const Home = () => {
         // Simpan token dan csrf baru
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
-        alert("masuk homepage");
+        // alert("masuk homepage");
         // Parse token untuk mendapatkan data user
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
@@ -86,7 +86,9 @@ const Home = () => {
         values[0],
         getFormData(combinedKeys, values)
     ).then((response) => {
-        const result = JSON.parse(response); console.log(result);
+        const result = JSON.parse(response); 
+        const datares = parseJwt(result.data.token);
+        console.log(datares);
         Cookies.set("csrf", result.csrfHash);
         localStorage.setItem("token_registered", "done");
         console.log("Token berhasil terdaftar ke server.");
@@ -145,9 +147,9 @@ const Home = () => {
   }, [fetchUserData]);
 
   // Debug perubahan state userData
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("UserData State Updated:", userData);
-  }, [userData]);
+  }, [userData]); */
 
   window.addEventListener("click", (e) => {
       if (e.pageX > (screen.width * 75) / 100) {
@@ -163,14 +165,14 @@ const Home = () => {
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
 
-    useEffect(() => {
+    /* useEffect(() => {
       const carousel = document.querySelector("[data-carousel-touch]");
       if (carousel) {
         carousel.addEventListener("touchstart", (e) => {
           alert("Touch start detected");
         });
       }
-    }, []);
+    }, []); */
 
   // Render loading atau error
     if (loading) return <Loading />;
