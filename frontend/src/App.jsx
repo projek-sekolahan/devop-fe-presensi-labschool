@@ -11,8 +11,6 @@ import "./App.css";
 
 function App() {
     useEffect(() => {
-        // Mendapatkan CSRF Token
-        apiXML.getCsrf();
 
         // Memeriksa dan menetapkan cookie
         if (!Cookies.get("cookiesAccepted")) {
