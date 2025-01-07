@@ -49,9 +49,9 @@ export default function SideMenu({ show, userData, closeMenu }) {
 							localStorage.clear();
 							res = JSON.parse(res);
 							alertMessage(
-								"success",
 								"Logout Succesfully",
 								"You has been loged out!",
+								"success",
 								() => {
 									window.location.replace("/login");
 								},
