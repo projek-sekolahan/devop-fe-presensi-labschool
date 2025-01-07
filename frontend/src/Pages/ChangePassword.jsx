@@ -27,12 +27,12 @@ export default function ChangePassword() {
             .postInput("recover", getFormData(key, values))
             .then((res) => {
                 res = JSON.parse(res);
-                // Cookies.set("csrf", res.csrfHash);
+                Cookies.set("csrf", res.csrfHash);
                 setLoad(false);
                 alertMessage(
-                    res.data.info,
                     res.data.title,
                     res.data.message,
+                    res.data.info,
                     () => window.location.replace("/" + res.data.location)
                 );
             })

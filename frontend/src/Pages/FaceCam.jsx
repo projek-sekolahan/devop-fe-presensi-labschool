@@ -22,13 +22,13 @@ export default function FaceCam() {
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
-    console.log(localStorage.getItem("token")); return false;
-
+    console.log(localStorage.getItem("token")); 
+    // return false;
     let userData = {};
     if (localStorage.getItem("token")) {
         userData = parseJwt(localStorage.getItem("token"));
         console.log(userData);
-        return false;
+        // return false;
     } else {
         window.location.replace("/login");
     }
@@ -85,15 +85,15 @@ export default function FaceCam() {
             .catch(function (err) {
                 if (err.name === "NotAllowedError") {
                     alertMessage(
-                        "error",
                         "Error",
-                        "Izin akses kamera ditolak oleh pengguna"
+                        "Izin akses kamera ditolak oleh pengguna",
+                        "error",
                     );
                 } else if (err.name === "NotFoundError") {
                     alertMessage(
-                        "error",
                         "Error",
-                        "Tidak ada kamera yang tersedia pada perangkat"
+                        "Tidak ada kamera yang tersedia pada perangkat",
+                        "error",
                     );
                 }
             });
@@ -157,9 +157,9 @@ export default function FaceCam() {
         async function attemptMatch() {
             if (attempts >= maxAttempts) {
                 alertMessage(
-                    "error",
                     "Deteksi Gagal",
-                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai"
+                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+                    "error",
                 );
                 return;
             }
@@ -205,9 +205,9 @@ export default function FaceCam() {
                                 Cookies.set("csrf", res.csrfHash);
                                 const parsedToken = parseJwt(res.data.token);
                                 alertMessage(
-                                    parsedToken.info,
                                     parsedToken.title,
                                     parsedToken.message,
+                                    parsedToken.info,
                                     () => window.location.replace("/home")
                                 );
                             })
@@ -216,9 +216,9 @@ export default function FaceCam() {
                             });
                     } else {
                         alertMessage(
-                            "error",
                             "Pencocokan Gagal",
-                            "Wajah tidak terdaftar, harap ulangi proses"
+                            "Wajah tidak terdaftar, harap ulangi proses",
+                            "error"
                         );
                     }
                 } else {

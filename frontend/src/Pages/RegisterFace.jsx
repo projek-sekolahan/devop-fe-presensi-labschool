@@ -37,7 +37,7 @@ export default function RegisterFace() {
                     err.name === "NotAllowedError"
                         ? "Izin akses kamera ditolak oleh pengguna"
                         : "Tidak ada kamera yang tersedia pada perangkat";
-                alertMessage("error", "Error", errorMessage);
+                alertMessage("Error", errorMessage, "error",);
             });
     };
 
@@ -94,9 +94,9 @@ export default function RegisterFace() {
             const attemptMatch = async () => {
                 if (attempts >= maxAttempts) {
                     alertMessage(
-                        "error",
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+                        "error",
                         () => resetForm()
                     );
                     return;
@@ -124,9 +124,9 @@ export default function RegisterFace() {
 
                 if (isMatched) {
                     alertMessage(
-                        "error",
                         "Error",
                         "Wajah sudah terdaftar, gunakan wajah lain.",
+                        "error",
                         () => resetForm()
                     );
                     return;
@@ -154,11 +154,13 @@ export default function RegisterFace() {
 
         try {
             const response = await apiXML.postInput("facecam", formData);
+            const res = JSON.parse(response);
+            Cookies.set("csrf", res.csrfHash);
             if (response.status) {
                 alertMessage(
-                    response.data.info,
                     response.data.title,
                     response.data.message,
+                    response.data.info,
                     () => window.location.replace("/setpassword")
                 );
             } else {

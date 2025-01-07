@@ -85,8 +85,8 @@ export default function Izin() {
 			.then((res) => {
 				res = JSON.parse(res);
 				const hasil = parseJwt(res.data);
-				// Cookies.set("csrf", res.csrfHash);
-				alertMessage(hasil.info, hasil.title, hasil.message, () =>
+				Cookies.set("csrf", res.csrfHash);
+				alertMessage(hasil.title, hasil.message, hasil.info, () =>
 					window.location.replace("/home"),
 				);
 			})

@@ -49,9 +49,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                     setLoading(false);
                     closeBtn.current.click();
                     alertMessage(
-                        res.data.info,
                         res.data.title,
                         res.data.message,
+                        res.data.info,
                         () => Swal.close()
                     );
                 });

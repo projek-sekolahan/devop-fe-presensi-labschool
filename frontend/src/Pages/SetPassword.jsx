@@ -48,11 +48,11 @@ export default function SetPassword() {
 			.then((res) => {
 				setDisabled(false);
 				res = JSON.parse(res);
-				// Cookies.set("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				alertMessage(
-					res.data.info,
 					res.data.title,
 					res.data.message,
+					res.data.info,
 					() => window.location.replace(res.data.location),
 				);
 			})
