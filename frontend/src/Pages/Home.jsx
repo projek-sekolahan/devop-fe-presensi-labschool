@@ -80,7 +80,7 @@ const Home = () => {
     const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
         if (key === "csrf_token" && !value) value = Cookies.get("csrf");
-        if (key === "token" && !value) value = localStorage.getItem("login_token");
+        if (key === "token") value = localStorage.getItem("login_token");
         return value;
     }); console.log(getFormData(combinedKeys, values)); return false;
     apiXML.notificationsPost(
