@@ -25,8 +25,8 @@ export default class apiXML {
                 throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
-            const res = await response.json();
-            Cookies.set("csrf", res.csrfHash); // Simpan di cookies
+            await response.json();
+            // Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
             console.log("Error fetching CSRF token:", error);
             throw error;
