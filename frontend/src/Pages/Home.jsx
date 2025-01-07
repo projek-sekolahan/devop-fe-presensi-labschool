@@ -3,13 +3,12 @@ import { useState, useEffect, useCallback } from "react";
 import {
   parseJwt,
   getFormData,
-  alertMessage,
   handleSessionError,
   handleSessionExpired,
   addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Carousel } from "flowbite-react";
@@ -21,7 +20,6 @@ const Home = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null); // Menyimpan data pengguna
   const [loading, setLoading] = useState(true); // Status loading
-  const navigate = useNavigate();
 
   const closeMenu = () => {
     setShow(false); // Menutup side menu
@@ -62,10 +60,10 @@ const Home = () => {
         setUserData(user); // Set state userData
         registerToken();
       } else {
-        alertMessage("No data in API response", "err", "error");
+        console.error("No data in API response", error);
+        handleSessionError("No data in API response", "/login");
       }
     } catch (error) {
-      alertMessage("Error saat mengambil data", error, "error");
       console.error("Error saat mengambil data pengguna:", error);
       handleSessionError(error, "/login");
     } finally {
@@ -82,7 +80,7 @@ const Home = () => {
         if (key === "csrf_token" && !value) value = Cookies.get("csrf");
         if (key === "token") value = localStorage.getItem("login_token");
         return value;
-    }); console.log(getFormData(combinedKeys, values)); return false;
+    }); // console.log(getFormData(combinedKeys, values)); return false;
     apiXML.notificationsPost(
         "registerToken",
         values[0],
