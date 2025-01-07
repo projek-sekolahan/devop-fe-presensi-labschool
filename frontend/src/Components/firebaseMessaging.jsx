@@ -58,6 +58,7 @@ export const requestNotificationPermission = async () => {
             const currentToken = await getToken(messaging, { vapidKey });
 
             if (currentToken) {
+                console.log("Available cookies:", document.cookie);
                 console.log("Token notifikasi berhasil diperoleh:", currentToken);
                 localStorage.setItem("token_fcm", currentToken);
                 console.log("Token FCM disimpan ke localStorage:", currentToken);
