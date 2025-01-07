@@ -61,11 +61,11 @@ const Home = () => {
         registerToken();
       } else {
         console.error("No data in API response", error);
-        handleSessionError("No data in API response", "/login");
       }
     } catch (error) {
       console.error("Error saat mengambil data pengguna:", error);
-      handleSessionError(error, "/login");
+      console.log(error);
+      // handleSessionError(error, "/login");
     } finally {
       setLoading(false); // Matikan loading
     }
