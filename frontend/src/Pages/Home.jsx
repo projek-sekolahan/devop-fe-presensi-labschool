@@ -37,9 +37,7 @@ const Home = () => {
       // Ambil nilai dari localStorage dan Cookies
       const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
-        if (key === "csrf_token" && !value) {
-          value = Cookies.get("csrf"); // Fallback ke Cookies jika csrf_token null
-        }
+        if (key === "csrf_token" && !value) value = Cookies.get("csrf");
         return value;
       });
 
@@ -82,10 +80,9 @@ const Home = () => {
     const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
         if (key === "csrf_token" && !value) value = Cookies.get("csrf");
-        if (key === "token_fcm" && !value) value = localStorage.getItem("token_fcm");
         if (key === "token" && !value) value = localStorage.getItem("login_token");
         return value;
-    });
+    }); console.log(getFormData(combinedKeys, values)); return false;
     apiXML.notificationsPost(
         "registerToken",
         values[0],
