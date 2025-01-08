@@ -24,18 +24,29 @@ input[type=number] {
 }
 
 /* Login Container */
-.login-container {
+.login-container, .register-container {
   @apply bg-primary-low font-primary text-white relative z-[1] overflow-hidden;
 }
 
 /* Background Image */
-.login-bg-image {
+.bg-image {
   @apply w-full h-[60vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
   object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
 }
 
+/* Responsif untuk Smartphone */
+@media (max-width: 768px) {
+  .bg-image {
+    height: 100vh; /* Gambar menutupi seluruh tinggi layar pada smartphone */
+    object-fit: cover; /* Memastikan gambar tetap proporsional tanpa terdistorsi */
+  }
+  .login-form-container, .register-form-container {
+    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
+  }
+}
+
 /* Login Form Container */
-.login-form-container {
+.login-form-container, .register-form-container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -54,12 +65,6 @@ input[type=number] {
   max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
 }
 
-@media (min-width: 768px) {
-  .login-form-container {
-    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
-  }
-}
-
 /* Titles and Subtitles */
 .text-title {
   @apply font-semibold text-2xl sm:text-4xl text-center mb-4; /* Ukuran font lebih responsif dan lebih besar pada layar besar */
@@ -70,7 +75,7 @@ input[type=number] {
 }
 
 /* Form Styles */
-.login-form {
+.login-form, .register-form {
   @apply my-6 space-y-4 md:space-y-6;
 }
 
@@ -173,4 +178,38 @@ input[type=number] {
   width: 100%;
   align-items: center;
   justify-content: space-between;
+}
+
+/* Animasi slide-up */
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%); /* Mulai dari bawah layar */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* Posisikan ke tempat semula */
+    opacity: 1;
+  }
+}
+
+/* Untuk login-form-container, kita terapkan animasi slide-up */
+.login-form-container.slide-up {
+  animation: slide-up 0.5s ease-out; /* Aplikasi animasi */
+}
+
+/* Animasi slide-down */
+@keyframes slide-down {
+  0% {
+    transform: translateY(0); /* Posisi awal (pada tempat semula) */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%); /* Geser ke bawah layar */
+    opacity: 0;
+  }
+}
+
+/* Untuk login-form-container, kita terapkan animasi slide-down */
+.login-form-container.slide-down {
+  animation: slide-down 0.5s ease-out forwards; /* Aplikasi animasi */
 }

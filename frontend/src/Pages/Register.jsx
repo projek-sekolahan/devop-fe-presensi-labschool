@@ -118,19 +118,19 @@ export default function Register() {
   };
 
     return (
-    <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+    <div className="register-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
         {/* Background Image */}
         <img
             src="/frontend/img/login.png"
             alt="labschool-unesa-logo"
-            className="login-bg-image"
+            className="bg-image"
         />
 
         {/* Register Form */}
-        <div className="login-form-container shadow-md">
+        <div className="register-form-container shadow-md">
             <h2 className="text-title text-center">Daftar Sebagai</h2>
             <form
-                className="login-form"
+                className="register-form"
                 onSubmit={handleSubmit}
             >
                 {/* Role Selection */}
