@@ -51,7 +51,7 @@ export default function Login() {
     // Refs for input elements
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
-
+    const submitBtnRef = useRef(null);
     // Validate form inputs before submitting
     const validateForm = () => {
         const emailValue = emailRef.current.value.trim();
