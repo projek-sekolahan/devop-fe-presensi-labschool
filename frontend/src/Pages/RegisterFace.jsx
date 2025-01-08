@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import * as faceapi from "face-api.js";
@@ -10,7 +10,7 @@ export default function RegisterFace() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
-
+    const [isLoading, setIsLoading] = useState(false);
     // Inisialisasi komponen
     useEffect(() => {
         const init = async () => {
@@ -78,7 +78,7 @@ export default function RegisterFace() {
         loading("Loading", "Sedang melakukan deteksi wajah...");
         const maxAttempts = 10;
         let attempts = 0;
-
+        setIsLoading(true);
         try {
             // Ambil data awal dari server
             const formData = {
@@ -87,17 +87,26 @@ export default function RegisterFace() {
             };
 
             const response = await apiXML.postInput("loadFace", formData);
-            if (!response.status) throw new Error("Gagal memuat data wajah.");
+            if (!response.status) {
+                setIsLoading(false);
+                alertMessage(
+                    "Gagal memuat data wajah",
+                    "Wajah tidak terdeteksi pada database",
+                    "error"
+                );
+                return;
+            }
 
             const facecamData = response.data.facecam;
 
             const attemptMatch = async () => {
                 if (attempts >= maxAttempts) {
+                    setIsLoading(false);
                     alertMessage(
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
                         "error",
-                        () => resetForm()
+                        () => window.location.replace("/facereg")
                     );
                     return;
                 }
@@ -123,11 +132,12 @@ export default function RegisterFace() {
                 });
 
                 if (isMatched) {
+                    setIsLoading(false);
                     alertMessage(
                         "Error",
-                        "Wajah sudah terdaftar, gunakan wajah lain.",
+                        "Wajah sudah terdaftar, gunakan wajah lain",
                         "error",
-                        () => resetForm()
+                        () => window.location.replace("/facereg")
                     );
                     return;
                 }
@@ -157,6 +167,7 @@ export default function RegisterFace() {
             const res = JSON.parse(response);
             Cookies.set("csrf", res.csrfHash);
             if (response.status) {
+                setIsLoading(false);
                 alertMessage(
                     response.data.title,
                     response.data.message,
@@ -164,16 +175,19 @@ export default function RegisterFace() {
                     () => window.location.replace("/setpassword")
                 );
             } else {
-                throw new Error("Gagal mendaftarkan wajah.");
+                setIsLoading(false);
+                alertMessage(
+                    "Error",
+                    "Gagal mendaftarkan wajah",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
             }
         } catch (err) {
+            setIsLoading(false);
             console.error(err);
             handleSessionError(err, "/facereg");
         }
-    };
-
-    const resetForm = () => {
-        imgRef.current.src = "";
     };
 
     return (
@@ -184,7 +198,7 @@ export default function RegisterFace() {
 
             <div className="controls">
                 <button onClick={clickPhoto}>Ambil Gambar</button>
-                <button onClick={detectAndRegisterFace}>Proses</button>
+                <button disabled={isLoading} onClick={detectAndRegisterFace}>{isLoading ? "Loading..." : "Proses"}</button>
             </div>
         </div>
     );
