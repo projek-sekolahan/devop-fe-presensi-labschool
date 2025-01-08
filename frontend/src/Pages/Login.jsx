@@ -110,7 +110,7 @@ export default function Login() {
             <img
                 src="/frontend/img/login.png"
                 alt="labschool-unesa-logo"
-                className="login-bg-image"
+                className="bg-image"
             />
 
             {/* Login Form */}

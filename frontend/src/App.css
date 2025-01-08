@@ -23,9 +23,18 @@ input[type=number] {
   -moz-appearance: none;
 }
 
+/* Pastikan HTML dan Body Mendukung Tampilan */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
 /* Login Container */
 .login-container, .register-container {
-  @apply bg-primary-low font-primary text-white relative z-[1] overflow-hidden;
+  @apply bg-primary-low font-primary text-white relative z-[1];
+  overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
 
 /* Background Image */
