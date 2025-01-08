@@ -22,12 +22,12 @@ export default function FaceCam() {
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
-    // console.log(localStorage.getItem("token")); 
+    // console.log(localStorage.getItem("token"));
     // return false;
     let userData = {};
     if (localStorage.getItem("token")) {
         userData = parseJwt(localStorage.getItem("token"));
-        console.log('Info Userdata pada halaman facecam',userData);
+        console.log("Info Userdata pada halaman facecam", userData);
         // return false;
     } else {
         window.location.replace("/login");
@@ -36,10 +36,9 @@ export default function FaceCam() {
     const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
     useEffect(() => {
-        const init = async () => {
+        const init = () => {
             loading("Loading", "Getting camera access...");
-            await loadFaceModels(); // Load face models sebelum memulai video
-            startVideo();
+            loadFaceModels();
         };
 
         init();
@@ -72,6 +71,19 @@ export default function FaceCam() {
         ];
     }
 
+    const loadFaceModels = async () => {
+        console.log("loading model");
+        const MODEL_URL = "/models";
+        await Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+        ]).then(() => {
+            console.log("finished loaded model");
+            startVideo();
+        });
+    };
+
     const startVideo = () => {
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: false })
@@ -87,13 +99,13 @@ export default function FaceCam() {
                     alertMessage(
                         "Error",
                         "Izin akses kamera ditolak oleh pengguna",
-                        "error",
+                        "error"
                     );
                 } else if (err.name === "NotFoundError") {
                     alertMessage(
                         "Error",
                         "Tidak ada kamera yang tersedia pada perangkat",
-                        "error",
+                        "error"
                     );
                 }
             });
@@ -159,7 +171,7 @@ export default function FaceCam() {
                 alertMessage(
                     "Deteksi Gagal",
                     "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                    "error",
+                    "error"
                 );
                 return;
             }
