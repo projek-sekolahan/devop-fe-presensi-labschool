@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect, useCallback } from "react";
 import {
   parseJwt,
   getFormData,
-  handleSessionError,
   handleSessionExpired,
   addDefaultKeys,
 } from "../utils/utils";
@@ -16,110 +14,98 @@ import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
 
+// Constants for keys
+const AUTH_KEYS = ["AUTH_KEY", "token"];
+const SESSION_KEYS = ["AUTH_KEY"];
+const TOKEN_KEYS = ["AUTH_KEY", "token_fcm", "token"];
+
+// Helper function to get combined values from localStorage and Cookies
+const getCombinedValues = (keys) => {
+  const combinedKeys = addDefaultKeys(keys);
+  return combinedKeys.map((key) => {
+    let value = localStorage.getItem(key);
+    if (key === "csrf_token" && !value) value = Cookies.get("csrf");
+    if (key === "token") value = localStorage.getItem("login_token");
+    return value;
+  });
+};
+
 const Home = () => {
   const [show, setShow] = useState(false);
-  const [userData, setUserData] = useState(null); // Menyimpan data pengguna
-  const [loading, setLoading] = useState(true); // Status loading
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const closeMenu = () => {
-    setShow(false); // Menutup side menu
-  };
+  const closeMenu = () => setShow(false);
 
-  // Fungsi untuk mengambil data pengguna
+  // Fetch user data
   const fetchUserData = useCallback(async () => {
     try {
-      setLoading(true); // Aktifkan loading
-      const keys = ["AUTH_KEY", "token"];
-      const combinedKeys = addDefaultKeys(keys);
-      
-      // Ambil nilai dari localStorage dan Cookies
-      const values = combinedKeys.map((key) => {
-        let value = localStorage.getItem(key);
-        if (key === "csrf_token" && !value) value = Cookies.get("csrf");
-        if (key === "token") value = localStorage.getItem("login_token");
-        return value;
-      });
+      setLoading(true);
+      const values = getCombinedValues(AUTH_KEYS);
 
-      // Panggil API untuk mengambil data pengguna
       const response = await apiXML.usersPost(
         "profile",
         values[0],
-        getFormData(combinedKeys, values)
+        getFormData(AUTH_KEYS, values)
       );
       const res = JSON.parse(response);
-      console.log("API Response:", res);
-      
+
       if (res?.data) {
-        // Simpan token dan csrf baru
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
-        // alert("masuk homepage");
-        // Parse token untuk mendapatkan data user
+
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
-        console.log("Parsed User Data:", user);
-        setUserData(user); // Set state userData
+        setUserData(user);
+
         if (!localStorage.getItem("token_registered")) {
           registerToken();
         }
       } else {
-        console.error("No data in API response", error);
+        console.error("No data in API response");
       }
     } catch (error) {
-      console.error("Error saat mengambil data pengguna:", error);
-      clocalStorage.clear();
-      Cookies.remove();
+      handleSessionExpired({
+        title: "Load Data Profile",
+        message: error?.message || "Error saat mengambil data pengguna",
+      });
     } finally {
-      setLoading(false); // Matikan loading
+      setLoading(false);
     }
   }, []);
 
-  // Fungsi untuk mendaftarkan token ke server
+  // Register token
   const registerToken = () => {
-    const keys = ["AUTH_KEY", "token_fcm", "token"];
-    const combinedKeys = addDefaultKeys(keys);
-    const values = combinedKeys.map((key) => {
-        let value = localStorage.getItem(key);
-        if (key === "csrf_token" && !value) value = Cookies.get("csrf");
-        if (key === "token") value = localStorage.getItem("login_token");
-        return value;
-    }); // console.log(getFormData(combinedKeys, values)); return false;
-    apiXML.notificationsPost(
-        "registerToken",
-        values[0],
-        getFormData(combinedKeys, values)
-    ).then((response) => {
-        const result = JSON.parse(response); 
+    const values = getCombinedValues(TOKEN_KEYS);
+
+    apiXML
+      .notificationsPost("registerToken", values[0], getFormData(TOKEN_KEYS, values))
+      .then((response) => {
+        const result = JSON.parse(response);
         const datares = parseJwt(result.data.token);
-        console.log(datares);
+
         Cookies.set("csrf", result.csrfHash);
         localStorage.setItem("token_registered", "done");
-        console.log("Token berhasil terdaftar ke server.");
-    }).catch((error) => {
-        console.error("Gagal mendaftarkan token ke server:", error);
-    });
+
+        console.log("Token berhasil terdaftar ke server.", datares);
+      })
+      .catch((error) => {
+        handleSessionExpired({
+          title: "Register Token",
+          message: error?.message || "Gagal mendaftarkan token ke server",
+        });
+      });
   };
 
-  // Fungsi untuk memeriksa sesi pengguna
-  /* const checkSession = useCallback(async () => {
+  // Check session
+  const checkSession = useCallback(async () => {
     try {
-      const keys = ["AUTH_KEY"];
-      const combinedKeys = addDefaultKeys(keys);
+      const values = getCombinedValues(SESSION_KEYS);
 
-      // Ambil nilai dari localStorage dan Cookies
-      const values = combinedKeys.map((key) => {
-        let value = localStorage.getItem(key);
-        if (key === "csrf_token" && !value) {
-          value = Cookies.get("csrf");
-        }
-        return value;
-      });
-
-      // Panggil API untuk memeriksa sesi
       const res = await apiXML.authPost(
-        "sessTime",
-        values[1],
-        getFormData(combinedKeys, values)
+        "sesstime",
+        values[0],
+        getFormData(SESSION_KEYS, values)
       );
       const parsedRes = JSON.parse(res);
 
@@ -129,18 +115,20 @@ const Home = () => {
         handleSessionExpired(parsedRes.data);
       }
     } catch (err) {
-      console.error("Error saat memeriksa sesi:", err);
-      handleSessionError(err, "/login");
+      handleSessionExpired({
+        title: "Session Timeout",
+        message: err?.message || "Error saat memeriksa sesi",
+      });
     }
-  }, []); */
+  }, []);
 
-  // useEffect untuk memeriksa sesi pengguna setiap 1 jam
-  /* useEffect(() => {
-    const intervalId = setInterval(checkSession, 60 * 60 * 1000); // 1 jam
+  // useEffect untuk memeriksa sesi pengguna
+  useEffect(() => {
+    const intervalId = setInterval(checkSession, 36000);
     return () => clearInterval(intervalId);
-  }, [checkSession]); */
+  }, [checkSession]);
 
-  // useEffect untuk mengambil data pengguna saat komponen di-mount
+  // useEffect untuk mengambil data pengguna
   useEffect(() => {
     if (!localStorage.getItem("login_token")) {
       window.location.replace("/login");
@@ -149,15 +137,10 @@ const Home = () => {
     }
   }, [fetchUserData]);
 
-  // Debug perubahan state userData
-  /* useEffect(() => {
-    console.log("UserData State Updated:", userData);
-  }, [userData]); */
-
   window.addEventListener("click", (e) => {
-      if (e.pageX > (screen.width * 75) / 100) {
-          setShow(false);
-      }
+    if (e.pageX > (screen.width * 75) / 100) {
+      setShow(false);
+    }
   });
 
   const newsItems = [
@@ -168,18 +151,7 @@ const Home = () => {
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
 
-    /* useEffect(() => {
-      const carousel = document.querySelector("[data-carousel-touch]");
-      if (carousel) {
-        carousel.addEventListener("touchstart", (e) => {
-          alert("Touch start detected");
-        });
-      }
-    }, []); */
-
-  // Render loading atau error
-    if (loading) return <Loading />;
-    if (!userData) return <Loading />;
+  if (loading || !userData) return <Loading />;
 
   // Render komponen utama
   return (

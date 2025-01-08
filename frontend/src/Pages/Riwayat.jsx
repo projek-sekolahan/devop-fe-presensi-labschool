@@ -69,7 +69,7 @@ export default function Riwayat() {
                 localStorage.getItem("AUTH_KEY"),
                 getFormData(combinedKeys, values)
             )
-            .then((res) => { console.log(res); return false;
+            .then((res) => {
                 res = JSON.parse(res);
                 Cookies.set("csrf", res.csrfHash);
                 const parsedToken = parseJwt(res.data.token);
@@ -77,7 +77,6 @@ export default function Riwayat() {
                 setLoad(false);
             })
             .catch((err) => {
-                console.log(err); return false;
                 err = JSON.parse(err);
                 if (err.status == 500) {
                     setLoad(false);
