@@ -9,32 +9,31 @@ const RoleSelection = ({ role, setRole }) => {
     ];
 
     return (
-        <div className="role-selection-container">
-            <label className="role-selection-label">Daftar Sebagai</label>
-            <div className="role-selection">
-                {roles.map((roleData) => (
-                    <label
-                        key={roleData.id}
-                        className={`role-option ${role === roleData.value ? "active" : ""}`}
-                    >
-                        {/* Input Radio */}
-                        <input
-                            type="radio"
-                            name="sebagai"
-                            id={roleData.id}
-                            value={roleData.value}
-                            onChange={() => setRole(roleData.value)}
-                            checked={role === roleData.value}
-                            className="hidden"
-                        />
-                        {/* Icon */}
-                        <roleData.icon className="role-icon" />
-                        {/* Label */}
-                        <span className="role-label">{roleData.label}</span>
-                    </label>
-                ))}
-            </div>
-        </div>
+<div className="role-selection-container">
+    <div className="role-selection">
+        {roles.map((roleData) => (
+            <label
+                key={roleData.id}
+                className={`role-option ${role === roleData.value ? "active" : ""}`}
+            >
+                {/* Input Radio */}
+                <input
+                    type="radio"
+                    name="sebagai"
+                    id={roleData.id}
+                    value={roleData.value}
+                    onChange={() => setRole(roleData.value)}
+                    checked={role === roleData.value}
+                    className="hidden"
+                />
+                {/* Icon */}
+                <roleData.icon className="role-icon" />
+                {/* Label */}
+                <span className="role-label">{roleData.label}</span>
+            </label>
+        ))}
+    </div>
+</div>
     );
 };
 

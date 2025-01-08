@@ -128,8 +128,7 @@ export default function Register() {
 
         {/* Register Form */}
         <div className="login-form-container shadow-md">
-            <h2 className="text-title text-center">Daftar Akun</h2>
-            <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
+            <h2 className="text-title text-center">Daftar Sebagai</h2>
             <form
                 className="login-form"
                 onSubmit={handleSubmit}
