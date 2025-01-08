@@ -50,7 +50,7 @@ const Home = () => {
       const res = JSON.parse(response);
 
       if (res?.data) {
-        console.log('response profile ', res); // return false;
+        
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
 
@@ -77,7 +77,7 @@ const Home = () => {
   // Register token
   const registerToken = () => {
     const values = getCombinedValues(TOKEN_KEYS);
-    console.log(addDefaultKeys(TOKEN_KEYS), values); // return false;
+    
     apiXML
       .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
@@ -86,8 +86,6 @@ const Home = () => {
 
         Cookies.set("csrf", result.csrfHash);
         localStorage.setItem("token_registered", "done");
-
-        console.log("Token berhasil terdaftar ke server.", datares);
       })
       .catch((error) => {
         handleSessionExpired({
@@ -123,10 +121,10 @@ const Home = () => {
   }, []);
 
   // useEffect untuk memeriksa sesi pengguna
-  /* useEffect(() => {
+  useEffect(() => {
     const intervalId = setInterval(checkSession, 36000);
     return () => clearInterval(intervalId);
-  }, [checkSession]); */
+  }, [checkSession]);
 
   // useEffect untuk mengambil data pengguna
   useEffect(() => {
