@@ -34,19 +34,18 @@ const Home = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const closeMenu = () => setShow(false);
-  console.log(combinedKeys,value); return false;
+  
   // Fetch user data
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-
+      console.log(addDefaultKeys(AUTH_KEYS), values); // return false;
       const response = await apiXML.usersPost(
         "profile",
         values[0],
-        getFormData(combinedKeys, values)
+        getFormData(addDefaultKeys(AUTH_KEYS), values)
       );
       const res = JSON.parse(response);
 
@@ -77,9 +76,9 @@ const Home = () => {
   // Register token
   const registerToken = () => {
     const values = getCombinedValues(TOKEN_KEYS);
-
+    
     apiXML
-      .notificationsPost("registerToken", values[0], getFormData(TOKEN_KEYS, values))
+      .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
         const result = JSON.parse(response);
         const datares = parseJwt(result.data.token);
@@ -101,11 +100,11 @@ const Home = () => {
   const checkSession = useCallback(async () => {
     try {
       const values = getCombinedValues(SESSION_KEYS);
-
+      
       const res = await apiXML.authPost(
         "sesstime",
         values[0],
-        getFormData(SESSION_KEYS, values)
+        getFormData(addDefaultKeys(SESSION_KEYS), values)
       );
       const parsedRes = JSON.parse(res);
 
