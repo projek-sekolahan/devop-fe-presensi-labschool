@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { PiChalkboardTeacherFill, PiStudentFill, PiUserSquareFill  } from "react-icons/pi";
+import { PiChalkboardTeacherFill, PiStudentFill, PiUserSquareFill } from "react-icons/pi";
 
 const RoleSelection = ({ role, setRole }) => {
     const roles = [
@@ -9,35 +9,32 @@ const RoleSelection = ({ role, setRole }) => {
     ];
 
     return (
-<div className="role-selection">
-    {roles.map((roleData) => (
-        <label
-            key={roleData.id}
-            className={`role-option ${role === roleData.value ? "active" : ""}`}
-        >
-            {/* Input Radio */}
-            <input
-                type="radio"
-                name="sebagai"
-                id={roleData.id}
-                value={roleData.value}
-                onChange={() => setRole(roleData.value)}
-                checked={role === roleData.value}
-                className="hidden"
-            />
-            {/* Icon */}
-            <img
-                src={roleData.icon}
-                alt={`${roleData.label}-icon`}
-                className="role-icon"
-            />
-            {/* Label */}
-            <span className="role-label">
-                {roleData.label}
-            </span>
-        </label>
-    ))}
-</div>
+        <div className="role-selection-container">
+            <label className="role-selection-label">Daftar Sebagai</label>
+            <div className="role-selection">
+                {roles.map((roleData) => (
+                    <label
+                        key={roleData.id}
+                        className={`role-option ${role === roleData.value ? "active" : ""}`}
+                    >
+                        {/* Input Radio */}
+                        <input
+                            type="radio"
+                            name="sebagai"
+                            id={roleData.id}
+                            value={roleData.value}
+                            onChange={() => setRole(roleData.value)}
+                            checked={role === roleData.value}
+                            className="hidden"
+                        />
+                        {/* Icon */}
+                        <roleData.icon className="role-icon" />
+                        {/* Label */}
+                        <span className="role-label">{roleData.label}</span>
+                    </label>
+                ))}
+            </div>
+        </div>
     );
 };
 
