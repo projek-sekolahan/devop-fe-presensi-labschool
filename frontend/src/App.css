@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "flowbite";
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -11,11 +12,95 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+  -moz-appearance: textfield; /* Untuk Firefox */
+  -webkit-appearance: none;  /* Untuk Safari dan Chrome */
+  appearance: none;          /* Properti standar */
 }
 
 .appearance-none{
   appearance:none;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+/* Login Container */
+.login-container {
+  @apply bg-primary-low font-primary text-white relative z-[1] overflow-hidden;
+}
+
+/* Background Image */
+.login-bg-image {
+  @apply w-full h-[60vh] absolute top-0 left-0 z-0;
+  object-fit: cover;
+}
+
+/* Login Form Container */
+.login-form-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: fit-content;
+  background-color: #1976D2;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  padding: 1.5rem; /* sm:p-6 */
+  padding-top: 1.5rem;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  
+  /* Tidak ada max-width pada layar kecil dan sedang */
+  max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
+}
+
+@media (min-width: 768px) {
+  .login-form-container {
+    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
+  }
+}
+
+/* Titles and Subtitles */
+.text-title {
+  @apply font-bold text-4xl;
+}
+
+.text-subtitle {
+  @apply font-light text-xs;
+}
+
+/* Form Styles */
+.login-form {
+  @apply my-6 space-y-4 md:space-y-6;
+}
+
+.input-group {
+  @apply flex flex-col gap-2;
+}
+
+.input-label {
+  @apply text-sm font-light;
+}
+
+.input-field {
+  @apply bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4;
+  box-sizing: border-box;
+}
+
+.password-container {
+  @apply flex gap-2;
+}
+
+.text-link {
+  @apply text-sm font-light text-end;
+}
+
+/* Button Styles */
+.btn-submit {
+  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center;
+}
+
+/* Register Link */
+.text-register-link {
+  @apply font-medium underline text-white hover:underline dark:text-primary-500;
 }

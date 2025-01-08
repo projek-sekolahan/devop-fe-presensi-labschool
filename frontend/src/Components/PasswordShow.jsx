@@ -1,4 +1,4 @@
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { forwardRef } from "react";
 
 const PasswordShow = forwardRef(function PasswordShow(props, ref) {
@@ -13,8 +13,8 @@ const PasswordShow = forwardRef(function PasswordShow(props, ref) {
 						: (ref.current.type = "password");
 				}}
 			/>
-			<EyeIcon className="size-6 stroke-2 swap-off absolute" />
-			<EyeSlashIcon className="size-6 stroke-2 swap-on absolute" />
+			<FaEye className="size-6 stroke-2 swap-off absolute" />
+			<FaEyeSlash className="size-6 stroke-2 swap-on absolute" />
 		</label>
 	);
 });

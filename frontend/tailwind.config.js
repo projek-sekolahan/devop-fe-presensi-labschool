@@ -7,8 +7,9 @@ export default {
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
-        "./node_modules/flowbite-react/**/*.js",
-        "./node_modules/flowbite/**/*.js",
+        "./src/**/*.css",
+        "./node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+        "./node_modules/flowbite/**/*.{js,jsx,ts,tsx}",
     ],
     theme: {
         extend: {
@@ -16,7 +17,16 @@ export default {
                 primary: ["Inter", "sans-serif"],
             },
             colors: {
-                primary: { low: "#3F99F2", high: "#0066FF", md: "#1976D2" },
+                primary: { 
+                    low: "#3F99F2", 
+                    high: "#0066FF", 
+                    md: "#1976D2", 
+                    300: '#93C5FD',
+                    500: '#93C5FD', 
+                    600: '#2563EB',
+                    700: '#1D4ED8',
+                    800: '#1E3A8A',
+                },
                 secondary: {
                     red: "#ff0000",
                     green: "#03aa00",

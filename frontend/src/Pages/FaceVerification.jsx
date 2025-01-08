@@ -58,7 +58,7 @@ export default function FaceVerification() {
 			longitude <= coordinat.min_longitude &&
 			longitude >= coordinat.max_longitude
 		) {
-			alertMessage("success", "Done", "Anda berada di area sekolah", () =>
+			alertMessage("Done", "Anda berada di area sekolah", "success", () =>
 				navigate("/facecam", {
 					state: [
 						...state,
@@ -76,7 +76,7 @@ export default function FaceVerification() {
 				coordinat.latitude,
 				coordinat.longitude,
 			);
-			alertMessage("success", "Done", "Anda berada di area sekolah", () =>
+			alertMessage("Done", "Anda berada di area sekolah", "success", () =>
 				navigate("/facecam", {
 					state: [
 						...state,
@@ -89,7 +89,7 @@ export default function FaceVerification() {
 			);
 			// alertMessage(
 			// 	"warning",
-			// 	"",
+			// 	"Kamu Diluar Sekolah",
 			// 	`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
 			// 	() =>
 			// 		navigate("/presensi/verif", {

@@ -33,17 +33,17 @@ export default function OtpInput() {
 				res = JSON.parse(res); console.log(res.data.data.token);
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.data.token);
-				// Cookies.set("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				res.data.info == "error"
 					? alertMessage(
-							res.data.info,
 							res.data.title,
 							res.data.message,
+							res.data.info,
 						)
 					: alertMessage(
-							res.data.info,
 							res.data.title,
 							res.data.message,
+							res.data.info,
 							() => window.location.replace("/facereg"),
 						);
 			})
@@ -93,7 +93,7 @@ export default function OtpInput() {
 			.postInput("sendOTP", getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);
-				// Cookies.set("csrf", res.csrfHash);
+				Cookies.set("csrf", res.csrfHash);
 				alertMessage(
 					res.data.info,
 					res.data.title,

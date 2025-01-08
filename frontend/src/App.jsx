@@ -13,7 +13,6 @@ function App() {
     useEffect(() => {
         // Mendapatkan CSRF Token
         apiXML.getCsrf();
-
         // Memeriksa dan menetapkan cookie
         if (!Cookies.get("cookiesAccepted")) {
             Swal.fire({
@@ -21,7 +20,7 @@ function App() {
                 text: "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
                 icon: "warning",
                 allowOutsideClick: false,
-                allowEnterKey: false,
+                showConfirmButton: true,
                 allowEscapeKey: false,
             });
             Cookies.set("cookiesAccepted", "true", {

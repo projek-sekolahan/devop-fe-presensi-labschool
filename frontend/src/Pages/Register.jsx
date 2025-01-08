@@ -25,7 +25,7 @@ export default function Register() {
         const name = nameRef.current.value;
 
         if (!name || !phone || !email) {
-            alertMessage("error", "Input Error", "Semua field harus diisi.");
+            alertMessage("Input Error", "Semua field harus diisi.", "error",);
             return false;
         }
 
@@ -33,21 +33,21 @@ export default function Register() {
         const phoneRegex = /^[0-9]{10,13}$/;
 
         if (!emailRegex.test(email)) {
-            alertMessage("error", "Email Invalid", "Harap masukkan email yang valid.");
+            alertMessage("Email Invalid", "Harap masukkan email yang valid.", "error",);
             return false;
         }
 
         if (!phoneRegex.test(phone)) {
             alertMessage(
-                "error",
                 "Nomor Telepon Invalid",
-                "Harap masukkan nomor telepon yang valid (10-13 digit)."
+                "Harap masukkan nomor telepon yang valid (10-13 digit).",
+                "error",
             );
             return false;
         }
 
         if (!role) {
-            alertMessage("error", "Role Error", "Harap pilih salah satu role.");
+            alertMessage("Role Error", "Harap pilih salah satu role.", "error",);
             return false;
         }
 
@@ -74,18 +74,18 @@ export default function Register() {
         try {
             const response = await apiXML.postInput("register", getFormData(keys, values));
             const res = JSON.parse(response);
-
+            Cookies.set("csrf", res.csrfHash);
             alertMessage(
-                res.data.info,
                 res.data.title,
                 res.data.message,
+                res.data.info,
                 () =>
                     navigate(
-                        res.data.location === "register" ? "/" : `/${res.data.location}`
+                        res.data.location === "register" ? "/register" : `/${res.data.location}`
                     )
             );
         } catch (err) {
-            handleSessionError(err, "/");
+            handleSessionError(err, "/register");
         } finally {
             setIsLoading(false);
         }

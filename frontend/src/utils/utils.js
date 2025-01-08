@@ -111,14 +111,14 @@ function decrypt(param, from) {
     return JSON.parse(decryptedText);
 }
 
-export const alertMessage = (type, title, message, callback) => {
+export const alertMessage = (title, message, type, callback) => {
     Swal.close();
     Swal.fire({
         titleText: title,
         html: message,
         icon: type,
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
     }).then(() => {
         callback();
@@ -131,7 +131,7 @@ export const loading = (title, text) => {
         html: text,
         icon: "info",
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
         didOpen: () => {
             Swal.showLoading();
@@ -233,26 +233,31 @@ function clearCookies() {
     });
 }
 
+export const getCookieValue = (cookieName) => {
+    const match = document.cookie.match(new RegExp(`(?:^|; )${cookieName}=([^;]*)`));
+    return match ? decodeURIComponent(match[1]) : null;
+};
+
 export const handleSessionError = (err, location) => {
     clearCookies();
     let res = JSON.parse(err.responseText);
-
-    if (err.status == 403 || err.status == 502) {
+    console.log(err);
+    if (err.status == 400 || err.status == 401 || err.status == 403 || err.status == 502) {
         res.data
-            ? alertError(res.data.info, res.data.title, res.data.message, () =>
+            ? alertError(res.data.title, res.data.message, res.data.info, () =>
                   window.location.replace(location)
               )
             : alertError(
-                  "error",
                   "Password atau Username Salah",
                   "Periksa kembali password dan username.",
+                  "error",
                   () => window.location.replace(location)
               );
     } else {
         alertError(
-            "error",
             "Input Error",
             "Something went wrong. Please try again later.",
+            "error",
             () => window.location.replace(location)
         );
     }
@@ -260,18 +265,18 @@ export const handleSessionError = (err, location) => {
 
 export const handleSessionExpired = (data) => {
     clearCookies();
-    alertError("error", data.title, data.message, () => {
+    alertError(data.title, data.message, "error", () => {
         window.location.replace("/login");
     });
 };
 
-function alertError(type, title, message, callback) {
+function alertError(title, message, type, callback) {
     Swal.fire({
         titleText: title,
         html: message,
         icon: type,
         allowOutsideClick: false,
-        allowEnterKey: false,
+        showConfirmButton: true,
         allowEscapeKey: false,
     }).then(() => {
         callback();

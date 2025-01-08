@@ -3,6 +3,9 @@ import {
 	Cog6ToothIcon,
 	QuestionMarkCircleIcon,
 	ChevronRightIcon,
+	XMarkIcon,
+	PowerIcon,
+	ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
@@ -10,7 +13,7 @@ import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, data }) {
+export default function SideMenu({ show, userData, closeMenu }) {
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -24,7 +27,7 @@ export default function SideMenu({ show, data }) {
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Yes, logout!",
 				allowOutsideClick: false,
-				allowEnterKey: false,
+				showConfirmButton: true,
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
@@ -46,9 +49,9 @@ export default function SideMenu({ show, data }) {
 							localStorage.clear();
 							res = JSON.parse(res);
 							alertMessage(
-								"success",
 								"Logout Succesfully",
 								"You has been loged out!",
+								"success",
 								() => {
 									window.location.replace("/login");
 								},
@@ -92,50 +95,59 @@ export default function SideMenu({ show, data }) {
 					</div>
 					<div id="bio" className="absolute top-9 left-4 flex gap-2">
 						<img
-							src={data.img_location || "/default-profile.png"}
+							src={userData?.img_location || "/default-profile.png"}
 							alt="photo_profile"
 							className="size-12 rounded-full bg-white"
 						/>
 						<div className="font-normal text-base text-bg-2">
 							<h4>Halo!</h4>
-							<p>{data.nama_lengkap}</p>
+							<p>{userData?.nama_lengkap}</p>
 						</div>
+						<button
+						onClick={closeMenu}
+						className="absolute top-0 right-0 text-xl font-bold text-bg-2"
+						>
+						<XMarkIcon className="w-6 h-6 text-bg-2" />
+						</button>
 					</div>
-					<div
-						id="menu"
-						className="absolute top-40 w-[65vw] sm:w-[65%] text-primary-high flex flex-col gap-4"
-					>
-						<Link
-							to="/profile"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
-						>
-							<UserCircleIcon className="size-9" />
-							<p>Profil</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-						<Link
-							to="/setting"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center"
-						>
-							<Cog6ToothIcon className="size-9" />
-							<p>Pengaturan</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-						<Link
-							to="/bantuan"
-							className="w-full bg-bg-2 p-2 rounded-xl flex gap-2 items-center"
-						>
-							<QuestionMarkCircleIcon className="size-9" />
-							<p>Bantuan</p>
-							<ChevronRightIcon className="size-5 stroke-2 ml-auto" />
-						</Link>
-					</div>
-					<button
-						onClick={clickHandler}
-						className="btn border-none w-4/5 py-3 px-16 bg-primary-low text-center font-bold rounded-xl absolute bottom-4 left-[10%]"
-					>
-						Keluar
-					</button>
+<div
+  id="menu"
+  className="absolute top-40 w-[65vw] sm:w-[65%] text-primary-high flex flex-col gap-4"
+>
+  <Link
+    to="/profile"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <UserCircleIcon className="w-6 h-6" />
+    <p className="text-base">Profil</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="/setting"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <Cog6ToothIcon className="w-6 h-6" />
+    <p className="text-base">Pengaturan</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="/bantuan"
+    className="w-full bg-bg-2 p-2 rounded-xl flex gap-3 items-center text-base font-medium"
+  >
+    <QuestionMarkCircleIcon className="w-6 h-6" />
+    <p className="text-base">Bantuan</p>
+    <ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+  <Link
+    to="#"
+    onClick={clickHandler}
+    className="btn border-none text-white w-full p-2 bg-primary-low text-center font-bold rounded-xl mt-4 flex gap-3 items-center text-base"
+  >
+    <PowerIcon className="w-6 h-6" />
+    <p className="text-base">Logout</p>
+    <ArrowRightIcon className="w-5 h-5 stroke-2 ml-auto" />
+  </Link>
+</div>
 				</div>
 			</div>
 		</div>

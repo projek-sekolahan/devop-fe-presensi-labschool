@@ -5,31 +5,33 @@ const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 const createRequestBody = (formData) => formData.toString();
 
 export default class apiXML {
-    static csrfToken = null;
-
     /**
      * Fetch CSRF Token and cache it.
      */
     static async getCsrf() {
-        if (this.csrfToken) return this.csrfToken; // Use cached token if available
-
         try {
+            console.log("Fetching CSRF token from:", `${api_url}/view/tokenGetCsrf`);
+            
             const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
                 method: "GET",
                 credentials: "include",
             });
+            console.log("Response headers:", [...response.headers]);
+            console.log("Response status:", response.status, response.statusText);
+    
             if (!response.ok) {
-                throw new Error(`Failed to fetch CSRF token: ${response.status}`);
+                const errorText = await response.text();
+                console.error("Error response body:", errorText);
+                throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
+    
             const res = await response.json();
-            this.csrfToken = res.csrfHash;
-            Cookies.set("csrf", res.csrfHash); // Save in cookies for backup
-            return this.csrfToken;
+            Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
-            console.error("Error fetching CSRF token:", error);
+            console.log("Error fetching CSRF token:", error);
             throw error;
         }
-    }
+    }       
 
     /**
      * Generic POST request with optional timeout and authorization.
