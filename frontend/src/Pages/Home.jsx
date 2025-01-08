@@ -29,7 +29,7 @@ const Home = () => {
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true); // Aktifkan loading
-      const keys = ["AUTH_KEY", "login_token", "token"];
+      const keys = ["AUTH_KEY", "token"];
       const combinedKeys = addDefaultKeys(keys);
       
       // Ambil nilai dari localStorage dan Cookies
@@ -59,7 +59,9 @@ const Home = () => {
         localStorage.setItem("group_id", user.group_id);
         console.log("Parsed User Data:", user);
         setUserData(user); // Set state userData
-        registerToken();
+        if (!localStorage.getItem("token_registered")) {
+          registerToken();
+        }
       } else {
         console.error("No data in API response", error);
       }
@@ -74,7 +76,7 @@ const Home = () => {
 
   // Fungsi untuk mendaftarkan token ke server
   const registerToken = () => {
-    const keys = ["AUTH_KEY", "login_token", "token_fcm", "token"];
+    const keys = ["AUTH_KEY", "token_fcm", "token"];
     const combinedKeys = addDefaultKeys(keys);
     const values = combinedKeys.map((key) => {
         let value = localStorage.getItem(key);
