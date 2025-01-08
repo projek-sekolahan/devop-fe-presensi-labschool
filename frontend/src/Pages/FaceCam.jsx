@@ -74,14 +74,21 @@ export default function FaceCam() {
     const loadFaceModels = async () => {
         console.log("loading model");
         const MODEL_URL = "/models";
-        await Promise.all([
-            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        ]).then(() => {
+        try {
+            await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+            console.log("tinyFaceDetector loaded");
+
+            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+            console.log("faceLandmark68Net loaded");
+
+            await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+            console.log("faceRecognitionNet loaded");
+
             console.log("finished loaded model");
             startVideo();
-        });
+        } catch (error) {
+            console.error("Error loading models:", error);
+        }
     };
 
     const startVideo = () => {
