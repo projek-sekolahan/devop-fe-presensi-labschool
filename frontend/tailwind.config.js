@@ -20,7 +20,8 @@ export default {
                 primary: { 
                     low: "#3F99F2", 
                     high: "#0066FF", 
-                    md: "#1976D2", 
+                    md: "#1976D2",
+                    dark: '#123456',
                     300: '#93C5FD',
                     500: '#93C5FD', 
                     600: '#2563EB',
