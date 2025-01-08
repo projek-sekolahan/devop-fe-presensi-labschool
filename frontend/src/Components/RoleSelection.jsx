@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
+import { PiChalkboardTeacherFill, PiStudentFill, PiUserSquareFill  } from "react-icons/pi";
 
 const RoleSelection = ({ role, setRole }) => {
     const roles = [
-        { id: "siswa", value: "4", icon: "/frontend/Icons/student.svg", label: "Siswa" },
-        { id: "guru", value: "5", icon: "/frontend/Icons/teacher.svg", label: "Guru" },
-        { id: "karyawan", value: "6", icon: "/frontend/Icons/employee.svg", label: "Karyawan" },
+        { id: "siswa", value: "4", icon: PiStudentFill, label: "Siswa" },
+        { id: "guru", value: "5", icon: PiChalkboardTeacherFill, label: "Guru" },
+        { id: "karyawan", value: "6", icon: PiUserSquareFill, label: "Karyawan" },
     ];
 
     return (
