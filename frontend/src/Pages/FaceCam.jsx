@@ -21,6 +21,7 @@ export default function FaceCam() {
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
+    const [isLoading, setIsLoading] = useState(false);
     // console.log(localStorage.getItem("token"));
     // return false;
     let userData = {};
@@ -70,26 +71,6 @@ export default function FaceCam() {
             ...state,
         ];
     }
-
-    /* const loadFaceModels = async () => {
-        console.log("loading model");
-        const MODEL_URL = "/models";
-        try {
-            await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-            console.log("tinyFaceDetector loaded");
-
-            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-            console.log("faceLandmark68Net loaded");
-
-            await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-            console.log("faceRecognitionNet loaded");
-
-            console.log("finished loaded model");
-            startVideo();
-        } catch (error) {
-            console.error("Error loading models:", error);
-        }
-    }; */
 
     const startVideo = () => {
         navigator.mediaDevices
@@ -172,9 +153,11 @@ export default function FaceCam() {
     const detectFace = () => {
         let attempts = 0; // Menghitung jumlah upaya deteksi
         const maxAttempts = 20; // Maksimal upaya deteksi yang diizinkan
+        setIsLoading(true);
 
         async function attemptMatch() {
             if (attempts >= maxAttempts) {
+                setIsLoading(false); // Nonaktifkan loading jika sudah melebihi batas percobaan
                 alertMessage(
                     "Deteksi Gagal",
                     "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
@@ -200,9 +183,7 @@ export default function FaceCam() {
                     );
 
                     if (distance <= 0.6) {
-                        const stringDescriptor = Array.from(
-                            faceData.descriptor
-                        ).join(", ");
+                        const stringDescriptor = Array.from(faceData.descriptor).join(", ");
                         values.push(
                             stringDescriptor,
                             `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
@@ -211,7 +192,6 @@ export default function FaceCam() {
                         );
                         Swal.close();
                         loading("Loading", "Mengirim data presensi...");
-                        // console.log(getFormData(combinedKeys, values)); return false;
                         apiXML
                             .presensiPost(
                                 "process",
@@ -227,13 +207,18 @@ export default function FaceCam() {
                                     parsedToken.title,
                                     parsedToken.message,
                                     parsedToken.info,
-                                    () => window.location.replace("/home")
+                                    () => {
+                                        setIsLoading(false); // Nonaktifkan loading setelah selesai
+                                        window.location.replace("/home");
+                                    }
                                 );
                             })
                             .catch((err) => {
+                                setIsLoading(false); // Nonaktifkan loading jika terjadi error
                                 handleSessionError(err, "/facecam");
                             });
                     } else {
+                        setIsLoading(false); // Nonaktifkan loading jika pencocokan gagal
                         alertMessage(
                             "Pencocokan Gagal",
                             "Wajah tidak terdaftar, harap ulangi proses",
@@ -241,13 +226,16 @@ export default function FaceCam() {
                         );
                     }
                 } else {
-                    setTimeout(attemptMatch, 100);
+                    setTimeout(attemptMatch, 100); // Coba lagi jika wajah belum terdeteksi
                 }
             } catch (err) {
+                setIsLoading(false); // Nonaktifkan loading jika terjadi error
                 handleSessionError(err, "/login");
             }
         }
+
         attemptMatch();
+
     };
 
     return (
@@ -296,8 +284,9 @@ export default function FaceCam() {
                                 <button
                                     className="btn bg-secondary-green"
                                     onClick={detectFace}
+                                    disabled={isLoading} // Nonaktifkan tombol jika sedang loading
                                 >
-                                    Proses
+                                    {isLoading ? "Loading..." : "Proses"}
                                 </button>
                             </form>
                         </div>
