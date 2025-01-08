@@ -30,7 +30,7 @@ input[type=number] {
 
 /* Background Image */
 .login-bg-image {
-  @apply w-full h-[50vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
+  @apply w-full h-[60vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
   object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
 }
 
@@ -92,7 +92,7 @@ input[type=number] {
 
 /* Styling untuk Password Input */
 .password-container {
-  @apply flex gap-2 items-center;
+  @apply flex gap-2;
 }
 
 /* Text Link */
@@ -108,13 +108,16 @@ input[type=number] {
 
 /* Role Selection Container */
 .role-selection {
-  @apply flex flex-wrap justify-center gap-4 sm:gap-8; /* Responsif untuk berbagai ukuran layar */
+  @apply flex justify-between items-center gap-4 w-full; 
+  /* Menjadikan ikon sejajar (inline) dengan jarak yang proporsional */
 }
 
 /* Role Option */
 .role-option {
-  @apply flex flex-col items-center gap-2 cursor-pointer p-4 border border-gray-300 rounded-xl transition-transform hover:scale-105; 
-  /* Menambahkan hover efek dan lebih banyak padding untuk proporsional */
+  @apply flex flex-col items-center cursor-pointer p-4 border border-gray-300 rounded-lg transition-transform hover:scale-105;
+  /* Ikon tetap vertikal dan terlihat proporsional */
+  flex-basis: calc(100% / 4 - 1rem); /* Membagi setiap role menjadi 1/4 lebar container (untuk 4 role), dengan jarak antar elemen */
+  max-width: 100px; /* Menentukan ukuran maksimal untuk konsistensi */
 }
 
 /* Active Role */
@@ -125,16 +128,30 @@ input[type=number] {
 
 /* Role Icon */
 .role-icon {
-  @apply w-[80px] h-[80px] rounded-[20px] bg-white; 
-  /* Menentukan ukuran ikon agar konsisten */
+  @apply w-12 h-12 rounded-full bg-white object-cover; /* Ikon bulat dengan ukuran proporsional */
 }
 
 /* Role Label */
 .role-label {
-  @apply text-base font-medium text-center; 
-  /* Menjadikan label lebih menonjol dan mudah dibaca */
+  @apply text-sm font-medium mt-2 text-center truncate; /* Label dengan ukuran kecil dan terpusat */
 }
 
-.role-label.active {
-  @apply text-blue-400; /* Warna label berubah jika aktif */
+/* Password Toggle */
+.password-toggle {
+  @apply flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg w-10 h-10;
+  cursor: pointer; /* Menambahkan interaktivitas */
+}
+
+/* Icon Default */
+.password-icon-eye-slash {
+  @apply text-gray-500; /* Warna default ikon */
+}
+
+/* Icon Saat Checkbox Dicentang */
+.password-toggle input:checked ~ .password-icon-eye {
+  @apply block; /* Tampilkan ikon mata */
+}
+
+.password-toggle input:checked ~ .password-icon-eye-slash {
+  @apply hidden; /* Sembunyikan ikon mata yang tertutup */
 }

@@ -28,16 +28,10 @@ const RoleSelection = ({ role, setRole }) => {
             <img
                 src={roleData.icon}
                 alt={`${roleData.label}-icon`}
-                className={`role-icon ${
-                    role === roleData.value ? "ring-4 ring-blue-400" : ""
-                }`}
+                className="role-icon"
             />
             {/* Label */}
-            <span
-                className={`role-label ${
-                    role === roleData.value ? "active" : ""
-                }`}
-            >
+            <span className="role-label">
                 {roleData.label}
             </span>
         </label>
