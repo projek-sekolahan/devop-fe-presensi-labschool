@@ -48,6 +48,7 @@ export default function Riwayat() {
         if (key === "csrf_token" && !value) {
             value = Cookies.get("csrf");
         }
+        if (key === "token") value = localStorage.getItem("login_token");
         if (key === "table" && !value) {
             value = "tab-presensi";
         }
