@@ -76,7 +76,7 @@ input[type=number] {
 
 /* Input Group */
 .input-group {
-  @apply flex flex-col gap-3; /* Menambahkan jarak antar input untuk keterbacaan yang lebih baik */
+  @apply flex flex-col gap-2; /* Menambahkan jarak antar input untuk keterbacaan yang lebih baik */
 }
 
 /* Input Label */
@@ -92,7 +92,7 @@ input[type=number] {
 
 /* Styling untuk Password Input */
 .password-container {
-  @apply flex gap-2 items-center w-full mt-2;
+  @apply flex gap-2 items-center;
 }
 
 /* Text Link */
@@ -104,9 +104,4 @@ input[type=number] {
 .btn-submit {
   @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-4;
   transition: background-color 0.3s ease; /* Menambahkan transisi untuk perubahan warna background */
-}
-
-/* Register Link */
-.text-register-link {
-  @apply font-medium underline text-white hover:underline dark:text-primary-500 mt-4 block text-center;
 }
