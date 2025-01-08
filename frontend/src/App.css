@@ -30,7 +30,7 @@ input[type=number] {
 
 /* Background Image */
 .login-bg-image {
-  @apply w-full h-[100vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
+  @apply w-full h-[50vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
   object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
 }
 
@@ -104,4 +104,37 @@ input[type=number] {
 .btn-submit {
   @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-4;
   transition: background-color 0.3s ease; /* Menambahkan transisi untuk perubahan warna background */
+}
+
+/* Role Selection Container */
+.role-selection {
+  @apply flex flex-wrap justify-center gap-4 sm:gap-8; /* Responsif untuk berbagai ukuran layar */
+}
+
+/* Role Option */
+.role-option {
+  @apply flex flex-col items-center gap-2 cursor-pointer p-4 border border-gray-300 rounded-xl transition-transform hover:scale-105; 
+  /* Menambahkan hover efek dan lebih banyak padding untuk proporsional */
+}
+
+/* Active Role */
+.role-option.active {
+  @apply bg-primary-md text-white ring-4 ring-blue-400; 
+  /* Menambahkan efek "ring" untuk role yang aktif */
+}
+
+/* Role Icon */
+.role-icon {
+  @apply w-[80px] h-[80px] rounded-[20px] bg-white; 
+  /* Menentukan ukuran ikon agar konsisten */
+}
+
+/* Role Label */
+.role-label {
+  @apply text-base font-medium text-center; 
+  /* Menjadikan label lebih menonjol dan mudah dibaca */
+}
+
+.role-label.active {
+  @apply text-blue-400; /* Warna label berubah jika aktif */
 }

@@ -161,7 +161,7 @@ export default function Login() {
         {/* Forgot Password and Register Link */}
         <div className="flex justify-between items-center text-sm">
             <Link to="/register" className="text-link">
-                Belum memiliki akun?
+                Belum Punya Akun?
             </Link>
             <Link to="/recover" className="text-link">
                 Lupa password?

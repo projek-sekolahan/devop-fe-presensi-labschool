@@ -3,159 +3,218 @@ import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 import apiXML from "../utils/apiXML.js";
 import {
-    getFormData,
-    alertMessage,
-    loading,
-    handleSessionError,
+  getFormData,
+  alertMessage,
+  loading,
+  handleSessionError,
 } from "../utils/utils";
 import RoleSelection from "../Components/RoleSelection";
 import InputField from "../Components/InputField";
 
+// Constants for validation
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[0-9]{10,13}$/;
+const FORM_KEYS = ["username", "phone", "namaLengkap", "sebagai", "csrf_token"];
+
 export default function Register() {
-    const [role, setRole] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const nameRef = useRef();
-    const numberRef = useRef();
-    const emailRef = useRef();
-    const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const nameRef = useRef();
+  const numberRef = useRef();
+  const emailRef = useRef();
+  const navigate = useNavigate();
 
-    const validateInput = () => {
-        const email = emailRef.current.value;
-        const phone = numberRef.current.value;
-        const name = nameRef.current.value;
+  // Helper function for field validation
+  const validateField = (value, type) => {
+    if (!value) {
+      return `${type} tidak boleh kosong.`;
+    }
 
-        if (!name || !phone || !email) {
-            alertMessage("Input Error", "Semua field harus diisi.", "error",);
-            return false;
-        }
+    if (type === "email" && !EMAIL_REGEX.test(value)) {
+      return "Harap masukkan email yang valid.";
+    }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^[0-9]{10,13}$/;
+    if (type === "phone" && !PHONE_REGEX.test(value)) {
+      return "Harap masukkan nomor telepon yang valid (10-13 digit).";
+    }
 
-        if (!emailRegex.test(email)) {
-            alertMessage("Email Invalid", "Harap masukkan email yang valid.", "error",);
-            return false;
-        }
+    return null;
+  };
 
-        if (!phoneRegex.test(phone)) {
-            alertMessage(
-                "Nomor Telepon Invalid",
-                "Harap masukkan nomor telepon yang valid (10-13 digit).",
-                "error",
-            );
-            return false;
-        }
+  // Helper function for role validation
+  const validateRole = (selectedRole) => {
+    if (!selectedRole) {
+      return "Harap pilih salah satu role.";
+    }
+    return null;
+  };
 
-        if (!role) {
-            alertMessage("Role Error", "Harap pilih salah satu role.", "error",);
-            return false;
-        }
+  // Validate form inputs
+  const validateForm = () => {
+    const nameError = validateField(nameRef.current.value, "Nama");
+    const phoneError = validateField(numberRef.current.value, "Nomor Telepon");
+    const emailError = validateField(emailRef.current.value, "Email");
+    const roleError = validateRole(role);
 
-        return true;
-    };
+    if (nameError || phoneError || emailError || roleError) {
+      alertMessage(
+        "Input Error",
+        nameError || phoneError || emailError || roleError,
+        "error"
+      );
+      return false;
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    return true;
+  };
 
-        if (!validateInput()) return;
+  // Helper function for registration process
+  const processRegister = async (formData) => {
+    try {
+      const response = await apiXML.postInput("register", formData);
+      const res = JSON.parse(response);
 
-        setIsLoading(true);
-        loading("Loading", "Registering...");
+      // Save CSRF token
+      Cookies.set("csrf", res.csrfHash);
 
-        const keys = ["username", "phone", "namaLengkap", "sebagai", "csrf_token"];
-        const values = [
-            emailRef.current.value,
-            numberRef.current.value,
-            nameRef.current.value,
-            role,
-            Cookies.get("csrf"),
-        ];
+      // Show success message and navigate
+      alertMessage(
+        res.data.title,
+        res.data.message,
+        res.data.info,
+        () =>
+          navigate(
+            res.data.location === "register" ? "/register" : `/${res.data.location}`
+          )
+      );
+    } catch (err) {
+      handleSessionError(err, "/register");
+    }
+  };
 
-        try {
-            const response = await apiXML.postInput("register", getFormData(keys, values));
-            const res = JSON.parse(response);
-            Cookies.set("csrf", res.csrfHash);
-            alertMessage(
-                res.data.title,
-                res.data.message,
-                res.data.info,
-                () =>
-                    navigate(
-                        res.data.location === "register" ? "/register" : `/${res.data.location}`
-                    )
-            );
-        } catch (err) {
-            handleSessionError(err, "/register");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    loading("Loading", "Registering...");
+
+    const values = [
+      emailRef.current.value,
+      numberRef.current.value,
+      nameRef.current.value,
+      role,
+      Cookies.get("csrf"),
+    ];
+    const formData = getFormData(FORM_KEYS, values);
+
+    try {
+      await processRegister(formData);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
     return (
-        <div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative">
-            <h1 className="text-center mt-16 text-4xl font-bold text-white">Register</h1>
-            <small className="text-center text-xs font-medium text-white mt-1">
-                Selamat datang!
-            </small>
-            <div className="w-full h-fit bg-primary-md rounded-t-[2rem] absolute bottom-0 left-0 p-4 pb-8">
-                <form onSubmit={handleSubmit} className="w-full p-6 flex flex-col gap-2">
-                    <RoleSelection role={role} setRole={setRole} />
-                    <div className="space-y-4 md:space-y-6 flex flex-col gap-2">
-                        <InputField
-                            id="name"
-                            name="namaLengkap"
-                            placeholder="Nama Lengkap"
-                            ref={nameRef}
-                        />
-                        <InputField
-                            id="number"
-                            name="phone"
-                            placeholder="No. Telepon"
-                            ref={numberRef}
-                        />
-                        <InputField
-                            id="username"
-                            type="email"
-                            name="username"
-                            placeholder="Email"
-                            ref={emailRef}
-                        />
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={`btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center ${
-                                isLoading ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
-                        >
-                            {isLoading ? (
-                                <div className="flex justify-center items-center gap-2">
-                                    <p className="text-white">Loading</p>
-                                    <span className="loading loading-spinner text-white"></span>
-                                </div>
-                            ) : (
-                                "Create my account"
-                            )}
-                        </button>
-                    </div>
-                    <div
-                        id="line"
-                        className="w-full border-t-[0.25px] border-white h-0 relative top-4"
-                    >
-                        <p className="absolute text-center left-[calc(50%-1.25rem)] top-[-0.85rem] z-10 text-white bg-primary-md w-10">
-                            or
-                        </p>
-                    </div>
-                </form>
-                <p className="text-center text-sm font-light text-white mt-5">
-                    Sudah memiliki akun?{" "}
-                    <Link
-                        to="/login"
-                        className="font-medium underline text-white hover:underline"
-                    >
-                        Login
-                    </Link>
-                </p>
+    <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+        {/* Background Image */}
+        <img
+            src="/frontend/img/login.png"
+            alt="labschool-unesa-logo"
+            className="login-bg-image"
+        />
+
+        {/* Register Form */}
+        <div className="login-form-container shadow-md">
+            <h2 className="text-title text-center">Daftar Akun</h2>
+            <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
+            <form
+                className="login-form"
+                onSubmit={handleSubmit}
+            >
+                {/* Role Selection */}
+                <RoleSelection role={role} setRole={setRole} />
+
+                {/* Name Input */}
+                <div className="input-group">
+                    <label htmlFor="name" className="input-label">
+                        Nama Lengkap
+                    </label>
+                    <InputField
+                        type="text"
+                        name="namaLengkap"
+                        id="name"
+                        ref={nameRef}
+                        placeholder="Nama Lengkap"
+                        required
+                    />
+                </div>
+
+                {/* Phone Input */}
+                <div className="input-group">
+                    <label htmlFor="number" className="input-label">
+                        No Whatsapp
+                    </label>
+                    <InputField
+                        type="tel"
+                        name="phone"
+                        id="number"
+                        ref={numberRef}
+                        placeholder="No Whatsapp"
+                        required
+                    />
+                </div>
+
+                {/* Email Input */}
+                <div className="input-group">
+                    <label htmlFor="username" className="input-label">
+                        Email
+                    </label>
+                    <InputField
+                        type="email"
+                        name="username"
+                        id="username"
+                        ref={emailRef}
+                        placeholder="Email"
+                        autoComplete="username"
+                        required
+                    />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className={`btn-submit ${
+                        isLoading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                >
+                    {isLoading ? (
+                        <div className="flex justify-center items-center gap-2">
+                            <p className="text-white">Loading</p>
+                            <span className="loading loading-spinner text-white"></span>
+                        </div>
+                    ) : (
+                        "Create Account"
+                    )}
+                </button>
+            </form>
+
+            {/* Separator with Clickable Text */}
+            <div className="flex items-center gap-2 w-full mt-4">
+                <div className="flex-grow border-t-[0.25px] border-white"></div>
+                <Link
+                    to="/login"
+                    className="text-sm font-light text-white underline hover:underline"
+                >
+                    Sudah Punya Akun?
+                </Link>
+                <div className="flex-grow border-t-[0.25px] border-white"></div>
             </div>
+
         </div>
+    </div>
     );
 }
