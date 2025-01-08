@@ -129,7 +129,7 @@ input[type=number] {
 
 /* Role Label */
 .role-label {
-  @apply text-sm font-medium text-center; /* Label dengan ukuran kecil dan terpusat */
+  @apply text-sm font-medium item-center text-center; /* Label dengan ukuran kecil dan terpusat */
 }
 
 /* Password Toggle */

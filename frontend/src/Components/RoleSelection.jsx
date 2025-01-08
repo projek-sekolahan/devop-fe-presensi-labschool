@@ -27,7 +27,7 @@ const RoleSelection = ({ role, setRole }) => {
                     className="hidden"
                 />
                 {/* Icon */}
-                <roleData.icon className="role-icon" />
+                {React.createElement(roleData.icon, { className: "role-icon" })}
                 {/* Label */}
                 <span className="role-label">{roleData.label}</span>
             </label>
