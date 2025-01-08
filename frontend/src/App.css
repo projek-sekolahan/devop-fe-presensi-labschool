@@ -30,8 +30,8 @@ input[type=number] {
 
 /* Background Image */
 .login-bg-image {
-  @apply w-full h-[60vh] absolute top-0 left-0 z-0;
-  object-fit: cover;
+  @apply w-full h-[100vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
+  object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
 }
 
 /* Login Form Container */
