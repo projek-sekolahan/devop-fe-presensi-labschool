@@ -37,13 +37,13 @@ export default function CardRiwayat({ index, history, biodata }) {
                     localStorage.getItem("AUTH_KEY"),
                     getFormData(combinedKeys, values)
                 )
-                .then((res) => {
+                .then((res) => { console.log(res)
                     res = JSON.parse(res);
                     Cookies.set("csrf", res.csrfHash);
                     setDatas(parseJwt(res.data.token).result);
                     setLoading(false);
                 })
-                .catch((e) => {
+                .catch((e) => { console.log(e)
                     const res = JSON.parse(e.responseText);
                     Cookies.set("csrf", res.csrfHash);
                     setLoading(false);

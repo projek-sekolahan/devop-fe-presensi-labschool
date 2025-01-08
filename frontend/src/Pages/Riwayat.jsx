@@ -68,7 +68,7 @@ export default function Riwayat() {
                 localStorage.getItem("AUTH_KEY"),
                 getFormData(combinedKeys, values)
             )
-            .then((res) => {
+            .then((res) => { console.log(res)
                 res = JSON.parse(res);
                 Cookies.set("csrf", res.csrfHash);
                 const parsedToken = parseJwt(res.data.token);
