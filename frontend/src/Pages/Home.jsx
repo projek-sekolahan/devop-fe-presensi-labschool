@@ -29,14 +29,14 @@ const getCombinedValues = (keys) => {
     return value;
   });
 };
-console.log(combinedKeys,value); return false;
+
 const Home = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const closeMenu = () => setShow(false);
-
+  console.log(combinedKeys,value); return false;
   // Fetch user data
   const fetchUserData = useCallback(async () => {
     try {
