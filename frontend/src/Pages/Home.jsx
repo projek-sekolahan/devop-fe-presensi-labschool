@@ -41,7 +41,7 @@ const Home = () => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-      console.log(addDefaultKeys(AUTH_KEYS), values); // return false;
+      
       const response = await apiXML.usersPost(
         "profile",
         values[0],
@@ -50,6 +50,7 @@ const Home = () => {
       const res = JSON.parse(response);
 
       if (res?.data) {
+        console.log(addDefaultKeys(AUTH_KEYS), values); return false;
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
 
