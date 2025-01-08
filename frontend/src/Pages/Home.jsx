@@ -29,7 +29,7 @@ const getCombinedValues = (keys) => {
     return value;
   });
 };
-
+console.log(combinedKeys,value); return false;
 const Home = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -46,7 +46,7 @@ const Home = () => {
       const response = await apiXML.usersPost(
         "profile",
         values[0],
-        getFormData(AUTH_KEYS, values)
+        getFormData(combinedKeys, values)
       );
       const res = JSON.parse(response);
 
