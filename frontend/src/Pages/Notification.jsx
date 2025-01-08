@@ -75,15 +75,15 @@ export default function Notification() {
 		apiXML
 			.notificationsPost(
 				'detail',
-				localStorage.getItem("login_token"),
+				localStorage.getItem("AUTH_KEY"),
 				getFormData(combinedKeys, values),
 			)
-			.then((res) => {
+			.then((res) => { console.log(res)
 				res = JSON.parse(res);
 				setData(parseJwt(res.data));
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
-			}).catch((err) => {
+			}).catch((err) => { console.log(err)
 				err = JSON.parse(err.responseText);
 				setData(err.data);
 				Cookies.set("csrf", err.csrfHash);
