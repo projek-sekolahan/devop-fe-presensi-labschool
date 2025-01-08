@@ -80,7 +80,8 @@ export default function Login() {
         const passwordValue = passwordRef.current.value;
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
-
+        // Mendapatkan CSRF Token
+        apiXML.getCsrf();
         const values = [emailValue, hash, tokenKey[1], Cookies.get(CSRF_KEY)];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
 

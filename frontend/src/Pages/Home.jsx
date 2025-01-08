@@ -52,7 +52,7 @@ const Home = () => {
       if (res?.data) {
         console.log('response profile ', res); // return false;
         localStorage.setItem("token", res.data.token);
-        // Cookies.set("csrf", res.csrfHash);
+        Cookies.set("csrf", res.csrfHash);
 
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
