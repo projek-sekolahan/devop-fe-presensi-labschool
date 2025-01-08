@@ -64,8 +64,8 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error saat mengambil data pengguna:", error);
-      console.log(error.status);
-      handleSessionError(error, "/login");
+      clocalStorage.clear();
+      Cookies.remove();
     } finally {
       setLoading(false); // Matikan loading
     }
