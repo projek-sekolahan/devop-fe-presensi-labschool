@@ -22,12 +22,12 @@ export default function FaceCam() {
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
-    console.log(localStorage.getItem("token")); 
+    // console.log(localStorage.getItem("token")); 
     // return false;
     let userData = {};
     if (localStorage.getItem("token")) {
         userData = parseJwt(localStorage.getItem("token"));
-        console.log(userData);
+        console.log('Info Userdata pada halaman facecam',userData);
         // return false;
     } else {
         window.location.replace("/login");
