@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
     getFormData,
-    getFaceUrl,
     loading,
     alertMessage,
     handleSessionError,
@@ -36,9 +35,10 @@ export default function FaceCam() {
     const descriptor = new Float32Array(userData.facecam_id.split(", "));
 
     useEffect(() => {
-        const init = () => {
+        const init = async () => {
             loading("Loading", "Getting camera access...");
-            loadFaceModels();
+            await loadFaceModels(); // Load face models sebelum memulai video
+            startVideo();
         };
 
         init();
@@ -71,7 +71,7 @@ export default function FaceCam() {
         ];
     }
 
-    const loadFaceModels = async () => {
+    /* const loadFaceModels = async () => {
         console.log("loading model");
         const MODEL_URL = "/models";
         try {
@@ -89,7 +89,7 @@ export default function FaceCam() {
         } catch (error) {
             console.error("Error loading models:", error);
         }
-    };
+    }; */
 
     const startVideo = () => {
         navigator.mediaDevices
