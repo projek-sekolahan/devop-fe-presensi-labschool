@@ -129,7 +129,7 @@ export default function SetPassword() {
 								<span className="loading loading-spinner text-white"></span>
 							</div>
 						) : (
-							'Set Password'
+							'Konfirmasi'
 						)}
 					</button>
 				</form>

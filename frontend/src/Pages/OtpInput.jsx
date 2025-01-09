@@ -119,7 +119,7 @@ export default function OtpInput() {
 			<div className="verification-form-container shadow-md">
 				<h2 className="text-title text-center">Email Verification</h2>
 				<p className="text-sm text-center">
-					Masukkan kode verifikasi yang telah dikirim ke alamat email Anda
+				Cek Email Anda (Masukkan Kode OTP)
 				</p>
 				<form ref={formRef} className="verification-form">
 					{/* OTP Input Fields */}
@@ -141,12 +141,12 @@ export default function OtpInput() {
 
 					{/* Resend OTP Text */}
 					<p className="text-center font-light text-xs">
-						Tidak menerima kode verifikasi?{' '}
+						Tidak Menerima Kode OTP?{' '}
 						<span
 							className="text-link resend-otp text-center font-bold cursor-pointer"
 							onClick={sendOtpAgain}
 						>
-							Klik di sini
+							Klik Disini
 						</span>
 					</p>
 
