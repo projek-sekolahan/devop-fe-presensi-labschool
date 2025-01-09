@@ -40,11 +40,12 @@ body {
 /* Background Image */
 .bg-image {
   position: fixed;
-  top: 20px; /* Anda bisa mengatur nilai top sesuai kebutuhan */
-  left: 85px; /* Mengatur posisi gambar ke 85% dari lebar kontainer */
+  top: 0; /* Mulai dari atas halaman */
+  left: 0;
+  width: 100%; /* Pastikan gambar mengisi seluruh lebar */
+  height: calc(100vh - var(--form-height)); /* Menghitung tinggi berdasarkan form container */
   z-index: 0; /* Menempatkan gambar di bawah konten lain */
-  object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
-  margin-top: calc(100vh - 200px); /* Menyesuaikan jarak otomatis berdasarkan tinggi form-container */
+  object-fit: cover; /* Menjaga gambar tetap proporsional */
 }
 
 /* Form Container */
@@ -54,6 +55,7 @@ body {
 .verification-form-container, 
 .confirmation-form-container, 
 .capture-form-container {
+  --form-height: 200px; /* Tinggi default form container */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -67,7 +69,7 @@ body {
   position: fixed;
   bottom: 0;
   z-index: 10;
-  max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
+  max-width: none; /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
 }
 
 /* Responsif untuk Smartphone */
