@@ -4,7 +4,7 @@ import {
     ChevronUpIcon,
     ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardRiwayat from "../Components/CardRiwayat";
 import {
     parseJwt,
@@ -21,71 +21,92 @@ export default function Riwayat() {
     const [historys, setHistorys] = useState(null);
     const [load, setLoad] = useState(true);
 
-    let userData = {};
+    const userToken = localStorage.getItem("token");
+    const userData = userToken ? parseJwt(userToken) : null;
 
-    if (localStorage.getItem("token")) {
-        userData = parseJwt(localStorage.getItem("token"));
-    } else {
-        window.location.replace("/login");
-    }
-
-    userData = parseJwt(localStorage.getItem("token"));
-
-    window.addEventListener("click", (e) => {
-        const dropdown = document.getElementById("dropdown");
-        const dropdownContent = document.getElementById("dropdown-content");
-        if (!dropdown.contains(e.target) && swapButton[0] == "off") {
-            dropdownContent.classList.add("hidden");
-            setSwapButton(["on", "off"]);
+    useEffect(() => {
+        if (!userToken) {
+            window.location.replace("/login");
         }
-    });
+    }, [userToken]);
 
-    const keys = ["AUTH_KEY", "token", "table", "key"];
-    const combinedKeys = addDefaultKeys(keys);
-    // Fetch values from localStorage and Cookies
-    let values = combinedKeys.map((key) => {
-        let value = localStorage.getItem(key);
-        if (key === "csrf_token" && !value) {
-            value = Cookies.get("csrf");
-        }
-        if (key === "token") value = localStorage.getItem("login_token");
-        if (key === "table" && !value) {
-            value = "tab-presensi";
-        }
-        if (key === "key" && !value) {
-            if (filter === "7 Hari") {
-                value = "7 DAY";
-            } else {
-                value = "14 DAY";
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            const dropdown = document.getElementById("dropdown");
+            const dropdownContent = document.getElementById("dropdown-content");
+
+            if (
+                dropdown &&
+                dropdownContent &&
+                !dropdown.contains(e.target) &&
+                swapButton[0] === "off"
+            ) {
+                dropdownContent.classList.add("hidden");
+                setSwapButton(["on", "off"]);
             }
-        }
-        return value;
-    });
-    !historys &&
-        load &&
-        apiXML
-            .presensiPost(
-                "reports",
-                localStorage.getItem("AUTH_KEY"),
-                getFormData(combinedKeys, values)
-            )
-            .then((res) => {
-                res = JSON.parse(res);
-                Cookies.set("csrf", res.csrfHash);
-                const parsedToken = parseJwt(res.data.token);
-                setHistorys(parsedToken.data);
-                setLoad(false);
-            })
-            .catch((err) => {
-                err = JSON.parse(err);
-                if (err.status == 500) {
+        };
+
+        window.addEventListener("click", handleClickOutside);
+
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        };
+    }, [swapButton]);
+
+    const fetchHistory = () => {
+        const keys = ["AUTH_KEY", "token", "table", "key"];
+        const combinedKeys = addDefaultKeys(keys);
+
+        const values = combinedKeys.map((key) => {
+            let value = localStorage.getItem(key);
+            if (key === "csrf_token" && !value) {
+                value = Cookies.get("csrf");
+            }
+            if (key === "token") value = localStorage.getItem("login_token");
+            if (key === "table" && !value) {
+                value = "tab-presensi";
+            }
+            if (key === "key" && !value) {
+                value = filter === "7 Hari" ? "7 DAY" : "14 DAY";
+            }
+            return value;
+        });
+
+        if (!historys && load) {
+            apiXML
+                .presensiPost(
+                    "reports",
+                    localStorage.getItem("AUTH_KEY"),
+                    getFormData(combinedKeys, values)
+                )
+                .then((res) => {
+                    const parsedRes = JSON.parse(res);
+                    Cookies.set("csrf", parsedRes.csrfHash);
+                    const parsedToken = parseJwt(parsedRes.data.token);
+                    setHistorys(parsedToken.data);
                     setLoad(false);
-                    setHistorys("no data found");
-                    console.log("no data found");
-                } else {
-                    handleSessionError(err, "/login");
-                }
-            });
+                })
+                .catch((err) => {
+                    const parsedErr = JSON.parse(err);
+                    if (parsedErr.status === 500) {
+                        setLoad(false);
+                        setHistorys([]);
+                        console.log("No data found.");
+                    } else {
+                        handleSessionError(parsedErr, "/login");
+                    }
+                });
+        }
+    };
+
+    useEffect(fetchHistory, [historys, load, filter]);
+
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+        setSwapButton(["on", "off"]);
+        setHistorys(null);
+        setLoad(true);
+    };
 
     return (
         <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
@@ -93,7 +114,6 @@ export default function Riwayat() {
                 <Link to="/home" className="absolute top-5">
                     <ArrowLeftIcon className="size-7" />
                 </Link>
-
                 <h2 className="text-[2.125rem] font-bold absolute bottom-5">
                     Riwayat Presensi
                 </h2>
@@ -102,52 +122,37 @@ export default function Riwayat() {
                 <div id="dropdown" className="w-fit mt-[-1.5rem]">
                     <button
                         className="btn m-1 ml-0 bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
-                        onClick={() => {
-                            swapButton[0] == "on"
-                                ? setSwapButton(["off", "on"])
-                                : setSwapButton(["on", "off"]);
-                        }}
+                        onClick={() =>
+                            setSwapButton((prev) =>
+                                prev[0] === "on" ? ["off", "on"] : ["on", "off"]
+                            )
+                        }
                     >
                         <p>{filter}</p>
                         <ChevronDownIcon
                             className={`${
-                                swapButton[0] == "on" ? "" : "hidden"
+                                swapButton[0] === "on" ? "" : "hidden"
                             } size-5`}
                         />
                         <ChevronUpIcon
                             className={`${
-                                swapButton[1] == "on" ? "" : "hidden"
+                                swapButton[1] === "on" ? "" : "hidden"
                             } size-5`}
                         />
                     </button>
                     <ul
-                        tabIndex={0}
                         id="dropdown-content"
                         className={`${
-                            swapButton[0] == "off" ? "" : "hidden"
+                            swapButton[0] === "off" ? "" : "hidden"
                         } absolute z-[1] menu p-2 shadow bg-white rounded-box w-52`}
                     >
                         <li>
-                            <button
-                                onClick={() => {
-                                    setFilter("7 Hari");
-                                    setSwapButton(["on", "off"]);
-                                    setHistorys(null);
-                                    setLoad(true);
-                                }}
-                            >
+                            <button onClick={() => handleFilterChange("7 Hari")}>
                                 7 Hari
                             </button>
                         </li>
                         <li>
-                            <button
-                                onClick={() => {
-                                    setFilter("14 Hari");
-                                    setSwapButton(["on", "off"]);
-                                    setHistorys(null);
-                                    setLoad(true);
-                                }}
-                            >
+                            <button onClick={() => handleFilterChange("14 Hari")}>
                                 14 Hari
                             </button>
                         </li>
@@ -157,17 +162,15 @@ export default function Riwayat() {
                     <div className="size-full flex justify-center items-center">
                         <span className="loading loading-spinner text-white"></span>
                     </div>
-                ) : historys ? (
-                    historys.map((history, i) => {
-                        return (
-                            <CardRiwayat
-                                key={i}
-                                index={i}
-                                history={history}
-                                biodata={userData}
-                            />
-                        );
-                    })
+                ) : historys && historys.length > 0 ? (
+                    historys.map((history, i) => (
+                        <CardRiwayat
+                            key={i}
+                            index={i}
+                            history={history}
+                            biodata={userData}
+                        />
+                    ))
                 ) : (
                     <div className="size-full flex justify-center items-center">
                         <p className="text-white">Belum ada riwayat.</p>
