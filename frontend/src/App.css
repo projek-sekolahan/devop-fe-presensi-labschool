@@ -152,7 +152,7 @@ body {
 
 /* Password Toggle */
 .password-toggle {
-  @apply flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg w-full max-w-[80px] h-10 cursor-pointer; /* Adjusted width */
+  @apply flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg cursor-pointer; /* Adjusted width */
   /* Menambahkan interaktivitas */
   align-items: center;
   justify-content: center;

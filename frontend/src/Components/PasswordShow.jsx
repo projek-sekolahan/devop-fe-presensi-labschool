@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 const PasswordShow = forwardRef(function PasswordShow(props, passwordRef) {
 	return (
-		<label className="password-toggle flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg w-10 h-10">
+		<label className="password-toggle flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg w-6 h-12">
             <input
                 type="checkbox"
                 className="hidden"
