@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, userData, closeMenu }) {
+export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;

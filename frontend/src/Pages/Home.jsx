@@ -270,7 +270,7 @@ const Home = () => {
   </div>
 
   {/* Side Menu */}
-  <SideMenu show={show} userData={userData} closeMenu={closeMenu}/>
+  <SideMenu show={show} userData={userData} closeMenu={closeMenu} intervalId={intervalId}/>
 </div>
 
   );

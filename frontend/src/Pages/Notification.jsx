@@ -92,7 +92,7 @@ export default function Notification() {
 				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
-				res = JSON.parse(res);
+				res = JSON.parse(res); console.log(parseJwt(res.data.token));
 				// Ambil array data dari response
 				const notifications = Object.keys(parseJwt(res.data.token))
 				.filter((key) => !isNaN(key)) // Ambil key numerik
