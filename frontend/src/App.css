@@ -160,7 +160,7 @@ body {
 
 /* Password Icon (For Eye Slash and Eye) */
 .password-icon-eye-slash, .password-icon-eye {
-  @apply w-6 h-10; /* Ukuran ikon yang konsisten */
+  @apply w-8 h-8; /* Ukuran ikon yang konsisten */
 }
 
 /* Styling untuk Input Fields untuk Konsistensi */
