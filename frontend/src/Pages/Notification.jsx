@@ -79,8 +79,8 @@ export default function Notification() {
 				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
-				res = JSON.parse(res); console.log(parseJwt(res.data));
-				setData(parseJwt(res.data));
+				res = JSON.parse(res); console.log(parseJwt(res.data.token));
+				setData(parseJwt(res.data.token));
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			}).catch((err) => { console.log(err);
