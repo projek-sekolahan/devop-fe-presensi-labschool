@@ -118,12 +118,12 @@ export default function OtpInput() {
 			{/* Verification Form Container */}
 			<div className="verification-form-container shadow-md">
 				<h2 className="text-title text-center">Email Verification</h2>
-				<p className="text-subtitle text-center">
+				<p className="text-sm text-center">
 					Masukkan kode verifikasi yang telah dikirim ke alamat email Anda
 				</p>
 				<form ref={formRef} className="verification-form">
 					{/* OTP Input Fields */}
-					<div className="input-group flex justify-between my-8">
+					<div className="flex justify-between my-8">
 						{otp.map((value, index) => (
 							<input
 								key={index}
@@ -134,13 +134,13 @@ export default function OtpInput() {
 								onChange={(e) => handleChange(index, e)}
 								onClick={() => handleClick(index)}
 								onKeyDown={(e) => handleKeyDown(index, e)}
-								className="input-field size-16 bg-white text-black font-semibold text-lg text-center rounded-lg focus:border-black focus:border-3"
+								className="size-16 bg-white text-black font-semibold text-lg text-center rounded-lg focus:border-black focus:border-3"
 							/>
 						))}
 					</div>
 
 					{/* Resend OTP Text */}
-					<p className="text-center font-thin text-xs">
+					<p className="text-center font-light text-xs">
 						Tidak menerima kode verifikasi?{' '}
 						<span
 							className="text-link resend-otp text-center font-bold cursor-pointer"
