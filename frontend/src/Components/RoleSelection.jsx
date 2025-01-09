@@ -35,7 +35,7 @@ const RoleSelection = ({ role, setRole, error }) => {
                 ))}
             </div>
             {/* Tampilkan pesan error jika ada */}
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+            {error && <p className="text-red-700 text-sm mt-2 font-semibold">{error}</p>}
         </div>
     );
 };

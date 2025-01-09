@@ -123,7 +123,7 @@ export default function Login() {
                         <label
                         htmlFor="email"
                         className={`input-label ${
-                            errors.email ? "text-red-500" : ""
+                            errors.email ? "text-red-700 font-semibold" : ""
                         }`}
                         >
                         {errors.email ? errors.email : "Email"}
@@ -145,7 +145,7 @@ export default function Login() {
                         <label
                         htmlFor="password"
                         className={`input-label ${
-                            errors.password ? "text-red-500" : ""
+                            errors.password ? "text-red-700 font-semibold" : ""
                         }`}
                         >
                         {errors.password ? errors.password : "Password"}

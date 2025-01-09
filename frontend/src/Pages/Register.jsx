@@ -122,7 +122,7 @@ export default function Register() {
             <label
               htmlFor="name"
               className={`input-label ${
-                errors.name ? "text-red-500" : ""
+                errors.name ? "text-red-700 font-semibold" : ""
               }`}
             >
               {errors.name ? errors.name : "Nama Lengkap"}
@@ -142,7 +142,7 @@ export default function Register() {
             <label
               htmlFor="number"
               className={`input-label ${
-                errors.phone ? "text-red-500" : ""
+                errors.phone ? "text-red-700 font-semibold" : ""
               }`}
             >
               {errors.phone ? errors.phone : "No Whatsapp"}
@@ -162,7 +162,7 @@ export default function Register() {
             <label
               htmlFor="username"
               className={`input-label ${
-                errors.email ? "text-red-500" : ""
+                errors.email ? "text-red-700 font-semibold" : ""
               }`}
             >
               {errors.email ? errors.email : "Email"}

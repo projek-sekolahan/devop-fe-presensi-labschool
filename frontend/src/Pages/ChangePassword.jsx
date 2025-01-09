@@ -73,7 +73,7 @@ export default function ChangePassword() {
                         <label
                             htmlFor="email"
                             className={`input-label ${
-                                errors.email ? "text-red-500" : ""
+                                errors.email ? "text-red-700 font-semibold" : ""
                             }`}
                             >
                             {errors.email ? errors.email : "Email"}

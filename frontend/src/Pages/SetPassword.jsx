@@ -90,7 +90,7 @@ export default function SetPassword() {
 						<label
 							htmlFor="password"
 							className={`input-label ${
-								errors.password ? "text-red-500" : ""
+								errors.password ? "text-red-700 font-semibold" : ""
 							}`}
 							>
 							{errors.password ? errors.password : "Password"}
