@@ -31,7 +31,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
-					loading("Loading", "Logging in...");
+					loading("Loading", "Logging out...");
 					// Clear interval
 					clearInterval(intervalId);
 					const key = ["AUTH_KEY", "token"];
