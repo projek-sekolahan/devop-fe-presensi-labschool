@@ -227,7 +227,8 @@ export default function RegisterFace() {
             />
 
             {/* Canvas and Captured Image (Hidden) */}
-            <canvas ref={canvasRef} className="hidden" />
+            <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+            <img ref={imgRef} className="absolute z-10 hidden" />
 
             {/* Controls Section */}
             <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
@@ -236,13 +237,13 @@ export default function RegisterFace() {
                         document.getElementById("my_modal_1").showModal();
                         clickPhoto();
                     }}
-                    className="bg-white text-primary-md font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 hover:scale-105 focus:ring-4 focus:outline-none focus:ring-primary-300"
+                    className="btn-submit"
                 >
                     Ambil Gambar
                 </button>
 
                 {/* Modal */}
-                <dialog id="my_modal_1" className="modal p-4 rounded-lg bg-white text-black shadow-lg transition transform">
+                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
                         <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
@@ -253,7 +254,7 @@ export default function RegisterFace() {
                                 <button
                                     disabled={isLoading}
                                     onClick={detectAndRegisterFace}
-                                    className={`py-2 px-6 rounded-lg font-semibold text-white bg-primary-md hover:bg-primary-300 focus:ring-4 focus:ring-primary-300 disabled:opacity-50 ${
+                                    className={`py-2 px-6 btn-submit ${
                                         isLoading ? "loading" : ""
                                     }`}
                                 >

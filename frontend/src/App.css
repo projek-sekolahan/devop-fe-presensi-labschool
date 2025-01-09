@@ -172,7 +172,7 @@ body {
 
 /* Button */
 .btn-submit {
-  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-4;
+  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-4;
   transition: background-color 0.3s ease;
 }
 
