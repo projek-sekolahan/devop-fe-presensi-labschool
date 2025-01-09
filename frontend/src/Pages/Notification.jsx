@@ -6,7 +6,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
-	if (!Array.isArray(datas)) {
+	if (!Array.isArray(datas) || datas.length === 0) {
         return (
             <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
                 <div className="flex items-center gap-3">
@@ -92,19 +92,45 @@ export default function Notification() {
 				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
-				res = JSON.parse(res); console.log(parseJwt(res.data.token));
-				// Ambil array data dari response
-				const notifications = Object.keys(parseJwt(res.data.token))
-				.filter((key) => !isNaN(key)) // Ambil key numerik
-				.map((key) => response[key]); // Map key menjadi array
-				console.log(notifications);
-				setData(notifications);
-				Cookies.set("csrf", res.csrfHash);
-				setLoad(false);
-			}).catch((err) => { console.log(err);
-				err = JSON.parse(err.responseText);
-				setData(err.data);
-				Cookies.set("csrf", err.csrfHash);
+				try {
+					res = JSON.parse(res); // Validasi JSON parse
+					const response = parseJwt(res.data.token);
+					console.log("API Response:", response);
+		
+					if (response.data && Array.isArray(response.data)) {
+						// Ambil array data dari response
+						const notifications = Object.keys(parseJwt(res.data.token))
+						.filter((key) => !isNaN(key)) // Ambil key numerik
+						.map((key) => response[key]); // Map key menjadi array
+						console.log("Notifications:", response.data);
+						setData(response.data); // Set data dari API
+					} else {
+						console.warn("Unexpected API format:", response);
+						setData([]); // Default ke array kosong jika format salah
+					}
+		
+					Cookies.set("csrf", response.csrfHash);
+					setLoad(false);
+				} catch (error) {
+					console.error("Error parsing response:", error);
+					setData([]); // Jika parsing gagal, set data kosong
+					setLoad(false);
+				}
+			})
+			.catch((err) => {
+				console.error("API Error:", err);
+		
+				try {
+					const errorResponse = JSON.parse(err.responseText);
+					console.log("Error Response:", errorResponse);
+		
+					setData(errorResponse.data || []); // Validasi data error
+					Cookies.set("csrf", errorResponse.csrfHash);
+				} catch (parseError) {
+					console.error("Error parsing error response:", parseError);
+					setData([]); // Default ke array kosong jika error tidak sesuai
+				}
+		
 				setLoad(false);
 			});
 	return (
@@ -120,10 +146,6 @@ export default function Notification() {
 				{load ? (
 					<div className="size-full flex justify-center items-center">
 						<span className="loading loading-spinner text-white"></span>
-					</div>
-				) : data.info == "error" ? (
-					<div className="size-full flex justify-center items-center">
-						<p className="text-white">Belum ada notifikasi.</p>
 					</div>
 				) : (
 					<CardNotifikasi datas={data} />
