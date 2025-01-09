@@ -118,102 +118,102 @@ export default function Register() {
   };
 
     return (
-    <div className="register-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-        {/* Background Image */}
-        <img
-            src="/frontend/img/reset_pwd.png"
-            alt="labschool-unesa-logo"
-            className="bg-image"
-        />
+        <div className="register-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+            {/* Background Image */}
+            <img
+                src="/frontend/Icons/splash.svg"
+                alt="labschool-unesa-logo"
+                className="bg-image"
+            />
 
-        {/* Register Form */}
-        <div className="register-form-container shadow-md">
-            <h2 className="text-title text-center">Daftar Sebagai</h2>
-            <form
-                className="register-form"
-                onSubmit={handleSubmit}
-            >
-                {/* Role Selection */}
-                <RoleSelection role={role} setRole={setRole} />
-
-                {/* Name Input */}
-                <div className="input-group">
-                    <label htmlFor="name" className="input-label">
-                        Nama Lengkap
-                    </label>
-                    <InputField
-                        type="text"
-                        name="namaLengkap"
-                        id="name"
-                        ref={nameRef}
-                        placeholder="Nama Lengkap"
-                        required
-                    />
-                </div>
-
-                {/* Phone Input */}
-                <div className="input-group">
-                    <label htmlFor="number" className="input-label">
-                        No Whatsapp
-                    </label>
-                    <InputField
-                        type="tel"
-                        name="phone"
-                        id="number"
-                        ref={numberRef}
-                        placeholder="No Whatsapp"
-                        required
-                    />
-                </div>
-
-                {/* Email Input */}
-                <div className="input-group">
-                    <label htmlFor="username" className="input-label">
-                        Email
-                    </label>
-                    <InputField
-                        type="email"
-                        name="username"
-                        id="username"
-                        ref={emailRef}
-                        placeholder="Email"
-                        autoComplete="username"
-                        required
-                    />
-                </div>
-
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className={`btn-submit ${
-                        isLoading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+            {/* Register Form */}
+            <div className="register-form-container shadow-md">
+                <h2 className="text-title text-center">Daftar Sebagai</h2>
+                <form
+                    className="register-form"
+                    onSubmit={handleSubmit}
                 >
-                    {isLoading ? (
-                        <div className="flex justify-center items-center gap-2">
-                            <p className="text-white">Loading</p>
-                            <span className="loading loading-spinner text-white"></span>
-                        </div>
-                    ) : (
-                        "Create Account"
-                    )}
-                </button>
-            </form>
+                    {/* Role Selection */}
+                    <RoleSelection role={role} setRole={setRole} />
 
-            {/* Separator with Clickable Text */}
-            <div className="flex items-center gap-2 w-full mt-4">
-                <div className="flex-grow border-t-[0.25px] border-white"></div>
-                <Link
-                    to="/login"
-                    className="text-link text-sm font-light text-white underline hover:underline"
-                >
-                    Sudah Punya Akun?
-                </Link>
-                <div className="flex-grow border-t-[0.25px] border-white"></div>
+                    {/* Name Input */}
+                    <div className="input-group">
+                        <label htmlFor="name" className="input-label">
+                            Nama Lengkap
+                        </label>
+                        <InputField
+                            type="text"
+                            name="namaLengkap"
+                            id="name"
+                            ref={nameRef}
+                            placeholder="Nama Lengkap"
+                            required
+                        />
+                    </div>
+
+                    {/* Phone Input */}
+                    <div className="input-group">
+                        <label htmlFor="number" className="input-label">
+                            No Whatsapp
+                        </label>
+                        <InputField
+                            type="tel"
+                            name="phone"
+                            id="number"
+                            ref={numberRef}
+                            placeholder="No Whatsapp"
+                            required
+                        />
+                    </div>
+
+                    {/* Email Input */}
+                    <div className="input-group">
+                        <label htmlFor="username" className="input-label">
+                            Email
+                        </label>
+                        <InputField
+                            type="email"
+                            name="username"
+                            id="username"
+                            ref={emailRef}
+                            placeholder="Email"
+                            autoComplete="username"
+                            required
+                        />
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`btn-submit ${
+                            isLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                    >
+                        {isLoading ? (
+                            <div className="flex justify-center items-center gap-2">
+                                <p className="text-white">Loading</p>
+                                <span className="loading loading-spinner text-white"></span>
+                            </div>
+                        ) : (
+                            "Create Account"
+                        )}
+                    </button>
+                </form>
+
+                {/* Separator with Clickable Text */}
+                <div className="flex items-center gap-2 w-full mt-4">
+                    <div className="flex-grow border-t-[0.25px] border-white"></div>
+                    <Link
+                        to="/login"
+                        className="text-link text-sm font-light text-white underline hover:underline"
+                    >
+                        Sudah Punya Akun?
+                    </Link>
+                    <div className="flex-grow border-t-[0.25px] border-white"></div>
+                </div>
+
             </div>
-
         </div>
-    </div>
     );
 }

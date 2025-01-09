@@ -40,68 +40,68 @@ export default function ChangePassword() {
     };
 
     return (
-    <div className="reset-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-        {/* Background Image */}
-        <img
-            src="/frontend/img/reset_pwd.png"
-            alt="reset"
-            className="bg-image"
-        />
+        <div className="reset-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+            {/* Background Image */}
+            <img
+                src="/frontend/Icons/splash.svg"
+                alt="reset"
+                className="bg-image"
+            />
 
-        {/* Reset Password Form */}
-        <div className="reset-form-container shadow-md">
-            <h2 className="text-title text-center">Ganti Password</h2>
-            <form
-                className="reset-form"
-                onSubmit={submitHandler}
-            >
-                {/* Email Input */}
-                <div className="input-group">
-                    <label htmlFor="email" className="input-label">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        ref={emailRef}
-                        className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-                        placeholder="Email"
-                        required
-                    />
+            {/* Reset Password Form */}
+            <div className="reset-form-container shadow-md">
+                <h2 className="text-title text-center">Ganti Password</h2>
+                <form
+                    className="reset-form"
+                    onSubmit={submitHandler}
+                >
+                    {/* Email Input */}
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            ref={emailRef}
+                            className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+                            placeholder="Email"
+                            required
+                        />
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        disabled={load}
+                        className={`btn-submit ${
+                            load ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                    >
+                        {load ? (
+                            <div className="flex justify-center items-center gap-2">
+                                <p className="text-white">Loading</p>
+                                <span className="loading loading-spinner text-white"></span>
+                            </div>
+                        ) : (
+                            "Ganti Password"
+                        )}
+                    </button>
+                </form>
+
+                {/* Separator with Clickable Text */}
+                <div className="flex items-center gap-2 w-full mt-4">
+                    <div className="flex-grow border-t-[0.25px] border-white"></div>
+                    <Link
+                        to="/register"
+                        className="text-link text-sm font-light text-white underline hover:underline"
+                    >
+                        Belum Punya Akun?
+                    </Link>
+                    <div className="flex-grow border-t-[0.25px] border-white"></div>
                 </div>
-
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    disabled={load}
-                    className={`btn-submit ${
-                        load ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                >
-                    {load ? (
-                        <div className="flex justify-center items-center gap-2">
-                            <p className="text-white">Loading</p>
-                            <span className="loading loading-spinner text-white"></span>
-                        </div>
-                    ) : (
-                        "Ganti Password"
-                    )}
-                </button>
-            </form>
-
-            {/* Separator with Clickable Text */}
-            <div className="flex items-center gap-2 w-full mt-4">
-                <div className="flex-grow border-t-[0.25px] border-white"></div>
-                <Link
-                    to="/register"
-                    className="text-link text-sm font-light text-white underline hover:underline"
-                >
-                    Belum Punya Akun?
-                </Link>
-                <div className="flex-grow border-t-[0.25px] border-white"></div>
             </div>
         </div>
-    </div>
     );
 }

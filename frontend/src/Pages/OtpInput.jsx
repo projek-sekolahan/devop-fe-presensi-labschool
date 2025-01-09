@@ -107,69 +107,69 @@ export default function OtpInput() {
 	};
 
 	return (
-<div className="verification-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-    {/* Logo Image */}
-    <img
-        src="/frontend/Icons/splash.svg"
-        alt="labschool-unesa-logo"
-        className="logo-image size-[241px] m-auto mt-24"
-    />
+		<div className="verification-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+			{/* Logo Image */}
+			<img
+				src="/frontend/Icons/splash.svg"
+				alt="labschool-unesa-logo"
+				className="logo-image size-[241px] m-auto mt-24"
+			/>
 
-    {/* Verification Form Container */}
-    <div className="verification-form-container shadow-md">
-        <h2 className="text-title text-center">Email Verification</h2>
-        <p className="text-subtitle text-center">
-            Masukkan kode verifikasi yang telah dikirim ke alamat email Anda
-        </p>
-        <form ref={formRef} className="verification-form">
-            {/* OTP Input Fields */}
-            <div className="input-group flex justify-between my-8">
-                {otp.map((value, index) => (
-                    <input
-                        key={index}
-                        name="digit-input[]"
-                        type="number"
-                        ref={(input) => (inputRefs.current[index] = input)}
-                        value={value}
-                        onChange={(e) => handleChange(index, e)}
-                        onClick={() => handleClick(index)}
-                        onKeyDown={(e) => handleKeyDown(index, e)}
-                        className="input-field size-16 bg-white text-black font-semibold text-lg text-center rounded-lg focus:border-black focus:border-3"
-                    />
-                ))}
-            </div>
+			{/* Verification Form Container */}
+			<div className="verification-form-container shadow-md">
+				<h2 className="text-title text-center">Email Verification</h2>
+				<p className="text-subtitle text-center">
+					Masukkan kode verifikasi yang telah dikirim ke alamat email Anda
+				</p>
+				<form ref={formRef} className="verification-form">
+					{/* OTP Input Fields */}
+					<div className="input-group flex justify-between my-8">
+						{otp.map((value, index) => (
+							<input
+								key={index}
+								name="digit-input[]"
+								type="number"
+								ref={(input) => (inputRefs.current[index] = input)}
+								value={value}
+								onChange={(e) => handleChange(index, e)}
+								onClick={() => handleClick(index)}
+								onKeyDown={(e) => handleKeyDown(index, e)}
+								className="input-field size-16 bg-white text-black font-semibold text-lg text-center rounded-lg focus:border-black focus:border-3"
+							/>
+						))}
+					</div>
 
-            {/* Resend OTP Text */}
-            <p className="text-center font-thin text-xs">
-                Tidak menerima kode verifikasi?{' '}
-                <span
-                    className="text-link resend-otp text-center font-bold cursor-pointer"
-                    onClick={sendOtpAgain}
-                >
-                    Klik di sini
-                </span>
-            </p>
+					{/* Resend OTP Text */}
+					<p className="text-center font-thin text-xs">
+						Tidak menerima kode verifikasi?{' '}
+						<span
+							className="text-link resend-otp text-center font-bold cursor-pointer"
+							onClick={sendOtpAgain}
+						>
+							Klik di sini
+						</span>
+					</p>
 
-            {/* Submit Button */}
-            <button
-                type="button"
-                onClick={onOtpSubmit}
-                disabled={load}
-                className={`btn-submit w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 mt-24 ${
-                    load ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-            >
-                {load ? (
-                    <div className="flex justify-center items-center gap-2">
-                        <p className="text-white">Loading</p>
-                        <span className="loading loading-spinner text-white"></span>
-                    </div>
-                ) : (
-                    'Verifikasi'
-                )}
-            </button>
-        </form>
-    </div>
-</div>
+					{/* Submit Button */}
+					<button
+						type="button"
+						onClick={onOtpSubmit}
+						disabled={load}
+						className={`btn-submit w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 mt-24 ${
+							load ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
+					>
+						{load ? (
+							<div className="flex justify-center items-center gap-2">
+								<p className="text-white">Loading</p>
+								<span className="loading loading-spinner text-white"></span>
+							</div>
+						) : (
+							'Verifikasi'
+						)}
+					</button>
+				</form>
+			</div>
+		</div>
 	);
 }

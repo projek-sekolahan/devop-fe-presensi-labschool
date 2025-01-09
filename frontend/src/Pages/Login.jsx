@@ -109,7 +109,7 @@ export default function Login() {
         <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
             {/* Background Image */}
             <img
-                src="/frontend/img/reset_pwd.png"
+                src="/frontend/Icons/splash.svg"
                 alt="labschool-unesa-logo"
                 className="bg-image"
             />
