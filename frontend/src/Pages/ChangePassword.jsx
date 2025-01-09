@@ -94,10 +94,10 @@ export default function ChangePassword() {
             <div className="flex items-center gap-2 w-full mt-4">
                 <div className="flex-grow border-t-[0.25px] border-white"></div>
                 <Link
-                    to="/"
+                    to="/register"
                     className="text-sm font-light text-white underline hover:underline"
                 >
-                    Belum memiliki akun?
+                    Belum Punya Akun?
                 </Link>
                 <div className="flex-grow border-t-[0.25px] border-white"></div>
             </div>

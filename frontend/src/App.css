@@ -32,7 +32,7 @@ body {
 }
 
 /* Login Container */
-.login-container, .register-container {
+.login-container, .register-container, .reset-container {
   @apply bg-primary-low font-primary text-white relative z-[1];
   overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
@@ -49,13 +49,13 @@ body {
     height: 100vh; /* Gambar menutupi seluruh tinggi layar pada smartphone */
     object-fit: cover; /* Memastikan gambar tetap proporsional tanpa terdistorsi */
   }
-  .login-form-container, .register-form-container {
+  .login-form-container, .register-form-container, .reset-form-container {
     max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
   }
 }
 
 /* Login Form Container */
-.login-form-container, .register-form-container {
+.login-form-container, .register-form-container, .reset-form-container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -84,7 +84,7 @@ body {
 }
 
 /* Form Styles */
-.login-form, .register-form {
+.login-form, .register-form, .reset-form {
   @apply my-6 space-y-4 md:space-y-6;
 }
 
