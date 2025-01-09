@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import apiXML from "../utils/apiXML.js";
@@ -12,22 +12,12 @@ import {
   handleSessionError,
   addDefaultKeys,
 } from "../utils/utils.js";
+import { validateFormFields } from "../utils/validation";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
 const TOKEN_KEYS = ["AUTH_KEY", "devop-sso"];
 const CSRF_KEY = "csrf";
-
-// Helper function for form validation
-const validateField = (value, type) => {
-  if (type === "email" && !/^\S+@\S+\.\S+$/.test(value)) {
-    return "Email tidak valid.";
-  }
-  if (type === "password" && value.length < 8) {
-    return "Password harus minimal 8 karakter.";
-  }
-  return null;
-};
 
 // Helper function for login processing
 const processLogin = async (formData, tokenKey) => {
@@ -52,33 +42,39 @@ export default function Login() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const submitBtnRef = useRef(null);
-    // Validate form inputs before submitting
-    const validateForm = () => {
-        const emailValue = emailRef.current.value.trim();
-        const passwordValue = passwordRef.current.value;
-
-        const emailError = validateField(emailValue, "email");
-        const passwordError = validateField(passwordValue, "password");
-
-        if (emailError) return emailError;
-        if (passwordError) return passwordError;
-
-        return null;
-    };
+    const [errors, setErrors] = useState({
+        password: "",
+        email: "",
+    });
+    
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
     // Handle form submission
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const errorMessage = validateForm();
-        if (errorMessage) {
-        alertMessage("Validasi Gagal", errorMessage, "error", () => window.location.replace("/login"));
-        return;
+        // Define fields for validation
+        const fields = {
+            password: { value: passwordRef.current.value.trim(), type: "password" },
+            email: { value: emailRef.current.value.trim(), type: "email" },
+        };
+
+        // Validate form fields
+        const validationErrors = validateFormFields(fields);
+
+        // Set errors if any
+        setErrors({
+            password: validationErrors.password || "",
+            email: validationErrors.email || "",
+        });
+        
+        // If there are validation errors, stop form submission
+        if (Object.values(validationErrors).some((error) => error)) {
+            return;
         }
 
         const emailValue = emailRef.current.value.trim();
-        const passwordValue = passwordRef.current.value;
+        const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
         
@@ -124,8 +120,13 @@ export default function Login() {
                 >
                     {/* Email Input */}
                     <div className="input-group">
-                        <label htmlFor="email" className="input-label">
-                            Email
+                        <label
+                        htmlFor="email"
+                        className={`input-label ${
+                            errors.email ? "text-red-500" : ""
+                        }`}
+                        >
+                        {errors.email ? errors.email : "Email"}
                         </label>
                         <input
                             type="email"
@@ -141,8 +142,13 @@ export default function Login() {
 
                     {/* Password Input */}
                     <div className="input-group">
-                        <label htmlFor="password" className="input-label">
-                            Password
+                        <label
+                        htmlFor="password"
+                        className={`input-label ${
+                            errors.password ? "text-red-500" : ""
+                        }`}
+                        >
+                        {errors.password ? errors.password : "Password"}
                         </label>
                         <div className="password-container">
                             <input

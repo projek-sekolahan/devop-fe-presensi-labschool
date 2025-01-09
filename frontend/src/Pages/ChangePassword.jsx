@@ -8,17 +8,30 @@ import {
     handleSessionError,
 } from "../utils/utils";
 import Cookies from "js-cookie";
+import { validateFormFields } from "../utils/validation";
 
 export default function ChangePassword() {
     const emailRef = useRef();
     const [load, setLoad] = useState(false);
-    
+    const [errors, setErrors] = useState({email: ""});
     const submitHandler = (e) => {
         e.preventDefault();
         loading("Loading", "Verifying Email...");
         setLoad(true);
+
+        // Validate form fields
+        const validationErrors = validateFormFields({email: { value: emailRef.current.value.trim(), type: "email" }});
+
+        // Set errors if any
+        setErrors({email: validationErrors.email || ""});
+
+        // If there are validation errors, stop form submission
+        if (Object.values(validationErrors).some((error) => error)) {
+            return;
+        }
+
         const key = ["username", "csrf_token"];
-        const values = [emailRef.current.value, Cookies.get("csrf")];
+        const values = [emailRef.current.value.trim(), Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
 
         apiXML
@@ -57,8 +70,13 @@ export default function ChangePassword() {
                 >
                     {/* Email Input */}
                     <div className="input-group">
-                        <label htmlFor="email" className="input-label">
-                            Email
+                        <label
+                            htmlFor="email"
+                            className={`input-label ${
+                                errors.email ? "text-red-500" : ""
+                            }`}
+                            >
+                            {errors.email ? errors.email : "Email"}
                         </label>
                         <input
                             type="email"

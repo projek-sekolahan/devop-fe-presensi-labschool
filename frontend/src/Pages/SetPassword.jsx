@@ -10,17 +10,19 @@ import {
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
+import { validateFormFields } from "../utils/validation";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(false);
+	const [errors, setErrors] = useState({password: ""});
 	const inputRef = useRef();
 	const confirmRef = useRef();
 
 	const changeHandler = (e) => {
-		if (inputRef.current.value) {
+		if (inputRef.current.value.trim()) {
 			setWarning("none");
-			if (e.target.value == inputRef.current.value) {
+			if (e.target.value == inputRef.current.value.trim()) {
 				setDisabled(false);
 			} else {
 				setDisabled(true);
@@ -34,6 +36,17 @@ export default function SetPassword() {
 		e.preventDefault();
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
+		// Validate form fields
+        const validationErrors = validateFormFields({password: { value: inputRef.current.value.trim(), type: "password" }});
+
+        // Set errors if any
+        setErrors({password: validationErrors.password || ""});
+
+        // If there are validation errors, stop form submission
+        if (Object.values(validationErrors).some((error) => error)) {
+            return;
+        }
+
 		const key = ["password"];
 		const combinedKeys = addDefaultKeys(key);
 		const values = [
@@ -74,7 +87,14 @@ export default function SetPassword() {
 				<form className="confirmation-form space-y-4 md:space-y-6 flex flex-col gap-2">
 					{/* Password Input */}
 					<div className="input-group">
-						<label htmlFor="password" className="input-label">Password</label>
+						<label
+							htmlFor="password"
+							className={`input-label ${
+								errors.password ? "text-red-500" : ""
+							}`}
+							>
+							{errors.password ? errors.password : "Password"}
+                        </label>
 						<div className="flex gap-2">
 							<input
 								type="password"

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FaUser, FaUserTie, FaChalkboardTeacher } from "react-icons/fa";
 
-const RoleSelection = ({ role, setRole }) => {
+const RoleSelection = ({ role, setRole, error }) => {
     const roles = [
         { id: "siswa", value: "4", icon: FaUser, label: "Siswa" },
         { id: "guru", value: "5", icon: FaChalkboardTeacher, label: "Guru" },
@@ -26,11 +26,16 @@ const RoleSelection = ({ role, setRole }) => {
                             checked={role === roleData.value}
                             className="hidden"
                         />
-                        {React.createElement(roleData.icon, { className: "role-icon", style: { fontSize: "2rem", color: "currentColor" } })}
+                        {React.createElement(roleData.icon, {
+                            className: "role-icon",
+                            style: { fontSize: "2rem", color: "currentColor" },
+                        })}
                         <span className="role-label">{roleData.label}</span>
                     </label>
                 ))}
             </div>
+            {/* Tampilkan pesan error jika ada */}
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
     );
 };
@@ -38,6 +43,7 @@ const RoleSelection = ({ role, setRole }) => {
 RoleSelection.propTypes = {
     role: PropTypes.string.isRequired,
     setRole: PropTypes.func.isRequired,
+    error: PropTypes.string, // Tambahkan prop untuk pesan error
 };
 
 export default RoleSelection;
