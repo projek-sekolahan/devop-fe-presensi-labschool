@@ -42,36 +42,56 @@ export default function RegisterFace() {
     };
 
     // Fungsi untuk mengambil gambar dari video
-    const clickPhoto = () => {
+    function clickPhoto() {
+        loading("Loading", "Mendapatkan data wajah...");
         const context = canvasRef.current.getContext("2d");
         const video = videoRef.current;
-        const canvasSize = 400;
 
-        canvasRef.current.width = canvasSize;
-        canvasRef.current.height = canvasSize;
+        // Ukuran canvas untuk gambar akhir
+        const canvasWidth = 400;
+        const canvasHeight = 400;
 
-        const cropX = (video.videoWidth - canvasSize) / 2;
-        const cropY = (video.videoHeight - canvasSize) / 2;
+        // Ukuran asli video
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
 
-        context.save();
-        context.scale(-1, 1); // Flip horizontal
-        context.translate(-canvasSize, 0);
+        // Menentukan titik tengah dari video
+        const videoCenterX = videoWidth / 2;
+        const videoCenterY = videoHeight / 2;
+
+        // Menentukan titik awal untuk memotong gambar (crop)
+        const cropX = videoCenterX - canvasWidth / 2;
+        const cropY = videoCenterY - canvasHeight / 2;
+
+        // Mengatur ukuran canvas
+        canvasRef.current.width = canvasWidth;
+        canvasRef.current.height = canvasHeight;
+
+        // Membalik gambar secara horizontal untuk menghindari mirror effect
+        context.save(); // Menyimpan state konteks canvas
+        context.scale(-1, 1); // Membalik gambar secara horizontal
+        context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+
+        // Mengambil gambar dari video dan memotongnya tepat di tengah
         context.drawImage(
             video,
             cropX,
             cropY,
-            canvasSize,
-            canvasSize,
+            canvasWidth,
+            canvasHeight,
             0,
             0,
-            canvasSize,
-            canvasSize
+            canvasWidth,
+            canvasHeight
         );
-        context.restore();
 
-        const imageUrl = canvasRef.current.toDataURL("image/jpeg");
-        imgRef.current.src = imageUrl;
-    };
+        context.restore(); // Mengembalikan state konteks canvas ke semula
+
+        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+
+        // Mengatur gambar hasil di img element
+        imgRef.current.src = image_data_url;
+    }
 
     // Fungsi utama untuk mendeteksi wajah dan mendaftarkan
     const detectAndRegisterFace = async () => {
@@ -195,7 +215,7 @@ export default function RegisterFace() {
     {/* Title and Subtitle */}
     <div className="text-center mt-6">
         <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
-        <p className="text-sm mt-2">Silakan ambil gambar wajah Anda untuk keperluan verifikasi</p>
+        <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
     </div>
 
     {/* Video Feed */}
@@ -208,32 +228,46 @@ export default function RegisterFace() {
 
     {/* Canvas and Captured Image (Hidden) */}
     <canvas ref={canvasRef} className="hidden" />
-    <img ref={imgRef} className="hidden" alt="Captured face" />
 
     {/* Controls Section */}
     <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
         <button
-            onClick={clickPhoto}
+            onClick={() => {
+                document.getElementById("my_modal_1").showModal();
+                clickPhoto();
+            }}
             className="bg-white text-primary-md font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300"
         >
             Ambil Gambar
         </button>
-        <button
-            disabled={isLoading}
-            onClick={detectAndRegisterFace}
-            className={`bg-primary-md text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed ${
-                isLoading ? "loading" : ""
-            }`}
-        >
-            {isLoading ? (
-                <div className="flex justify-center items-center gap-2">
-                    <span>Loading...</span>
-                    <span className="loading loading-spinner text-white"></span>
-                </div>
-            ) : (
-                "Proses"
-            )}
-        </button>
+        <dialog id="my_modal_1" className="modal">
+                    <div className="modal-box">
+                        <h3 className="font-bold text-lg">Hasil Potret</h3>
+                        <img ref={imgRef} className="w-full" />
+                        <div className="modal-action flex justify-center">
+                            <form method="dialog" className="flex gap-2">
+                                {/* if there is a button in form, it will close the modal */}
+                                <button className="btn">Cancel</button>
+                                <button
+                                    disabled={isLoading}
+                                    onClick={detectAndRegisterFace}
+                                    className={`bg-primary-md text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                        isLoading ? "loading" : ""
+                                    }`}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex justify-center items-center gap-2">
+                                            <span>Loading...</span>
+                                            <span className="loading loading-spinner text-white"></span>
+                                        </div>
+                                    ) : (
+                                        "Proses"
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>      
     </div>
 </div>
 
