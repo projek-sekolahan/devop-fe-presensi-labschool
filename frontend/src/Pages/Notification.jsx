@@ -78,12 +78,12 @@ export default function Notification() {
 				localStorage.getItem("AUTH_KEY"),
 				getFormData(combinedKeys, values),
 			)
-			.then((res) => { console.log(res); return false;
+			.then((res) => {
 				res = JSON.parse(res);
 				setData(parseJwt(res.data));
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
-			}).catch((err) => { console.log(err); return false;
+			}).catch((err) => {
 				err = JSON.parse(err.responseText);
 				setData(err.data);
 				Cookies.set("csrf", err.csrfHash);
