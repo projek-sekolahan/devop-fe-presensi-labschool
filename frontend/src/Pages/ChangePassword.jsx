@@ -16,8 +16,6 @@ export default function ChangePassword() {
     const [errors, setErrors] = useState({email: ""});
     const submitHandler = (e) => {
         e.preventDefault();
-        loading("Loading", "Verifying Email...");
-        setLoad(true);
 
         // Validate form fields
         const validationErrors = validateFormFields({email: { value: emailRef.current.value.trim(), type: "email" }});
@@ -29,6 +27,9 @@ export default function ChangePassword() {
         if (Object.values(validationErrors).some((error) => error)) {
             return;
         }
+        
+        loading("Loading", "Verifying Email...");
+        setLoad(true);
 
         const key = ["username", "csrf_token"];
         const values = [emailRef.current.value.trim(), Cookies.get("csrf")];

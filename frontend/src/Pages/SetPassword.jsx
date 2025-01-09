@@ -34,8 +34,7 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		loading("Loading", "Processing Set Password Data...");
-		setDisabled(true);
+		
 		// Validate form fields
         const validationErrors = validateFormFields({password: { value: inputRef.current.value.trim(), type: "password" }});
 
@@ -46,6 +45,9 @@ export default function SetPassword() {
         if (Object.values(validationErrors).some((error) => error)) {
             return;
         }
+		
+		loading("Loading", "Processing Set Password Data...");
+		setDisabled(true);
 
 		const key = ["password"];
 		const combinedKeys = addDefaultKeys(key);
