@@ -211,47 +211,46 @@ export default function RegisterFace() {
     };
 
     return (
-<div className="capture-container bg-primary-low text-white flex flex-col h-screen w-screen">
-    {/* Title and Subtitle */}
-    <div className="text-center mt-6">
-        <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
-        <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
-    </div>
+        <div className="capture-container bg-primary-low text-white flex flex-col h-screen w-screen">
+            {/* Title and Subtitle */}
+            <div className="text-center mt-6 mb-6">
+                <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
+                <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
+            </div>
 
-    {/* Video Feed */}
-    <video
-        ref={videoRef}
-        className="h-2/3 w-full object-cover mt-4"
-        autoPlay
-        playsInline
-    />
+            {/* Video Feed */}
+            <video
+                ref={videoRef}
+                className="h-2/3 w-full object-cover mt-4"
+                autoPlay
+                playsInline
+            />
 
-    {/* Canvas and Captured Image (Hidden) */}
-    <canvas ref={canvasRef} className="hidden" />
+            {/* Controls Section */}
+            <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
+                <button
+                    onClick={() => {
+                        document.getElementById("my_modal_1").showModal();
+                        clickPhoto();
+                    }}
+                    className="bg-white text-primary-md font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 hover:scale-105 focus:ring-4 focus:outline-none focus:ring-primary-300"
+                >
+                    Ambil Gambar
+                </button>
 
-    {/* Controls Section */}
-    <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
-        <button
-            onClick={() => {
-                document.getElementById("my_modal_1").showModal();
-                clickPhoto();
-            }}
-            className="bg-white text-primary-md font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300"
-        >
-            Ambil Gambar
-        </button>
-        <dialog id="my_modal_1" className="modal">
+                {/* Modal */}
+                <dialog id="my_modal_1" className="modal max-w-sm p-4 rounded-lg bg-white text-black shadow-lg transition transform scale-95">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <img ref={imgRef} className="w-full" />
-                        <div className="modal-action flex justify-center">
-                            <form method="dialog" className="flex gap-2">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="btn">Cancel</button>
+                        <p className="text-sm mt-2 text-gray-600">Pastikan gambar sudah sesuai sebelum diproses</p>
+                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" alt="Captured face" />
+                        <div className="modal-action flex justify-center mt-4 gap-4">
+                            <form method="dialog" className="flex gap-4">
+                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">Cancel</button>
                                 <button
                                     disabled={isLoading}
                                     onClick={detectAndRegisterFace}
-                                    className={`bg-primary-md text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                    className={`py-2 px-6 rounded-lg font-semibold text-white bg-primary-md hover:bg-primary-300 focus:ring-4 focus:ring-primary-300 disabled:opacity-50 ${
                                         isLoading ? "loading" : ""
                                     }`}
                                 >
@@ -267,9 +266,8 @@ export default function RegisterFace() {
                             </form>
                         </div>
                     </div>
-                </dialog>      
-    </div>
-</div>
-
+                </dialog>
+            </div>
+        </div>
     );
 }

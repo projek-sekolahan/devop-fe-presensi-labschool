@@ -112,7 +112,7 @@ export default function OtpInput() {
 			<img
 				src="/frontend/Icons/splash.svg"
 				alt="labschool-unesa-logo"
-				className="bg-image size-[241px] m-auto mt-24"
+				className="bg-image"
 			/>
 
 			{/* Verification Form Container */}
