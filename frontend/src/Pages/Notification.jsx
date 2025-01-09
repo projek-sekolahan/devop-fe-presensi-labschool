@@ -79,11 +79,11 @@ export default function Notification() {
 				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
-				res = JSON.parse(res);
+				res = JSON.parse(res); console.log(parseJwt(res.data));
 				setData(parseJwt(res.data));
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
-			}).catch((err) => {
+			}).catch((err) => { console.log(err);
 				err = JSON.parse(err.responseText);
 				setData(err.data);
 				Cookies.set("csrf", err.csrfHash);
