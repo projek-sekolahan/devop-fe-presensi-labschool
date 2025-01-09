@@ -228,7 +228,7 @@ export default function RegisterFace() {
 
             {/* Canvas and Captured Image (Hidden) */}
             <canvas ref={canvasRef} className="hidden" />
-            
+
             {/* Controls Section */}
             <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
                 <button
@@ -242,10 +242,10 @@ export default function RegisterFace() {
                 </button>
 
                 {/* Modal */}
-                <dialog id="my_modal_1" className="modal p-4 rounded-lg bg-white text-black shadow-lg transition transform scale-95">
+                <dialog id="my_modal_1" className="modal p-4 rounded-lg bg-white text-black shadow-lg transition transform">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <p className="text-sm mt-2 text-gray-600">Pastikan gambar sudah sesuai sebelum diproses</p>
+                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
                         <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" alt="Captured face" />
                         <div className="modal-action flex justify-center mt-4 gap-4">
                             <form method="dialog" className="flex gap-4">
