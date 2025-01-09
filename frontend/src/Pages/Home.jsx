@@ -34,6 +34,7 @@ const Home = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [intervalId, setIntervalId] = useState(null);
   const closeMenu = () => setShow(false);
   
   // Fetch user data
@@ -122,8 +123,9 @@ const Home = () => {
 
   // useEffect untuk memeriksa sesi pengguna
   useEffect(() => {
-    const intervalId = setInterval(checkSession, 36000);
-    return () => clearInterval(intervalId);
+    const id = setInterval(checkSession, 1800000);
+    setIntervalId(id);  // Simpan intervalId dalam state
+    return () => clearInterval(id);
   }, [checkSession]);
 
   // useEffect untuk mengambil data pengguna

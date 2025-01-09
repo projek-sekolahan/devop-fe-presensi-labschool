@@ -1,11 +1,24 @@
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
 import { useState } from "react";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
+	if (!Array.isArray(datas)) {
+        return (
+            <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
+                <div className="flex items-center gap-3">
+                    <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
+                    <h4 className="text-lg font-semibold">Warning</h4>
+                </div>
+                <p className="mt-2 text-sm">
+                    Tidak ada data notifikasi yang tersedia. Harap coba lagi nanti.
+                </p>
+            </div>
+        );
+    }
 	return (
 		<div className="flex flex-col gap-4">
 			{datas.map((data, i) => {
@@ -59,7 +72,7 @@ function CardNotifikasi({ datas }) {
 }
 
 export default function Notification() {
-	const [data, setData] = useState(null);
+	const [data, setData] = useState([]);
 	const [load, setLoad] = useState(true);
 
 	const keys = ["AUTH_KEY", "token"];
@@ -79,8 +92,13 @@ export default function Notification() {
 				getFormData(combinedKeys, values),
 			)
 			.then((res) => {
-				res = JSON.parse(res); console.log(parseJwt(res.data.token));
-				setData(parseJwt(res.data.token));
+				res = JSON.parse(res);
+				// Ambil array data dari response
+				const notifications = Object.keys(parseJwt(res.data.token))
+				.filter((key) => !isNaN(key)) // Ambil key numerik
+				.map((key) => response[key]); // Map key menjadi array
+				console.log(notifications);
+				setData(notifications);
 				Cookies.set("csrf", res.csrfHash);
 				setLoad(false);
 			}).catch((err) => { console.log(err);

@@ -32,6 +32,8 @@ export default function SideMenu({ show, userData, closeMenu }) {
 			}).then((result) => {
 				if (result.isConfirmed) {
 					loading("Loading", "Logging in...");
+					// Clear interval
+					clearInterval(intervalId);
 					const key = ["AUTH_KEY", "token"];
 					const combinedKeys = addDefaultKeys(key);
 					const values = [
