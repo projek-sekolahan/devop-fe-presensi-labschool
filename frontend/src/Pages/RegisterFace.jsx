@@ -226,6 +226,9 @@ export default function RegisterFace() {
                 playsInline
             />
 
+            {/* Canvas and Captured Image (Hidden) */}
+            <canvas ref={canvasRef} className="hidden" />
+            
             {/* Controls Section */}
             <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
                 <button
@@ -239,7 +242,7 @@ export default function RegisterFace() {
                 </button>
 
                 {/* Modal */}
-                <dialog id="my_modal_1" className="modal max-w-sm p-4 rounded-lg bg-white text-black shadow-lg transition transform scale-95">
+                <dialog id="my_modal_1" className="modal p-4 rounded-lg bg-white text-black shadow-lg transition transform scale-95">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
                         <p className="text-sm mt-2 text-gray-600">Pastikan gambar sudah sesuai sebelum diproses</p>
