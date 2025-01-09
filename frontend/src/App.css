@@ -32,7 +32,7 @@ body {
 }
 
 /* Login Container */
-.login-container, .register-container, .reset-container, .verification-container, .confirmation-container {
+.login-container, .register-container, .reset-container, .verification-container, .confirmation-container, .capture-container {
   @apply bg-primary-low font-primary text-white relative z-[1];
   overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
@@ -49,13 +49,13 @@ body {
     height: 100vh; /* Gambar menutupi seluruh tinggi layar pada smartphone */
     object-fit: cover; /* Memastikan gambar tetap proporsional tanpa terdistorsi */
   }
-  .login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container {
+  .login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
     max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
   }
 }
 
 /* Login Form Container */
-.login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container {
+.login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;

@@ -191,15 +191,51 @@ export default function RegisterFace() {
     };
 
     return (
-        <div className="bg-primary-low text-white flex flex-col h-screen w-screen">
-            <video ref={videoRef} className="video-feed" />
-            <canvas ref={canvasRef} className="hidden" />
-            <img ref={imgRef} className="hidden" alt="Captured face" />
+<div className="capture-container bg-primary-low text-white flex flex-col h-screen w-screen">
+    {/* Title and Subtitle */}
+    <div className="text-center mt-6">
+        <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
+        <p className="text-sm mt-2">Silakan ambil gambar wajah Anda untuk keperluan verifikasi</p>
+    </div>
 
-            <div className="controls">
-                <button onClick={clickPhoto}>Ambil Gambar</button>
-                <button disabled={isLoading} onClick={detectAndRegisterFace}>{isLoading ? "Loading..." : "Proses"}</button>
-            </div>
-        </div>
+    {/* Video Feed */}
+    <video
+        ref={videoRef}
+        className="h-2/3 w-full object-cover mt-4"
+        autoPlay
+        playsInline
+    />
+
+    {/* Canvas and Captured Image (Hidden) */}
+    <canvas ref={canvasRef} className="hidden" />
+    <img ref={imgRef} className="hidden" alt="Captured face" />
+
+    {/* Controls Section */}
+    <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
+        <button
+            onClick={clickPhoto}
+            className="bg-white text-primary-md font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300"
+        >
+            Ambil Gambar
+        </button>
+        <button
+            disabled={isLoading}
+            onClick={detectAndRegisterFace}
+            className={`bg-primary-md text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                isLoading ? "loading" : ""
+            }`}
+        >
+            {isLoading ? (
+                <div className="flex justify-center items-center gap-2">
+                    <span>Loading...</span>
+                    <span className="loading loading-spinner text-white"></span>
+                </div>
+            ) : (
+                "Proses"
+            )}
+        </button>
+    </div>
+</div>
+
     );
 }
