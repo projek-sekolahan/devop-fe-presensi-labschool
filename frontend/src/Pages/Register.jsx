@@ -186,7 +186,8 @@ export default function Register() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className={`btn-submit ${
+                        className=
+                        {`btn-submit ${
                             isLoading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     >

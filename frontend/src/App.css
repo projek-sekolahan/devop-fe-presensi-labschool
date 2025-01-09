@@ -39,7 +39,10 @@ body {
 
 /* Background Image */
 .bg-image {
-  @apply fixed top-20 left-85 z-0; /* Menggunakan fixed agar gambar tetap statis */
+  position: fixed;
+  top: 20px; /* Anda bisa mengatur nilai top sesuai kebutuhan */
+  left: 85px; /* Mengatur posisi gambar ke 85% dari lebar kontainer */
+  z-index: 0; /* Menempatkan gambar di bawah konten lain */
   object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
   margin-top: calc(100vh - 200px); /* Menyesuaikan jarak otomatis berdasarkan tinggi form-container */
 }

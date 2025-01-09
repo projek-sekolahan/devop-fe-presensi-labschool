@@ -173,7 +173,7 @@ export default function Login() {
                     <button
                         type="submit"
                         ref={submitBtnRef}
-                        className="btn-submit w-full mt-6"
+                        className="btn-submit"
                     >
                         Login
                     </button>

@@ -1,5 +1,3 @@
-import { Link, useLocation } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useRef, useEffect } from "react";
 import apiXML from "../utils/apiXML";
 import {
@@ -155,7 +153,7 @@ export default function OtpInput() {
 						type="button"
 						onClick={onOtpSubmit}
 						disabled={load}
-						className={`btn-submit w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 mt-24 ${
+						className={`btn-submit ${
 							load ? 'opacity-50 cursor-not-allowed' : ''
 						}`}
 					>
