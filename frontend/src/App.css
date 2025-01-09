@@ -40,7 +40,7 @@ body {
 /* Background Image */
 .bg-image {
   position: fixed;
-  top: 0; /* Mulai dari atas halaman */
+  top: 20; /* Mulai dari atas halaman */
   left: 0;
   width: 100%; /* Pastikan gambar mengisi seluruh lebar */
   height: calc(100vh - var(--form-height)); /* Menghitung tinggi berdasarkan form container */
@@ -69,7 +69,6 @@ body {
   position: fixed;
   bottom: 0;
   z-index: 10;
-  max-width: none; /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
 }
 
 /* Responsif untuk Smartphone */
