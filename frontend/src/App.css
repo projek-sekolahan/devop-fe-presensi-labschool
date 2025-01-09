@@ -39,23 +39,18 @@ body {
 
 /* Background Image */
 .bg-image {
-  @apply w-full h-[60vh] fixed top-0 left-0 z-0; /* Menggunakan fixed agar gambar tetap statis */
+  @apply fixed top-20 left-85 z-0; /* Menggunakan fixed agar gambar tetap statis */
   object-fit: cover; /* Menjaga gambar mengisi seluruh area tanpa terdistorsi */
+  margin-top: calc(100vh - 200px); /* Menyesuaikan jarak otomatis berdasarkan tinggi form-container */
 }
 
-/* Responsif untuk Smartphone */
-@media (max-width: 768px) {
-  .bg-image {
-    height: 100vh; /* Gambar menutupi seluruh tinggi layar pada smartphone */
-    object-fit: cover; /* Memastikan gambar tetap proporsional tanpa terdistorsi */
-  }
-  .login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
-    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
-  }
-}
-
-/* Login Form Container */
-.login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
+/* Form Container */
+.login-form-container, 
+.register-form-container, 
+.reset-form-container, 
+.verification-form-container, 
+.confirmation-form-container, 
+.capture-form-container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -63,15 +58,20 @@ body {
   background-color: #1976D2;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
-  padding: 1.5rem; /* sm:p-6 */
+  padding: 1.5rem; 
   padding-top: 1.5rem;
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
   position: fixed;
   bottom: 0;
   z-index: 10;
-  
-  /* Tidak ada max-width pada layar kecil dan sedang */
   max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
+}
+
+/* Responsif untuk Smartphone */
+@media (max-width: 768px) {
+  .login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
+    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
+  }
 }
 
 /* Titles and Subtitles */
