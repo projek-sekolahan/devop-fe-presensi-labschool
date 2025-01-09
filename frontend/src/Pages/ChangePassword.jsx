@@ -95,7 +95,7 @@ export default function ChangePassword() {
                 <div className="flex-grow border-t-[0.25px] border-white"></div>
                 <Link
                     to="/register"
-                    className="text-sm font-light text-white underline hover:underline"
+                    className="text-link text-sm font-light text-white underline hover:underline"
                 >
                     Belum Punya Akun?
                 </Link>

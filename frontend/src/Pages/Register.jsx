@@ -206,7 +206,7 @@ export default function Register() {
                 <div className="flex-grow border-t-[0.25px] border-white"></div>
                 <Link
                     to="/login"
-                    className="text-sm font-light text-white underline hover:underline"
+                    className="text-link text-sm font-light text-white underline hover:underline"
                 >
                     Sudah Punya Akun?
                 </Link>
