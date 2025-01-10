@@ -22,11 +22,19 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
+            # Cache Node Modules
+            - name: Cache Node Modules
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+
             # Set up Node.js environment
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
-                  cache-dependency-path: ./frontend/package-lock.json
                   node-version: 20
                   cache: "npm"
 
@@ -35,10 +43,17 @@ jobs:
               working-directory: ./frontend
               run: npm ci
 
+            # Cache Build Output
+            - name: Cache Build Output
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/dist
+                  key: build-output-${{ github.sha }}
+
             # Build the project
             - name: Build
               working-directory: ./frontend
-              run: npm run build
+              run: npm run build -- --mode production
 
             # Deploy built files to the server
             - name: Deploy
@@ -50,3 +65,5 @@ jobs:
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/frontend/
                   source-path: ./frontend
                   ssh-port: 45022
+                  overwrite: false
+                  only-changed-files: true
