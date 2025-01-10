@@ -22,23 +22,28 @@ export default function FaceCam() {
     const imgRef = useRef();
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
-    // console.log(localStorage.getItem("token"));
-    // return false;
+
+    console.log("Initializing FaceCam component...");
+
     let userData = {};
     if (localStorage.getItem("token")) {
+        console.log("Token found in localStorage, parsing...");
         userData = parseJwt(localStorage.getItem("token"));
-        console.log("Info Userdata pada halaman facecam", userData);
-        // return false;
+        console.log("User data parsed:", userData);
     } else {
+        console.error("Token not found, redirecting to login...");
         window.location.replace("/login");
     }
 
     const descriptor = new Float32Array(userData.facecam_id.split(", "));
+    console.log("Face descriptor initialized:", descriptor);
 
     useEffect(() => {
         const init = async () => {
+            console.log("Loading face models...");
             loading("Loading", "Getting camera access...");
-            await loadFaceModels(); // Load face models sebelum memulai video
+            await loadFaceModels();
+            console.log("Face models loaded, starting video...");
             startVideo();
         };
 
@@ -55,9 +60,11 @@ export default function FaceCam() {
         "foto_presensi",
     ];
     const combinedKeys = addDefaultKeys(keys);
-    let values = []; // Dengan asumsi Anda ingin mengakumulasi hasil
+    console.log("Combined keys initialized:", combinedKeys);
 
+    let values = [];
     if (localStorage.getItem("group_id") == "4") {
+        console.log("User is in group 4, adding non-dinas status...");
         values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
@@ -65,6 +72,7 @@ export default function FaceCam() {
             ...state,
         ];
     } else {
+        console.log("User is not in group 4, skipping non-dinas status...");
         values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
@@ -72,17 +80,22 @@ export default function FaceCam() {
         ];
     }
 
+    console.log("Values initialized:", values);
+
     const startVideo = () => {
+        console.log("Attempting to access user camera...");
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: false })
             .then((stream) => {
+                console.log("Camera access granted.");
                 Swal.close();
                 videoRef.current.srcObject = stream;
                 videoRef.current.setAttribute("autoplay", "");
                 videoRef.current.setAttribute("muted", "");
                 videoRef.current.setAttribute("playsinline", "");
             })
-            .catch(function (err) {
+            .catch((err) => {
+                console.error("Camera access error:", err);
                 if (err.name === "NotAllowedError") {
                     alertMessage(
                         "Error",
@@ -100,36 +113,28 @@ export default function FaceCam() {
     };
 
     function clickPhoto() {
+        console.log("Capturing photo...");
         loading("Loading", "Mendapatkan data wajah...");
         const context = canvasRef.current.getContext("2d");
         const video = videoRef.current;
 
-        // Ukuran canvas untuk gambar akhir
         const canvasWidth = 400;
         const canvasHeight = 400;
-
-        // Ukuran asli video
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
 
-        // Menentukan titik tengah dari video
         const videoCenterX = videoWidth / 2;
         const videoCenterY = videoHeight / 2;
-
-        // Menentukan titik awal untuk memotong gambar (crop)
         const cropX = videoCenterX - canvasWidth / 2;
         const cropY = videoCenterY - canvasHeight / 2;
 
-        // Mengatur ukuran canvas
         canvasRef.current.width = canvasWidth;
         canvasRef.current.height = canvasHeight;
 
-        // Membalik gambar secara horizontal untuk menghindari mirror effect
-        context.save(); // Menyimpan state konteks canvas
-        context.scale(-1, 1); // Membalik gambar secara horizontal
-        context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+        context.save();
+        context.scale(-1, 1);
+        context.translate(-canvasWidth, 0);
 
-        // Mengambil gambar dari video dan memotongnya tepat di tengah
         context.drawImage(
             video,
             cropX,
@@ -142,22 +147,23 @@ export default function FaceCam() {
             canvasHeight
         );
 
-        context.restore(); // Mengembalikan state konteks canvas ke semula
+        context.restore();
 
         let image_data_url = canvasRef.current.toDataURL("image/jpeg");
-
-        // Mengatur gambar hasil di img element
+        console.log("Photo captured successfully.");
         imgRef.current.src = image_data_url;
     }
 
     const detectFace = () => {
-        let attempts = 0; // Menghitung jumlah upaya deteksi
-        const maxAttempts = 20; // Maksimal upaya deteksi yang diizinkan
+        console.log("Starting face detection...");
+        let attempts = 0;
+        const maxAttempts = 20;
         setIsLoading(true);
 
         async function attemptMatch() {
             if (attempts >= maxAttempts) {
-                setIsLoading(false); // Nonaktifkan loading jika sudah melebihi batas percobaan
+                console.warn("Maximum face detection attempts reached.");
+                setIsLoading(false);
                 alertMessage(
                     "Deteksi Gagal",
                     "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
@@ -166,6 +172,7 @@ export default function FaceCam() {
                 return;
             }
             attempts++;
+            console.log(`Face detection attempt #${attempts}...`);
 
             try {
                 const faceData = await faceapi
@@ -177,12 +184,15 @@ export default function FaceCam() {
                     .withFaceDescriptor();
 
                 if (faceData) {
+                    console.log("Face detected:", faceData);
                     const distance = faceapi.euclideanDistance(
                         descriptor,
                         faceData.descriptor
                     );
+                    console.log("Face distance calculated:", distance);
 
                     if (distance <= 0.6) {
+                        console.log("Face matched successfully.");
                         const stringDescriptor = Array.from(faceData.descriptor).join(", ");
                         values.push(
                             stringDescriptor,
@@ -192,6 +202,7 @@ export default function FaceCam() {
                         );
                         Swal.close();
                         loading("Loading", "Mengirim data presensi...");
+                        console.log("Loading Mengirim data presensi...", values);
                         apiXML
                             .presensiPost(
                                 "process",
@@ -199,6 +210,7 @@ export default function FaceCam() {
                                 getFormData(combinedKeys, values)
                             )
                             .then((res) => {
+                                console.log("Presence data submitted successfully:", res);
                                 Swal.close();
                                 res = JSON.parse(res);
                                 Cookies.set("csrf", res.csrfHash);
@@ -208,17 +220,19 @@ export default function FaceCam() {
                                     parsedToken.message,
                                     parsedToken.info,
                                     () => {
-                                        setIsLoading(false); // Nonaktifkan loading setelah selesai
+                                        setIsLoading(false);
                                         window.location.replace("/home");
                                     }
                                 );
                             })
                             .catch((err) => {
-                                setIsLoading(false); // Nonaktifkan loading jika terjadi error
+                                console.error("Presence submission error:", err);
+                                setIsLoading(false);
                                 handleSessionError(err, "/facecam");
                             });
                     } else {
-                        setIsLoading(false); // Nonaktifkan loading jika pencocokan gagal
+                        console.warn("Face match failed. Distance too large.");
+                        setIsLoading(false);
                         alertMessage(
                             "Pencocokan Gagal",
                             "Wajah tidak terdaftar, harap ulangi proses",
@@ -226,16 +240,17 @@ export default function FaceCam() {
                         );
                     }
                 } else {
-                    setTimeout(attemptMatch, 100); // Coba lagi jika wajah belum terdeteksi
+                    console.log("No face detected, retrying...");
+                    setTimeout(attemptMatch, 100);
                 }
             } catch (err) {
-                setIsLoading(false); // Nonaktifkan loading jika terjadi error
+                console.error("Error during face detection:", err);
+                setIsLoading(false);
                 handleSessionError(err, "/login");
             }
         }
 
         attemptMatch();
-
     };
 
     return (
