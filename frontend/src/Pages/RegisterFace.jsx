@@ -111,24 +111,11 @@ export default function RegisterFace() {
                 Cookies.get("csrf"),
             ];
 
-<<<<<<< HEAD
             const response = await apiXML.postInput(
                 "loadFace",
                 getFormData(keys, values)
             );
             if (!response.status) throw new Error("Gagal memuat data wajah.");
-=======
-            const response = await apiXML.postInput("loadFace", formData);
-            if (!response.status) {
-                setIsLoading(false);
-                alertMessage(
-                    "Gagal memuat data wajah",
-                    "Wajah tidak terdeteksi pada database",
-                    "error"
-                );
-                return;
-            }
->>>>>>> 4531a56b738539c92d5427a2bfd5aa0ae896ce2f
 
             const facecamData = response.data.facecam;
 
@@ -209,11 +196,8 @@ export default function RegisterFace() {
                 );
             } else {
                 setIsLoading(false);
-                alertMessage(
-                    "Error",
-                    "Gagal mendaftarkan wajah",
-                    "error",
-                    () => window.location.replace("/facereg")
+                alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
+                    window.location.replace("/facereg")
                 );
             }
         } catch (err) {
@@ -228,7 +212,9 @@ export default function RegisterFace() {
             {/* Title and Subtitle */}
             <div className="text-center mt-6 mb-6">
                 <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
-                <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
+                <p className="text-sm mt-2">
+                    Ambil Gambar Wajah Untuk Verifikasi
+                </p>
             </div>
 
             {/* Video Feed */}
@@ -256,14 +242,25 @@ export default function RegisterFace() {
                 </button>
 
                 {/* Modal */}
-                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform">
+                <dialog
+                    id="my_modal_1"
+                    className="modal text-black shadow-lg transition transform"
+                >
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" alt="Captured face" />
+                        <p className="text-semibold mt-2 text-gray-600">
+                            Cek Hasil Gambar
+                        </p>
+                        <img
+                            ref={imgRef}
+                            className="w-full rounded-lg shadow-md mt-4"
+                            alt="Captured face"
+                        />
                         <div className="modal-action flex justify-center mt-4 gap-4">
                             <form method="dialog" className="flex gap-4">
-                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">Cancel</button>
+                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
+                                    Cancel
+                                </button>
                                 <button
                                     disabled={isLoading}
                                     onClick={detectAndRegisterFace}
