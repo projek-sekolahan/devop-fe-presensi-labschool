@@ -15,36 +15,18 @@ jobs:
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
-                  echo "$ssh-key" > secrets.txt
-                  chmod 600 secrets.txt
-                  echo "SSH key set up successfully."
+                  echo $ssh-key >> secrets.txt
+                  cat secrets.txt
 
             # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
 
-            # Debug root files
-            - name: Debug root files
-              run: ls -la
-
-            # Debug frontend folder files
-            - name: Debug frontend files
-              working-directory: ./frontend
-              run: ls -la
-
-            # Cache Node Modules
-            - name: Cache Node Modules
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ github.run_id }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-
             # Set up Node.js environment
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
+                  cache-dependency-path: ./frontend/package-lock.json
                   node-version: 20
                   cache: "npm"
 
@@ -53,22 +35,10 @@ jobs:
               working-directory: ./frontend
               run: npm ci
 
-            # Debug node_modules
-            - name: Debug node_modules
-              working-directory: ./frontend
-              run: ls -la node_modules
-
-            # Cache Build Output
-            - name: Cache Build Output
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend/dist
-                  key: build-output-${{ github.sha }}
-
             # Build the project
             - name: Build
               working-directory: ./frontend
-              run: npm run build -- --mode production
+              run: npm run build
 
             # Deploy built files to the server
             - name: Deploy
@@ -80,5 +50,3 @@ jobs:
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/frontend/
                   source-path: ./frontend
                   ssh-port: 45022
-                  overwrite: false
-                  only-changed-files: true
