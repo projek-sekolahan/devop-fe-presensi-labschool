@@ -60,6 +60,6 @@ jobs:
                   target-server: 23.106.52.199
                   remote-user: smalabsc
                   private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/frontend/
+                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
                   source-path: ./frontend
                   ssh-port: 45022
