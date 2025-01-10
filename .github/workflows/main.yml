@@ -15,18 +15,36 @@ jobs:
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
-                  echo $ssh-key >> secrets.txt
-                  cat secrets.txt
+                  echo "$ssh-key" > secrets.txt
+                  chmod 600 secrets.txt
 
             # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
 
+            # Verify package-lock.json
+            - name: Verify package-lock.json
+              run: |
+                if [ -f ./frontend/package-lock.json ]; then
+                  echo "package-lock.json found!"
+                else
+                  echo "package-lock.json NOT found!"
+                  exit 1
+                fi
+
+            # Cache Node Modules
+            - name: Cache Node Modules
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+
             # Set up Node.js environment
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
-                  cache-dependency-path: ./frontend/package-lock.json
                   node-version: 20
                   cache: "npm"
 
@@ -34,6 +52,11 @@ jobs:
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
+
+            # Debug node_modules
+            - name: Debug node_modules
+              working-directory: ./frontend
+              run: ls -la node_modules
 
             # Build the project
             - name: Build
