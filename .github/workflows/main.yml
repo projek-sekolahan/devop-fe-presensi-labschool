@@ -15,19 +15,29 @@ jobs:
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
-                  echo $ssh-key >> secrets.txt
-                  cat secrets.txt
+                  echo "$ssh-key" > secrets.txt
+                  chmod 600 secrets.txt
+                  echo "SSH key set up successfully."
 
             # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
 
+            # Debug root files
+            - name: Debug root files
+              run: ls -la
+
+            # Debug frontend folder files
+            - name: Debug frontend files
+              working-directory: ./frontend
+              run: ls -la
+
             # Cache Node Modules
             - name: Cache Node Modules
               uses: actions/cache@v3
               with:
-                  path: ./node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ github.run_id }}
                   restore-keys: |
                       ${{ runner.os }}-node-
 
@@ -42,6 +52,11 @@ jobs:
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
+
+            # Debug node_modules
+            - name: Debug node_modules
+              working-directory: ./frontend
+              run: ls -la node_modules
 
             # Cache Build Output
             - name: Cache Build Output
