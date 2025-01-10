@@ -31,7 +31,7 @@ export const registerServiceWorker = async () => {
 
     try {
         const registration = await navigator.serviceWorker.register(
-            `/service-worker-sw.js?v=${new Date().getTime()}`,
+            `/service-worker.js?v=${new Date().getTime()}`,
             { scope: "/" }
         );
         console.log("Service Worker berhasil didaftarkan:", registration.scope);

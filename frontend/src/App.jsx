@@ -10,7 +10,7 @@ import "./App.css";
 
 function App() {
     useEffect(() => {
-        // Cache-Busting dengan Query String Unik
+        /* // Cache-Busting dengan Query String Unik
         const addCacheBusting = () => {
             const timestamp = new Date().getTime();
             const links = document.querySelectorAll('link[rel="stylesheet"]');
@@ -29,7 +29,7 @@ function App() {
             });
             localStorage.clear();
             sessionStorage.clear();
-        };
+        }; */
 
         // Minta Izin untuk Cookie
         const handleCookies = () => {
@@ -50,8 +50,8 @@ function App() {
             }
         };
 
-        addCacheBusting();
-        clearCookiesAndStorage();
+        /* addCacheBusting();
+        clearCookiesAndStorage(); */
         handleCookies();
     }, []);
 
