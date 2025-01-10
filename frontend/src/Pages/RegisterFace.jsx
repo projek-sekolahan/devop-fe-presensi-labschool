@@ -48,7 +48,7 @@ export default function RegisterFace() {
 
     // Fungsi untuk mengambil gambar dari video
     function clickPhoto() {
-        loading("Loading", "Mendapatkan data wajah...");
+        // loading("Loading", "Mendapatkan data wajah...");
         const context = canvasRef.current.getContext("2d");
         const video = videoRef.current;
 
@@ -244,7 +244,7 @@ export default function RegisterFace() {
                 {/* Modal */}
                 <dialog
                     id="my_modal_1"
-                    className="modal text-black shadow-lg transition transform"
+                    className="modal text-black shadow-lg transition transform z-0"
                 >
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
@@ -271,7 +271,7 @@ export default function RegisterFace() {
                                     {isLoading ? (
                                         <div className="flex justify-center items-center gap-2">
                                             <span>Loading...</span>
-                                            <span className="loading loading-spinner text-white"></span>
+                                            <span className="loading loading-spinner text-white size-7"></span>
                                         </div>
                                     ) : (
                                         "Proses"
