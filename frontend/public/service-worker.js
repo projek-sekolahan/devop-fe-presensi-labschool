@@ -20,7 +20,15 @@ self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             console.log("[Service Worker] Caching assets...");
-            return cache.addAll(ASSETS_TO_CACHE);
+
+            // Tambahkan asset satu per satu untuk mempermudah debugging
+            const assetPromises = ASSETS_TO_CACHE.map((asset) => {
+                return cache.add(asset).catch((error) => {
+                    console.error(`[Service Worker] Gagal cache asset: ${asset}`, error);
+                });
+            });
+
+            return Promise.all(assetPromises);
         })
     );
 
