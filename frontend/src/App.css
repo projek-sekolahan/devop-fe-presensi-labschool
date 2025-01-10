@@ -23,19 +23,39 @@ input[type=number] {
   -moz-appearance: none;
 }
 
+/* Pastikan HTML dan Body Mendukung Tampilan */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
 /* Login Container */
-.login-container {
-  @apply bg-primary-low font-primary text-white relative z-[1] overflow-hidden;
+.login-container, .register-container, .reset-container, .verification-container, .confirmation-container, .capture-container {
+  @apply bg-primary-low font-primary text-white relative z-[1];
+  overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
 
 /* Background Image */
-.login-bg-image {
-  @apply w-full h-[60vh] absolute top-0 left-0 z-0;
-  object-fit: cover;
+.bg-image {
+  position: fixed;
+  top: 20; /* Mulai dari atas halaman */
+  left: 0;
+  width: 100%; /* Pastikan gambar mengisi seluruh lebar */
+  height: calc(100vh - var(--form-height)); /* Menghitung tinggi berdasarkan form container */
+  z-index: 0; /* Menempatkan gambar di bawah konten lain */
+  object-fit: cover; /* Menjaga gambar tetap proporsional */
 }
 
-/* Login Form Container */
-.login-form-container {
+/* Form Container */
+.login-form-container, 
+.register-form-container, 
+.reset-form-container, 
+.verification-form-container, 
+.confirmation-form-container, 
+.capture-form-container {
+  --form-height: 200px; /* Tinggi default form container */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -43,64 +63,132 @@ input[type=number] {
   background-color: #1976D2;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
-  padding: 1.5rem; /* sm:p-6 */
+  padding: 1.5rem; 
   padding-top: 1.5rem;
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
   position: fixed;
   bottom: 0;
   z-index: 10;
-  
-  /* Tidak ada max-width pada layar kecil dan sedang */
-  max-width: none;  /* Menghilangkan batasan lebar maksimum pada layar kecil dan sedang */
 }
 
-@media (min-width: 768px) {
-  .login-form-container {
+/* Responsif untuk Smartphone */
+@media (max-width: 768px) {
+  .login-form-container, .register-form-container, .reset-form-container, .verification-form-container, .confirmation-form-container, .capture-form-container {
     max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
   }
 }
 
 /* Titles and Subtitles */
 .text-title {
-  @apply font-bold text-4xl;
+  @apply font-semibold text-2xl sm:text-4xl text-center mb-4; /* Ukuran font lebih responsif dan lebih besar pada layar besar */
 }
 
 .text-subtitle {
-  @apply font-light text-xs;
+  @apply font-light text-xl sm:text-2xl text-center mb-4; /* Ukuran font yang lebih besar pada layar besar */
 }
 
 /* Form Styles */
-.login-form {
+.login-form, .register-form, .reset-form, .verification-form, .confirmation-form {
   @apply my-6 space-y-4 md:space-y-6;
 }
 
-.input-group {
-  @apply flex flex-col gap-2;
-}
-
+/* Input Label */
 .input-label {
-  @apply text-sm font-light;
+  @apply text-sm font-medium; /* Memberikan label dengan ketebalan font yang lebih baik */
 }
 
+/* Text Link */
+.text-link {
+  @apply text-sm font-light; /* Menggunakan warna yang lebih kontras untuk link */
+}
+
+/* Active Role */
+.role-option.active {
+@apply bg-primary-md text-white ring-4 ring-blue-400; 
+/* Menambahkan efek "ring" untuk role yang aktif */
+}
+
+/* Icon Saat Checkbox Dicentang */
+.password-toggle input:checked ~ .password-icon-eye {
+  @apply block; /* Tampilkan ikon mata */
+}
+
+.password-toggle input:checked ~ .password-icon-eye-slash {
+  @apply hidden; /* Sembunyikan ikon mata yang tertutup */
+}
+
+/* General Style for Consistency */
+.input-group {
+  @apply flex flex-col gap-4; /* Menambahkan jarak antar input untuk keterbacaan yang lebih baik */
+  width: 100%; /* Memastikan input grup menggunakan 100% lebar */
+}
+
+/* Role Selection */
+.role-selection {
+  @apply flex justify-between items-center gap-4 w-full; 
+  /* Menjadikan ikon sejajar (inline) dengan jarak yang proporsional */
+}
+
+/* Role Option */
+.role-option {
+  @apply flex flex-col items-center cursor-pointer p-4 border border-gray-300 rounded-lg transition-transform hover:scale-105;
+  flex-basis: calc(100% / 3 - 1rem); /* Membagi setiap role menjadi 1/3 lebar container (untuk 3 role) */
+  max-width: 120px; /* Menentukan ukuran maksimal untuk konsistensi */
+  text-align: center; /* Menjaga label terpusat */
+}
+
+/* Role Icon */
+.role-icon {
+  @apply w-16 h-16 text-primary-md mb-2; /* Ukuran ikon yang konsisten dan proporsional */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Role Label */
+.role-label {
+  @apply text-sm font-medium text-center; /* Label dengan ukuran kecil dan terpusat */
+}
+
+/* Password Toggle */
+.password-toggle {
+  @apply flex justify-center items-center border-[1px] border-gray-300 bg-white rounded-lg cursor-pointer; /* Adjusted width */
+  /* Menambahkan interaktivitas */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Password Icon (For Eye Slash and Eye) */
+.password-icon-eye-slash, .password-icon-eye {
+  @apply w-8 h-8; /* Ukuran ikon yang konsisten */
+}
+
+/* Styling untuk Input Fields untuk Konsistensi */
 .input-field {
-  @apply bg-primary-md border-white border-[1px] placeholder-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4;
+  @apply bg-primary-md border-white border-[1px] placeholder-white text-sm rounded-lg focus:bg-white focus:border-0 focus:text-black w-full py-3 px-4;
   box-sizing: border-box;
 }
 
-.password-container {
-  @apply flex gap-2;
-}
-
-.text-link {
-  @apply text-sm font-light text-end;
-}
-
-/* Button Styles */
+/* Button */
 .btn-submit {
-  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center;
+  @apply btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 rounded-xl text-sm px-4 py-2 text-center mt-4;
+  transition: background-color 0.3s ease;
 }
 
-/* Register Link */
-.text-register-link {
-  @apply font-medium underline text-white hover:underline dark:text-primary-500;
+/* Role Selection Container */
+.role-selection-container {
+  @apply flex flex-col items-center w-full my-6;
+}
+
+/* Role Selection Label */
+.role-selection-label {
+  @apply text-lg font-medium mb-4 text-center;
+}
+
+/* Password Container */
+.password-container {
+  @apply flex gap-2; /* Flex gap untuk menjauhkan elemen-elemen */
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }

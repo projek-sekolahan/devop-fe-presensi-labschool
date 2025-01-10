@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import * as faceapi from "face-api.js";
@@ -15,7 +15,7 @@ export default function RegisterFace() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
-
+    const [isLoading, setIsLoading] = useState(false);
     // Inisialisasi komponen
     useEffect(() => {
         const init = async () => {
@@ -47,43 +47,63 @@ export default function RegisterFace() {
     };
 
     // Fungsi untuk mengambil gambar dari video
-    const clickPhoto = () => {
+    function clickPhoto() {
+        loading("Loading", "Mendapatkan data wajah...");
         const context = canvasRef.current.getContext("2d");
         const video = videoRef.current;
-        const canvasSize = 400;
 
-        canvasRef.current.width = canvasSize;
-        canvasRef.current.height = canvasSize;
+        // Ukuran canvas untuk gambar akhir
+        const canvasWidth = 400;
+        const canvasHeight = 400;
 
-        const cropX = (video.videoWidth - canvasSize) / 2;
-        const cropY = (video.videoHeight - canvasSize) / 2;
+        // Ukuran asli video
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
 
-        context.save();
-        context.scale(-1, 1); // Flip horizontal
-        context.translate(-canvasSize, 0);
+        // Menentukan titik tengah dari video
+        const videoCenterX = videoWidth / 2;
+        const videoCenterY = videoHeight / 2;
+
+        // Menentukan titik awal untuk memotong gambar (crop)
+        const cropX = videoCenterX - canvasWidth / 2;
+        const cropY = videoCenterY - canvasHeight / 2;
+
+        // Mengatur ukuran canvas
+        canvasRef.current.width = canvasWidth;
+        canvasRef.current.height = canvasHeight;
+
+        // Membalik gambar secara horizontal untuk menghindari mirror effect
+        context.save(); // Menyimpan state konteks canvas
+        context.scale(-1, 1); // Membalik gambar secara horizontal
+        context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+
+        // Mengambil gambar dari video dan memotongnya tepat di tengah
         context.drawImage(
             video,
             cropX,
             cropY,
-            canvasSize,
-            canvasSize,
+            canvasWidth,
+            canvasHeight,
             0,
             0,
-            canvasSize,
-            canvasSize
+            canvasWidth,
+            canvasHeight
         );
-        context.restore();
 
-        const imageUrl = canvasRef.current.toDataURL("image/jpeg");
-        imgRef.current.src = imageUrl;
-    };
+        context.restore(); // Mengembalikan state konteks canvas ke semula
+
+        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+
+        // Mengatur gambar hasil di img element
+        imgRef.current.src = image_data_url;
+    }
 
     // Fungsi utama untuk mendeteksi wajah dan mendaftarkan
     const detectAndRegisterFace = async () => {
         loading("Loading", "Sedang melakukan deteksi wajah...");
         const maxAttempts = 10;
         let attempts = 0;
-
+        setIsLoading(true);
         try {
             const keys = ["devop-sso", "csrf_token"];
             const values = [
@@ -91,21 +111,35 @@ export default function RegisterFace() {
                 Cookies.get("csrf"),
             ];
 
+<<<<<<< HEAD
             const response = await apiXML.postInput(
                 "loadFace",
                 getFormData(keys, values)
             );
             if (!response.status) throw new Error("Gagal memuat data wajah.");
+=======
+            const response = await apiXML.postInput("loadFace", formData);
+            if (!response.status) {
+                setIsLoading(false);
+                alertMessage(
+                    "Gagal memuat data wajah",
+                    "Wajah tidak terdeteksi pada database",
+                    "error"
+                );
+                return;
+            }
+>>>>>>> 4531a56b738539c92d5427a2bfd5aa0ae896ce2f
 
             const facecamData = response.data.facecam;
 
             const attemptMatch = async () => {
                 if (attempts >= maxAttempts) {
+                    setIsLoading(false);
                     alertMessage(
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
                         "error",
-                        () => resetForm()
+                        () => window.location.replace("/facereg")
                     );
                     return;
                 }
@@ -131,11 +165,12 @@ export default function RegisterFace() {
                 });
 
                 if (isMatched) {
+                    setIsLoading(false);
                     alertMessage(
                         "Error",
-                        "Wajah sudah terdaftar, gunakan wajah lain.",
+                        "Wajah sudah terdaftar, gunakan wajah lain",
                         "error",
-                        () => resetForm()
+                        () => window.location.replace("/facereg")
                     );
                     return;
                 }
@@ -165,6 +200,7 @@ export default function RegisterFace() {
             const res = JSON.parse(response);
             Cookies.set("csrf", res.csrfHash);
             if (response.status) {
+                setIsLoading(false);
                 alertMessage(
                     response.data.title,
                     response.data.message,
@@ -172,27 +208,82 @@ export default function RegisterFace() {
                     () => window.location.replace("/setpassword")
                 );
             } else {
-                throw new Error("Gagal mendaftarkan wajah.");
+                setIsLoading(false);
+                alertMessage(
+                    "Error",
+                    "Gagal mendaftarkan wajah",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
             }
         } catch (err) {
+            setIsLoading(false);
             console.error(err);
             handleSessionError(err, "/facereg");
         }
     };
 
-    const resetForm = () => {
-        imgRef.current.src = "";
-    };
-
     return (
-        <div className="bg-primary-low text-white flex flex-col h-screen w-screen">
-            <video ref={videoRef} className="video-feed" />
-            <canvas ref={canvasRef} className="hidden" />
-            <img ref={imgRef} className="hidden" alt="Captured face" />
+        <div className="capture-container bg-primary-low text-white flex flex-col h-screen w-screen">
+            {/* Title and Subtitle */}
+            <div className="text-center mt-6 mb-6">
+                <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
+                <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
+            </div>
 
-            <div className="controls">
-                <button onClick={clickPhoto}>Ambil Gambar</button>
-                <button onClick={detectAndRegisterFace}>Proses</button>
+            {/* Video Feed */}
+            <video
+                ref={videoRef}
+                className="h-2/3 w-full object-cover mt-4"
+                autoPlay
+                playsInline
+            />
+
+            {/* Canvas and Captured Image (Hidden) */}
+            <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+            <img ref={imgRef} className="absolute z-10 hidden" />
+
+            {/* Controls Section */}
+            <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
+                <button
+                    onClick={() => {
+                        document.getElementById("my_modal_1").showModal();
+                        clickPhoto();
+                    }}
+                    className="btn-submit"
+                >
+                    Ambil Gambar
+                </button>
+
+                {/* Modal */}
+                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform">
+                    <div className="modal-box">
+                        <h3 className="font-bold text-lg">Hasil Potret</h3>
+                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" alt="Captured face" />
+                        <div className="modal-action flex justify-center mt-4 gap-4">
+                            <form method="dialog" className="flex gap-4">
+                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">Cancel</button>
+                                <button
+                                    disabled={isLoading}
+                                    onClick={detectAndRegisterFace}
+                                    className={`py-2 px-6 btn-submit ${
+                                        isLoading ? "loading" : ""
+                                    }`}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex justify-center items-center gap-2">
+                                            <span>Loading...</span>
+                                            <span className="loading loading-spinner text-white"></span>
+                                        </div>
+                                    ) : (
+                                        "Proses"
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
             </div>
         </div>
     );

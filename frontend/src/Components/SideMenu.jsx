@@ -10,10 +10,10 @@ import {
 import { Link } from "react-router-dom";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { getFormData, alertMessage, addDefaultKeys } from "../utils/utils";
+import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, userData, closeMenu }) {
+export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -31,6 +31,9 @@ export default function SideMenu({ show, userData, closeMenu }) {
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
+					loading("Loading", "Logging out...");
+					// Clear interval
+					clearInterval(intervalId);
 					const key = ["AUTH_KEY", "token"];
 					const combinedKeys = addDefaultKeys(key);
 					const values = [

@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import {
 	getFormData,
 	getHash,
@@ -12,17 +10,19 @@ import {
 import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
+import { validateFormFields } from "../utils/validation";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(false);
+	const [errors, setErrors] = useState({password: ""});
 	const inputRef = useRef();
 	const confirmRef = useRef();
 
 	const changeHandler = (e) => {
-		if (inputRef.current.value) {
+		if (inputRef.current.value.trim()) {
 			setWarning("none");
-			if (e.target.value == inputRef.current.value) {
+			if (e.target.value == inputRef.current.value.trim()) {
 				setDisabled(false);
 			} else {
 				setDisabled(true);
@@ -34,8 +34,21 @@ export default function SetPassword() {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		
+		// Validate form fields
+        const validationErrors = validateFormFields({password: { value: inputRef.current.value.trim(), type: "password" }});
+
+        // Set errors if any
+        setErrors({password: validationErrors.password || ""});
+
+        // If there are validation errors, stop form submission
+        if (Object.values(validationErrors).some((error) => error)) {
+            return;
+        }
+		
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
+
 		const key = ["password"];
 		const combinedKeys = addDefaultKeys(key);
 		const values = [
@@ -62,74 +75,84 @@ export default function SetPassword() {
 	};
 
 	return (
-		<div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)]">
-			<Link to="/">
-				<ArrowLeftIcon className="size-7 absolute top-8 left-6 z-[2]" />
-			</Link>
+		<div className="confirmation-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+			{/* Background Image */}
 			<img
-				src="/frontend/img/reset_pwd.png"
+				src="/frontend/Icons/splash.svg"
 				alt="reset"
-				className="h-[57.5%] w-full absolute top-0 left-0"
+				className="bg-image h-[57.5%] w-full absolute top-0 left-0"
 			/>
-			<div className="w-full h-fit mt-auto bottom-0 bg-primary-md rounded-t-[2rem] p-6 sm:p-8 relative z-10">
-				<h2 className="font-bold text-4xl">Set Password</h2>
-				<div className="my-6 space-y-4 md:space-y-6">
-					<form className="space-y-4 md:space-y-6 flex flex-col gap-2">
-						<div>
-							<label htmlFor="password">Password</label>
-							<div className="flex gap-2">
-								<input
-									type="password"
-									name="password"
-									id="password"
-									placeholder="Password (8 or more characters)"
-									className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-									required=""
-									ref={inputRef}
-								/>
-								<PasswordShow ref={inputRef} />
-							</div>
-							<label
-								htmlFor="password"
-								style={{ display: `${warning}` }}
-								className="text-red-700 text-sm font-semibold"
-							>
-								Please fill it first
-							</label>
-						</div>
-						<div>
-							<label htmlFor="confirm-password">
-								Confirm Password
-							</label>
-							<div className="flex gap-2">
-								<input
-									type="password"
-									placeholder="Password (8 or more characters)"
-									className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-									required=""
-									ref={confirmRef}
-									onChange={changeHandler}
-								/>
-								<PasswordShow ref={confirmRef} />
-							</div>
-						</div>
 
-						<button
-							onClick={submitHandler}
-							disabled={disabled}
-							className="btn border-none w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 text-center disabled:text-white"
+			{/* Form Container */}
+			<div className="confirmation-form-container shadow-md">
+				<h2 className="text-title text-center">Set Password</h2>
+				<form className="confirmation-form space-y-4 md:space-y-6 flex flex-col gap-2">
+					{/* Password Input */}
+					<div className="input-group">
+						<label
+							htmlFor="password"
+							className={`input-label ${
+								errors.password ? "text-red-700 font-semibold" : ""
+							}`}
+							>
+							{errors.password ? errors.password : "Password"}
+                        </label>
+						<div className="flex gap-2">
+							<input
+								type="password"
+								name="password"
+								id="password"
+								placeholder="Password (8 or more characters)"
+								className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+								required
+								ref={inputRef}
+							/>
+							<PasswordShow ref={inputRef} />
+						</div>
+						<label
+							htmlFor="password"
+							style={{ display: `${warning}` }}
+							className="warning-text text-red-700 text-sm font-semibold"
 						>
-							{disabled ? (
-								<div className="flex justify-center items-center gap-2">
-									<p>Loading </p>
-									<span className="loading loading-spinner text-white"></span>
-								</div>
-							) : (
-								"Set Password"
-							)}
-						</button>
-					</form>
-				</div>
+							Please fill it first
+						</label>
+					</div>
+
+					{/* Confirm Password Input */}
+					<div className="input-group">
+						<label htmlFor="confirm-password" className="input-label">Confirm Password</label>
+						<div className="flex gap-2">
+							<input
+								type="password"
+								placeholder="Password (8 or more characters)"
+								className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+								required
+								ref={confirmRef}
+								onChange={changeHandler}
+							/>
+							<PasswordShow ref={confirmRef} />
+						</div>
+					</div>
+
+					{/* Submit Button */}
+					<button
+						type="button"
+						onClick={submitHandler}
+						disabled={disabled}
+						className={`btn-submit w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 ${
+							disabled ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
+					>
+						{disabled ? (
+							<div className="flex justify-center items-center gap-2">
+								<p className="text-white">Loading</p>
+								<span className="loading loading-spinner text-white"></span>
+							</div>
+						) : (
+							'Konfirmasi'
+						)}
+					</button>
+				</form>
 			</div>
 		</div>
 	);

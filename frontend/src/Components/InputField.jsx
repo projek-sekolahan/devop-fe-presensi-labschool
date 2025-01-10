@@ -7,7 +7,7 @@ const InputField = forwardRef(({ id, name, placeholder, type = "text" }, ref) =>
         name={name}
         ref={ref}
         type={type}
-        className="bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
+        className="input-field"
         placeholder={placeholder}
         required
     />
