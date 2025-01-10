@@ -4,7 +4,12 @@ import Cookies from "js-cookie";
 import * as faceapi from "face-api.js";
 import { loadFaceModels, detectSingleFace } from "../utils/faceUtils";
 import apiXML from "../utils/apiXML";
-import { alertMessage, loading, handleSessionError } from "../utils/utils";
+import {
+    alertMessage,
+    loading,
+    handleSessionError,
+    getFormData,
+} from "../utils/utils";
 
 export default function RegisterFace() {
     const videoRef = useRef(null);
@@ -37,7 +42,7 @@ export default function RegisterFace() {
                     err.name === "NotAllowedError"
                         ? "Izin akses kamera ditolak oleh pengguna"
                         : "Tidak ada kamera yang tersedia pada perangkat";
-                alertMessage("Error", errorMessage, "error",);
+                alertMessage("Error", errorMessage, "error");
             });
     };
 
@@ -80,13 +85,16 @@ export default function RegisterFace() {
         let attempts = 0;
 
         try {
-            // Ambil data awal dari server
-            const formData = {
-                "devop-sso": localStorage.getItem("regist_token"),
-                csrf_token: Cookies.get("csrf"),
-            };
+            const keys = ["devop-sso", "csrf_token"];
+            const values = [
+                localStorage.getItem("regist_token"),
+                Cookies.get("csrf"),
+            ];
 
-            const response = await apiXML.postInput("loadFace", formData);
+            const response = await apiXML.postInput(
+                "loadFace",
+                getFormData(keys, values)
+            );
             if (!response.status) throw new Error("Gagal memuat data wajah.");
 
             const facecamData = response.data.facecam;
