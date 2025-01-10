@@ -26,7 +26,7 @@ jobs:
             - name: Cache Node Modules
               uses: actions/cache@v3
               with:
-                  path: ./frontend/node_modules
+                  path: ./node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node-
