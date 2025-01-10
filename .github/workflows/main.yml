@@ -7,28 +7,26 @@ on:
 
 jobs:
     web-deploy:
-        name: SSH-Deploy-Action
         runs-on: ubuntu-latest
         steps:
             # Setup SSH Key
             - name: Set up secret file
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-              run: |
-                  echo $ssh-key >> secrets.txt
-                  cat secrets.txt
+              run: echo "$ssh-key" >> secrets.txt
 
             # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
 
-            # Debugging: Verify file existence
-            - name: Verify package-lock.json
-              run: |
-                  echo "Listing files in ./frontend:"
-                  ls -la ./frontend
-                  echo "Checking package-lock.json:"
-                  cat ./frontend/package-lock.json || echo "package-lock.json not found!"
+            # Cache Node Modules
+            - name: Cache Node Modules
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
             # Set up Node.js environment
             - name: Set up Node
@@ -42,6 +40,13 @@ jobs:
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
+
+            # Cache Build Output
+            - name: Cache Build Output
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/dist
+                  key: build-output-${{ github.sha }}
 
             # Build the project
             - name: Build
