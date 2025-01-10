@@ -57,7 +57,7 @@ function App() {
 
     return (
         <Router>
-            {!isMobile && <DesktopWarning />}
+            {/* !isMobile && <DesktopWarning /> */}
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {routes.map(({ path, component: Component }, index) => (
