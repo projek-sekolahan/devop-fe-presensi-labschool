@@ -4,78 +4,51 @@
 @tailwind utilities;
 @import "flowbite";
 
-/* Ensure Consistent Background and Overflow */
-html,
 body {
-  @apply bg-primary-low min-h-screen overflow-hidden;
+  background-color: #84848a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-/* Login Container */
 .login-container {
-  @apply flex flex-col items-center justify-center w-full min-h-screen;
+  background-color: #93593c;
+  width: 60%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Background Image */
-.bg-image {
-  @apply fixed top-0 left-0 w-full h-full object-cover;
-  z-index: 0;
-  opacity: 0.1; /* Reduce opacity to avoid distraction */
-}
-
-/* Form Container */
 .login-form-container {
-  @apply relative z-10 bg-primary-md sm:rounded-xl text-white shadow-md;
-}
-
-/* Titles and Subtitles */
-.text-title {
-  @apply text-2xl font-semibold mb-2;
-}
-
-.text-subtitle {
-  @apply text-base font-light mb-4;
-}
-
-/* Form Inputs */
-.input-group {
-  @apply flex flex-col gap-2 mb-4;
-}
-
-.input-label {
-  @apply text-sm font-medium;
+  background-color: #994b28;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .input-field {
-  @apply w-full py-3 px-4 bg-primary-low border border-white rounded-lg placeholder-white text-sm;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-.input-field:focus {
-  @apply bg-white text-black border-primary-low;
-}
-
-/* Password Container */
-.password-container {
-  @apply flex gap-2 items-center;
-}
-
-/* Button */
 .btn-submit {
-  @apply w-full py-2 mt-4 text-primary-md bg-white font-semibold rounded-xl;
-  transition: background-color 0.3s ease;
+  background-color: #9c4d2a;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .btn-submit:hover {
-  @apply bg-primary-300;
-}
-
-/* Text Links */
-.text-link {
-  @apply text-sm font-light text-white underline hover:text-gray-300;
-}
-
-/* Responsiveness */
-@media (min-width: 768px) {
-  .login-form-container {
-    @apply sm:w-[400px] px-6 py-8;
-  }
+  background-color: #803d20; /* Sedikit lebih gelap untuk efek hover */
 }
