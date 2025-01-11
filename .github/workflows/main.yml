@@ -59,7 +59,7 @@ jobs:
             # Deploy built files to the server using rsync
             - name: Deploy with rsync
               run: |
-                  rsync -avz --delete ./frontend/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                  rsync -avz --delete ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
               if: steps.check_changes.outputs.changed == 'true'
