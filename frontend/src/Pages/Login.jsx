@@ -102,7 +102,7 @@ export default function Login() {
     };
 
     return (
-<div className="login-container flex flex-col w-full min-h-screen items-center justify-center bg-gradient-to-b from-[#FF7F27] to-[#E86800]">
+<div className="login-container flex flex-col w-full min-h-screen items-center justify-center bg-primary-low">
     {/* Background Image */}
     <img
         src="/frontend/Icons/splash.svg"
@@ -111,7 +111,7 @@ export default function Login() {
     />
 
     {/* Login Form */}
-    <div className="login-form-container shadow-lg sm:w-[400px] w-full px-4 py-6">
+    <div className="login-form-container shadow-md sm:w-[400px] w-full px-4 py-6">
         <h2 className="text-title text-center">Yuk Login!</h2>
         <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
         <form
