@@ -68,7 +68,7 @@ jobs:
             # Deploy built files to the server using rsync
             - name: Deploy to server
               run: |
-                  rsync -avz --delete --progress ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                  rsync -avz --delete --progress -e "ssh -p 45022" ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
               if: env.changed == 'true'
 
             # Verify files on server after deployment (optional)
