@@ -102,7 +102,7 @@ export default function Login() {
     };
 
     return (
-<div className="login-container flex flex-col w-full min-h-screen items-center justify-center bg-primary-low">
+<div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
     {/* Background Image */}
     <img
         src="/frontend/Icons/splash.svg"
