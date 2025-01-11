@@ -7,28 +7,26 @@ on:
 
 jobs:
     web-deploy:
-        name: SSH-Deploy-Action
         runs-on: ubuntu-latest
         steps:
-            # Setup SSH Key
-            - name: Set up secret file
-              env:
-                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-              run: |
-                  echo $ssh-key >> secrets.txt
-                  cat secrets.txt
-
             # Checkout source code
             - name: Checkout
               uses: actions/checkout@v4
 
-            # Debugging: Verify file existence
-            - name: Verify package-lock.json
+            # Detect changes in frontend
+            - name: Check for changes in frontend
+              id: check_changes
               run: |
-                  echo "Listing files in ./frontend:"
-                  ls -la ./frontend
-                  echo "Checking package-lock.json:"
-                  cat ./frontend/package-lock.json || echo "package-lock.json not found!"
+                  git diff --exit-code --quiet ./frontend || echo "Frontend files have changed"
+
+            # Cache Node Modules
+            - name: Cache Node Modules
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
             # Set up Node.js environment
             - name: Set up Node
@@ -42,19 +40,26 @@ jobs:
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
+              if: steps.check_changes.outputs.changed == 'true'
+
+            # Cache Build Output
+            - name: Cache Build Output
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/dist
+                  key: build-output-${{ github.sha }}
+              if: steps.check_changes.outputs.changed == 'true'
 
             # Build the project
             - name: Build
               working-directory: ./frontend
               run: npm run build
+              if: steps.check_changes.outputs.changed == 'true'
 
-            # Deploy built files to the server
-            - name: Deploy
-              uses: SamKirkland/web-deploy@v1
-              with:
-                  target-server: 23.106.52.199
-                  remote-user: smalabsc
-                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/frontend/
-                  source-path: ./frontend
-                  ssh-port: 45022
+            # Deploy built files to the server using rsync
+            - name: Deploy with rsync
+              run: |
+                  rsync -avz --delete ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+              if: steps.check_changes.outputs.changed == 'true'
