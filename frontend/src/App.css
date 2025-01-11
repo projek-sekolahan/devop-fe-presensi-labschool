@@ -39,11 +39,17 @@ body {
 .verification-container,
 .confirmation-container,
 .capture-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw; /* Lebar layar penuh */
+  max-width: 400px; /* Untuk memastikan lebar maksimum pada layar kecil */
+  margin-left: calc(50vw - 200px); /* Posisi di tengah layar */
+  position: relative;
+  z-index: 1;
   background-color: rgba(25, 118, 210, 0.1); /* bg-primary-low */
   font-family: Arial, sans-serif; /* font-primary */
   color: white;
-  position: relative;
-  z-index: 1;
   overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
 
@@ -52,8 +58,8 @@ body {
   position: fixed;
   top: 20px; /* Mulai dari atas halaman */
   left: 0;
-  width: 100%; /* Pastikan gambar mengisi seluruh lebar */
-  height: calc(100vh - var(--form-height)); /* Menghitung tinggi berdasarkan form container */
+  max-width: 400px; /* Pastikan gambar mengisi seluruh lebar */
+  height: calc(100vh - 200px); /* Menghitung tinggi berdasarkan form container */
   z-index: 0; /* Menempatkan gambar di bawah konten lain */
   object-fit: cover; /* Menjaga gambar tetap proporsional */
 }
