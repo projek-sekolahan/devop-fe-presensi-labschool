@@ -14,7 +14,7 @@ body {
 }
 
 .login-container {
-  background-color: #93593c;
+  background-color: #8F4426;
   width: 60%;
   max-width: 400px;
   padding: 20px;
@@ -23,7 +23,7 @@ body {
 }
 
 .login-form-container {
-  background-color: #994b28;
+  background-color: #DE6B35;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -39,7 +39,7 @@ body {
 }
 
 .btn-submit {
-  background-color: #9c4d2a;
+  background-color: #F9B282;
   color: #fff;
   padding: 10px;
   border: none;
@@ -50,5 +50,5 @@ body {
 }
 
 .btn-submit:hover {
-  background-color: #803d20; /* Sedikit lebih gelap untuk efek hover */
+  background-color: #F9B282; /* Sedikit lebih gelap untuk efek hover */
 }
