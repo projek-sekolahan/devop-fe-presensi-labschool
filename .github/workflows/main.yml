@@ -1,103 +1,65 @@
 name: Deploy Web Presensi
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  web-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout source code
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
+    web-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            # Setup SSH Key
+            - name: Set up secret file
+              env:
+                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              run: echo "$ssh-key" >> secrets.txt
 
-      # Detect changes in frontend
-      - name: Check for Changes in Frontend
-        id: check_changes
-        run: |
-          if git diff --quiet ./frontend; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
+            # Checkout source code
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      # Debugging: Log check_changes output
-      - name: Log Detected Changes
-        run: |
-          echo "Changes detected: ${{ steps.check_changes.outputs.changed }}"
+            # Cache Node Modules
+            - name: Cache Node Modules
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
-      # Cache Node Modules
-      - name: Cache Node Modules
-        uses: actions/cache@v3
-        with:
-          path: ./frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+            # Set up Node.js environment
+            - name: Set up Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "npm"
+                  cache-dependency-path: ./frontend/package-lock.json
 
-      # Debugging: List Node Modules Cache Directory
-      - name: Debug Node Modules Cache
-        run: ls -la ./frontend/node_modules || echo "Node modules cache not found"
+            # Install project dependencies
+            - name: Install dependencies
+              working-directory: ./frontend
+              run: npm ci
 
-      # Set up Node.js environment
-      - name: Set Up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-          cache-dependency-path: ./frontend/package-lock.json
+            # Cache Build Output
+            - name: Cache Build Output
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/dist
+                  key: build-output-${{ github.sha }}
 
-      # Install project dependencies
-      - name: Install Dependencies
-        working-directory: ./frontend
-        run: npm ci
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
+            # Build the project
+            - name: Build
+              working-directory: ./frontend
+              run: npm run build
 
-      # Debugging: Log Installed Dependencies
-      - name: Log Installed Dependencies
-        working-directory: ./frontend
-        run: ls -la node_modules || echo "No dependencies installed"
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
-
-      # Build the project
-      - name: Build Frontend
-        working-directory: ./frontend
-        run: npm run build
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
-
-      # Debugging: Log Build Output Directory
-      - name: Debug Build Output
-        run: ls -la ./frontend/dist || echo "No build output found"
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
-
-      # Cache Build Output
-      - name: Cache Build Output
-        uses: actions/cache@v3
-        with:
-          path: ./frontend/dist
-          key: build-output-${{ github.sha }}
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
-
-      # Add SSH Key
-      - name: Add SSH Key
-        run: |
-          eval "$(ssh-agent -s)"
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # Debugging: Log SSH Configuration
-      - name: Debug SSH Key
-        run: ssh-add -l || echo "No SSH keys added"
-
-      # Deploy with rsync
-      - name: Deploy with rsync
-        run: |
-          rsync -avz --delete -e "ssh -p 45022" ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
-
-      # Debugging: Verify Deployment
-      - name: Verify Deployment
-        run: ssh -p 45022 smalabsc@23.106.52.199 "ls -la ~/smartapps.smalabschoolunesa1.sch.id/ || echo 'Deployment failed'"
-        if: ${{ steps.check_changes.outputs.changed == 'true' }}
+            # Deploy built files to the server
+            - name: Deploy
+              uses: SamKirkland/web-deploy@v1
+              with:
+                  target-server: 23.106.52.199
+                  remote-user: smalabsc
+                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
+                  source-path: ./frontend
+                  ssh-port: 45022
