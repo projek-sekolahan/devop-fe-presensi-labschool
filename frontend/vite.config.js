@@ -42,7 +42,7 @@ export default defineConfig({
   // Konfigurasi build
   build: {
     outDir: ".",          // Output build di folder saat ini
-    emptyOutDir: true,  // Jangan hapus isi folder sebelum build
+    emptyOutDir: false,  // Jangan hapus isi folder sebelum build
     sourcemap: true,  // Mengaktifkan sourcemap untuk debugging
     rollupOptions: {
       output: {
