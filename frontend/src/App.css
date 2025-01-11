@@ -9,10 +9,3 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield; /* Untuk Firefox */
-  -webkit-appearance: none;  /* Untuk Safari dan Chrome */
-  appearance: none;          /* Properti standar */
-}
