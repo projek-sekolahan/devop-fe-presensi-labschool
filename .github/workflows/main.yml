@@ -9,6 +9,12 @@ jobs:
     web-deploy:
         runs-on: ubuntu-latest
         steps:
+            # Setup SSH Key
+            - name: Set up secret file
+              env:
+                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              run: echo "$ssh-key" >> secrets.txt
+              
             # Checkout source code with full history
             - name: Checkout source code
               uses: actions/checkout@v4
