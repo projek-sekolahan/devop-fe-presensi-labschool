@@ -4,51 +4,286 @@
 @tailwind utilities;
 @import "flowbite";
 
-body {
-  background-color: #84848a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
   margin: 0;
 }
 
-.login-container {
-  background-color: #008fff;
-  width: 60%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield; /* Untuk Firefox */
+  -webkit-appearance: none;  /* Untuk Safari dan Chrome */
+  appearance: none;          /* Properti standar */
 }
 
-.login-form-container {
-  background-color: #005ff8;
-  padding: 20px;
-  border-radius: 8px;
+.appearance-none{
+  appearance:none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Pastikan HTML dan Body Mendukung Tampilan */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Login Container */
+.login-container,
+.register-container,
+.reset-container,
+.verification-container,
+.confirmation-container,
+.capture-container {
+  background-color: rgba(25, 118, 210, 0.1); /* bg-primary-low */
+  font-family: Arial, sans-serif; /* font-primary */
+  color: white;
+  position: relative;
+  z-index: 1;
+  overflow-y: auto; /* Scroll hanya pada kontainer ini */
+}
+
+/* Background Image */
+.bg-image {
+  position: fixed;
+  top: 20px; /* Mulai dari atas halaman */
+  left: 0;
+  width: 100%; /* Pastikan gambar mengisi seluruh lebar */
+  height: calc(100vh - var(--form-height)); /* Menghitung tinggi berdasarkan form container */
+  z-index: 0; /* Menempatkan gambar di bawah konten lain */
+  object-fit: cover; /* Menjaga gambar tetap proporsional */
+}
+
+/* Form Container */
+.login-form-container,
+.register-form-container,
+.reset-form-container,
+.verification-form-container,
+.confirmation-form-container,
+.capture-form-container {
+  --form-height: 200px; /* Tinggi default form container */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: fit-content;
+  background-color: #1976D2;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  padding: 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* Responsif untuk Smartphone */
+@media (max-width: 768px) {
+  .login-form-container,
+  .register-form-container,
+  .reset-form-container,
+  .verification-form-container,
+  .confirmation-form-container,
+  .capture-form-container {
+    max-width: 400px; /* Batas lebar maksimum 400px pada layar medium dan lebih besar */
+  }
+}
+
+/* Titles and Subtitles */
+.text-title {
+  font-weight: 600;
+  font-size: 1.5rem; /* text-2xl */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.text-subtitle {
+  font-weight: 300; /* font-light */
+  font-size: 1.25rem; /* text-xl */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Form Styles */
+.login-form,
+.register-form,
+.reset-form,
+.verification-form,
+.confirmation-form {
+  margin: 1.5rem 0; /* my-6 */
+  gap: 1.5rem; /* space-y-6 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input Label */
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 500; /* font-medium */
+}
+
+/* Text Link */
+.text-link {
+  font-size: 0.875rem;
+  font-weight: 300; /* font-light */
+}
+
+/* Active Role */
+.role-option.active {
+  background-color: rgba(25, 118, 210, 0.5); /* bg-primary-md */
+  color: white;
+  box-shadow: 0 0 0 4px #42a5f5; /* ring-4 ring-blue-400 */
+}
+
+/* Icon Saat Checkbox Dicentang */
+.password-toggle input:checked ~ .password-icon-eye {
+  display: block; /* Tampilkan ikon mata */
+}
+
+.password-toggle input:checked ~ .password-icon-eye-slash {
+  display: none; /* Sembunyikan ikon mata yang tertutup */
+}
+
+/* General Style for Consistency */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* flex gap */
+  width: 100%; /* Memastikan input grup menggunakan 100% lebar */
+}
+
+/* Role Selection */
+.role-selection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Role Option */
+.role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem;
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+  max-width: 120px;
   text-align: center;
 }
 
-.input-field {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
+.role-option:hover {
+  transform: scale(1.05); /* Efek hover */
 }
 
-.btn-submit {
-  background-color: #ff4e00;
-  color: #F0F0E4;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
+/* Role Icon */
+.role-icon {
+  width: 4rem;
+  height: 4rem;
+  color: rgba(25, 118, 210, 0.5); /* text-primary-md */
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Role Label */
+.role-label {
+  font-size: 0.875rem;
+  font-weight: 500; /* font-medium */
+  text-align: center;
+}
+
+/* Password Toggle */
+.password-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  background-color: white;
+  border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 16px;
+}
+
+/* Password Icon (For Eye Slash and Eye) */
+.password-icon-eye-slash,
+.password-icon-eye {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Styling untuk Input Fields untuk Konsistensi */
+.input-field {
+  background-color: rgba(25, 118, 210, 0.5); /* bg-primary-md */
+  border: 1px solid white;
+  color: white;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-field::placeholder {
+  color: white; /* placeholder-white */
+}
+
+.input-field:focus {
+  background-color: white;
+  border: none;
+  color: black;
+  outline: none;
+}
+
+/* Button */
+.btn-submit {
+  border: none;
+  width: 100%;
+  color: rgba(25, 118, 210, 0.5); /* text-primary-md */
+  font-weight: 600; /* font-semibold */
+  background-color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-submit:hover {
-  background-color: #ff4e00; /* Sedikit lebih gelap untuk efek hover */
+  background-color: rgba(25, 118, 210, 0.3); /* hover:bg-primary-300 */
+}
+
+/* Role Selection Container */
+.role-selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+/* Role Selection Label */
+.role-selection-label {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Password Container */
+.password-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
