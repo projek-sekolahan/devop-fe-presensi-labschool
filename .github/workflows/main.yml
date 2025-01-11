@@ -57,30 +57,14 @@ jobs:
               run: npm run build
               if: env.changed == 'true'
 
-            # Set up SSH agent for deploying
-            - name: Set up SSH agent
-              uses: webfactory/ssh-agent@v0.5.3
+            # Deploy built files to the server
+            - name: Deploy
+              uses: SamKirkland/web-deploy@v1
               with:
-                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-              if: env.changed == 'true'
-
-            # Create SSH directory and add server's SSH key to known_hosts
-            - name: Add server SSH key to known_hosts
-              run: |
-                  mkdir -p /home/runner/.ssh
-                  ssh-keyscan -H 23.106.52.199 >> /home/runner/.ssh/known_hosts
-                  chmod 700 /home/runner/.ssh
-                  chmod 644 /home/runner/.ssh/known_hosts
-              if: env.changed == 'true'
-
-            # Deploy built files to the server using rsync
-            - name: Deploy to server
-              run: |
-                  rsync -avz --delete --progress -e "ssh -p 45022" ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
-              if: env.changed == 'true'
-
-            # Verify files on server after deployment (optional)
-            - name: Verify files on server
-              run: |
-                  ssh -p 45022 smalabsc@23.106.52.199 "ls -l ~/smartapps.smalabschoolunesa1.sch.id/"
+                  target-server: 23.106.52.199
+                  remote-user: smalabsc
+                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
+                  source-path: ./frontend/dist/
+                  ssh-port: 45022
               if: env.changed == 'true'
