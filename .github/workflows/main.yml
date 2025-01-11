@@ -1,65 +1,71 @@
 name: Deploy Web Presensi
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 
 jobs:
-    web-deploy:
-        runs-on: ubuntu-latest
-        steps:
-            # Setup SSH Key
-            - name: Set up secret file
-              env:
-                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-              run: echo "$ssh-key" >> secrets.txt
+  web-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
 
-            # Checkout source code
-            - name: Checkout
-              uses: actions/checkout@v4
+      # Detect changes in frontend
+      - name: Check for Changes in Frontend
+        id: check_changes
+        run: |
+          git diff --exit-code --quiet ./frontend || echo "Frontend files have changed"
 
-            # Cache Node Modules
-            - name: Cache Node Modules
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
+      # Cache Node Modules
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-            # Set up Node.js environment
-            - name: Set up Node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  cache: "npm"
-                  cache-dependency-path: ./frontend/package-lock.json
+      # Set up Node.js environment
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
 
-            # Install project dependencies
-            - name: Install dependencies
-              working-directory: ./frontend
-              run: npm ci
+      # Install project dependencies
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: npm ci
+        if: steps.check_changes.outputs.changed == 'true'
 
-            # Cache Build Output
-            - name: Cache Build Output
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend/dist
-                  key: build-output-${{ github.sha }}
+      # Build the project
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+        if: steps.check_changes.outputs.changed == 'true'
 
-            # Build the project
-            - name: Build
-              working-directory: ./frontend
-              run: npm run build
+      # Cache Build Output
+      - name: Cache Build Output
+        uses: actions/cache@v3
+        with:
+          path: ./frontend/dist
+          key: build-output-${{ github.sha }}
+        if: steps.check_changes.outputs.changed == 'true'
 
-            # Deploy built files to the server
-            - name: Deploy
-              uses: SamKirkland/web-deploy@v1
-              with:
-                  target-server: 23.106.52.199
-                  remote-user: smalabsc
-                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./frontend
-                  ssh-port: 45022
+      # Add SSH Key
+      - name: Add SSH Key
+        run: |
+          eval "$(ssh-agent -s)"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Deploy with rsync
+      - name: Deploy with rsync
+        run: |
+          rsync -avz --delete -e "ssh -p 45022" ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+        if: steps.check_changes.outputs.changed == 'true'
