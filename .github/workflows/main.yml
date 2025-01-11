@@ -56,6 +56,14 @@ jobs:
               run: npm run build
               if: steps.check_changes.outputs.changed == 'true'
 
+            # Set up SSH key for deployment
+            - name: Set up SSH key
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -t rsa 23.106.52.199 >> ~/.ssh/known_hosts
+
             # Ensure the target folder exists on the server
             - name: Ensure frontend directory exists
               run: |
