@@ -56,10 +56,15 @@ jobs:
               run: npm run build
               if: steps.check_changes.outputs.changed == 'true'
 
+            # Ensure the target folder exists on the server
+            - name: Ensure frontend directory exists
+              run: |
+                  ssh -i ~/.ssh/id_rsa smalabsc@23.106.52.199 "mkdir -p ~/smartapps.smalabschoolunesa1.sch.id/frontend"
+
             # Deploy built files to the server using rsync
             - name: Deploy with rsync
               run: |
-                  rsync -avz --delete ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                  rsync -avz --delete ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/frontend/
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
               if: steps.check_changes.outputs.changed == 'true'
