@@ -19,7 +19,6 @@ jobs:
             - name: Detect changes in frontend
               id: check_changes
               run: |
-                  # Periksa perubahan di folder frontend atau file spesifik
                   git diff --name-only HEAD~1 HEAD | grep -E '^frontend/' || echo "No changes in frontend"
                   if [[ $(git diff --name-only HEAD~1 HEAD | grep -E '^frontend/') ]]; then
                     echo "changed=true" >> $GITHUB_ENV
@@ -63,6 +62,13 @@ jobs:
               uses: webfactory/ssh-agent@v0.5.3
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+              if: env.changed == 'true'
+
+            # Add server's SSH key to known_hosts to avoid host key verification failure
+            - name: Add server SSH key to known_hosts
+              run: |
+                  mkdir -p ~/.ssh
+                  ssh-keyscan -H 23.106.52.199 >> ~/.ssh/known_hosts
               if: env.changed == 'true'
 
             # Deploy built files to the server using rsync
