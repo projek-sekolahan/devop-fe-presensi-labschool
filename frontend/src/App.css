@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "flowbite";
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
