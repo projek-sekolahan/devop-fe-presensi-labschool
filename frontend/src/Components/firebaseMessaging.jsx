@@ -1,7 +1,7 @@
 import firebaseConfig from "./firebaseConfig";
 import { alertMessage, getCookieValue } from "../utils/utils";
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
