@@ -10,14 +10,14 @@ export default class apiXML {
      */
     static async getCsrf() {
         try {
-            console.log("Fetching CSRF token from:", `${api_url}/view/tokenGetCsrf`);
+            // console.log("Fetching CSRF token from:", `${api_url}/view/tokenGetCsrf`);
             
             const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
                 method: "GET",
                 credentials: "include",
             });
-            console.log("Response headers:", [...response.headers]);
-            console.log("Response status:", response.status, response.statusText);
+            /* console.log("Response headers:", [...response.headers]);
+            console.log("Response status:", response.status, response.statusText); */
     
             if (!response.ok) {
                 const errorText = await response.text();
