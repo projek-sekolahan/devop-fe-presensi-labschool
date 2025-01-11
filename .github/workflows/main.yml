@@ -1,4 +1,4 @@
-name: Deploy Web Presensi
+ name: Deploy Web Presensi 
 
 on:
     push:
@@ -14,23 +14,10 @@ jobs:
               env:
                   ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
               run: echo "$ssh-key" >> secrets.txt
-              
-            # Checkout source code with full history
-            - name: Checkout source code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0 # Pastikan seluruh riwayat commit tersedia
 
-            # Detect changes in frontend
-            - name: Detect changes in frontend
-              id: check_changes
-              run: |
-                  git diff --name-only HEAD~1 HEAD | grep -E '^frontend/' || echo "No changes in frontend"
-                  if [[ $(git diff --name-only HEAD~1 HEAD | grep -E '^frontend/') ]]; then
-                    echo "changed=true" >> $GITHUB_ENV
-                  else
-                    echo "changed=false" >> $GITHUB_ENV
-                  fi
+            # Checkout source code
+            - name: Checkout
+              uses: actions/checkout@v4
 
             # Cache Node Modules
             - name: Cache Node Modules
@@ -40,7 +27,6 @@ jobs:
                   key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node-
-              if: env.changed == 'true'
 
             # Set up Node.js environment
             - name: Set up Node
@@ -49,19 +35,23 @@ jobs:
                   node-version: 20
                   cache: "npm"
                   cache-dependency-path: ./frontend/package-lock.json
-              if: env.changed == 'true'
 
             # Install project dependencies
             - name: Install dependencies
               working-directory: ./frontend
               run: npm ci
-              if: env.changed == 'true'
+
+            # Cache Build Output
+            - name: Cache Build Output
+              uses: actions/cache@v3
+              with:
+                  path: ./frontend/dist
+                  key: build-output-${{ github.sha }}
 
             # Build the project
-            - name: Build the frontend
+            - name: Build
               working-directory: ./frontend
               run: npm run build
-              if: env.changed == 'true'
 
             # Deploy built files to the server
             - name: Deploy
@@ -71,6 +61,5 @@ jobs:
                   remote-user: smalabsc
                   private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./frontend/dist/
+                  source-path: ./frontend
                   ssh-port: 45022
-              if: env.changed == 'true'
