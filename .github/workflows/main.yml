@@ -73,3 +73,4 @@ jobs:
                   destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
                   source-path: ./frontend
                   ssh-port: 45022
+                  delete-remote: true
