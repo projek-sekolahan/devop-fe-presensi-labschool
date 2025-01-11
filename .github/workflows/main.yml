@@ -9,11 +9,13 @@ jobs:
     web-deploy:
         runs-on: ubuntu-latest
         steps:
-            # Checkout source code
+            # Checkout source code with full history
             - name: Checkout source code
               uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # Pastikan seluruh riwayat commit tersedia
 
-            # Detect changes in specific files
+            # Detect changes in frontend
             - name: Detect changes in frontend
               id: check_changes
               run: |
