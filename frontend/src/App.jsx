@@ -50,8 +50,8 @@ function App() {
             }
         };
 
-        addCacheBusting();
-        clearCookiesAndStorage();
+        /* addCacheBusting();
+        clearCookiesAndStorage(); */
         handleCookies();
     }, []);
 
