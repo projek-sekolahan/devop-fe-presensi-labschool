@@ -41,9 +41,9 @@ export default defineConfig({
 
   // Konfigurasi build
   build: {
-    outDir: "dist",               // Output build di folder saat ini
-    emptyOutDir: true,        // Jangan hapus isi folder sebelum build
-    sourcemap: true,           // Mengaktifkan sourcemap untuk debugging
+    outDir: ".",          // Output build di folder saat ini
+    emptyOutDir: true,  // Jangan hapus isi folder sebelum build
+    sourcemap: true,  // Mengaktifkan sourcemap untuk debugging
     rollupOptions: {
       output: {
         assetFileNames: "assets/[name]-[hash][extname]", // Penamaan file untuk asset (CSS, JS, dll)
