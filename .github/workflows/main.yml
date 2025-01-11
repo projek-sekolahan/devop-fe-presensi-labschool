@@ -17,7 +17,16 @@ jobs:
       - name: Check for Changes in Frontend
         id: check_changes
         run: |
-          git diff --exit-code --quiet ./frontend || echo "Frontend files have changed"
+          if git diff --quiet ./frontend; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # Debugging: Log check_changes output
+      - name: Log Detected Changes
+        run: |
+          echo "Changes detected: ${{ steps.check_changes.outputs.changed }}"
 
       # Cache Node Modules
       - name: Cache Node Modules
@@ -27,6 +36,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      # Debugging: List Node Modules Cache Directory
+      - name: Debug Node Modules Cache
+        run: ls -la ./frontend/node_modules || echo "Node modules cache not found"
 
       # Set up Node.js environment
       - name: Set Up Node.js
@@ -40,13 +53,24 @@ jobs:
       - name: Install Dependencies
         working-directory: ./frontend
         run: npm ci
-        if: steps.check_changes.outputs.changed == 'true'
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
+
+      # Debugging: Log Installed Dependencies
+      - name: Log Installed Dependencies
+        working-directory: ./frontend
+        run: ls -la node_modules || echo "No dependencies installed"
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
 
       # Build the project
       - name: Build Frontend
         working-directory: ./frontend
         run: npm run build
-        if: steps.check_changes.outputs.changed == 'true'
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
+
+      # Debugging: Log Build Output Directory
+      - name: Debug Build Output
+        run: ls -la ./frontend/dist || echo "No build output found"
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
 
       # Cache Build Output
       - name: Cache Build Output
@@ -54,7 +78,7 @@ jobs:
         with:
           path: ./frontend/dist
           key: build-output-${{ github.sha }}
-        if: steps.check_changes.outputs.changed == 'true'
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
 
       # Add SSH Key
       - name: Add SSH Key
@@ -64,8 +88,17 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Debugging: Log SSH Configuration
+      - name: Debug SSH Key
+        run: ssh-add -l || echo "No SSH keys added"
+
       # Deploy with rsync
       - name: Deploy with rsync
         run: |
           rsync -avz --delete -e "ssh -p 45022" ./frontend/dist/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
-        if: steps.check_changes.outputs.changed == 'true'
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
+
+      # Debugging: Verify Deployment
+      - name: Verify Deployment
+        run: ssh -p 45022 smalabsc@23.106.52.199 "ls -la ~/smartapps.smalabschoolunesa1.sch.id/ || echo 'Deployment failed'"
+        if: ${{ steps.check_changes.outputs.changed == 'true' }}
