@@ -14,7 +14,7 @@ body {
 }
 
 .login-container {
-  background-color: #7B3C3C;
+  background-color: #DB5F29;
   width: 60%;
   max-width: 400px;
   padding: 20px;
@@ -23,7 +23,7 @@ body {
 }
 
 .login-form-container {
-  background-color: #DB5F29;
+  background-color: #7B3C3C;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
