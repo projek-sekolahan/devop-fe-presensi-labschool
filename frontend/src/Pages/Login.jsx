@@ -102,90 +102,89 @@ export default function Login() {
     };
 
     return (
-        <div className="login-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
-            {/* Background Image */}
-            <img
-                src="/frontend/Icons/splash.svg"
-                alt="labschool-unesa-logo"
-                className="bg-image"
-            />
+<div className="login-container flex flex-col w-full min-h-screen items-center justify-center bg-gradient-to-b from-[#FF7F27] to-[#E86800]">
+    {/* Background Image */}
+    <img
+        src="/frontend/Icons/splash.svg"
+        alt="labschool-unesa-logo"
+        className="bg-image"
+    />
 
-            {/* Login Form */}
-            <div className="login-form-container shadow-md">
-                <h2 className="text-title text-center">Yuk Login!</h2>
-                <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
-                <form
-                    className="login-form"
-                    onSubmit={handleLogin}
+    {/* Login Form */}
+    <div className="login-form-container shadow-lg sm:w-[400px] w-full px-4 py-6">
+        <h2 className="text-title text-center">Yuk Login!</h2>
+        <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
+        <form
+            className="login-form"
+            onSubmit={handleLogin}
+        >
+            {/* Email Input */}
+            <div className="input-group">
+                <label
+                    htmlFor="email"
+                    className={`input-label ${
+                        errors.email ? "text-red-700 font-semibold" : ""
+                    }`}
                 >
-                    {/* Email Input */}
-                    <div className="input-group">
-                        <label
-                        htmlFor="email"
-                        className={`input-label ${
-                            errors.email ? "text-red-700 font-semibold" : ""
-                        }`}
-                        >
-                        {errors.email ? errors.email : "Email"}
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            ref={emailRef}
-                            className="input-field"
-                            placeholder="Email"
-                            autoComplete="username"
-                            required
-                        />
-                    </div>
-
-                    {/* Password Input */}
-                    <div className="input-group">
-                        <label
-                        htmlFor="password"
-                        className={`input-label ${
-                            errors.password ? "text-red-700 font-semibold" : ""
-                        }`}
-                        >
-                        {errors.password ? errors.password : "Password"}
-                        </label>
-                        <div className="password-container">
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                ref={passwordRef}
-                                placeholder="Password (8 or more characters)"
-                                className="input-field flex-1"
-                                autoComplete="current-password"
-                                required
-                            />
-                            <PasswordShow ref={passwordRef} />
-                        </div>
-                    </div>
-
-                    {/* Forgot Password and Register Link */}
-                    <div className="flex justify-between items-center text-sm">
-                        <Link to="/register" className="text-link">
-                            Belum Punya Akun?
-                        </Link>
-                        <Link to="/recover" className="text-link">
-                            Lupa password?
-                        </Link>
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        ref={submitBtnRef}
-                        className="btn-submit"
-                    >
-                        Login
-                    </button>
-                </form>
+                    {errors.email ? errors.email : "Email"}
+                </label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    ref={emailRef}
+                    className="input-field"
+                    placeholder="Email"
+                    autoComplete="username"
+                    required
+                />
             </div>
 
-        </div>
+            {/* Password Input */}
+            <div className="input-group">
+                <label
+                    htmlFor="password"
+                    className={`input-label ${
+                        errors.password ? "text-red-700 font-semibold" : ""
+                    }`}
+                >
+                    {errors.password ? errors.password : "Password"}
+                </label>
+                <div className="password-container">
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        ref={passwordRef}
+                        placeholder="Password (8 or more characters)"
+                        className="input-field flex-1"
+                        autoComplete="current-password"
+                        required
+                    />
+                    <PasswordShow ref={passwordRef} />
+                </div>
+            </div>
+
+            {/* Forgot Password and Register Link */}
+            <div className="flex justify-between items-center text-sm">
+                <Link to="/register" className="text-link">
+                    Belum Punya Akun?
+                </Link>
+                <Link to="/recover" className="text-link">
+                    Lupa password?
+                </Link>
+            </div>
+
+            {/* Submit Button */}
+            <button
+                type="submit"
+                ref={submitBtnRef}
+                className="btn-submit"
+            >
+                Login
+            </button>
+        </form>
+    </div>
+</div>
     );
 }
