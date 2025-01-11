@@ -1,4 +1,4 @@
- name: Deploy Web Presensi 
+name: Deploy Web Presensi 
 
 on:
     push:
