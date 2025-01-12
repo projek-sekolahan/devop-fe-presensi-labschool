@@ -7,12 +7,19 @@ import {
 	handleSessionError,
 } from "../utils/utils";
 import Cookies from "js-cookie";
+import ToggleButton from "../Components/ToggleButton";
 
 export default function OtpInput() {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
+
+	const [isOpen, setIsOpen] = useState(false);
+
+    const toggleForm = () => {
+        setIsOpen(!isOpen);
+    };
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -105,20 +112,18 @@ export default function OtpInput() {
 	};
 
 	return (
-		<div className="verification-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+		<div className="verification-container">
 			{/* Logo Image */}
 			<img
 				src="/frontend/Icons/splash.svg"
 				alt="labschool-unesa-logo"
-				className="bg-image"
+				className={`bg-image ${isOpen ? "open" : ""}`}
 			/>
 
 			{/* Verification Form Container */}
-			<div className="verification-form-container shadow-md">
-				<h2 className="text-title text-center">Email Verification</h2>
-				<p className="text-sm text-center">
-				Cek Email Anda (Masukkan Kode OTP)
-				</p>
+			<div className={`verification-form-container ${isOpen ? "open" : "closed"}`}>
+				<h2 className="text-title text-4xl">Email Verification</h2>
+				<p className="text-subtitle">Cek Email Anda (Masukkan Kode OTP)</p>
 				<form ref={formRef} className="verification-form">
 					{/* OTP Input Fields */}
 					<div className="flex justify-between my-8">
@@ -168,6 +173,8 @@ export default function OtpInput() {
 					</button>
 				</form>
 			</div>
+			{/* Toggle Button */}
+			<ToggleButton isOpen={isOpen} onToggle={toggleForm} />
 		</div>
 	);
 }

@@ -9,11 +9,20 @@ import {
 } from "../utils/utils";
 import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
+import renderInputGroup from "../Components/renderInputGroup";
+import ToggleButton from "../Components/ToggleButton";
 
 export default function ChangePassword() {
     const emailRef = useRef();
     const [load, setLoad] = useState(false);
     const [errors, setErrors] = useState({email: ""});
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleForm = () => {
+        setIsOpen(!isOpen);
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -54,41 +63,31 @@ export default function ChangePassword() {
     };
 
     return (
-        <div className="reset-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+        <div className="reset-container">
             {/* Background Image */}
             <img
                 src="/frontend/Icons/splash.svg"
                 alt="reset"
-                className="bg-image"
+                className={`bg-image ${isOpen ? "open" : ""}`}
             />
 
             {/* Reset Password Form */}
-            <div className="reset-form-container shadow-md">
-                <h2 className="text-title text-center">Ganti Password</h2>
+            <div className={`reset-form-container ${isOpen ? "open" : "closed"}`}>
+                <h2 className="text-title text-4xl">Ganti Password</h2>
                 <form
                     className="reset-form"
                     onSubmit={submitHandler}
                 >
                     {/* Email Input */}
-                    <div className="input-group">
-                        <label
-                            htmlFor="email"
-                            className={`input-label ${
-                                errors.email ? "text-red-700 font-semibold" : ""
-                            }`}
-                            >
-                            {errors.email ? errors.email : "Email"}
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            ref={emailRef}
-                            className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-                            placeholder="Email"
-                            required
-                        />
-                    </div>
+                    {renderInputGroup({
+                        id: "email",
+                        label: "Email",
+                        type: "email",
+                        inputRef: emailRef,
+                        placeholder: "Email",
+                        autoComplete: "Email",
+                        error: errors.email,
+                    })}
 
                     {/* Submit Button */}
                     <button
@@ -121,6 +120,8 @@ export default function ChangePassword() {
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
                 </div>
             </div>
+            {/* Toggle Button */}
+            <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
         </div>
     );
 }

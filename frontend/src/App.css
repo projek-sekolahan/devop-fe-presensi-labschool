@@ -68,7 +68,7 @@ body {
 }
 
 .bg-image.open {
-  top: 25%; /* Pusatkan secara vertikal */
+  top: 100%; /* Pusatkan secara vertikal */
   left: 50%; /* Pusatkan secara horizontal */
   transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
   width: auto; /* Gunakan ukuran asli gambar */
@@ -102,22 +102,12 @@ body {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.login-form-container.open {
+.open {
   transform: translateY(0);
   opacity: 1;
 }
 
-.login-form-container.closed {
-  transform: translateY(100%); /* Sembunyikan form di bawah layar */
-  opacity: 0;
-}
-
-.register-form-container.open {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.register-form-container.closed {
+.closed {
   transform: translateY(100%); /* Sembunyikan form di bawah layar */
   opacity: 0;
 }
