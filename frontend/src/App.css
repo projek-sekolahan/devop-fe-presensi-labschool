@@ -347,6 +347,9 @@ body {
   font-size: 1.125rem; /* Slightly larger */
   padding: 0.75rem 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease; /* Add hover animation */
+  position: relative; /* Ensure it stays within its container */
+  z-index: 5; /* Set a lower z-index than .outside-toggle to ensure it appears behind toggle if needed */
+  margin-bottom: 2rem; /* Add bottom margin to avoid overlap */
 }
 
 .btn-submit:hover {
