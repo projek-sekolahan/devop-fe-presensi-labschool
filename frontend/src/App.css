@@ -141,7 +141,7 @@ body {
 }
 
 /* Tombol Toggle untuk form terbuka */
-.form-toggle {
+/* .form-toggle {
   width: 100%;
   max-width: 400px;
   padding: 1rem;
@@ -151,10 +151,10 @@ body {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
-}
+} */
 
-/* Tombol Toggle untuk form tertutup */
-.outside-toggle {
+ /* Tombol Toggle untuk form tertutup */
+/* .outside-toggle {
   position: fixed;
   bottom: 0rem;
   left: 50%;
@@ -167,6 +167,35 @@ body {
   border-top-right-radius: 2rem;
   text-align: center;
   cursor: pointer;
+  z-index: 10;
+} */
+
+/* Tombol Toggle (Shared Styles) */
+.btn-toggle {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Gaya untuk Form Terbuka */
+.btn-toggle.form-toggle {
+  background-color: #ff7f27; /* Warna oranye */
+  border-radius: 1rem;
+}
+
+/* Gaya untuk Form Tertutup */
+.btn-toggle.outside-toggle {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff7f27;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
   z-index: 10;
 }
 
