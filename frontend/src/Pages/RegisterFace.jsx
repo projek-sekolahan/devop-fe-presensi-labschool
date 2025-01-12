@@ -10,205 +10,221 @@ import {
     handleSessionError,
     getFormData,
 } from "../utils/utils";
+import ToggleButton from "../Components/ToggleButton";
 
 export default function RegisterFace() {
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
-    const imgRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
-    // Inisialisasi komponen
-    useEffect(() => {
-        const init = async () => {
-            loading("Loading", "Getting camera access...");
-            await loadFaceModels(); // Load model Face API
-            startVideo();
-        };
-        init();
-    }, []);
+const videoRef = useRef(null);
+const canvasRef = useRef(null);
+const imgRef = useRef(null);
+const [isLoading, setIsLoading] = useState(false);
+const [isOpen, setIsOpen] = useState(false);
 
-    // Fungsi untuk memulai kamera
-    const startVideo = () => {
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
-            .then((stream) => {
-                Swal.close();
-                videoRef.current.srcObject = stream;
-                videoRef.current.setAttribute("autoplay", "");
-                videoRef.current.setAttribute("muted", "");
-                videoRef.current.setAttribute("playsinline", "");
-            })
-            .catch((err) => {
-                const errorMessage =
-                    err.name === "NotAllowedError"
-                        ? "Izin akses kamera ditolak oleh pengguna"
-                        : "Tidak ada kamera yang tersedia pada perangkat";
-                alertMessage("Error", errorMessage, "error");
-            });
+const toggleForm = () => {
+    setIsOpen(!isOpen);
+};
+
+// Inisialisasi komponen
+useEffect(() => {
+    const init = async () => {
+        console.log("Initializing...");
+        loading("Loading", "Getting camera access...");
+        await loadFaceModels(); // Load model Face API
+        console.log("Face models loaded.");
+        startVideo();
     };
+    init();
+}, []);
 
-    // Fungsi untuk mengambil gambar dari video
-    function clickPhoto() {
-        // loading("Loading", "Mendapatkan data wajah...");
-        const context = canvasRef.current.getContext("2d");
-        const video = videoRef.current;
+// Fungsi untuk memulai kamera
+const startVideo = () => {
+    console.log("Starting video...");
+    navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then((stream) => {
+            console.log("Camera access granted.");
+            Swal.close();
+            videoRef.current.srcObject = stream;
+            videoRef.current.setAttribute("autoplay", "");
+            videoRef.current.setAttribute("muted", "");
+            videoRef.current.setAttribute("playsinline", "");
+        })
+        .catch((err) => {
+            console.error("Camera access error:", err);
+            const errorMessage =
+                err.name === "NotAllowedError"
+                    ? "Izin akses kamera ditolak oleh pengguna"
+                    : "Tidak ada kamera yang tersedia pada perangkat";
+            alertMessage("Error", errorMessage, "error");
+        });
+};
 
-        // Ukuran canvas untuk gambar akhir
-        const canvasWidth = 400;
-        const canvasHeight = 400;
+// Fungsi untuk mengambil gambar dari video
+function clickPhoto() {
+    console.log("Capturing photo...");
+    const context = canvasRef.current.getContext("2d");
+    const video = videoRef.current;
 
-        // Ukuran asli video
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
+    const canvasWidth = 400;
+    const canvasHeight = 400;
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-        // Menentukan titik tengah dari video
-        const videoCenterX = videoWidth / 2;
-        const videoCenterY = videoHeight / 2;
+    const videoCenterX = videoWidth / 2;
+    const videoCenterY = videoHeight / 2;
 
-        // Menentukan titik awal untuk memotong gambar (crop)
-        const cropX = videoCenterX - canvasWidth / 2;
-        const cropY = videoCenterY - canvasHeight / 2;
+    const cropX = videoCenterX - canvasWidth / 2;
+    const cropY = videoCenterY - canvasHeight / 2;
 
-        // Mengatur ukuran canvas
-        canvasRef.current.width = canvasWidth;
-        canvasRef.current.height = canvasHeight;
+    canvasRef.current.width = canvasWidth;
+    canvasRef.current.height = canvasHeight;
 
-        // Membalik gambar secara horizontal untuk menghindari mirror effect
-        context.save(); // Menyimpan state konteks canvas
-        context.scale(-1, 1); // Membalik gambar secara horizontal
-        context.translate(-canvasWidth, 0); // Memindahkan gambar ke posisi yang benar
+    context.save();
+    context.scale(-1, 1);
+    context.translate(-canvasWidth, 0);
 
-        // Mengambil gambar dari video dan memotongnya tepat di tengah
-        context.drawImage(
-            video,
-            cropX,
-            cropY,
-            canvasWidth,
-            canvasHeight,
-            0,
-            0,
-            canvasWidth,
-            canvasHeight
+    context.drawImage(
+        video,
+        cropX,
+        cropY,
+        canvasWidth,
+        canvasHeight,
+        0,
+        0,
+        canvasWidth,
+        canvasHeight
+    );
+
+    context.restore();
+
+    let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+    imgRef.current.src = image_data_url;
+
+    console.log("Photo captured successfully.");
+}
+
+// Fungsi utama untuk mendeteksi wajah dan mendaftarkan
+const detectAndRegisterFace = async () => {
+    console.log("Starting face detection and registration...");
+    const maxAttempts = 10;
+    let attempts = 0;
+    setIsLoading(true);
+    try {
+        console.log("Fetching facecam data...");
+        const keys = ["devop-sso", "csrf_token"];
+        const values = [
+            localStorage.getItem("regist_token"),
+            Cookies.get("csrf"),
+        ];
+
+        const response = await apiXML.postInput(
+            "loadFace",
+            getFormData(keys, values)
         );
 
-        context.restore(); // Mengembalikan state konteks canvas ke semula
+        if (!response.status) throw new Error("Failed to load face data.");
+        console.log("Facecam data fetched successfully.");
 
-        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+        const facecamData = response.data.facecam;
 
-        // Mengatur gambar hasil di img element
-        imgRef.current.src = image_data_url;
-    }
+        const attemptMatch = async () => {
+            console.log(`Attempt ${attempts + 1} to detect face...`);
+            if (attempts >= maxAttempts) {
+                setIsLoading(false);
+                console.error("Max attempts reached. Face detection failed.");
+                alertMessage(
+                    "Deteksi Gagal",
+                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
+                return;
+            }
 
-    // Fungsi utama untuk mendeteksi wajah dan mendaftarkan
-    const detectAndRegisterFace = async () => {
-        loading("Loading", "Sedang melakukan deteksi wajah...");
-        const maxAttempts = 10;
-        let attempts = 0;
-        setIsLoading(true);
-        try {
-            const keys = ["devop-sso", "csrf_token"];
-            const values = [
-                localStorage.getItem("regist_token"),
-                Cookies.get("csrf"),
-            ];
+            attempts++;
+            const faceData = await detectSingleFace(imgRef.current);
 
-            const response = await apiXML.postInput(
-                "loadFace",
-                getFormData(keys, values)
-            );
-            if (!response.status) throw new Error("Gagal memuat data wajah.");
+            if (!faceData) {
+                console.log("Face not detected. Retrying...");
+                setTimeout(attemptMatch, 1000);
+                return;
+            }
 
-            const facecamData = response.data.facecam;
+            console.log("Face detected. Checking match...");
+            const isMatched = facecamData.some((facecam) => {
+                const descriptor = new Float32Array(
+                    facecam.facecam_id.split(", ").map(Number)
+                );
+                const distance = faceapi.euclideanDistance(
+                    descriptor,
+                    faceData.descriptor
+                );
+                return distance <= 0.6;
+            });
 
-            const attemptMatch = async () => {
-                if (attempts >= maxAttempts) {
-                    setIsLoading(false);
-                    alertMessage(
-                        "Deteksi Gagal",
-                        "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                        "error",
-                        () => window.location.replace("/facereg")
-                    );
-                    return;
-                }
+            if (isMatched) {
+                setIsLoading(false);
+                console.warn("Face already registered.");
+                alertMessage(
+                    "Error",
+                    "Wajah sudah terdaftar, gunakan wajah lain",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
+                return;
+            }
 
-                attempts++;
-                const faceData = await detectSingleFace(imgRef.current);
-
-                if (!faceData) {
-                    setTimeout(attemptMatch, 1000); // Retry
-                    return;
-                }
-
-                // Periksa apakah wajah sudah terdaftar
-                const isMatched = facecamData.some((facecam) => {
-                    const descriptor = new Float32Array(
-                        facecam.facecam_id.split(", ").map(Number)
-                    );
-                    const distance = faceapi.euclideanDistance(
-                        descriptor,
-                        faceData.descriptor
-                    );
-                    return distance <= 0.6;
-                });
-
-                if (isMatched) {
-                    setIsLoading(false);
-                    alertMessage(
-                        "Error",
-                        "Wajah sudah terdaftar, gunakan wajah lain",
-                        "error",
-                        () => window.location.replace("/facereg")
-                    );
-                    return;
-                }
-
-                // Daftarkan wajah baru
-                registerNewFace(faceData);
-            };
-
-            attemptMatch();
-        } catch (err) {
-            console.error(err);
-            handleSessionError(err, "/login");
-        }
-    };
-
-    // Fungsi untuk mendaftarkan wajah baru
-    const registerNewFace = async (faceData) => {
-        const formData = {
-            param: Array.from(faceData.descriptor).join(", "),
-            img: canvasRef.current.toDataURL("image/jpeg"),
-            "devop-sso": localStorage.getItem("regist_token"),
-            csrf_token: Cookies.get("csrf"),
+            console.log("Registering new face...");
+            registerNewFace(faceData);
         };
 
-        try {
-            const response = await apiXML.postInput("facecam", formData);
-            const res = JSON.parse(response);
-            Cookies.set("csrf", res.csrfHash);
-            if (response.status) {
-                setIsLoading(false);
-                alertMessage(
-                    response.data.title,
-                    response.data.message,
-                    response.data.info,
-                    () => window.location.replace("/setpassword")
-                );
-            } else {
-                setIsLoading(false);
-                alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
-                    window.location.replace("/facereg")
-                );
-            }
-        } catch (err) {
-            setIsLoading(false);
-            console.error(err);
-            handleSessionError(err, "/facereg");
-        }
+        attemptMatch();
+    } catch (err) {
+        console.error("Error during face detection/registration:", err);
+        handleSessionError(err, "/login");
+    }
+};
+
+// Fungsi untuk mendaftarkan wajah baru
+const registerNewFace = async (faceData) => {
+    console.log("Preparing data for new face registration...");
+    const formData = {
+        param: Array.from(faceData.descriptor).join(", "),
+        img: canvasRef.current.toDataURL("image/jpeg"),
+        "devop-sso": localStorage.getItem("regist_token"),
+        csrf_token: Cookies.get("csrf"),
     };
 
+    try {
+        console.log("Sending registration data to server...");
+        const response = await apiXML.postInput("facecam", formData);
+        const res = JSON.parse(response);
+        Cookies.set("csrf", res.csrfHash);
+        if (response.status) {
+            setIsLoading(false);
+            console.log("Face registration successful.");
+            alertMessage(
+                response.data.title,
+                response.data.message,
+                response.data.info,
+                () => window.location.replace("/setpassword")
+            );
+        } else {
+            setIsLoading(false);
+            console.error("Failed to register face.");
+            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
+                window.location.replace("/facereg")
+            );
+        }
+    } catch (err) {
+        setIsLoading(false);
+        console.error("Error during face registration:", err);
+        handleSessionError(err, "/facereg");
+    }
+};
+
+
     return (
-        <div className="capture-container bg-primary-low text-white flex flex-col h-screen w-screen">
+        <div className="capture-container ">
             {/* Title and Subtitle */}
             <div className="text-center mt-6 mb-6">
                 <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
@@ -230,7 +246,7 @@ export default function RegisterFace() {
             <img ref={imgRef} className="absolute z-10 hidden" />
 
             {/* Controls Section */}
-            <div className="capture-form-container flex flex-col items-center justify-center gap-4 mt-auto p-6">
+            <div className={`capture-form-container ${isOpen ? "open" : "closed"}`}>
                 <button
                     onClick={() => {
                         document.getElementById("my_modal_1").showModal();
@@ -282,6 +298,8 @@ export default function RegisterFace() {
                     </div>
                 </dialog>
             </div>
+            {/* Toggle Button */}
+            <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
         </div>
     );
 }
