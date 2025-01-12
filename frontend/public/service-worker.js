@@ -6,7 +6,6 @@ importScripts("https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging-comp
 const CACHE_NAME = "my-cache-v1";
 const OFFLINE_URL = "/frontend/offline.html"; // Offline fallback page
 const ASSETS_TO_CACHE = [
-    "/",            // Home
     OFFLINE_URL,    // Offline fallback page
 ];
 
