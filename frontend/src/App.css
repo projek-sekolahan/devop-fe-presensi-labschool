@@ -42,10 +42,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100vw; /* Lebar layar penuh */
-  max-width: 400px; /* Untuk memastikan lebar maksimum pada layar kecil */
-  margin-left: calc(50vw - 200px); /* Posisi di tengah layar */
-  position: relative;
+  width: 100%; /* Lebar penuh elemen */
+  max-width: 400px; /* Lebar maksimum */
+  margin-left: auto; /* Pusatkan secara horizontal */
+  margin-right: auto; /* Pusatkan secara horizontal */
+  position: relative; /* Jadikan parent untuk elemen relatif */
   z-index: 1;
   background-color: rgba(25, 118, 210, 0.1); /* bg-primary-low */
   font-family: Arial, sans-serif; /* font-primary */
@@ -55,13 +56,12 @@ body {
 
 /* Background Image */
 .bg-image {
-  position: fixed;
-  top: 20px; /* Mulai dari atas halaman */
-  left: 50%; /* Posisi tengah secara horizontal */
-  transform: translateX(-50%); /* Geser ke kiri agar berada di tengah */
-  max-width: 400px; /* Pastikan gambar mengisi seluruh lebar */
-  height: calc(100vh - 200px); /* Menghitung tinggi berdasarkan form container */
-  z-index: 0; /* Menempatkan gambar di bawah konten lain */
+  position: absolute; /* Posisi relatif terhadap .login-container */
+  top: 20px; /* Mulai dari atas elemen .login-container */
+  left: 0; /* Mulai dari sisi kiri */
+  width: 100%; /* Sesuaikan lebar dengan .login-container */
+  height: calc(100% - 200px); /* Mengurangi tinggi berdasarkan elemen di dalam container */
+  z-index: 0; /* Letakkan di bawah konten lain */
   object-fit: cover; /* Menjaga gambar tetap proporsional */
 }
 
