@@ -113,6 +113,11 @@ export default function FaceCam() {
     };
 
     function clickPhoto() {
+        // Menutup modal sebelum memulai proses
+        const modal = document.getElementById("my_modal_1");
+        if (modal) {
+            modal.close();
+        }
         console.log("Capturing photo...");
         loading("Loading", "Mendapatkan data wajah...");
         const context = canvasRef.current.getContext("2d");
