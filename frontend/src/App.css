@@ -102,22 +102,22 @@ body {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.login-form-container,
-.register-form-container,
-.reset-form-container,
-.verification-form-container,
-.confirmation-form-container,
-.capture-form-container.open {
+.login-form-container.open {
   transform: translateY(0);
   opacity: 1;
 }
 
-.login-form-container,
-.register-form-container,
-.reset-form-container,
-.verification-form-container,
-.confirmation-form-container,
-.capture-form-container.closed {
+.login-form-container.closed {
+  transform: translateY(100%); /* Sembunyikan form di bawah layar */
+  opacity: 0;
+}
+
+.register-form-container.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.register-form-container.closed {
   transform: translateY(100%); /* Sembunyikan form di bawah layar */
   opacity: 0;
 }
