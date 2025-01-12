@@ -127,13 +127,8 @@ body {
     width: 100vw; /* Pastikan elemen memenuhi lebar layar */
   }
   .btn-toggle {
-    bottom: 1.5rem; /* Beri jarak lebih besar untuk layar kecil */
+    bottom: 0.5rem; /* Beri jarak lebih besar untuk layar kecil */
   }
-}
-
-/* Tombol Toggle untuk membuka/menutup form */
-.btn-toggle {
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 .btn-toggle.open {
@@ -142,14 +137,12 @@ body {
 
 /* Tombol Toggle untuk form terbuka */
 .form-toggle {
-  margin-top: 1rem; /* Tambahkan jarak dari Submit Button */
   width: 100%;
   max-width: 400px;
   padding: 1rem;
   background-color: #1976d2;
   color: white;
   border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -177,15 +170,13 @@ body {
 /* Titles and Subtitles */
 .text-title {
   font-weight: 700; /* Bold for more emphasis */
-  font-size: 1rem; /* Increase size */
-  margin: 0.5rem 0; /* Vertical spacing */
+  margin: 0.5rem; /* Vertical spacing */
   text-align: center; /* Center align */
 }
 
 .text-subtitle {
   font-weight: 400;
-  font-size: 0.5rem;
-  margin: 0.5rem 0 1.5rem;
+  margin: 0.5rem;
   text-align: center; /* Center align */
   color: #e3f2fd; /* Slightly lighter for better contrast */
 }
@@ -196,7 +187,7 @@ body {
 .reset-form,
 .verification-form,
 .confirmation-form {
-  margin: 1rem; /* my-6 */
+  margin: 0.1rem; /* my-6 */
   gap: 0.5rem; /* space-y-6 */
   display: flex;
   flex-direction: column;
@@ -335,7 +326,6 @@ body {
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   position: relative;
   z-index: 5;
-  margin-bottom: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
   width: 100%; /* Make sure button takes full width */
 }
