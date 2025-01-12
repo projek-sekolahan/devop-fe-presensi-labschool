@@ -155,26 +155,9 @@ const detectAndRegisterFace = async () => {
             }
     
             attempts++;
+            console.log(`Face detection attempt #${attempts}...`);
+
             const faceData = await detectSingleFace(imgRef.current);
-    
-            if (!faceData) {
-                console.log("Face not detected. Closing modal...");
-                setIsLoading(false);
-            
-                // Menutup modal
-                const modal = document.getElementById("my_modal_1");
-                if (modal) {
-                    modal.close();
-                }
-            
-                // Memberikan notifikasi
-                alertMessage(
-                    "Deteksi Gagal",
-                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                    "error"
-                );
-                return;
-            }
     
             console.log("Face detected. Checking match...",faceData);
     
