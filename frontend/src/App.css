@@ -155,6 +155,40 @@ body {
   background-color: #145ea8;
 }
 
+/* Tombol Toggle untuk form terbuka */
+.form-toggle {
+  margin-top: 1rem; /* Tambahkan jarak dari Submit Button */
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Tombol Toggle untuk form tertutup */
+.outside-toggle {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  background-color: #1976d2;
+  color: white;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
 /* .btn-toggle:hover {
   background-color: #2196f3;
   color: white;

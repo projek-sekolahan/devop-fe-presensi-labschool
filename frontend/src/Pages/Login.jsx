@@ -195,21 +195,29 @@ export default function Login() {
             >
                 Login
             </button>
+
+            {/* Button to Toggle Login Form */}
+            {isOpen && (
+                <div
+                className="btn-toggle form-toggle"
+                onClick={toggleForm}
+                >
+                <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
+                </div>
+            )}
         </form>
     </div>
         {/* </Accordion.Panel>
     </Accordion> */}
     {/* Button to Toggle Login Form */}
-    <div
-        className={`btn-toggle ${isOpen ? "open" : ""}`}
+    {!isOpen && (
+        <div
+        className="btn-toggle outside-toggle"
         onClick={toggleForm}
-      >
-        {isOpen ? (
-          <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
-        ) : (
-          <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
-        )}
-    </div>
+        >
+        <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
+        </div>
+    )}
 </div>
     );
 }
