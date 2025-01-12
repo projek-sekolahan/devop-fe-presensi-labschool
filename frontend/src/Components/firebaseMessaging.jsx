@@ -9,7 +9,7 @@ const messaging = getMessaging(app);
 
 // Fungsi navigasi
 export const navigateToLogin = () => {
-    alertMessage("Error", "Terjadi kesalahan, silakan login ulang.", "error", () => {
+    alertMessage("Error", "Terjadi kesalahan, Memuat ulang.", "error", () => {
         window.location.href = "/login";
     });
 };
