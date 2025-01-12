@@ -160,7 +160,18 @@ const detectAndRegisterFace = async () => {
             const faceData = await detectSingleFace(imgRef.current);
     
             console.log("Face detected. Checking match...",faceData);
-    
+            
+            if(!faceData) {
+                console.log("Face tidak terdeteksi");
+                alertMessage(
+                    "Deteksi Gagal",
+                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
+                return;
+            }
+
             const isMatched = facecamData.some((facecam) => {
                 const descriptor = new Float32Array(
                     facecam.facecam_id.split(", ").map(Number)
