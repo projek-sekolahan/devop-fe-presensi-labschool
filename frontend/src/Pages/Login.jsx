@@ -111,9 +111,9 @@ export default function Login() {
     />
 
     {/* Login Form */}
-    <div className="login-form-container shadow-md sm:w-[400px] w-full px-4 py-6">
-        <h2 className="text-title text-center">Yuk Login!</h2>
-        <p className="text-subtitle text-center">Solusi Pintar Sekolah Digital</p>
+    <div className="login-form-container">
+        <h2 className="text-title">Yuk Login!</h2>
+        <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
         <form
             className="login-form"
             onSubmit={handleLogin}
