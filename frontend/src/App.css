@@ -68,9 +68,14 @@ body {
 }
 
 .bg-image.open {
-  top: 0; /* Pindahkan ke atas layar */
-  height: 100%; /* Full screen */
-  opacity: 0.5; /* Kurangi opacity untuk highlight form */
+  top: 50%; /* Pusatkan secara vertikal */
+  left: 50%; /* Pusatkan secara horizontal */
+  transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
+  width: auto; /* Gunakan ukuran asli gambar */
+  height: auto; /* Gunakan ukuran asli gambar */
+  max-width: 100%; /* Batasi agar tidak melebihi lebar layar */
+  max-height: 100%; /* Batasi agar tidak melebihi tinggi layar */
+  opacity: 1; /* Atur opacity penuh */
 }
 
 /* Form Container */
