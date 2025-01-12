@@ -56,6 +56,7 @@ export default class apiXML {
             clearTimeout(timeoutId);
 
             if (!response.ok) {
+                console.log(response)
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return await response.text();
