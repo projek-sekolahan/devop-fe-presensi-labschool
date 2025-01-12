@@ -159,12 +159,6 @@ const detectAndRegisterFace = async () => {
     
             console.log("Face detected. Checking match...",faceData);
     
-            /* if (facecamData.length === 0) {
-                console.warn("No existing face data found. Proceeding to register new face.");
-                registerNewFace(faceData);
-                return;
-            } */
-    
             const isMatched = facecamData.some((facecam) => {
                 const descriptor = new Float32Array(
                     facecam.facecam_id.split(", ").map(Number)
@@ -210,7 +204,7 @@ const registerNewFace = async (faceData) => {
         let keys = ["param", "img", "devop-sso", "csrf_token"];
         let values = [
             Array.from(faceData.descriptor).join(", "),
-            canvasRef.current.toDataURL("image/jpeg"),
+            `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
             localStorage.getItem("regist_token"),
             Cookies.get("csrf"),
         ];
