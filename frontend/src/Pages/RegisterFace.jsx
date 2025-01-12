@@ -159,11 +159,11 @@ const detectAndRegisterFace = async () => {
     
             console.log("Face detected. Checking match...");
     
-            if (facecamData.length === 0) {
+            /* if (facecamData.length === 0) {
                 console.warn("No existing face data found. Proceeding to register new face.");
                 registerNewFace(faceData);
                 return;
-            }
+            } */
     
             const isMatched = facecamData.some((facecam) => {
                 const descriptor = new Float32Array(
