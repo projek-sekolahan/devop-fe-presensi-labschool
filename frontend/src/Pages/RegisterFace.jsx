@@ -121,6 +121,7 @@ const detectAndRegisterFace = async () => {
             getFormData(keys, values)
         );
         const res = JSON.parse(response);
+        Cookies.set("csrf", res.csrfHash);
         console.log("Full API response:", res);
     
         if (!res?.status) throw new Error("Failed to load face data.");
