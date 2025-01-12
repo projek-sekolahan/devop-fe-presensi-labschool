@@ -68,7 +68,7 @@ body {
 }
 
 .bg-image.open {
-  top: 0; /* Pusatkan secara vertikal */
+  top: 120px; /* Pusatkan secara vertikal */
   left: 50%; /* Pusatkan secara horizontal */
   transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
   width: auto; /* Gunakan ukuran asli gambar */
@@ -91,7 +91,7 @@ body {
   max-width: 400px;
   margin: 0 auto;
   padding: 1.5rem;
-  background-color: #ff6f00;
+  background-color: #ff7f27;
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
@@ -137,7 +137,7 @@ body {
 }
 
 .btn-toggle.open {
-  background-color: #ff6f00;
+  background-color: #ff7f27;
 }
 
 /* Tombol Toggle untuk form terbuka */
@@ -145,7 +145,7 @@ body {
   width: 100%;
   max-width: 400px;
   padding: 1rem;
-  background-color: #ff6f00;
+  background-color: #ff7f27;
   color: white;
   border-radius: 1rem;
   text-align: center;
@@ -161,7 +161,7 @@ body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
-  background-color: #ff6f00;
+  background-color: #ff7f27;
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
@@ -313,7 +313,7 @@ body {
 .input-field:focus {
   background-color: #ffebcd;
   border-color: #d1d5db; /* Focus border color */
-  color: #ff9800;
+  color: #ff7f27;
   outline: none;
   box-shadow: 0 0 8px rgba(66, 165, 245, 0.5); /* Subtle focus shadow */
   transition: box-shadow 0.3s ease-in-out; /* Add smooth transition */
@@ -322,9 +322,9 @@ body {
 /* Button */
 .btn-submit {
   background-color: #ffebcd; /* Brighter blue */
-  color: #ff9800;
-  font-size: 1.5rem;
-  padding: 0.75rem 1rem;
+  color: #ff7f27;
+  font-size: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   position: relative;
