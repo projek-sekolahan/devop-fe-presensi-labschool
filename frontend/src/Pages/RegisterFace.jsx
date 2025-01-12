@@ -99,7 +99,7 @@ function clickPhoto() {
     let image_data_url = canvasRef.current.toDataURL("image/jpeg");
     imgRef.current.src = image_data_url;
 
-    console.log("Photo captured successfully.");
+    console.log("Photo captured successfully.",imgRef.current);
 }
 
 // Fungsi utama untuk mendeteksi wajah dan mendaftarkan
@@ -157,7 +157,7 @@ const detectAndRegisterFace = async () => {
                 return;
             }
     
-            console.log("Face detected. Checking match...");
+            console.log("Face detected. Checking match...",faceData);
     
             /* if (facecamData.length === 0) {
                 console.warn("No existing face data found. Proceeding to register new face.");
