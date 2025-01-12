@@ -120,62 +120,70 @@ const detectAndRegisterFace = async () => {
             "loadFace",
             getFormData(keys, values)
         );
-
-        if (!response.status) throw new Error("Failed to load face data.");
+        console.log("Full API response:", response);
+        if (!response?.status) throw new Error("Failed to load face data.");
         console.log("Facecam data fetched successfully.");
 
-        const facecamData = response.data.facecam;
+const facecamData = response.data.data || []; // Mengakses data wajah dari response.data.data
 
-        const attemptMatch = async () => {
-            console.log(`Attempt ${attempts + 1} to detect face...`);
-            if (attempts >= maxAttempts) {
-                setIsLoading(false);
-                console.error("Max attempts reached. Face detection failed.");
-                alertMessage(
-                    "Deteksi Gagal",
-                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                    "error",
-                    () => window.location.replace("/facereg")
-                );
-                return;
-            }
+const attemptMatch = async () => {
+    console.log(`Attempt ${attempts + 1} to detect face...`);
 
-            attempts++;
-            const faceData = await detectSingleFace(imgRef.current);
+    if (attempts >= maxAttempts) {
+        setIsLoading(false);
+        console.error("Max attempts reached. Face detection failed.");
+        alertMessage(
+            "Deteksi Gagal",
+            "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+            "error",
+            () => window.location.replace("/facereg")
+        );
+        return;
+    }
 
-            if (!faceData) {
-                console.log("Face not detected. Retrying...");
-                setTimeout(attemptMatch, 1000);
-                return;
-            }
+    attempts++;
+    const faceData = await detectSingleFace(imgRef.current);
 
-            console.log("Face detected. Checking match...");
-            const isMatched = facecamData.some((facecam) => {
-                const descriptor = new Float32Array(
-                    facecam.facecam_id.split(", ").map(Number)
-                );
-                const distance = faceapi.euclideanDistance(
-                    descriptor,
-                    faceData.descriptor
-                );
-                return distance <= 0.6;
-            });
+    if (!faceData) {
+        console.log("Face not detected. Retrying...");
+        setTimeout(attemptMatch, 1000);
+        return;
+    }
 
-            if (isMatched) {
-                setIsLoading(false);
-                console.warn("Face already registered.");
-                alertMessage(
-                    "Error",
-                    "Wajah sudah terdaftar, gunakan wajah lain",
-                    "error",
-                    () => window.location.replace("/facereg")
-                );
-                return;
-            }
+    console.log("Face detected. Checking match...");
 
-            console.log("Registering new face...");
-            registerNewFace(faceData);
-        };
+    if (facecamData.length === 0) {
+        console.warn("No existing face data found. Proceeding to register new face.");
+        registerNewFace(faceData);
+        return;
+    }
+
+    const isMatched = facecamData.some((facecam) => {
+        const descriptor = new Float32Array(
+            facecam.facecam_id.split(", ").map(Number)
+        );
+        const distance = faceapi.euclideanDistance(
+            descriptor,
+            faceData.descriptor
+        );
+        return distance <= 0.6;
+    });
+
+    if (isMatched) {
+        setIsLoading(false);
+        console.warn("Face already registered.");
+        alertMessage(
+            "Error",
+            "Wajah sudah terdaftar, gunakan wajah lain",
+            "error",
+            () => window.location.replace("/facereg")
+        );
+        return;
+    }
+
+    console.log("Registering new face...");
+    registerNewFace(faceData);
+};
 
         attemptMatch();
     } catch (err) {
@@ -287,7 +295,7 @@ const registerNewFace = async (faceData) => {
                                     {isLoading ? (
                                         <div className="flex justify-center items-center gap-2">
                                             <span>Loading...</span>
-                                            <span className="loading loading-spinner text-white size-7"></span>
+                                            <span className="loading loading-spinner text-black"></span>
                                         </div>
                                     ) : (
                                         "Proses"
