@@ -68,7 +68,7 @@ body {
 }
 
 .bg-image.open {
-  top: 150px; /* Pusatkan secara vertikal */
+  top: 120px; /* Pusatkan secara vertikal */
   left: 50%; /* Pusatkan secara horizontal */
   transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
   width: auto; /* Gunakan ukuran asli gambar */

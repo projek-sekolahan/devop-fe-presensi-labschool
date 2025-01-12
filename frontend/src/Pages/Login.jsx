@@ -191,26 +191,20 @@ export default function Login() {
             </button>
 
             {/* Button to Toggle Login Form */}
-            {isOpen && (
+            {!isOpen && (
                 <div
-                className="btn-toggle form-toggle"
+                className={`btn-toggle ${isOpen ? "form-toggle" : "outside-toggle"}`}
                 onClick={toggleForm}
                 >
-                <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
+                {isOpen ? (
+                    <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
+                ) : (
+                    <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
+                )}
                 </div>
             )}
         </form>
     </div>
-
-    {/* Button to Toggle Login Form */}
-    {!isOpen && (
-        <div
-        className="btn-toggle outside-toggle"
-        onClick={toggleForm}
-        >
-        <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
-        </div>
-    )}
 </div>
     );
 }
