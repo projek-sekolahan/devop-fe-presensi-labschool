@@ -115,81 +115,86 @@ const detectAndRegisterFace = async () => {
             localStorage.getItem("regist_token"),
             Cookies.get("csrf"),
         ];
-
+    
         const response = await apiXML.postInput(
             "loadFace",
             getFormData(keys, values)
         );
         console.log("Full API response:", response);
+    
         if (!response?.status) throw new Error("Failed to load face data.");
         console.log("Facecam data fetched successfully.");
-
-const facecamData = response.data.data || []; // Mengakses data wajah dari response.data.data
-
-const attemptMatch = async () => {
-    console.log(`Attempt ${attempts + 1} to detect face...`);
-
-    if (attempts >= maxAttempts) {
-        setIsLoading(false);
-        console.error("Max attempts reached. Face detection failed.");
-        alertMessage(
-            "Deteksi Gagal",
-            "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-            "error",
-            () => window.location.replace("/facereg")
-        );
-        return;
-    }
-
-    attempts++;
-    const faceData = await detectSingleFace(imgRef.current);
-
-    if (!faceData) {
-        console.log("Face not detected. Retrying...");
-        setTimeout(attemptMatch, 1000);
-        return;
-    }
-
-    console.log("Face detected. Checking match...");
-
-    if (facecamData.length === 0) {
-        console.warn("No existing face data found. Proceeding to register new face.");
-        registerNewFace(faceData);
-        return;
-    }
-
-    const isMatched = facecamData.some((facecam) => {
-        const descriptor = new Float32Array(
-            facecam.facecam_id.split(", ").map(Number)
-        );
-        const distance = faceapi.euclideanDistance(
-            descriptor,
-            faceData.descriptor
-        );
-        return distance <= 0.6;
-    });
-
-    if (isMatched) {
-        setIsLoading(false);
-        console.warn("Face already registered.");
-        alertMessage(
-            "Error",
-            "Wajah sudah terdaftar, gunakan wajah lain",
-            "error",
-            () => window.location.replace("/facereg")
-        );
-        return;
-    }
-
-    console.log("Registering new face...");
-    registerNewFace(faceData);
-};
-
+    
+        // Pastikan data adalah array
+        const facecamData = Array.isArray(response?.data?.data)
+            ? response.data.data
+            : [];
+        console.log("Parsed facecam data:", facecamData);
+    
+        const attemptMatch = async () => {
+            console.log(`Attempt ${attempts + 1} to detect face...`);
+    
+            if (attempts >= maxAttempts) {
+                setIsLoading(false);
+                console.error("Max attempts reached. Face detection failed.");
+                alertMessage(
+                    "Deteksi Gagal",
+                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
+                return;
+            }
+    
+            attempts++;
+            const faceData = await detectSingleFace(imgRef.current);
+    
+            if (!faceData) {
+                console.log("Face not detected. Retrying...");
+                setTimeout(attemptMatch, 1000);
+                return;
+            }
+    
+            console.log("Face detected. Checking match...");
+    
+            if (facecamData.length === 0) {
+                console.warn("No existing face data found. Proceeding to register new face.");
+                registerNewFace(faceData);
+                return;
+            }
+    
+            const isMatched = facecamData.some((facecam) => {
+                const descriptor = new Float32Array(
+                    facecam.facecam_id.split(", ").map(Number)
+                );
+                const distance = faceapi.euclideanDistance(
+                    descriptor,
+                    faceData.descriptor
+                );
+                return distance <= 0.6;
+            });
+    
+            if (isMatched) {
+                setIsLoading(false);
+                console.warn("Face already registered.");
+                alertMessage(
+                    "Error",
+                    "Wajah sudah terdaftar, gunakan wajah lain",
+                    "error",
+                    () => window.location.replace("/facereg")
+                );
+                return;
+            }
+    
+            console.log("Registering new face...");
+            registerNewFace(faceData);
+        };
+    
         attemptMatch();
     } catch (err) {
         console.error("Error during face detection/registration:", err);
         handleSessionError(err, "/login");
-    }
+    }    
 };
 
 // Fungsi untuk mendaftarkan wajah baru

@@ -123,7 +123,7 @@ export default function OtpInput() {
 			{/* Verification Form Container */}
 			<div className={`verification-form-container ${isOpen ? "open" : "closed"}`}>
 				<h2 className="text-title text-4xl">Email Verification</h2>
-				<p className="text-subtitle">Cek Email Anda<br></br>(Masukkan Kode OTP)</p>
+				<p className="text-xl">Cek Email Anda (Masukkan Kode OTP)</p>
 				<form ref={formRef} className="verification-form">
 					{/* OTP Input Fields */}
 					<div className="flex justify-between my-8">
