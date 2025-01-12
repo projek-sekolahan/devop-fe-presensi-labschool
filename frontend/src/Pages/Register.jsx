@@ -11,6 +11,7 @@ import {
 import RoleSelection from "../Components/RoleSelection";
 import renderInputGroup from "../Components/renderInputGroup";
 import { validateFormFields } from "../utils/validation";
+import ToggleButton from "../Components/ToggleButton";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "phone", "namaLengkap", "sebagai", "csrf_token"];
@@ -29,7 +30,7 @@ export default function Register() {
     role: "",
   });
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleForm = () => {
     setIsOpen(!isOpen);
@@ -187,6 +188,8 @@ export default function Register() {
           <div className="flex-grow border-t-[0.25px] border-white"></div>
         </div>
       </div>
+      {/* Toggle Button */}
+      <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
     </div>
   );
 }
