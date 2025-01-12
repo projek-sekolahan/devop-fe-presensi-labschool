@@ -202,14 +202,14 @@ const detectAndRegisterFace = async () => {
 // Fungsi untuk mendaftarkan wajah baru
 const registerNewFace = async (faceData) => {
     console.log("Preparing data for new face registration...");
-    const formData = {
-        param: Array.from(faceData.descriptor).join(", "),
-        img: canvasRef.current.toDataURL("image/jpeg"),
-        "devop-sso": localStorage.getItem("regist_token"),
-        csrf_token: Cookies.get("csrf"),
-    };
-    console.log("Sending formData data to server...", formData);
     try {
+        const formData = {
+            param: Array.from(faceData.descriptor).join(", "),
+            img: canvasRef.current.toDataURL("image/jpeg"),
+            "devop-sso": localStorage.getItem("regist_token"),
+            csrf_token: Cookies.get("csrf"),
+        };
+        console.log("Sending formData data to server...", formData);
         console.log("Sending registration data to server...");
         const response = await apiXML.postInput("facecam", formData);
         const res = JSON.parse(response);
