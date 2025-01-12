@@ -102,7 +102,7 @@ self.addEventListener("message", async (event) => {
 
             // Setup untuk pesan latar belakang
             messaging.setBackgroundMessageHandler(function (payload) {
-                console.log("[firebase-messaging-sw.js] Pesan background diterima:", payload);
+                console.log("[firebase-messaging-sw] Pesan background diterima:", payload);
                 const notificationTitle = payload.notification?.title || "Pesan Baru";
                 const notificationOptions = {
                     body: payload.notification?.body || "Anda memiliki pesan baru.",
