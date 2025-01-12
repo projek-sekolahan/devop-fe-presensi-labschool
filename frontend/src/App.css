@@ -56,13 +56,14 @@ body {
 
 /* Background Image */
 .bg-image {
-  position: absolute; /* Posisi relatif terhadap .login-container */
-  top: 20px; /* Mulai dari atas elemen .login-container */
-  left: 0; /* Mulai dari sisi kiri */
-  width: 100%; /* Sesuaikan lebar dengan .login-container */
-  height: calc(100% - 200px); /* Mengurangi tinggi berdasarkan elemen di dalam container */
-  z-index: 0; /* Letakkan di bawah konten lain */
-  object-fit: cover; /* Menjaga gambar tetap proporsional */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Cover the entire container */
+  z-index: 0;
+  object-fit: cover; /* Ensure image scales proportionally */
+  opacity: 0.1; /* Dim the background to improve readability */
 }
 
 /* Form Container */
@@ -72,22 +73,15 @@ body {
 .verification-form-container,
 .confirmation-form-container,
 .capture-form-container {
-  --form-height: 200px; /* Tinggi default form container */
-  width: 100%;
-  max-width: 400px; /* Membatasi lebar maksimum sesuai desain */
-  margin-left: auto;
-  margin-right: auto;
-  height: fit-content;
-  background-color: #1976D2; /* Warna background */
-  border-top-left-radius: 2rem; /* Membuat sudut atas kiri membulat */
-  border-top-right-radius: 2rem; /* Membuat sudut atas kanan membulat */
-  padding: 1.5rem; /* Padding utama */
-  padding-top: 1.5rem; /* Padding atas */
-  padding-bottom: calc(24px + env(safe-area-inset-bottom)); /* Menambahkan jarak aman */
-  position: fixed; /* Menempel di bagian bawah layar */
-  bottom: 0; /* Posisi di bawah */
-  z-index: 10; /* Lapisan atas */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow untuk efek kedalaman */
+  --form-height: auto; /* Adjust height dynamically */
+  width: 90%; /* Use a percentage for better responsiveness */
+  max-width: 420px; /* Slightly increased max-width for better proportion */
+  margin: 2rem auto; /* Center horizontally and add space vertically */
+  padding: 2rem;
+  background-color: #1976D2;
+  border-radius: 1rem; /* Reduce corner radius for cleaner look */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add more prominent shadow */
+  z-index: 10;
 }
 
 /* Responsif untuk Smartphone */
@@ -112,17 +106,18 @@ body {
 
 /* Titles and Subtitles */
 .text-title {
-  font-weight: 600;
-  font-size: 1.5rem; /* text-2xl */
-  margin-bottom: 0.5rem;
-  margin: 1rem;
+  font-weight: 700; /* Bold for more emphasis */
+  font-size: 2rem; /* Increase size */
+  margin: 1rem 0; /* Vertical spacing */
+  text-align: center; /* Center align */
 }
 
 .text-subtitle {
-  font-weight: 300; /* font-light */
-  font-size: 1.25rem; /* text-xl */
-  margin-bottom: 0.5rem;
-  margin: 1rem;
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin: 0.5rem 0 1.5rem;
+  text-align: center; /* Center align */
+  color: #e3f2fd; /* Slightly lighter for better contrast */
 }
 
 /* Form Styles */
@@ -238,14 +233,9 @@ body {
 
 /* Styling untuk Input Fields untuk Konsistensi */
 .input-field {
-  background-color: rgba(25, 118, 210, 0.5); /* bg-primary-md */
-  border: 1px solid white;
-  color: white;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-  box-sizing: border-box;
+  background-color: #e3f2fd; /* Light blue for better readability */
+  border: 1px solid #90caf9; /* Softer border */
+  color: #0d47a1; /* Darker text */
 }
 
 .input-field::placeholder {
@@ -254,29 +244,23 @@ body {
 
 .input-field:focus {
   background-color: white;
-  border: none;
+  border-color: #42a5f5;
   color: black;
   outline: none;
 }
 
 /* Button */
 .btn-submit {
-  border: none;
-  width: 100%;
-  color: rgba(25, 118, 210, 0.5); /* text-primary-md */
-  font-weight: 600; /* font-semibold */
-  background-color: white;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.75rem;
-  text-align: center;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #42a5f5; /* Brighter blue */
+  color: white; /* Better contrast */
+  font-size: 1.125rem; /* Slightly larger */
+  padding: 0.75rem 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Add hover animation */
 }
 
 .btn-submit:hover {
-  background-color: rgba(25, 118, 210, 0.3); /* hover:bg-primary-300 */
+  background-color: #2196f3; /* Darker hover effect */
+  transform: scale(1.02); /* Slight enlargement on hover */
 }
 
 /* Role Selection Container */
