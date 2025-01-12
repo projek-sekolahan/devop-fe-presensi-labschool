@@ -91,15 +91,15 @@ body {
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek visual */
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  transform: translateY(100%); /* Tersembunyi di luar layar bawah */
+  transform: translateY(100%);
   opacity: 0;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 .login-form-container.open {
-  transform: translateY(0); /* Tampilkan form */
+  transform: translateY(0);
   opacity: 1;
 }
 
@@ -133,19 +133,26 @@ body {
 
 /* Tombol Toggle untuk membuka/menutup form */
 .btn-toggle {
-  position: absolute;
+  position: fixed;
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: white;
-  color: #1976d2;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: 1.5rem;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  background-color: #1976d2;
+  color: white;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.btn-toggle.open {
+  background-color: #145ea8;
 }
 
 /* .btn-toggle:hover {

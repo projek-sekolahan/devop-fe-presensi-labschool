@@ -13,7 +13,10 @@ import {
   addDefaultKeys,
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
-import { Accordion, Button } from "flowbite-react";
+import {
+    ChevronDoubleUpIcon,
+    ChevronDoubleDownIcon,
+  } from "@heroicons/react/24/outline";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -118,8 +121,8 @@ export default function Login() {
 
     {/* Login Form */}
     {/* Accordion untuk Buka/Tutup Form */}
-    <Accordion>
-        <Accordion.Panel>
+    {/* <Accordion>
+        <Accordion.Panel> */}
     <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
         <h2 className="text-title">Yuk Login!</h2>
         <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
@@ -194,13 +197,18 @@ export default function Login() {
             </button>
         </form>
     </div>
-        </Accordion.Panel>
-    </Accordion>
+        {/* </Accordion.Panel>
+    </Accordion> */}
     {/* Button to Toggle Login Form */}
-    <div className="btn-toggle absolute bottom-0 left-0 z-10 w-full p-4">
-        <Button color="light" className="mx-auto block" onClick={toggleForm}>
-          {isOpen ? "Tutup Form Login" : "Buka Form Login"}
-        </Button>
+    <div
+        className={`btn-toggle ${isOpen ? "open" : ""}`}
+        onClick={toggleForm}
+      >
+        {isOpen ? (
+          <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
+        ) : (
+          <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
+        )}
     </div>
 </div>
     );
