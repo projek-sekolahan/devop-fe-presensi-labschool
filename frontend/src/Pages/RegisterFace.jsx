@@ -192,7 +192,7 @@ const detectAndRegisterFace = async () => {
             console.log("Checking faceData.descriptor:", faceData.descriptor);
             console.log("Checking canvas data URL:", canvasRef.current.toDataURL("image/jpeg"));
             console.log("Checking CSRF token:", Cookies.get("csrf"));
-            return false;
+            // return false;
             registerNewFace(faceData);
         };
     
