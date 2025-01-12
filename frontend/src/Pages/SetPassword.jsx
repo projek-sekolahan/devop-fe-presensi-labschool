@@ -11,6 +11,7 @@ import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
+import ToggleButton from "../Components/ToggleButton";
 
 export default function SetPassword() {
 	const [warning, setWarning] = useState("none");
@@ -18,7 +19,11 @@ export default function SetPassword() {
 	const [errors, setErrors] = useState({password: ""});
 	const inputRef = useRef();
 	const confirmRef = useRef();
+	const [isOpen, setIsOpen] = useState(false);
 
+    const toggleForm = () => {
+        setIsOpen(!isOpen);
+    };
 	const changeHandler = (e) => {
 		if (inputRef.current.value.trim()) {
 			setWarning("none");
@@ -75,18 +80,18 @@ export default function SetPassword() {
 	};
 
 	return (
-		<div className="confirmation-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+		<div className="confirmation-container">
 			{/* Background Image */}
 			<img
 				src="/frontend/Icons/splash.svg"
 				alt="reset"
-				className="bg-image h-[57.5%] w-full absolute top-0 left-0"
+				className={`bg-image ${isOpen ? "open" : ""}`}
 			/>
 
 			{/* Form Container */}
-			<div className="confirmation-form-container shadow-md">
-				<h2 className="text-title text-center">Set Password</h2>
-				<form className="confirmation-form space-y-4 md:space-y-6 flex flex-col gap-2">
+			<div className={`confirmation-form-container ${isOpen ? "open" : "closed"}`}>
+				<h2 className="text-title text-4xl">Set Password</h2>
+				<form className="confirmation-form">
 					{/* Password Input */}
 					<div className="input-group">
 						<label
@@ -154,6 +159,8 @@ export default function SetPassword() {
 					</button>
 				</form>
 			</div>
+			{/* Toggle Button */}
+			<ToggleButton isOpen={isOpen} onToggle={toggleForm} />
 		</div>
 	);
 }
