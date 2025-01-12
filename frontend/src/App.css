@@ -133,21 +133,6 @@ body {
 
 /* Tombol Toggle untuk membuka/menutup form */
 .btn-toggle {
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 400px;
-  padding: 1.5rem;
-  background-color: #1976d2;
-  color: white;
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  cursor: pointer;
-  z-index: 10;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
@@ -173,12 +158,12 @@ body {
 /* Tombol Toggle untuk form tertutup */
 .outside-toggle {
   position: fixed;
-  bottom: 1rem;
+  bottom: 0rem;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
-  padding: 1.5rem;
+  padding: 1rem;
   background-color: #1976d2;
   color: white;
   border-top-left-radius: 2rem;
@@ -189,23 +174,17 @@ body {
   z-index: 10;
 }
 
-/* .btn-toggle:hover {
-  background-color: #2196f3;
-  color: white;
-  transform: scale(1.05);
-} */
-
 /* Titles and Subtitles */
 .text-title {
   font-weight: 700; /* Bold for more emphasis */
-  font-size: 2rem; /* Increase size */
-  margin: 1rem 0; /* Vertical spacing */
+  font-size: 1.5rem; /* Increase size */
+  margin: 0.5rem 0; /* Vertical spacing */
   text-align: center; /* Center align */
 }
 
 .text-subtitle {
   font-weight: 400;
-  font-size: 1.25rem;
+  font-size: 1rem;
   margin: 0.5rem 0 1.5rem;
   text-align: center; /* Center align */
   color: #e3f2fd; /* Slightly lighter for better contrast */
@@ -327,6 +306,9 @@ body {
   background-color: #e3f2fd; /* Light blue for better readability */
   border: 1px solid #90caf9; /* Softer border */
   color: #0d47a1; /* Darker text */
+  border-radius: 0.75rem; /* Rounded corners for a softer look */
+  padding: 0.75rem 1rem; /* Add padding for better spacing */
+  transition: all 0.3s ease; /* Add transition for smooth focus effect */
 }
 
 .input-field::placeholder {
@@ -335,9 +317,10 @@ body {
 
 .input-field:focus {
   background-color: white;
-  border-color: #42a5f5;
+  border-color: #42a5f5; /* Focus border color */
   color: black;
   outline: none;
+  box-shadow: 0 0 8px rgba(66, 165, 245, 0.5); /* Add subtle focus shadow */
 }
 
 /* Button */
@@ -346,10 +329,18 @@ body {
   color: white; /* Better contrast */
   font-size: 1.125rem; /* Slightly larger */
   padding: 0.75rem 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Add hover animation */
+  border-radius: 1rem; /* Rounded corners for a modern look */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Add hover animation */
   position: relative; /* Ensure it stays within its container */
   z-index: 5; /* Set a lower z-index than .outside-toggle to ensure it appears behind toggle if needed */
   margin-bottom: 2rem; /* Add bottom margin to avoid overlap */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.btn-submit:hover {
+  background-color: #2196f3; /* Darker hover effect */
+  transform: scale(1.05); /* Slight enlargement on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Add a stronger shadow on hover */
 }
 
 .btn-submit:hover {
