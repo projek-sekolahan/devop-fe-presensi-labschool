@@ -48,7 +48,7 @@ body {
   margin-right: auto; /* Pusatkan secara horizontal */
   position: relative; /* Jadikan parent untuk elemen relatif */
   z-index: 1;
-  background-color: rgba(25, 118, 210, 0.1); /* bg-primary-low */
+  background-color: #dfe0df; /* bg-primary-low */
   font-family: Arial, sans-serif; /* font-primary */
   color: white;
   overflow-y: auto; /* Scroll hanya pada kontainer ini */
@@ -86,7 +86,7 @@ body {
   max-width: 400px;
   margin: 0 auto;
   padding: 1.5rem;
-  background-color: #1976d2;
+  background-color: #ff6f00;
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
@@ -132,7 +132,7 @@ body {
 }
 
 .btn-toggle.open {
-  background-color: #145ea8;
+  background-color: #ff6f00;
 }
 
 /* Tombol Toggle untuk form terbuka */
@@ -140,7 +140,7 @@ body {
   width: 100%;
   max-width: 400px;
   padding: 1rem;
-  background-color: #1976d2;
+  background-color: #ff6f00;
   color: white;
   border-radius: 1rem;
   text-align: center;
@@ -156,7 +156,7 @@ body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
-  background-color: #1976d2;
+  background-color: #ff6f00;
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
@@ -278,7 +278,7 @@ body {
   justify-content: center;
   align-items: center;
   border: 1px solid #d1d5db; /* border-gray-300 */
-  background-color: white;
+  background-color: #ffebcd;
   border-radius: 0.5rem;
   cursor: pointer;
 }
@@ -292,9 +292,9 @@ body {
 
 /* Styling untuk Input Fields untuk Konsistensi */
 .input-field {
-  background-color: #e3f2fd; /* Light blue for better readability */
-  border: 1px solid #90caf9; /* Softer border */
-  color: #0d47a1; /* Darker text */
+  background-color: #ffebcd; /* Light blue for better readability */
+  border: 1px solid #d1d5db; /* Softer border */
+  color: #9cb0a4; /* Darker text */
   border-radius: 0.75rem; /* Rounded corners for a softer look */
   padding: 0.75rem 1rem; /* Add padding for better spacing */
   transition: all 0.3s ease; /* Add transition for smooth focus effect */
@@ -302,13 +302,13 @@ body {
 }
 
 .input-field::placeholder {
-  color: white; /* placeholder-white */
+  color: #9cb0a4; /* placeholder-white */
 }
 
 .input-field:focus {
-  background-color: white;
-  border-color: #42a5f5; /* Focus border color */
-  color: black;
+  background-color: #ffebcd;
+  border-color: #d1d5db; /* Focus border color */
+  color: #ff9800;
   outline: none;
   box-shadow: 0 0 8px rgba(66, 165, 245, 0.5); /* Subtle focus shadow */
   transition: box-shadow 0.3s ease-in-out; /* Add smooth transition */
@@ -316,9 +316,9 @@ body {
 
 /* Button */
 .btn-submit {
-  background-color: #42a5f5; /* Brighter blue */
-  color: white;
-  font-size: 1.125rem;
+  background-color: #ffebcd; /* Brighter blue */
+  color: #ff9800;
+  font-size: 1.5rem;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -329,14 +329,9 @@ body {
 }
 
 .btn-submit:hover {
-  background-color: #2196f3;
+  background-color: #ffebcd;
   transform: scale(1.05); /* Slight enlargement */
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
-}
-
-.btn-submit:hover {
-  background-color: #2196f3; /* Darker hover effect */
-  transform: scale(1.02); /* Slight enlargement on hover */
 }
 
 /* Role Selection Container */
