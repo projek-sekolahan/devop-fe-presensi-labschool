@@ -156,12 +156,10 @@ body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
-  padding: 1rem;
   background-color: #1976d2;
   color: white;
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
   z-index: 10;
