@@ -104,6 +104,12 @@ function clickPhoto() {
 
 // Fungsi utama untuk mendeteksi wajah dan mendaftarkan
 const detectAndRegisterFace = async () => {
+    // Menutup modal sebelum memulai proses
+    const modal = document.getElementById("my_modal_1");
+    if (modal) {
+        modal.close();
+    }
+    loading("Loading", "Starting face detection and registration...");
     console.log("Starting face detection and registration...");
     const maxAttempts = 10;
     let attempts = 0;
