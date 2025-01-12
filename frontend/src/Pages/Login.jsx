@@ -13,7 +13,7 @@ import {
   addDefaultKeys,
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
-import { Collapse, Button } from "flowbite-react";
+import { Accordion, Button } from "flowbite-react";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -117,7 +117,9 @@ export default function Login() {
     />
 
     {/* Login Form */}
-    <Collapse open={isOpen}>
+    {/* Accordion untuk Buka/Tutup Form */}
+    <Accordion>
+        <Accordion.Panel>
     <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
         <h2 className="text-title">Yuk Login!</h2>
         <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
@@ -192,7 +194,8 @@ export default function Login() {
             </button>
         </form>
     </div>
-    </Collapse>
+        </Accordion.Panel>
+    </Accordion>
     {/* Button to Toggle Login Form */}
     <div className="btn-toggle absolute bottom-0 left-0 z-10 w-full p-4">
         <Button color="light" className="mx-auto block" onClick={toggleForm}>
