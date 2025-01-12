@@ -208,7 +208,7 @@ const registerNewFace = async (faceData) => {
         "devop-sso": localStorage.getItem("regist_token"),
         csrf_token: Cookies.get("csrf"),
     };
-
+    console.log("Sending formData data to server...", formData);
     try {
         console.log("Sending registration data to server...");
         const response = await apiXML.postInput("facecam", formData);
