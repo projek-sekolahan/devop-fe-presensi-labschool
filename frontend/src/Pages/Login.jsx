@@ -102,7 +102,7 @@ export default function Login() {
             "success",
             () => window.location.replace("/home")
         );
-        } catch (error) {
+        } catch (error) { alert(error)
         // Handle error during login
         console.error("Login error:", error);
         }
