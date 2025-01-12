@@ -13,8 +13,8 @@ import {
   addDefaultKeys,
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
-import { ChevronDoubleUpIcon, ChevronDoubleDownIcon } from "@heroicons/react/24/outline";
 import renderInputGroup from "../Components/renderInputGroup";
+import ToggleButton from "../Components/ToggleButton";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -164,16 +164,8 @@ export default function Login() {
             </button>
         </form>
     </div>
-            {/* Button to Toggle Login Form */}
-            {/* {!isOpen && ( */}
-                <div className="btn-toggle" onClick={toggleForm}>
-                    {isOpen ? (
-                        <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
-                    ) : (
-                        <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
-                    )}
-                </div>
-            {/* )} */}
+    {/* Toggle Button */}
+    <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
 </div>
     );
 }

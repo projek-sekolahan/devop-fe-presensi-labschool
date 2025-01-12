@@ -9,7 +9,7 @@ import {
   handleSessionError,
 } from "../utils/utils";
 import RoleSelection from "../Components/RoleSelection";
-import InputField from "../Components/InputField";
+import renderInputGroup from "../Components/renderInputGroup";
 import { validateFormFields } from "../utils/validation";
 
 // Constants for form fields and keys
@@ -28,6 +28,12 @@ export default function Register() {
     email: "",
     role: "",
   });
+
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleForm = () => {
+    setIsOpen(!isOpen);
+  };
 
   // Helper function for registration process
   const processRegister = async (formData) => {
@@ -102,81 +108,53 @@ export default function Register() {
   };
 
   return (
-    <div className="register-container flex flex-col min-h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative z-[1]">
+    <div className="register-container">
       {/* Background Image */}
       <img
         src="/frontend/Icons/splash.svg"
         alt="labschool-unesa-logo"
-        className="bg-image"
+        className={`bg-image ${isOpen ? "open" : ""}`}
       />
 
       {/* Register Form */}
-      <div className="register-form-container shadow-md">
-        <h2 className="text-title text-center">Daftar Sebagai</h2>
+      <div className={`register-form-container ${isOpen ? "open" : "closed"}`}>
+        <h2 className="text-title text-4xl">Daftar Sebagai</h2>
         <form className="register-form" onSubmit={handleSubmit}>
           {/* Role Selection */}
           <RoleSelection role={role} setRole={setRole} error={errors.role} />
 
           {/* Name Input */}
-          <div className="input-group">
-            <label
-              htmlFor="name"
-              className={`input-label ${
-                errors.name ? "text-red-700 font-semibold" : ""
-              }`}
-            >
-              {errors.name ? errors.name : "Nama Lengkap"}
-            </label>
-            <InputField
-              type="text"
-              name="namaLengkap"
-              id="name"
-              ref={nameRef}
-              placeholder="Nama Lengkap"
-              required
-            />
-          </div>
+            {renderInputGroup({
+                id: "namaLengkap",
+                label: "Nama Lengkap",
+                type: "text",
+                inputRef: nameRef,
+                placeholder: "Nama Lengkap",
+                autoComplete: "Nama Lengkap",
+                error: errors.namaLengkap,
+            })}
 
           {/* Phone Input */}
-          <div className="input-group">
-            <label
-              htmlFor="number"
-              className={`input-label ${
-                errors.phone ? "text-red-700 font-semibold" : ""
-              }`}
-            >
-              {errors.phone ? errors.phone : "No Whatsapp"}
-            </label>
-            <InputField
-              type="tel"
-              name="phone"
-              id="number"
-              ref={numberRef}
-              placeholder="No Whatsapp"
-              required
-            />
-          </div>
+            {renderInputGroup({
+                id: "number",
+                label: "No Whatsapp",
+                type: "tel",
+                inputRef: numberRef,
+                placeholder: "No Whatsapp",
+                autoComplete: "No Whatsapp",
+                error: errors.phone,
+            })}
 
           {/* Email Input */}
-          <div className="input-group">
-            <label
-              htmlFor="username"
-              className={`input-label ${
-                errors.email ? "text-red-700 font-semibold" : ""
-              }`}
-            >
-              {errors.email ? errors.email : "Email"}
-            </label>
-            <InputField
-              type="email"
-              name="username"
-              id="username"
-              ref={emailRef}
-              placeholder="Email"
-              autoComplete="username"
-              required
-            />
-          </div>
+            {renderInputGroup({
+                id: "username",
+                label: "Email",
+                type: "email",
+                inputRef: emailRef,
+                placeholder: "Email",
+                autoComplete: "Email",
+                error: errors.email,
+            })}
 
           {/* Submit Button */}
           <button
