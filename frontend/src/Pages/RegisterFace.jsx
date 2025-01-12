@@ -120,14 +120,15 @@ const detectAndRegisterFace = async () => {
             "loadFace",
             getFormData(keys, values)
         );
-        console.log("Full API response:", response);
+        const res = JSON.parse(response);
+        console.log("Full API response:", res);
     
-        if (!response?.status) throw new Error("Failed to load face data.");
+        if (!res?.status) throw new Error("Failed to load face data.");
         console.log("Facecam data fetched successfully.");
     
         // Pastikan data adalah array
-        const facecamData = Array.isArray(response?.data?.data)
-            ? response.data.data
+        const facecamData = Array.isArray(res?.data?.data)
+            ? res.data.data
             : [];
         console.log("Parsed facecam data:", facecamData);
     
