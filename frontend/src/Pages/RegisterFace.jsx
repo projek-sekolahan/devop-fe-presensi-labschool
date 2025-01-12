@@ -189,6 +189,10 @@ const detectAndRegisterFace = async () => {
             }
     
             console.log("Registering new face...");
+            console.log("Checking faceData.descriptor:", faceData.descriptor);
+            console.log("Checking canvas data URL:", canvasRef.current.toDataURL("image/jpeg"));
+            console.log("Checking CSRF token:", Cookies.get("csrf"));
+            return false;
             registerNewFace(faceData);
         };
     
@@ -210,7 +214,7 @@ const registerNewFace = async (faceData) => {
             csrf_token: Cookies.get("csrf"),
         };
         console.log("Sending formData data to server...", formData);
-        console.log("Sending registration data to server...");
+        console.log("Sending registration data to server..."); return false;
         const response = await apiXML.postInput("facecam", formData);
         const res = JSON.parse(response);
         Cookies.set("csrf", res.csrfHash);
