@@ -102,6 +102,14 @@ body {
   }
 }
 
+/* Media Query untuk layar kecil */
+@media (max-width: 400px) {
+  .login-form-container {
+    max-width: 100%; /* Ubah max-width menjadi 100% untuk layar kecil */
+    width: 100vw; /* Pastikan elemen memenuhi lebar layar */
+  }
+}
+
 /* Titles and Subtitles */
 .text-title {
   font-weight: 600;
