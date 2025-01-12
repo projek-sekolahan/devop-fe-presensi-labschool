@@ -207,15 +207,16 @@ const detectAndRegisterFace = async () => {
 const registerNewFace = async (faceData) => {
     console.log("Preparing data for new face registration...");
     try {
-        const formData = {
-            param: Array.from(faceData.descriptor).join(", "),
-            img: canvasRef.current.toDataURL("image/jpeg"),
-            "devop-sso": localStorage.getItem("regist_token"),
-            csrf_token: Cookies.get("csrf"),
-        };
-        console.log("Sending formData data to server...", formData);
+        const keys = ["param", "img", "devop-sso", "csrf_token"];
+        const values = [
+            Array.from(faceData.descriptor).join(", "),
+            canvasRef.current.toDataURL("image/jpeg"),
+            localStorage.getItem("regist_token"),
+            Cookies.get("csrf"),
+        ];
+        console.log("Sending formData data to server...", getFormData(keys, values));
         console.log("Sending registration data to server...");
-        const response = await apiXML.postInput("facecam", formData);
+        const response = await apiXML.postInput("facecam", getFormData(keys, values));
         const res = JSON.parse(response);
         Cookies.set("csrf", res.csrfHash);
         if (response.status) {

@@ -63,7 +63,6 @@ export const requestNotificationPermission = async () => {
                 console.log("Token notifikasi berhasil diperoleh:", currentToken);
                 localStorage.setItem("token_fcm", currentToken);
                 console.log("Token FCM disimpan ke localStorage:", currentToken);
-                // registerToken(currentToken); // Pastikan token terdaftar di server
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");

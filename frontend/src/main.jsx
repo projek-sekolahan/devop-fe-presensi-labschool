@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import { registerServiceWorker, requestNotificationPermission, handleOnMessage } from "./Components/firebaseMessaging.jsx";
 
 const Root = () => {
-    /* useEffect(() => {
+    useEffect(() => {
         const initializeFirebase = async () => {
             // Daftarkan Service Worker
             const registration = await registerServiceWorker();
@@ -29,7 +29,7 @@ const Root = () => {
         };
 
         initializeFirebase();
-    }, []); */
+    }, []);
 
     return <App />;
 };
