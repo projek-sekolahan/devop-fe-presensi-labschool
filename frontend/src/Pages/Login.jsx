@@ -14,6 +14,7 @@ import {
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
 import { ChevronDoubleUpIcon, ChevronDoubleDownIcon } from "@heroicons/react/24/outline";
+import renderInputGroup from "../Components/renderInputGroup";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -120,57 +121,29 @@ export default function Login() {
     <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
         <h2 className="text-title text-4xl">Yuk Login!</h2>
         <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
-        <form
-            className="login-form"
-            onSubmit={handleLogin}
-        >
+        <form className="login-form" onSubmit={handleLogin}>
             {/* Email Input */}
-            <div className="input-group">
-                <label
-                    htmlFor="email"
-                    className={`input-label ${
-                        errors.email ? "text-red-700 font-semibold" : ""
-                    }`}
-                >
-                    {errors.email ? errors.email : "Email"}
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    ref={emailRef}
-                    className="input-field"
-                    placeholder="Email"
-                    autoComplete="username"
-                    required
-                />
-            </div>
+            {renderInputGroup({
+                id: "email",
+                label: "Email",
+                type: "email",
+                inputRef: emailRef,
+                placeholder: "Email",
+                autoComplete: "username",
+                error: errors.email,
+            })}
 
             {/* Password Input */}
-            <div className="input-group">
-                <label
-                    htmlFor="password"
-                    className={`input-label ${
-                        errors.password ? "text-red-700 font-semibold" : ""
-                    }`}
-                >
-                    {errors.password ? errors.password : "Password"}
-                </label>
-                <div className="password-container">
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        ref={passwordRef}
-                        placeholder="Password (8 or more characters)"
-                        className="input-field flex-1"
-                        autoComplete="current-password"
-                        required
-                    />
-                    <PasswordShow ref={passwordRef} />
-                </div>
-            </div>
-
+            {renderInputGroup({
+                id: "password",
+                label: "Password",
+                type: "password",
+                inputRef: passwordRef,
+                placeholder: "Password (8 or more characters)",
+                autoComplete: "current-password",
+                error: errors.password,
+                additionalElement: <PasswordShow ref={passwordRef} />,
+            })}
             {/* Forgot Password and Register Link */}
             <div className="flex justify-between items-center text-sm">
                 <Link to="/register" className="text-link">
