@@ -193,10 +193,7 @@ export default function Login() {
     </div>
             {/* Button to Toggle Login Form */}
             {/* {!isOpen && ( */}
-                <div
-                className={`btn-toggle ${isOpen ? "form-toggle" : "outside-toggle"}`}
-                onClick={toggleForm}
-                >
+                <div className="btn-toggle" onClick={toggleForm}>
                     {isOpen ? (
                         <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
                     ) : (
