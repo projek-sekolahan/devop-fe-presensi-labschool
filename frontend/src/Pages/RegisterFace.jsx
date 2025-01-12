@@ -124,11 +124,11 @@ const detectAndRegisterFace = async () => {
         Cookies.set("csrf", res.csrfHash);
         console.log("Full API response:", res);
     
-        if (!res?.status) throw new Error("Failed to load face data.");
+        if (!res.status) throw new Error("Failed to load face data.");
         console.log("Facecam data fetched successfully.");
     
         // Pastikan data adalah array
-        const facecamData = Array.isArray(res?.data?.data)
+        const facecamData = Array.isArray(res.data.data)
             ? res.data.data
             : [];
         console.log("Parsed facecam data:", facecamData);
