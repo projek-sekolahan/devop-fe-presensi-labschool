@@ -215,13 +215,13 @@ const registerNewFace = async (faceData) => {
         const response = await apiXML.postInput("facecam", getFormData(keys, values));
         const res = JSON.parse(response);
         Cookies.set("csrf", res.csrfHash);
-        if (response.status) {
+        if (res.status) {
             setIsLoading(false);
             console.log("Face registration successful.");
             alertMessage(
-                response.data.title,
-                response.data.message,
-                response.data.info,
+                res.data.title,
+                res.data.message,
+                res.data.info,
                 () => window.location.replace("/setpassword")
             );
         } else {
