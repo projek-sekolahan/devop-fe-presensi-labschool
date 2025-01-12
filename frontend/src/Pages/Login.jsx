@@ -192,7 +192,7 @@ export default function Login() {
         </form>
     </div>
             {/* Button to Toggle Login Form */}
-            {!isOpen && (
+            {/* {!isOpen && ( */}
                 <div
                 className={`btn-toggle ${isOpen ? "form-toggle" : "outside-toggle"}`}
                 onClick={toggleForm}
@@ -203,7 +203,7 @@ export default function Login() {
                         <ChevronDoubleUpIcon className="h-6 w-6 mx-auto text-white" />
                     )}
                 </div>
-            )}
+            {/* )} */}
 </div>
     );
 }
