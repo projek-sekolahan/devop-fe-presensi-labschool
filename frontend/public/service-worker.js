@@ -7,9 +7,6 @@ const CACHE_NAME = "my-cache-v1";
 const OFFLINE_URL = "/frontend/offline.html"; // Offline fallback page
 const ASSETS_TO_CACHE = [
     "/",            // Home
-    "/styles.css",  // Stylesheet
-    "/app.js",      // JavaScript
-    "/favicon.ico", // Favicon
     OFFLINE_URL,    // Offline fallback page
 ];
 

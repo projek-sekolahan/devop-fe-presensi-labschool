@@ -110,12 +110,12 @@ const detectAndRegisterFace = async () => {
     setIsLoading(true);
     try {
         console.log("Fetching facecam data...");
-        const keys = ["devop-sso", "csrf_token"];
-        const values = [
+        let keys = ["devop-sso", "csrf_token"];
+        let values = [
             localStorage.getItem("regist_token"),
             Cookies.get("csrf"),
         ];
-    
+        console.log("Sending data loadface",getFormData(keys, values))
         const response = await apiXML.postInput(
             "loadFace",
             getFormData(keys, values)
@@ -207,8 +207,8 @@ const detectAndRegisterFace = async () => {
 const registerNewFace = async (faceData) => {
     console.log("Preparing data for new face registration...");
     try {
-        const keys = ["param", "img", "devop-sso", "csrf_token"];
-        const values = [
+        let keys = ["param", "img", "devop-sso", "csrf_token"];
+        let values = [
             Array.from(faceData.descriptor).join(", "),
             canvasRef.current.toDataURL("image/jpeg"),
             localStorage.getItem("regist_token"),
