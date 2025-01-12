@@ -13,6 +13,7 @@ import {
   addDefaultKeys,
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
+import { Collapse, Button } from "flowbite-react";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -46,7 +47,12 @@ export default function Login() {
         password: "",
         email: "",
     });
-    
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleForm = () => {
+        setIsOpen(!isOpen);
+    };
+
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
     // Handle form submission
@@ -107,11 +113,12 @@ export default function Login() {
     <img
         src="/frontend/Icons/splash.svg"
         alt="labschool-unesa-logo"
-        className="bg-image"
+        className={`bg-image ${isOpen ? "open" : ""}`}
     />
 
     {/* Login Form */}
-    <div className="login-form-container">
+    <Collapse open={isOpen}>
+    <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
         <h2 className="text-title">Yuk Login!</h2>
         <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
         <form
@@ -184,6 +191,13 @@ export default function Login() {
                 Login
             </button>
         </form>
+    </div>
+    </Collapse>
+    {/* Button to Toggle Login Form */}
+    <div className="btn-toggle absolute bottom-0 left-0 z-10 w-full p-4">
+        <Button color="light" className="mx-auto block" onClick={toggleForm}>
+          {isOpen ? "Tutup Form Login" : "Buka Form Login"}
+        </Button>
     </div>
 </div>
     );

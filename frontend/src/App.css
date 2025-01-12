@@ -57,13 +57,21 @@ body {
 /* Background Image */
 .bg-image {
   position: absolute;
-  top: 0;
+  top: 50%; /* Posisi default saat form tertutup */
   left: 0;
   width: 100%;
-  height: 100%; /* Cover the entire container */
+  height: auto;
+  transform: translateY(-50%); /* Pusatkan vertikal */
   z-index: 0;
-  object-fit: cover; /* Ensure image scales proportionally */
-  opacity: 0.1; /* Dim the background to improve readability */
+  object-fit: cover;
+  transition: all 0.5s ease-in-out; /* Animasi smooth untuk transisi */
+  opacity: 1;
+}
+
+.bg-image.open {
+  top: 0; /* Pindahkan ke atas layar */
+  height: 100%; /* Full screen */
+  opacity: 0.5; /* Kurangi opacity untuk highlight form */
 }
 
 /* Form Container */
@@ -73,15 +81,32 @@ body {
 .verification-form-container,
 .confirmation-form-container,
 .capture-form-container {
-  --form-height: auto; /* Adjust height dynamically */
-  width: 90%; /* Use a percentage for better responsiveness */
-  max-width: 420px; /* Slightly increased max-width for better proportion */
-  margin: 2rem auto; /* Center horizontally and add space vertically */
-  padding: 2rem;
-  background-color: #1976D2;
-  border-radius: 1rem; /* Reduce corner radius for cleaner look */
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add more prominent shadow */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: #1976d2;
+  color: white;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek visual */
   z-index: 10;
+  transform: translateY(100%); /* Tersembunyi di luar layar bawah */
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.login-form-container.open {
+  transform: translateY(0); /* Tampilkan form */
+  opacity: 1;
+}
+
+.login-form-container.closed {
+  transform: translateY(100%); /* Sembunyikan form di bawah layar */
+  opacity: 0;
 }
 
 /* Responsif untuk Smartphone */
@@ -102,6 +127,32 @@ body {
     max-width: 100%; /* Ubah max-width menjadi 100% untuk layar kecil */
     width: 100vw; /* Pastikan elemen memenuhi lebar layar */
   }
+  .btn-toggle {
+    bottom: 1.5rem; /* Beri jarak lebih besar untuk layar kecil */
+  }
+}
+
+/* Tombol Toggle untuk membuka/menutup form */
+.btn-toggle {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  color: #1976d2;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1.5rem;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-toggle:hover {
+  background-color: #2196f3;
+  color: white;
+  transform: scale(1.05); /* Sedikit memperbesar untuk efek hover */
 }
 
 /* Titles and Subtitles */
