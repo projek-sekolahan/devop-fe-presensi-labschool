@@ -16,29 +16,24 @@ import ProtectedRoute from "../Components/ProtectedRoute";
 const isAuthenticated = !!localStorage.getItem("authToken");
 
 export const routes = [
-    // Rute untuk autentikasi
-    { path: "/", component: () => <AuthContainer /> },
-    { path: "/login", component: () => <AuthContainer /> },
-    { path: "/register", component: () => <AuthContainer /> },
-    { path: "/verify", component: () => <AuthContainer /> },
-    { path: "/facereg", component: () => <AuthContainer /> },
-    { path: "/recover", component: () => <AuthContainer /> },
-    { path: "/setpassword", component: () => <AuthContainer /> },
+    { path: "/", element: <AuthContainer /> },
+    { path: "/login", element: <AuthContainer /> },
+    { path: "/register", element: <AuthContainer /> },
+    { path: "/verify", element: <AuthContainer /> },
+    { path: "/facereg", element: <AuthContainer /> },
+    { path: "/recover", element: <AuthContainer /> },
+    { path: "/setpassword", element: <AuthContainer /> },
 
-    // Rute untuk halaman utama yang dilindungi
-    { path: "/home", component: () => <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },
-    { path: "/profile", component: () => <ProtectedRoute component={Profile} isAuthenticated={isAuthenticated} /> },
-    { path: "/presensi", component: () => <ProtectedRoute component={Presensi} isAuthenticated={isAuthenticated} /> },
-    { path: "/riwayat", component: () => <ProtectedRoute component={Riwayat} isAuthenticated={isAuthenticated} /> },
-    { path: "/bantuan", component: () => <ProtectedRoute component={Bantuan} isAuthenticated={isAuthenticated} /> },
-    { path: "/notifikasi", component: () => <ProtectedRoute component={Notification} isAuthenticated={isAuthenticated} /> },
-    { path: "/presensi/staff", component: () => <ProtectedRoute component={PresensiStaff} isAuthenticated={isAuthenticated} /> },
-    { path: "/presensi/verif", component: () => <ProtectedRoute component={FaceVerification} isAuthenticated={isAuthenticated} /> },
-    { path: "/presensi/izin", component: () => <ProtectedRoute component={Izin} isAuthenticated={isAuthenticated} /> },
-    { path: "/setting", component: () => <ProtectedRoute component={Pengaturan} isAuthenticated={isAuthenticated} /> },
-    { path: "/facecam", component: () => <ProtectedRoute component={FaceCam} isAuthenticated={isAuthenticated} /> },
-
-    // Fallback untuk rute tidak dikenal
-    { path: "*", component: () => <Errors /> },
+    { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },
+    { path: "/profile", element: <ProtectedRoute component={Profile} isAuthenticated={isAuthenticated} /> },
+    { path: "/presensi", element: <ProtectedRoute component={Presensi} isAuthenticated={isAuthenticated} /> },
+    { path: "/riwayat", element: <ProtectedRoute component={Riwayat} isAuthenticated={isAuthenticated} /> },
+    { path: "/bantuan", element: <ProtectedRoute component={Bantuan} isAuthenticated={isAuthenticated} /> },
+    { path: "/notifikasi", element: <ProtectedRoute component={Notification} isAuthenticated={isAuthenticated} /> },
+    { path: "/presensi/staff", element: <ProtectedRoute component={PresensiStaff} isAuthenticated={isAuthenticated} /> },
+    { path: "/presensi/verif", element: <ProtectedRoute component={FaceVerification} isAuthenticated={isAuthenticated} /> },
+    { path: "/presensi/izin", element: <ProtectedRoute component={Izin} isAuthenticated={isAuthenticated} /> },
+    { path: "/setting", element: <ProtectedRoute component={Pengaturan} isAuthenticated={isAuthenticated} /> },
+    { path: "/facecam", element: <ProtectedRoute component={FaceCam} isAuthenticated={isAuthenticated} /> },
+    { path: "*", element: <Errors /> },
 ];
-

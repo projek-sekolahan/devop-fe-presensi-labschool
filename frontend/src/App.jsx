@@ -10,7 +10,6 @@ import "./App.css";
 
 function App() {
     useEffect(() => {
-
         // Minta Izin untuk Cookie
         const handleCookies = () => {
             if (!Cookies.get("cookiesAccepted")) {
@@ -38,13 +37,12 @@ function App() {
             {!isMobile && <DesktopWarning />}
             <Suspense fallback={<Loading />}>
                 <Routes>
-                    {routes.map(({ path, component: Component }, index) => (
-                        <Route key={index} path={path} element={<Component />} />
+                    {routes.map(({ path, element }, index) => (
+                        <Route key={index} path={path} element={element} />
                     ))}
                 </Routes>
             </Suspense>
         </Router>
     );
 }
-
 export default App;
