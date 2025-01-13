@@ -35,15 +35,10 @@ export default function AuthContainer() {
         }
     }, [location.pathname, navigate]);
 
-    const handleNavigate = (page) => {
-        toggleForm(); // Tutup form saat navigasi ke halaman lain
-        navigate(page === "login" ? "/" : `/${page}`);
-    };
-
     const renderPage = () => {
         const pageMap = {
             login: <Login isOpen={isOpen} onToggle={toggleForm} />,
-            register: <Register isOpen={isOpen} onToggle={handleNavigate} />,
+            register: <Register isOpen={true} onToggle={toggleForm} />,
             verify: <OtpInput onBack={() => handleNavigate("login")} />,
             facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
             recover: <ChangePassword onBack={() => handleNavigate("login")} />,
