@@ -37,7 +37,7 @@ function App() {
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {routes.map(({ path, element }, index) => (
-                        <Route key={index} path={path} element={element()} />
+                        <Route key={index} path={path} element={element} />
                     ))}
                 </Routes>
             </Suspense>
