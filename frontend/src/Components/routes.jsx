@@ -14,7 +14,7 @@ import Errors from "../Pages/Error";
 import ProtectedRoute from "../Components/ProtectedRoute";
 
 // Fungsi untuk mengecek autentikasi
-const isAuthenticated = !!localStorage.getItem("authToken");
+const isAuthenticated = !!localStorage.getItem("login_token");
 
 export const routes = [
     { path: "/", element: <AuthContainer /> },
