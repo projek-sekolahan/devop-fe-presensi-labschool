@@ -17,7 +17,7 @@ import ProtectedRoute from "../Components/ProtectedRoute";
 const isAuthenticated = !!localStorage.getItem("authToken");
 
 export const routes = [
-    { path: "/", element: <AuthContainer /> },
+    // { path: "/", element: <AuthContainer /> },
     { path: "/login", element: <AuthContainer /> },
     { path: "/register", element: <AuthContainer /> },
     { path: "/verify", element: <AuthContainer /> },
