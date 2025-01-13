@@ -44,10 +44,7 @@ export default function Register({ isOpen, onToggle }) {
         res.data.title,
         res.data.message,
         res.data.info,
-        () =>
-          navigate(
-            res.data.location === "register" ? "/register" : `/${res.data.location}`
-          )
+        () => onToggle(res.data.location === "register" ? "/register" : `/${res.data.location}`)
       );
     } catch (err) {
       handleSessionError(err, "/register");
@@ -177,11 +174,11 @@ export default function Register({ isOpen, onToggle }) {
             to="#" 
             onClick={(e) => {
               e.preventDefault();
-              onToggle("login");
+              onToggle("recover");
             }}
             className="text-link text-sm font-light text-white underline hover:underline"
           >
-            Sudah Punya Akun?
+            Lupa Password?
           </Link>
           <div className="flex-grow border-t-[0.25px] border-white"></div>
         </div>

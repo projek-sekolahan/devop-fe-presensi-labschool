@@ -48,7 +48,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
                     res.data.title,
                     res.data.message,
                     res.data.info,
-                    () => window.location.replace("/" + res.data.location)
+                    () => onToggle("/" + res.data.location)
                 );
             })
             .catch((err) => {

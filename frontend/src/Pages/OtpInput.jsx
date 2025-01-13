@@ -43,7 +43,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 							res.data.title,
 							res.data.message,
 							res.data.info,
-							() => window.location.replace("/facereg"),
+							() => onToggle("/facereg")
 						);
 			})
 			.catch((err) => {
@@ -97,7 +97,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 					res.data.title,
 					res.data.message,
 					res.data.info,
-					() => window.location.replace("/" + res.data.location),
+					() => onToggle("/" + res.data.location)
 				);
 			})
 			.catch((err) => {
@@ -168,7 +168,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 				</form>
 			</div>
 			{/* Toggle Button */}
-			<ToggleButton isOpen={isOpen} onToggle={onToggle} />
+			{/* <ToggleButton isOpen={isOpen} onToggle={onToggle} /> */}
 		</div>
 	);
 }
