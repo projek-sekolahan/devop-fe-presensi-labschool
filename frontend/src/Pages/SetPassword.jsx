@@ -150,13 +150,11 @@ export default function SetPassword({ isOpen, onToggle }) {
 								<span className="loading loading-spinner text-white"></span>
 							</div>
 						) : (
-							'Konfirmasi'
+							'Confirm Register'
 						)}
 					</button>
 				</form>
 			</div>
-			{/* Toggle Button */}
-			{/* <ToggleButton isOpen={isOpen} onToggle={onToggle} /> */}
 		</div>
 	);
 }

@@ -167,8 +167,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 					</button>
 				</form>
 			</div>
-			{/* Toggle Button */}
-			{/* <ToggleButton isOpen={isOpen} onToggle={onToggle} /> */}
 		</div>
 	);
 }

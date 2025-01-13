@@ -127,6 +127,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
     const detectAndRegisterFace = async () => {
+        setIsLoading(true);
         const modal = document.getElementById("my_modal_1");
         if (modal) modal.close();
         loading("Loading", "Starting face detection and registration...");
@@ -134,8 +135,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
     
         const maxAttempts = 10;
         let attempts = 0;
-        setIsLoading(true);
-    
+        
         try {
             const attemptMatch = async () => {
                 console.log(`Attempt ${attempts + 1} to detect face...`);
@@ -247,7 +247,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
     <div className="relative w-full h-[400px] flex justify-center items-center">
         <video
             ref={videoRef}
-            className="absolute w-full h-full object-cover"
+            className="absolute w-full h-full object-cover mt-8"
             autoPlay
             playsInline
         />
