@@ -14,9 +14,10 @@ export default function AuthContainer() {
     const [isOpen, setIsOpen] = useState(false); // Status form
 
     // Fungsi untuk toggle form tanpa merubah URL
-    const toggleForm = (e) => {
+    const toggleForm = (page = "login") => {
         e.preventDefault(); // Mencegah navigasi
-        setIsOpen((prevIsOpen) => !prevIsOpen); // Hanya toggle status
+        setIsOpen((prevIsOpen) => !prevIsOpen); // Hanya toggle status form
+        setCurrentPage(page); // Menentukan halaman mana yang ditampilkan
     };
 
     useEffect(() => {
