@@ -9,6 +9,37 @@ const ASSETS_TO_CACHE = [
     OFFLINE_URL,    // Offline fallback page
 ];
 
+self.addEventListener("fetch", (event) => {
+    console.log("Permintaan masuk:", event.request.url);
+
+    const url = new URL(event.request.url);
+    if (url.protocol === "chrome-extension:") {
+        console.warn("Permintaan tidak valid (chrome-extension):", url.href);
+        return;
+    }
+
+    // Lanjutkan caching hanya untuk protokol http/https
+    if (url.protocol === "http:" || url.protocol === "https:") {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                return response || fetch(event.request).then((networkResponse) => {
+                    if (
+                        networkResponse &&
+                        networkResponse.status === 200 &&
+                        networkResponse.type === "basic"
+                    ) {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return networkResponse;
+                });
+            })
+        );
+    }
+});
+
 // Install Event: Cache Assets
 self.addEventListener("install", (event) => {
     console.log("[Service Worker] Installing...");
