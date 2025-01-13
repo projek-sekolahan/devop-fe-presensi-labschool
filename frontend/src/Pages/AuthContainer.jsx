@@ -13,8 +13,10 @@ export default function AuthContainer() {
     const [currentPage, setCurrentPage] = useState("login"); // Default halaman
     const [isOpen, setIsOpen] = useState(false); // Status form
 
-    const toggleForm = () => {
-        setIsOpen((prevIsOpen) => !prevIsOpen); // Toggle status form
+    // Fungsi untuk toggle form tanpa merubah URL
+    const toggleForm = (e) => {
+        e.preventDefault(); // Mencegah navigasi
+        setIsOpen((prevIsOpen) => !prevIsOpen); // Hanya toggle status
     };
 
     useEffect(() => {
@@ -40,7 +42,7 @@ export default function AuthContainer() {
 
     const renderPage = () => {
         const pageMap = {
-            login: <Login isOpen={isOpen} onToggle={handleNavigate} />,
+            login: <Login isOpen={isOpen} onToggle={toggleForm} />,
             register: <Register isOpen={isOpen} onToggle={handleNavigate} />,
             verify: <OtpInput onBack={() => handleNavigate("login")} />,
             facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
