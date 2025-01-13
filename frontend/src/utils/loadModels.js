@@ -1,4 +1,4 @@
-import * as faceapi from "face-api.js";
+import { nets } from "face-api.js"; // Hanya impor bagian yang dibutuhkan
 
 let modelsLoaded = false;
 
@@ -14,13 +14,13 @@ export const loadFaceModels = async () => {
     }
 
     try {
-      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      await nets.tinyFaceDetector.loadFromUri(MODEL_URL);
       console.log("tinyFaceDetector loaded");
 
-      await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+      await nets.faceLandmark68Net.loadFromUri(MODEL_URL);
       console.log("faceLandmark68Net loaded");
 
-      await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+      await nets.faceRecognitionNet.loadFromUri(MODEL_URL);
       console.log("faceRecognitionNet loaded");
 
       console.log("finished loaded model");
