@@ -154,7 +154,8 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 attempts++;
                 const faceData = await detectSingleFace(imgRef.current);
                 if (!faceData) {
-                    console.log("Face tidak terdeteksi");
+                    console.log("Face not detected. Trying again...");
+                    setIsLoading(false);
                     alertMessage(
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
