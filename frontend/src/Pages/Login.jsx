@@ -48,7 +48,6 @@ export default function Login({ isOpen, onToggle }) {
         password: "",
         email: "",
     });
-    const [isOpen, setIsOpen] = useState(false);
 
     // Mendapatkan CSRF Token
     apiXML.getCsrf();

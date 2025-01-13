@@ -30,8 +30,6 @@ export default function Register({ isOpen, onToggle }) {
     role: "",
   });
 
-  const [isOpen, setIsOpen] = useState(false);
-
   // Helper function for registration process
   const processRegister = async (formData) => {
     try {
