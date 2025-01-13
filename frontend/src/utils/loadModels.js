@@ -5,7 +5,7 @@ let modelsLoaded = false;
 export const loadFaceModels = async () => {
   if (!modelsLoaded) {
     console.log("loading model");
-    const MODEL_URL = "/frontend/models";
+    const MODEL_URL = "/models";
 
     // Cek lingkungan browser
     if (typeof window === "undefined" || typeof document === "undefined") {
