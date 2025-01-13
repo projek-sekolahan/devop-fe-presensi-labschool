@@ -40,7 +40,7 @@ export default function AuthContainer() {
 
     const renderPage = () => {
         const pageMap = {
-            login: <Login isOpen={isOpen} onToggle={handleNavigate} />,
+            login: <Login isOpen={true} onToggle={handleNavigate} />,
             register: <Register isOpen={isOpen} onToggle={handleNavigate} />,
             verify: <OtpInput onBack={() => handleNavigate("login")} />,
             facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
@@ -51,7 +51,7 @@ export default function AuthContainer() {
     };
 
     return (
-        <div className={`auth-container ${isOpen ? "open" : "closed"}`}>
+        <div className="auth-container">
             {renderPage()}
         </div>
     );
