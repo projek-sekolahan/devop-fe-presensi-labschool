@@ -27,8 +27,6 @@ export default function FaceCam() {
         window.location.replace("/login");
         return;
       }
-  
-      const userData = parseJwt(localStorage.getItem("token"));
       
       const initialize = async () => {
         try {
@@ -117,6 +115,7 @@ export default function FaceCam() {
       setIsLoading(true);
       loading("Loading", "Starting face detection and registration...");
       
+      const userData = parseJwt(localStorage.getItem("token"));
       const descriptor = new Float32Array(userData.facecam_id.split(", "));
       console.log("Data Found.", descriptor);  
       workerRef.current.postMessage({
