@@ -12,72 +12,34 @@ export default function AuthContainer() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState("login"); // Default halaman
 
-    // Tentukan halaman mana yang terbuka berdasarkan path
     useEffect(() => {
-        switch (location.pathname) {
-            case "/register":
-                setCurrentPage("register");
-                break;
-            case "/verify":
-                setCurrentPage("verify");
-                break;
-            case "/facereg":
-                setCurrentPage("facereg");
-                break;
-            case "/recover":
-                setCurrentPage("recover");
-                break;
-            case "/setpassword":
-                setCurrentPage("setpassword");
-                break;
-            default:
-                setCurrentPage("login");
-        }
-    }, [location.pathname]);
+        const pageMap = {
+            "/register": "register",
+            "/verify": "verify",
+            "/facereg": "facereg",
+            "/recover": "recover",
+            "/setpassword": "setpassword",
+        };
+        setCurrentPage(pageMap[location.pathname] || "login");
 
-    const handleNavigate = (page) => {
-        switch (page) {
-            case "login":
-                navigate("/");
-                break;
-            case "register":
-                navigate("/register");
-                break;
-            case "verify":
-                navigate("/verify");
-                break;
-            case "facereg":
-                navigate("/facereg");
-                break;
-            case "recover":
-                navigate("/recover");
-                break;
-            case "setpassword":
-                navigate("/setpassword");
-                break;
-            default:
-                navigate("/");
+        const validPaths = ["/", "/register", "/verify", "/facereg", "/recover", "/setpassword"];
+        if (!validPaths.includes(location.pathname)) {
+            navigate("/");
         }
-    };
+    }, [location.pathname, navigate]);
 
-    // Render komponen berdasarkan halaman aktif
+    const handleNavigate = (page) => navigate(page === "login" ? "/" : `/${page}`);
+
     const renderPage = () => {
-        switch (currentPage) {
-            case "login":
-                return <Login isOpen={true} onToggle={() => handleNavigate("register")} />;
-            case "register":
-                return <Register isOpen={true} onToggle={() => handleNavigate("login")} />;
-            case "verify":
-                return <OtpInput onBack={() => handleNavigate("login")} />;
-            case "facereg":
-                return <RegisterFace onBack={() => handleNavigate("login")} />;
-            case "recover":
-                return <ChangePassword onBack={() => handleNavigate("login")} />;
-            case "setpassword":
-                return <SetPassword onBack={() => handleNavigate("login")} />;
-            default:
-                return <Login isOpen={true} onToggle={() => handleNavigate("register")} />;
-        }
+        const pageMap = {
+            login: <Login isOpen={true} onToggle={() => handleNavigate("register")} />, 
+            register: <Register isOpen={true} onToggle={() => handleNavigate("login")} />,
+            verify: <OtpInput onBack={() => handleNavigate("login")} />,
+            facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
+            recover: <ChangePassword onBack={() => handleNavigate("login")} />,
+            setpassword: <SetPassword onBack={() => handleNavigate("login")} />,
+        };
+        return pageMap[currentPage] || pageMap.login;
     };
 
     return <div className="auth-container">{renderPage()}</div>;
