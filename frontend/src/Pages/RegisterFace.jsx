@@ -10,7 +10,6 @@ import {
     handleSessionError,
     getFormData,
 } from "../utils/utils";
-import ToggleButton from "../Components/ToggleButton";
 
 export default function RegisterFace({ isOpen, onToggle }) {
 

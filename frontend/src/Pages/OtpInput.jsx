@@ -7,7 +7,6 @@ import {
 	handleSessionError,
 } from "../utils/utils";
 import Cookies from "js-cookie";
-import ToggleButton from "../Components/ToggleButton";
 
 export default function OtpInput({ isOpen, onToggle }) {
 	const [otp, setOtp] = useState(new Array(4).fill(""));

@@ -11,7 +11,6 @@ import apiXML from "../utils/apiXML";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
-import ToggleButton from "../Components/ToggleButton";
 
 export default function SetPassword({ isOpen, onToggle }) {
 	const [warning, setWarning] = useState("none");
