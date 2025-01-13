@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import Loading from "./Components/Loading";
-import { routes } from "./utils/routes";
+import { routes } from "./Components/routes";
 import { isMobile } from "react-device-detect";
 import DesktopWarning from "./Components/DesktopWarning";
 import "./App.css";
