@@ -50,7 +50,7 @@ if (isBrowser) {
     // Pengecekan apakah Web Worker didukung di browser
     if (typeof Worker !== "undefined") {
       // Inisialisasi Web Worker di browser
-      workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
+      workerRef.current = new Worker(new URL("/frontend/faceWorker.js", import.meta.url));
       workerRef.current.onmessage = (event) => {
         const { type, payload } = event.data;
         if (type === "FACE_DETECTED") {
