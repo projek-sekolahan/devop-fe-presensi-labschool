@@ -43,7 +43,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 							res.data.title,
 							res.data.message,
 							res.data.info,
-							() => onToggle("/facereg")
+							() => onToggle("facereg")
 						);
 			})
 			.catch((err) => {
@@ -97,7 +97,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 					res.data.title,
 					res.data.message,
 					res.data.info,
-					() => onToggle("/" + res.data.location)
+					() => onToggle(res.data.location)
 				);
 			})
 			.catch((err) => {

@@ -187,14 +187,12 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     res.data.title,
                     res.data.message,
                     res.data.info,
-                    () => onToggle("/setpassword")
+                    () => onToggle("setpassword")
                 );
             } else {
                 setIsLoading(false);
                 console.error("Failed to register face.");
-                alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
-                    onToggle("/facereg")
-                );
+                alertMessage("Error", "Gagal mendaftarkan wajah", "error");
             }
         } catch (err) {
             setIsLoading(false);

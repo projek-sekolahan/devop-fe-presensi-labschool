@@ -44,7 +44,7 @@ export default function Register({ isOpen, onToggle }) {
         res.data.title,
         res.data.message,
         res.data.info,
-        () => onToggle(res.data.location === "register" ? "/register" : `/${res.data.location}`)
+        () => onToggle(res.data.location === "register" ? "register" : `${res.data.location}`)
       );
     } catch (err) {
       handleSessionError(err, "/register");

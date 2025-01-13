@@ -48,7 +48,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
                     res.data.title,
                     res.data.message,
                     res.data.info,
-                    () => onToggle("/" + res.data.location)
+                    () => onToggle(res.data.location)
                 );
             })
             .catch((err) => {
@@ -97,7 +97,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
                                 <span className="loading loading-spinner text-white"></span>
                             </div>
                         ) : (
-                            "Ganti Password"
+                            "Reset Password"
                         )}
                     </button>
                 </form>
