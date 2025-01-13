@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unreachable */
-import * as faceapi from "face-api.js";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -14,43 +11,139 @@ import {
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { loadFaceModels } from "../utils/loadModels";
 
 export default function FaceCam() {
+    
     const videoRef = useRef();
     const canvasRef = useRef();
     const imgRef = useRef();
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
-
-    console.log("Initializing FaceCam component...");
-
-    let userData = {};
-    if (localStorage.getItem("token")) {
-        console.log("Token found in localStorage, parsing...");
-        userData = parseJwt(localStorage.getItem("token"));
-        console.log("User data parsed:", userData);
-    } else {
+    const workerRef = useRef(); // Ref for Web Worker
+  
+    useEffect(() => {
+      if (!localStorage.getItem("token")) {
         console.error("Token not found, redirecting to login...");
         window.location.replace("/login");
-    }
-
-    const descriptor = new Float32Array(userData.facecam_id.split(", "));
-    console.log("Face descriptor initialized:", descriptor);
-
-    useEffect(() => {
-        const init = async () => {
-            console.log("Loading face models...");
-            loading("Loading", "Getting camera access...");
-            await loadFaceModels();
-            console.log("Face models loaded, starting video...");
-            startVideo();
-        };
-
-        init();
+        return;
+      }
+  
+      const userData = parseJwt(localStorage.getItem("token"));
+      const descriptor = new Float32Array(userData.facecam_id.split(", "));
+      console.log("Data Found.", descriptor);
+      const initialize = async () => {
+        try {
+          console.log("Starting video...");
+          startVideo();
+        } catch (error) {
+          console.error("Initialization error:", error);
+        }
+      };
+  
+      initialize();
+  
+      // Initialize Web Worker
+      workerRef.current = new Worker(new URL("./faceWorker.js", import.meta.url));
+      workerRef.current.onmessage = (event) => {
+        const { type, payload } = event.data;
+        if (type === "FACE_DETECTED") {
+          handleFaceDetection(payload);
+        } else if (type === "ERROR") {
+          console.error("Worker error:", payload);
+        }
+      };
+  
+      return () => {
+        if (workerRef.current) {
+          workerRef.current.terminate();
+        }
+      };
     }, []);
-
-    const keys = [
+  
+    const startVideo = () => {
+      navigator.mediaDevices
+        .getUserMedia({ video: { width: 640, height: 480 }, audio: false })
+        .then((stream) => {
+          console.log("Camera access granted.");
+          Swal.close();
+          videoRef.current.srcObject = stream;
+          videoRef.current.setAttribute("autoplay", "");
+          videoRef.current.setAttribute("muted", "");
+          videoRef.current.setAttribute("playsinline", "");
+        })
+        .catch((err) => {
+          console.error("Camera access error:", err);
+          handleCameraError(err);
+        });
+    };
+  
+    const handleCameraError = (err) => {
+      const messages = {
+        NotAllowedError: "Izin akses kamera ditolak oleh pengguna",
+        NotFoundError: "Tidak ada kamera yang tersedia pada perangkat",
+      };
+      alertMessage("Error", messages[err.name] || "Terjadi kesalahan pada kamera", "error");
+    };
+  
+    const clickPhoto = () => {
+      console.log("Capturing photo...");
+      loading("Loading", "Mendapatkan data wajah...");
+      const context = canvasRef.current.getContext("2d");
+      const video = videoRef.current;
+  
+      const canvasWidth = 400;
+      const canvasHeight = 400;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
+      const cropX = videoWidth / 2 - canvasWidth / 2;
+      const cropY = videoHeight / 2 - canvasHeight / 2;
+  
+      canvasRef.current.width = canvasWidth;
+      canvasRef.current.height = canvasHeight;
+  
+      context.save();
+      context.scale(-1, 1);
+      context.translate(-canvasWidth, 0);
+      context.drawImage(video, cropX, cropY, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
+      context.restore();
+  
+      imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
+      console.log("Photo captured successfully.", imgRef.current);
+    };
+  
+    const detectFace = () => {
+      console.log("Starting face detection...");
+      loading("Loading", "Starting face detection and registration...");
+      setIsLoading(true);
+  
+      workerRef.current.postMessage({
+        type: "DETECT_FACE",
+        payload: {
+          image: imgRef.current.src,
+          descriptor: Array.from(descriptor),
+        },
+      });
+    };
+  
+    const handleFaceDetection = (result) => {
+      const { success, distance, descriptor } = result;
+  
+      if (success && distance <= 0.6) {
+        console.log("Face matched successfully.");
+        submitPresence(descriptor);
+      } else {
+        console.warn("Face match failed. Distance too large or no match found.");
+        alertMessage(
+          "Pencocokan Gagal",
+          "Wajah tidak terdaftar, harap ulangi proses",
+          "error"
+        );
+      }
+      setIsLoading(false);
+    };
+  
+    const submitPresence = (faceDescriptor) => {
+      const keys = [
         "AUTH_KEY",
         "token",
         "status_dinas",
@@ -58,205 +151,54 @@ export default function FaceCam() {
         "geolocation",
         "facecam_id",
         "foto_presensi",
-    ];
-    const combinedKeys = addDefaultKeys(keys);
-    console.log("Combined keys initialized:", combinedKeys);
+      ];
 
-    let values = [];
-    if (localStorage.getItem("group_id") == "4") {
-        console.log("User is in group 4, adding non-dinas status...");
-        values = [
-            localStorage.getItem("AUTH_KEY"),
-            localStorage.getItem("login_token"),
-            "non-dinas",
-            ...state,
-        ];
-    } else {
-        console.log("User is not in group 4, skipping non-dinas status...");
-        values = [
-            localStorage.getItem("AUTH_KEY"),
-            localStorage.getItem("login_token"),
-            ...state,
-        ];
-    }
+      const combinedKeys = addDefaultKeys(keys);
+      console.log("Combined keys initialized:", combinedKeys);
 
-    console.log("Values initialized:", values);
+        let values = [];
+        if (localStorage.getItem("group_id") == "4") {
+            console.log("User is in group 4, adding non-dinas status...");
+            values = [
+                localStorage.getItem("AUTH_KEY"),
+                localStorage.getItem("login_token"),
+                "non-dinas",
+                ...state,
+            ];
+        } else {
+            console.log("User is not in group 4, skipping non-dinas status...");
+            values = [
+                localStorage.getItem("AUTH_KEY"),
+                localStorage.getItem("login_token"),
+                ...state,
+            ];
+        }
 
-    const startVideo = () => {
-        console.log("Attempting to access user camera...");
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
-            .then((stream) => {
-                console.log("Camera access granted.");
-                Swal.close();
-                videoRef.current.srcObject = stream;
-                videoRef.current.setAttribute("autoplay", "");
-                videoRef.current.setAttribute("muted", "");
-                videoRef.current.setAttribute("playsinline", "");
-            })
-            .catch((err) => {
-                console.error("Camera access error:", err);
-                if (err.name === "NotAllowedError") {
-                    alertMessage(
-                        "Error",
-                        "Izin akses kamera ditolak oleh pengguna",
-                        "error"
-                    );
-                } else if (err.name === "NotFoundError") {
-                    alertMessage(
-                        "Error",
-                        "Tidak ada kamera yang tersedia pada perangkat",
-                        "error"
-                    );
-                }
-            });
-    };
-
-    function clickPhoto() {
-        console.log("Capturing photo...");
-        loading("Loading", "Mendapatkan data wajah...");
-        const context = canvasRef.current.getContext("2d");
-        const video = videoRef.current;
-
-        const canvasWidth = 400;
-        const canvasHeight = 400;
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
-
-        const videoCenterX = videoWidth / 2;
-        const videoCenterY = videoHeight / 2;
-        const cropX = videoCenterX - canvasWidth / 2;
-        const cropY = videoCenterY - canvasHeight / 2;
-
-        canvasRef.current.width = canvasWidth;
-        canvasRef.current.height = canvasHeight;
-
-        context.save();
-        context.scale(-1, 1);
-        context.translate(-canvasWidth, 0);
-
-        context.drawImage(
-            video,
-            cropX,
-            cropY,
-            canvasWidth,
-            canvasHeight,
-            0,
-            0,
-            canvasWidth,
-            canvasHeight
+        values.push(
+            faceDescriptor.join(", "),
+            `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+            localStorage.getItem("devop-sso"),
+            Cookies.get("csrf")
         );
 
-        context.restore();
-
-        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
-        imgRef.current.src = image_data_url;
-        console.log("Photo captured successfully.",imgRef.current);
-    }
-
-    const detectFace = () => {
-        // Menutup modal sebelum memulai proses
-        const modal = document.getElementById("my_modal_1");
-        if (modal) {
-            modal.close();
-        }
-        console.log("Starting face detection...");
-        loading("Loading", "Starting face detection and registration...");
-        let attempts = 0;
-        const maxAttempts = 20;
-        setIsLoading(true);
-
-        async function attemptMatch() {
-            if (attempts >= maxAttempts) {
-                console.warn("Maximum face detection attempts reached.");
-                setIsLoading(false);
-                alertMessage(
-                    "Deteksi Gagal",
-                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                    "error"
-                );
-                return;
-            }
-            attempts++;
-            console.log(`Face detection attempt #${attempts}...`);
-
-            try {
-                const faceData = await faceapi
-                    .detectSingleFace(
-                        imgRef.current,
-                        new faceapi.TinyFaceDetectorOptions()
-                    )
-                    .withFaceLandmarks()
-                    .withFaceDescriptor();
-
-                if (faceData) {
-                    console.log("Face detected:", faceData);
-                    const distance = faceapi.euclideanDistance(
-                        descriptor,
-                        faceData.descriptor
-                    );
-                    console.log("Face distance calculated:", distance);
-
-                    if (distance <= 0.6) {
-                        console.log("Face matched successfully.");
-                        const stringDescriptor = Array.from(faceData.descriptor).join(", ");
-                        values.push(
-                            stringDescriptor,
-                            `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
-                            localStorage.getItem("devop-sso"),
-                            Cookies.get("csrf")
-                        );
-                        Swal.close();
-                        loading("Loading", "Mengirim data presensi...");
-                        console.log("Loading Mengirim data presensi...", values);
-                        apiXML
-                            .presensiPost(
-                                "process",
-                                localStorage.getItem("AUTH_KEY"),
-                                getFormData(combinedKeys, values)
-                            )
-                            .then((res) => {
-                                console.log("Presence data submitted successfully:", res);
-                                Swal.close();
-                                res = JSON.parse(res);
-                                Cookies.set("csrf", res.csrfHash);
-                                const parsedToken = parseJwt(res.data.token);
-                                alertMessage(
-                                    parsedToken.title,
-                                    parsedToken.message,
-                                    parsedToken.info,
-                                    () => {
-                                        setIsLoading(false);
-                                        window.location.replace("/home");
-                                    }
-                                );
-                            })
-                            .catch((err) => {
-                                console.error("Presence submission error:", err);
-                                setIsLoading(false);
-                                handleSessionError(err, "/facecam");
-                            });
-                    } else {
-                        console.warn("Face match failed. Distance too large.");
-                        setIsLoading(false);
-                        alertMessage(
-                            "Pencocokan Gagal",
-                            "Wajah tidak terdaftar, harap ulangi proses",
-                            "error"
-                        );
-                    }
-                } else {
-                    console.log("No face detected, retrying...");
-                    setTimeout(attemptMatch, 100);
-                }
-            } catch (err) {
-                console.error("Error during face detection:", err);
-                setIsLoading(false);
-                handleSessionError(err, "/login");
-            }
-        }
-
-        attemptMatch();
+      console.log("Values initialized:", values);
+      console.log("Submitting presence data...");
+      apiXML
+        .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
+        .then((res) => {
+          console.log("Presence data submitted successfully:", res);
+          Swal.close();
+          setIsLoading(false);
+          const parsedToken = parseJwt(res.data.token);
+          alertMessage(parsedToken.title, parsedToken.message, parsedToken.info, () => {
+            window.location.replace("/home");
+          });
+        })
+        .catch((err) => {
+          console.error("Presence submission error:", err);
+          setIsLoading(false);
+          handleSessionError(err, "/facecam");
+        });
     };
 
     return (
@@ -294,29 +236,36 @@ export default function FaceCam() {
                 >
                     Presensi
                 </button>
-                <dialog id="my_modal_1" className="modal">
+                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <img ref={imgRef} className="w-full" />
-                        <div className="modal-action flex justify-center">
-                            <form method="dialog" className="flex gap-2">
+                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
+                        <div className="modal-action flex justify-center mt-4 gap-4">
+                            <form method="dialog" className="flex gap-4">
                                 {/* if there is a button in form, it will close the modal */}
-                                <button className="btn">Cancel</button>
+                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
+                                    Cancel
+                                </button>
                                 <button
-                                    className="btn bg-secondary-green"
+                                    className="py-2 px-6 btn-submit"
                                     onClick={detectFace}
                                     disabled={isLoading} // Nonaktifkan tombol jika sedang loading
                                 >
-                                    {isLoading ? "Loading..." : "Proses"}
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center gap-2">
+                                        <span>Loading...</span>
+                                        <span className="loading loading-spinner text-black"></span>
+                                    </div>
+                                ) : (
+                                    "Proses"
+                                )}
                                 </button>
                             </form>
                         </div>
                     </div>
                 </dialog>
-                <small>
-                    Pastikan pencahayaan memadai agar proses dapat berjalan
-                    lancar
-                </small>
+                <small>Pastikan pencahayaan memadai agar proses dapat berjalan lancar</small>
             </div>
         </div>
     );
