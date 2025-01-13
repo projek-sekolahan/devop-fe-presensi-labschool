@@ -43,7 +43,7 @@ export default function FaceCam() {
       initialize();
   
       // Initialize Web Worker
-      workerRef.current = new Worker(new URL("./faceWorker.js", import.meta.url));
+      workerRef.current = new Worker(new URL("../public/faceWorker.js", import.meta.url));
       workerRef.current.onmessage = (event) => {
         const { type, payload } = event.data;
         if (type === "FACE_DETECTED") {
