@@ -49,11 +49,6 @@ export default function Login({ isOpen, onToggle }) {
         email: "",
     });
 
-    const handleToggleLink = (page) => {
-        // Mencegah default action dari <Link>
-        onToggle(page); // Hanya buka/tutup form
-    };
-
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
     // Handle form submission

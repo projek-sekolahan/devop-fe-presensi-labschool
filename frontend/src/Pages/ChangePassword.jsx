@@ -12,16 +12,10 @@ import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
 
-export default function ChangePassword() {
+export default function ChangePassword({ isOpen, onToggle }) {
     const emailRef = useRef();
     const [load, setLoad] = useState(false);
     const [errors, setErrors] = useState({email: ""});
-
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleForm = () => {
-        setIsOpen(!isOpen);
-    };
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -112,7 +106,7 @@ export default function ChangePassword() {
                 <div className="flex items-center gap-2 w-full mt-4">
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
                     <Link
-                        to="/register"
+                        to="#" onClick={() => onToggle("register")}
                         className="text-link text-sm font-light text-white underline hover:underline"
                     >
                         Belum Punya Akun?
@@ -121,7 +115,7 @@ export default function ChangePassword() {
                 </div>
             </div>
             {/* Toggle Button */}
-            <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+            <ToggleButton isOpen={isOpen} onToggle={onToggle} />
         </div>
     );
 }

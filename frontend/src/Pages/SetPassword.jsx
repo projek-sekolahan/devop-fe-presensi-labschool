@@ -13,17 +13,13 @@ import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
 import ToggleButton from "../Components/ToggleButton";
 
-export default function SetPassword() {
+export default function SetPassword({ isOpen, onToggle }) {
 	const [warning, setWarning] = useState("none");
 	const [disabled, setDisabled] = useState(false);
 	const [errors, setErrors] = useState({password: ""});
 	const inputRef = useRef();
 	const confirmRef = useRef();
-	const [isOpen, setIsOpen] = useState(false);
 
-    const toggleForm = () => {
-        setIsOpen(!isOpen);
-    };
 	const changeHandler = (e) => {
 		if (inputRef.current.value.trim()) {
 			setWarning("none");
@@ -160,7 +156,7 @@ export default function SetPassword() {
 				</form>
 			</div>
 			{/* Toggle Button */}
-			<ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+			<ToggleButton isOpen={isOpen} onToggle={onToggle} />
 		</div>
 	);
 }

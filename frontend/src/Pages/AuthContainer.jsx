@@ -39,10 +39,10 @@ export default function AuthContainer() {
         const pageMap = {
             login: <Login isOpen={isOpen} onToggle={toggleForm} />,
             register: <Register isOpen={true} onToggle={toggleForm} />,
-            verify: <OtpInput onBack={() => handleNavigate("login")} />,
-            facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
-            recover: <ChangePassword onBack={() => handleNavigate("login")} />,
-            setpassword: <SetPassword onBack={() => handleNavigate("login")} />,
+            recover: <ChangePassword isOpen={true} onToggle={toggleForm} />,
+            verify: <OtpInput isOpen={true} onToggle={toggleForm} />,
+            facereg: <RegisterFace isOpen={true} onToggle={toggleForm} />,
+            setpassword: <SetPassword isOpen={true} onToggle={toggleForm} />,
         };
         return pageMap[currentPage] || pageMap.login;
     };

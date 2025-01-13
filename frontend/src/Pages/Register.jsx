@@ -174,7 +174,11 @@ export default function Register({ isOpen, onToggle }) {
         <div className="flex items-center gap-2 w-full mt-4">
           <div className="flex-grow border-t-[0.25px] border-white"></div>
           <Link
-            to="#" onClick={onToggle}
+            to="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              onToggle("login");
+            }}
             className="text-link text-sm font-light text-white underline hover:underline"
           >
             Sudah Punya Akun?
@@ -183,7 +187,7 @@ export default function Register({ isOpen, onToggle }) {
         </div>
       </div>
       {/* Toggle Button */}
-      <ToggleButton isOpen={isOpen} onToggle={() => onToggle()} />
+      <ToggleButton isOpen={isOpen} onToggle={onToggle} />
     </div>
   );
 }

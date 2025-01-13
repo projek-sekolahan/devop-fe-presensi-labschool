@@ -9,17 +9,11 @@ import {
 import Cookies from "js-cookie";
 import ToggleButton from "../Components/ToggleButton";
 
-export default function OtpInput() {
+export default function OtpInput({ isOpen, onToggle }) {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
 	const [load, setLoad] = useState(false);
 	const inputRefs = useRef([]);
 	const formRef = useRef();
-
-	const [isOpen, setIsOpen] = useState(false);
-
-    const toggleForm = () => {
-        setIsOpen(!isOpen);
-    };
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -174,7 +168,7 @@ export default function OtpInput() {
 				</form>
 			</div>
 			{/* Toggle Button */}
-			<ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+			<ToggleButton isOpen={isOpen} onToggle={onToggle} />
 		</div>
 	);
 }

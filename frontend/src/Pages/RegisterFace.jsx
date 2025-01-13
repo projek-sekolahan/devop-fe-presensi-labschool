@@ -12,16 +12,11 @@ import {
 } from "../utils/utils";
 import ToggleButton from "../Components/ToggleButton";
 
-export default function RegisterFace() {
+export default function RegisterFace({ isOpen, onToggle }) {
 const videoRef = useRef(null);
 const canvasRef = useRef(null);
 const imgRef = useRef(null);
 const [isLoading, setIsLoading] = useState(false);
-const [isOpen, setIsOpen] = useState(false);
-
-const toggleForm = () => {
-    setIsOpen(!isOpen);
-};
 
 // Inisialisasi komponen
 useEffect(() => {
@@ -326,7 +321,7 @@ const registerNewFace = async (faceData) => {
                 </dialog>
             </div>
             {/* Toggle Button */}
-            <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+            <ToggleButton isOpen={isOpen} onToggle={onToggle} />
         </div>
     );
 }
