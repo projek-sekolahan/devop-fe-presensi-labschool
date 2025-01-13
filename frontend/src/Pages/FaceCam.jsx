@@ -29,8 +29,7 @@ export default function FaceCam() {
       }
   
       const userData = parseJwt(localStorage.getItem("token"));
-      const descriptor = new Float32Array(userData.facecam_id.split(", "));
-      console.log("Data Found.", descriptor);
+      
       const initialize = async () => {
         try {
           console.log("Starting video...");
@@ -113,9 +112,13 @@ export default function FaceCam() {
   
     const detectFace = () => {
       console.log("Starting face detection...");
-      loading("Loading", "Starting face detection and registration...");
+      const modal = document.getElementById("my_modal_1");
+      if (modal) modal.close();
       setIsLoading(true);
-  
+      loading("Loading", "Starting face detection and registration...");
+      
+      const descriptor = new Float32Array(userData.facecam_id.split(", "));
+      console.log("Data Found.", descriptor);  
       workerRef.current.postMessage({
         type: "DETECT_FACE",
         payload: {
