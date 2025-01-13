@@ -49,7 +49,7 @@ export default class apiXML {
                 body: createRequestBody(formData),
                 signal: controller.signal,
             });
-            
+            clearTimeout(timeoutId);
             return await response.text();
         } catch (error) {
             console.error("Error or timeout in POST request:", error);

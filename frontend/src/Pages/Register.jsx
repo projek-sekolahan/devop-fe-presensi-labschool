@@ -16,7 +16,7 @@ import ToggleButton from "../Components/ToggleButton";
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "phone", "namaLengkap", "sebagai", "csrf_token"];
 
-export default function Register() {
+export default function Register({ isOpen, onToggle }) {
   const [role, setRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const nameRef = useRef();
@@ -31,10 +31,6 @@ export default function Register() {
   });
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleForm = () => {
-    setIsOpen(!isOpen);
-  };
 
   // Helper function for registration process
   const processRegister = async (formData) => {
@@ -180,7 +176,7 @@ export default function Register() {
         <div className="flex items-center gap-2 w-full mt-4">
           <div className="flex-grow border-t-[0.25px] border-white"></div>
           <Link
-            to="/login"
+            to="#" onClick={onToggle}
             className="text-link text-sm font-light text-white underline hover:underline"
           >
             Sudah Punya Akun?
@@ -189,7 +185,7 @@ export default function Register() {
         </div>
       </div>
       {/* Toggle Button */}
-      <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+      <ToggleButton isOpen={isOpen} onToggle={() => onToggle()} />
     </div>
   );
 }

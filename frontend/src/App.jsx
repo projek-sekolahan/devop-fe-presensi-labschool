@@ -10,26 +10,6 @@ import "./App.css";
 
 function App() {
     useEffect(() => {
-        /* // Cache-Busting dengan Query String Unik
-        const addCacheBusting = () => {
-            const timestamp = new Date().getTime();
-            const links = document.querySelectorAll('link[rel="stylesheet"]');
-            links.forEach((link) => {
-                const href = link.href.split('?')[0];
-                link.href = `${href}?t=${timestamp}`;
-            });
-        };
-
-        // Membersihkan Cookies dan Local Storage
-        const clearCookiesAndStorage = () => {
-            document.cookie.split(";").forEach((cookie) => {
-                const eqPos = cookie.indexOf("=");
-                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-            });
-            localStorage.clear();
-            sessionStorage.clear();
-        }; */
 
         // Minta Izin untuk Cookie
         const handleCookies = () => {
@@ -50,14 +30,12 @@ function App() {
             }
         };
 
-        /* addCacheBusting();
-        clearCookiesAndStorage(); */
         handleCookies();
     }, []);
 
     return (
         <Router>
-            {/* !isMobile && <DesktopWarning /> */}
+            {!isMobile && <DesktopWarning />}
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {routes.map(({ path, component: Component }, index) => (
