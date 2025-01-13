@@ -18,16 +18,17 @@ import ProtectedRoute from "../Components/ProtectedRoute";
 const isAuthenticated = !!localStorage.getItem("authToken");
 
 export const routes = [
+    { path: "/", element: "Auth Container" },
     // { path: "/", element: <AuthContainer /> },
-    { path: "/login", element: <AuthContainer /> },
+    /* { path: "/login", element: <AuthContainer /> },
     { path: "/register", element: <AuthContainer /> },
     { path: "/verify", element: <AuthContainer /> },
     { path: "/facereg", element: <AuthContainer /> },
     { path: "/recover", element: <AuthContainer /> },
-    { path: "/setpassword", element: <AuthContainer /> },
+    { path: "/setpassword", element: <AuthContainer /> }, */
 
     // Rute yang dilindungi
-    { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },
+    /* { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },
     { path: "/profile", element: <ProtectedRoute component={Profile} isAuthenticated={isAuthenticated} /> },
     { path: "/presensi", element: <ProtectedRoute component={Presensi} isAuthenticated={isAuthenticated} /> },
     { path: "/riwayat", element: <ProtectedRoute component={Riwayat} isAuthenticated={isAuthenticated} /> },
@@ -37,8 +38,8 @@ export const routes = [
     { path: "/presensi/verif", element: <ProtectedRoute component={FaceVerification} isAuthenticated={isAuthenticated} /> },
     { path: "/presensi/izin", element: <ProtectedRoute component={Izin} isAuthenticated={isAuthenticated} /> },
     { path: "/setting", element: <ProtectedRoute component={Pengaturan} isAuthenticated={isAuthenticated} /> },
-    { path: "/facecam", element: <ProtectedRoute component={FaceCam} isAuthenticated={isAuthenticated} /> },
+    { path: "/facecam", element: <ProtectedRoute component={FaceCam} isAuthenticated={isAuthenticated} /> }, */
 
     // Fallback untuk rute tidak dikenal
-    { path: "*", element: <Errors /> },
+    // { path: "*", element: <Errors /> },
 ];
