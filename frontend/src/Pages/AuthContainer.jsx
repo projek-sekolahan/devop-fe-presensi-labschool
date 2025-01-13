@@ -11,6 +11,11 @@ export default function AuthContainer() {
     const location = useLocation();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState("login"); // Default halaman
+    const [isOpen, setIsOpen] = useState(false); // Status form
+
+    const toggleForm = () => {
+        setIsOpen((prevIsOpen) => !prevIsOpen); // Toggle status form
+    };
 
     useEffect(() => {
         const pageMap = {
@@ -28,12 +33,15 @@ export default function AuthContainer() {
         }
     }, [location.pathname, navigate]);
 
-    const handleNavigate = (page) => navigate(page === "login" ? "/" : `/${page}`);
+    const handleNavigate = (page) => {
+        toggleForm(); // Tutup form saat navigasi ke halaman lain
+        navigate(page === "login" ? "/" : `/${page}`);
+    };
 
     const renderPage = () => {
         const pageMap = {
-            login: <Login isOpen={true} onToggle={() => handleNavigate("register")} />, 
-            register: <Register isOpen={true} onToggle={() => handleNavigate("login")} />,
+            login: <Login isOpen={isOpen} onToggle={handleNavigate} />,
+            register: <Register isOpen={isOpen} onToggle={handleNavigate} />,
             verify: <OtpInput onBack={() => handleNavigate("login")} />,
             facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
             recover: <ChangePassword onBack={() => handleNavigate("login")} />,
@@ -42,5 +50,9 @@ export default function AuthContainer() {
         return pageMap[currentPage] || pageMap.login;
     };
 
-    return <div className="auth-container">{renderPage()}</div>;
+    return (
+        <div className={`auth-container ${isOpen ? "open" : "closed"}`}>
+            {renderPage()}
+        </div>
+    );
 }

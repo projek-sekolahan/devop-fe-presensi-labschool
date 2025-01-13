@@ -1,4 +1,3 @@
-// import React from "react";
 import AuthContainer from "../Pages/AuthContainer";
 // import Home from "../Pages/Home";
 // import Profile from "../Pages/Profile";
@@ -16,16 +15,15 @@ import AuthContainer from "../Pages/AuthContainer";
 
 // Fungsi untuk mengecek autentikasi
 // const isAuthenticated = !!localStorage.getItem("authToken");
-// const AuthContainer = () => <div>Auth Container</div>;
+
 export const routes = [
-    // { path: "/", element: "Auth Container" },
     { path: "/", element: <AuthContainer /> },
-    /* { path: "/login", element: <AuthContainer /> },
+    { path: "/login", element: <AuthContainer /> },
     { path: "/register", element: <AuthContainer /> },
     { path: "/verify", element: <AuthContainer /> },
     { path: "/facereg", element: <AuthContainer /> },
     { path: "/recover", element: <AuthContainer /> },
-    { path: "/setpassword", element: <AuthContainer /> }, */
+    { path: "/setpassword", element: <AuthContainer /> },
 
     // Rute yang dilindungi
     /* { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },

@@ -48,6 +48,11 @@ export default function Login({ isOpen, onToggle }) {
         password: "",
         email: "",
     });
+    /* const [isOpen, setIsOpen] = useState(false);
+
+    const toggleForm = () => {
+        setIsOpen(!isOpen);
+    }; */
 
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
@@ -169,7 +174,7 @@ export default function Login({ isOpen, onToggle }) {
         </form>
     </div>
     {/* Toggle Button */}
-    <ToggleButton isOpen={isOpen} onToggle={() => onToggle()} />
+    <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
 </div>
     );
 }
