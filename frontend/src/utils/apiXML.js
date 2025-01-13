@@ -10,15 +10,11 @@ export default class apiXML {
      */
     static async getCsrf() {
         try {
-            // console.log("Fetching CSRF token from:", `${api_url}/view/tokenGetCsrf`);
-            
             const response = await fetch(`${api_url}/view/tokenGetCsrf`, {
                 method: "GET",
                 credentials: "include",
             });
-            /* console.log("Response headers:", [...response.headers]);
-            console.log("Response status:", response.status, response.statusText); */
-    
+            
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error("Error response body:", errorText);
@@ -56,8 +52,7 @@ export default class apiXML {
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-                console.log(response.json())
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
             }
             return await response.text();
         } catch (error) {
