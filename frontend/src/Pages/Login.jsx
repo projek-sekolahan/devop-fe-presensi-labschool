@@ -48,11 +48,6 @@ export default function Login({ isOpen, onToggle }) {
         password: "",
         email: "",
     });
-    /* const [isOpen, setIsOpen] = useState(false);
-
-    const toggleForm = () => {
-        setIsOpen(!isOpen);
-    }; */
 
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
@@ -155,10 +150,10 @@ export default function Login({ isOpen, onToggle }) {
             })}
             {/* Forgot Password and Register Link */}
             <div className="flex justify-between items-center text-sm">
-                <Link to="#" onClick={onToggle} className="text-link">
+                <Link to="#" onClick={() => onToggle("register")} className="text-link">
                     Belum Punya Akun?
                 </Link>
-                <Link to="#" onClick={onToggle} className="text-link">
+                <Link to="#" onClick={() => onToggle("recover")} className="text-link">
                     Lupa password?
                 </Link>
             </div>
@@ -174,7 +169,7 @@ export default function Login({ isOpen, onToggle }) {
         </form>
     </div>
     {/* Toggle Button */}
-    <ToggleButton isOpen={isOpen} onToggle={toggleForm} />
+    <ToggleButton isOpen={isOpen} onToggle={onToggle} />
 </div>
     );
 }
