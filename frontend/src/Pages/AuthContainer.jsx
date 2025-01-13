@@ -40,7 +40,7 @@ export default function AuthContainer() {
 
     const renderPage = () => {
         const pageMap = {
-            login: <Login isOpen={true} onToggle={handleNavigate} />,
+            login: <Login isOpen={isOpen} onToggle={handleNavigate} />,
             register: <Register isOpen={isOpen} onToggle={handleNavigate} />,
             verify: <OtpInput onBack={() => handleNavigate("login")} />,
             facereg: <RegisterFace onBack={() => handleNavigate("login")} />,
