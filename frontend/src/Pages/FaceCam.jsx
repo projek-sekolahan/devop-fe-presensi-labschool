@@ -40,16 +40,20 @@ export default function FaceCam() {
       initialize();
   
       // Initialize Web Worker
-      workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
-      workerRef.current.onmessage = (event) => {
-        const { type, payload } = event.data;
-        if (type === "FACE_DETECTED") {
-          handleFaceDetection(payload);
-        } else if (type === "ERROR") {
-          console.error("Worker error:", payload);
-        }
-      };
-  
+      if (typeof Worker !== "undefined") {
+        workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
+        workerRef.current.onmessage = (event) => {
+          const { type, payload } = event.data;
+          if (type === "FACE_DETECTED") {
+            handleFaceDetection(payload);
+          } else if (type === "ERROR") {
+            console.error("Worker error:", payload);
+          }
+        };
+      } else {
+        console.error("Web Worker is not supported in this environment");
+      }
+      
       return () => {
         if (workerRef.current) {
           workerRef.current.terminate();

@@ -21,7 +21,6 @@ export const loadFaceModels = async () => {
         } catch (error) {
             console.error("Error loading models:", error);
         }
-        modelsLoaded = true;
     }
     console.log("model loaded");
 };

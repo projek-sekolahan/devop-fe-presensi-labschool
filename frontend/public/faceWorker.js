@@ -1,16 +1,12 @@
 import * as faceapi from "face-api.js";
 import { loadFaceModels } from "../src/utils/loadModels";
 
-let modelsLoaded = false;
-
 onmessage = async (event) => {
   const { type, payload } = event.data;
 
   if (type === "DETECT_FACE") {
-    if (!modelsLoaded) {
-      await loadFaceModels(); // Menggunakan loadFaceModels dari import
-      modelsLoaded = true;
-    }
+    // Panggil loadFaceModels hanya sekali
+    await loadFaceModels(); 
     detectFace(payload);
   }
 };
