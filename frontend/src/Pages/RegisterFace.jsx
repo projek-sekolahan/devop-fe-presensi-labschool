@@ -91,6 +91,40 @@ export default function RegisterFace({ isOpen, onToggle }) {
             });
     };
     
+    // Fungsi untuk mengambil gambar dari video
+    function clickPhoto() {
+        console.log("Capturing photo...");
+        const context = canvasRef.current.getContext("2d");
+        const video = videoRef.current;
+
+        const canvasWidth = 400;
+        const canvasHeight = 400;
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        const videoCenterX = videoWidth / 2;
+        const videoCenterY = videoHeight / 2;
+
+        const cropX = videoCenterX - canvasWidth / 2;
+        const cropY = videoCenterY - canvasHeight / 2;
+
+        canvasRef.current.width = canvasWidth;
+        canvasRef.current.height = canvasHeight;
+
+        context.save();
+        context.scale(-1, 1);
+        context.translate(-canvasWidth, 0);
+
+        context.drawImage(video,cropX,cropY,canvasWidth,canvasHeight,0,0,canvasWidth,canvasHeight);
+
+        context.restore();
+
+        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
+        imgRef.current.src = image_data_url;
+
+        console.log("Photo captured successfully.",imgRef.current);
+    }
+
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
     const detectAndRegisterFace = async () => {
         const modal = document.getElementById("my_modal_1");
@@ -210,24 +244,24 @@ export default function RegisterFace({ isOpen, onToggle }) {
     </div>
 
     {/* Video Feed with Frame Overlay */}
-    <div className="relative">
+    <div className="relative w-full h-[400px] flex justify-center items-center">
         <video
             ref={videoRef}
-            className="h-2/3 w-full object-cover mt-4"
+            className="absolute w-full h-full object-cover"
             autoPlay
             playsInline
         />
         {/* Frame Overlay */}
         <div
-            className="absolute inset-0 flex justify-center items-center pointer-events-none"
-        >
-            <div
-                className="border-4 border-green-500 rounded-lg w-2/3 h-2/3"
-                style={{
-                    boxShadow: "0 0 10px 2px rgba(0, 255, 0, 0.6)",
-                }}
-            ></div>
-        </div>
+            className="relative z-10"
+            style={{
+                width: "300px", // Lebar bingkai
+                height: "300px", // Tinggi bingkai
+                border: "4px solid #00FF00", // Warna bingkai hijau
+                borderRadius: "16px", // Membuat sudut membulat
+                boxShadow: "0 0 15px rgba(0, 255, 0, 0.8)", // Efek glowing hijau
+            }}
+        ></div>
     </div>
 
     {/* Canvas and Captured Image (Hidden) */}
