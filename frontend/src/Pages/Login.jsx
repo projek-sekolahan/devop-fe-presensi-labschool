@@ -94,14 +94,23 @@ export default function Login() {
 
         try {
         const loginResponse = await processLogin(formData, tokenKey);
-        console.log(loginResponse.status); return false;
-        // Success alert and redirect
-        alertMessage(
-            "Berhasil",
-            loginResponse.message,
-            "success",
-            () => window.location.replace("/home")
-        );
+            if (loginResponse.status==false) {
+                // error alert and redirect
+                alertMessage(
+                    loginResponse.title,
+                    loginResponse.message,
+                    "success",
+                    () => window.location.replace("/login")
+                );
+            } else {
+                // Success alert and redirect
+                alertMessage(
+                    "Berhasil",
+                    loginResponse.message,
+                    "success",
+                    () => window.location.replace("/home")
+                );
+            }
         } catch (error) { alert(error)
         // Handle error during login
         console.error("Login error:", error);
