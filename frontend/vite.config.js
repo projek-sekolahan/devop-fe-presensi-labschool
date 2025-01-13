@@ -16,6 +16,10 @@ export default defineConfig({
     basicSsl(),    // Menyediakan HTTPS di server lokal
   ],
 
+  esbuild: {
+    jsxInject: `import React from 'react'`, // Menambahkan React secara otomatis untuk JSX
+  },
+  
   // Definisi variabel lingkungan
   define: {
     'process.env': process.env, // Menyediakan akses ke environment variables
