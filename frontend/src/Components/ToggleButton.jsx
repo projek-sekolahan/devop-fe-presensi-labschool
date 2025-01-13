@@ -3,7 +3,7 @@ import { ChevronDoubleUpIcon, ChevronDoubleDownIcon } from "@heroicons/react/24/
 
 export default function ToggleButton({ isOpen, onToggle }) {
   return (
-    <div className="btn-toggle" onClick={(e) => { e.preventDefault(); onToggle(e); }}>
+    <div className="btn-toggle" onClick={onToggle}>
       {isOpen ? (
         <ChevronDoubleDownIcon className="h-6 w-6 mx-auto text-white" />
       ) : (

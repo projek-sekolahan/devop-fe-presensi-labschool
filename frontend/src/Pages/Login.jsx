@@ -177,7 +177,7 @@ export default function Login({ isOpen, onToggle }) {
         </form>
     </div>
     {/* Toggle Button */}
-    <ToggleButton isOpen={isOpen} onClick={() => onToggle("login")} />
+    <ToggleButton isOpen={isOpen} onToggle={onToggle} />
 </div>
     );
 }
