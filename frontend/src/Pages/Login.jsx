@@ -94,7 +94,7 @@ export default function Login() {
 
         try {
         const loginResponse = await processLogin(formData, tokenKey);
-        console.log(loginResponse); return false;
+        console.log(loginResponse.status); return false;
         // Success alert and redirect
         alertMessage(
             "Berhasil",
