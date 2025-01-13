@@ -73,7 +73,7 @@ else if (isNode) {
   const { Worker } = require("worker_threads");
   try {
     // Inisialisasi worker di Node.js dengan worker_threads
-    const worker = new Worker("./faceWorker.js");
+    const worker = new Worker("/faceWorker.js");
     worker.on("message", (message) => {
       const { type, payload } = message;
       if (type === "FACE_DETECTED") {
