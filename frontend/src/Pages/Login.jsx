@@ -99,7 +99,7 @@ export default function Login() {
                 alertMessage(
                     loginResponse.title,
                     loginResponse.message,
-                    "success",
+                    "error",
                     () => window.location.replace("/login")
                 );
             } else {
