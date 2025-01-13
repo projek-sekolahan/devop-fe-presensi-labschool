@@ -1,5 +1,5 @@
 // import React from "react";
-// import AuthContainer from "../Pages/AuthContainer";
+import AuthContainer from "../Pages/AuthContainer";
 // import Home from "../Pages/Home";
 // import Profile from "../Pages/Profile";
 // import Presensi from "../Pages/Presensi";
@@ -16,7 +16,7 @@
 
 // Fungsi untuk mengecek autentikasi
 // const isAuthenticated = !!localStorage.getItem("authToken");
-const AuthContainer = () => <div>Auth Container</div>;
+// const AuthContainer = () => <div>Auth Container</div>;
 export const routes = [
     // { path: "/", element: "Auth Container" },
     { path: "/", element: <AuthContainer /> },
