@@ -1,3 +1,4 @@
+import React from "react";
 import AuthContainer from "../Pages/AuthContainer";
 import Home from "../Pages/Home";
 import Profile from "../Pages/Profile";
