@@ -40,19 +40,54 @@ export default function FaceCam() {
       initialize();
   
       // Initialize Web Worker
-      if (typeof Worker !== "undefined") {
-        workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
-        workerRef.current.onmessage = (event) => {
-          const { type, payload } = event.data;
-          if (type === "FACE_DETECTED") {
-            handleFaceDetection(payload);
-          } else if (type === "ERROR") {
-            console.error("Worker error:", payload);
-          }
-        };
-      } else {
-        console.error("Web Worker is not supported in this environment");
+// Pengecekan apakah di dalam Browser atau Node.js
+const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const isNode = typeof global !== "undefined" && typeof global.process !== "undefined";
+
+// Jika di dalam Browser
+if (isBrowser) {
+  try {
+    // Pengecekan apakah Web Worker didukung di browser
+    if (typeof Worker !== "undefined") {
+      // Inisialisasi Web Worker di browser
+      workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
+      workerRef.current.onmessage = (event) => {
+        const { type, payload } = event.data;
+        if (type === "FACE_DETECTED") {
+          handleFaceDetection(payload);
+        } else if (type === "ERROR") {
+          console.error("Worker error:", payload);
+        }
+      };
+    } else {
+      console.error("Web Worker is not supported in this browser.");
+    }
+  } catch (error) {
+    console.error("Error initializing Web Worker:", error);
+  }
+}
+// Jika di dalam Node.js
+else if (isNode) {
+  console.log("Node.js environment detected.");
+  // Di Node.js, Anda bisa mengimpor library tambahan seperti worker_threads jika dibutuhkan.
+  const { Worker } = require("worker_threads");
+  try {
+    // Inisialisasi worker di Node.js dengan worker_threads
+    const worker = new Worker("./faceWorker.js");
+    worker.on("message", (message) => {
+      const { type, payload } = message;
+      if (type === "FACE_DETECTED") {
+        handleFaceDetection(payload);
+      } else if (type === "ERROR") {
+        console.error("Worker error:", payload);
       }
+    });
+  } catch (error) {
+    console.error("Error initializing Worker in Node.js:", error);
+  }
+} else {
+  console.error("Unknown environment. Unable to initialize Web Worker.");
+}
       
       return () => {
         if (workerRef.current) {
@@ -88,7 +123,7 @@ export default function FaceCam() {
   
     const clickPhoto = () => {
       console.log("Capturing photo...");
-      loading("Loading", "Mendapatkan data wajah...");
+    //   loading("Loading", "Mendapatkan data wajah...");
       const context = canvasRef.current.getContext("2d");
       const video = videoRef.current;
   
