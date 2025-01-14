@@ -104,8 +104,8 @@ if (isBrowser) {
             console.warn("Unknown message type received:", type);
           }
         };
-        workerRef.current.onerror = (e) => {
-          console.error("Worker error:", e.message);
+        workerRef.current.onerror = (error) => {
+          console.error("Worker error (caught in main thread):", error.message || "Unknown error");
         };
       }).catch((error) => {
         console.error("Failed to verify Web Worker path:", error);

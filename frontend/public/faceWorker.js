@@ -86,8 +86,9 @@ const detectFace = async ({ image, descriptor }) => {
 };
 
 // Tangani error secara global di Web Worker
-self.onerror = (error) => {
-  console.error("Web Worker error:", error);
+self.onerror = (event) => {
+  console.error("Global Web Worker error:", event.message || "Unknown error");
+  postMessage({ type: "ERROR", payload: `Worker error: ${event.message || "Unknown error"}` });
 };
 
 // Tangani pesan yang diterima oleh Web Worker
@@ -124,3 +125,4 @@ onmessage = async (event) => {
 
 // Log untuk memastikan worker berjalan
 console.log("Face Worker initialized");
+console.log("Web Worker initialized and ready.");
