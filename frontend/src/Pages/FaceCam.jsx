@@ -22,79 +22,101 @@ export default function FaceCam() {
     const workerRef = useRef(); // Ref for Web Worker
   
     useEffect(() => {
+      console.log("useEffect triggered"); // Log awal saat useEffect dipanggil
+    
       if (!localStorage.getItem("token")) {
         console.error("Token not found, redirecting to login...");
         window.location.replace("/login");
         return;
       }
-      
+    
       const initialize = async () => {
         try {
           console.log("Starting video...");
-          startVideo();
+          startVideo(); // Tambahkan log di dalam fungsi startVideo jika diperlukan
         } catch (error) {
           console.error("Initialization error:", error);
         }
       };
-  
+    
       initialize();
-  
+    
       // Initialize Web Worker
-// Pengecekan apakah di dalam Browser atau Node.js
-const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
-const isNode = typeof global !== "undefined" && typeof global.process !== "undefined";
-
-// Jika di dalam Browser
-if (isBrowser) {
-  try {
-    // Pengecekan apakah Web Worker didukung di browser
-    if (typeof Worker !== "undefined") {
-      // Inisialisasi Web Worker di browser
-      workerRef.current = new Worker(new URL("/faceWorker.js", import.meta.url));
-      workerRef.current.onmessage = (event) => {
-        const { type, payload } = event.data;
-        if (type === "FACE_DETECTED") {
-          handleFaceDetection(payload);
-        } else if (type === "ERROR") {
-          console.error("Worker error:", payload);
+      console.log("Checking environment...");
+    
+      // Pengecekan apakah di dalam Browser atau Node.js
+      const isBrowser =
+        typeof window !== "undefined" && typeof window.document !== "undefined";
+      const isNode =
+        typeof global !== "undefined" && typeof global.process !== "undefined";
+    
+      console.log("isBrowser:", isBrowser);
+      console.log("isNode:", isNode);
+    
+      // Jika di dalam Browser
+      if (isBrowser) {
+        console.log("Environment detected: Browser");
+        try {
+          // Pengecekan apakah Web Worker didukung di browser
+          if (typeof Worker !== "undefined") {
+            console.log("Web Worker supported in this browser.");
+            // Inisialisasi Web Worker di browser
+            workerRef.current = new Worker(
+              new URL("/faceWorker.js", import.meta.url)
+            );
+            console.log("Web Worker initialized.");
+    
+            workerRef.current.onmessage = (event) => {
+              console.log("Message received from Web Worker:", event.data);
+              const { type, payload } = event.data;
+              if (type === "FACE_DETECTED") {
+                console.log("Face detected with payload:", payload);
+                handleFaceDetection(payload);
+              } else if (type === "ERROR") {
+                console.error("Worker error:", payload);
+              }
+            };
+          } else {
+            console.error("Web Worker is not supported in this browser.");
+          }
+        } catch (error) {
+          console.error("Error initializing Web Worker:", error);
         }
-      };
-    } else {
-      console.error("Web Worker is not supported in this browser.");
-    }
-  } catch (error) {
-    console.error("Error initializing Web Worker:", error);
-  }
-}
-// Jika di dalam Node.js
-else if (isNode) {
-  console.log("Node.js environment detected.");
-  // Di Node.js, Anda bisa mengimpor library tambahan seperti worker_threads jika dibutuhkan.
-  const { Worker } = require("worker_threads");
-  try {
-    // Inisialisasi worker di Node.js dengan worker_threads
-    const worker = new Worker("/faceWorker.js");
-    worker.on("message", (message) => {
-      const { type, payload } = message;
-      if (type === "FACE_DETECTED") {
-        handleFaceDetection(payload);
-      } else if (type === "ERROR") {
-        console.error("Worker error:", payload);
       }
-    });
-  } catch (error) {
-    console.error("Error initializing Worker in Node.js:", error);
-  }
-} else {
-  console.error("Unknown environment. Unable to initialize Web Worker.");
-}
-      
+      // Jika di dalam Node.js
+      else if (isNode) {
+        console.log("Environment detected: Node.js");
+        const { Worker } = require("worker_threads");
+        try {
+          console.log("Initializing worker in Node.js...");
+          const worker = new Worker("/faceWorker.js");
+          console.log("Node.js Worker initialized.");
+    
+          worker.on("message", (message) => {
+            console.log("Message received from Node.js Worker:", message);
+            const { type, payload } = message;
+            if (type === "FACE_DETECTED") {
+              console.log("Face detected with payload:", payload);
+              handleFaceDetection(payload);
+            } else if (type === "ERROR") {
+              console.error("Worker error:", payload);
+            }
+          });
+        } catch (error) {
+          console.error("Error initializing Worker in Node.js:", error);
+        }
+      } else {
+        console.error("Unknown environment. Unable to initialize Web Worker.");
+      }
+    
       return () => {
+        console.log("Cleaning up Web Worker...");
         if (workerRef.current) {
           workerRef.current.terminate();
+          console.log("Web Worker terminated.");
         }
       };
-    }, []);
+    }, []);    
   
     const startVideo = () => {
       navigator.mediaDevices
