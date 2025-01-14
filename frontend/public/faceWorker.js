@@ -116,3 +116,6 @@ onmessage = async (event) => {
     postMessage({ type: "ERROR", payload: `Unknown message type: ${type}` });
   }
 };
+
+// Log untuk memastikan worker berjalan
+console.log("Face Worker initialized");

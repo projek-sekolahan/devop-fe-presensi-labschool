@@ -218,6 +218,11 @@ else if (isNode) {
       if (workerRef.current) {
         console.log("Web Worker initialized, sending face detection request...");
         console.log("Image data URL:", imgRef.current.src);
+        console.log("Image data URL length:", imgRef.current.src.length);
+        console.log("Image data URL type:", typeof imgRef.current.src);
+        if (imgRef.current.src.length < 1000) {
+          console.error("Invalid image data URL");
+        }
         workerRef.current.postMessage({
           type: "DETECT_FACE",
           payload: {
