@@ -88,7 +88,7 @@ const detectFace = async ({ image, descriptor }) => {
 // Tangani pesan yang diterima oleh Web Worker
 onmessage = async (event) => {
   const { type, payload } = event.data;
-
+  console.log("Message received in Web Worker:", event.data);
   // Validasi struktur pesan
   if (!event.data || typeof event.data !== "object") {
     console.error("Invalid message format received from Web Worker:", event.data);
