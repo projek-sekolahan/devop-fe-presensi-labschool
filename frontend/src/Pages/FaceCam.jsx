@@ -96,13 +96,14 @@ export default function FaceCam() {
 
     imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
     console.log("Photo captured successfully.", imgRef.current);
+    console.log("Photo captured data.",imgRef.current.src);
   };
 
   const detectFace = async () => {
     console.log("Starting face detection...");
+    setIsLoading(true);
     const modal = document.getElementById("my_modal_1");
     if (modal) modal.close();
-    setIsLoading(true);
     loading("Loading", "Starting face detection and registration...");
 
     const userData = parseJwt(localStorage.getItem("token"));
