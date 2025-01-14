@@ -17,6 +17,7 @@ import AttendanceSummary from "../Components/AttendanceSummary";
 import AttendanceNavigation from "../Components/AttendanceNavigation";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
+import "../App.css";
 
 // Constants for keys
 const AUTH_KEYS = ["AUTH_KEY", "token"];
