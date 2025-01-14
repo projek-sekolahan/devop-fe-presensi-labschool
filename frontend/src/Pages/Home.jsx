@@ -6,11 +6,15 @@ import {
   addDefaultKeys,
 } from "../utils/utils";
 import apiXML from "../utils/apiXML.js";
-import { Link } from "react-router-dom";
+/* import { Link } from "react-router-dom";
 import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { Carousel } from "flowbite-react";
-import SideMenu from "/src/Components/SideMenu";
+import { Carousel } from "flowbite-react"; */
+import SideMenu from "../Components/SideMenu";
+import Header from "../Components/Header";
+import NewsCarousel from "../Components/NewsCarousel";
+import AttendanceSummary from "../Components/AttendanceSummary";
+import AttendanceNavigation from "../Components/AttendanceNavigation";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
 
@@ -31,11 +35,10 @@ const getCombinedValues = (keys) => {
 };
 
 const Home = () => {
-  const [show, setShow] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [intervalId, setIntervalId] = useState(null);
-  const closeMenu = () => setShow(false);
   
   // Fetch user data
   const fetchUserData = useCallback(async () => {
@@ -84,7 +87,7 @@ const Home = () => {
       .then((response) => {
         const result = JSON.parse(response);
         const datares = parseJwt(result.data.token);
-
+        console.log("data token fcm regist", datares)
         Cookies.set("csrf", result.csrfHash);
         localStorage.setItem("token_registered", "done");
       })
@@ -156,123 +159,18 @@ const Home = () => {
   // Render komponen utama
   return (
 
-<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
-  {/* Background Elipse */}
-  <img
-    src="/frontend/Icons/elipse.svg"
-    alt="elipse"
-    className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
-  />
-  
-  <div id="core" className="relative z-[2] size-full">
-    {/* Header Navigation */}
-    <nav className="flex items-center justify-between">
-      <button onClick={() => setShow(true)}>
-        <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
-      </button>
-      <div id="profile" className="flex items-center gap-3">
-      <Link to="/notifikasi">
-          <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
-        </Link>
-        <Link to="/profile">
-          <img
-            src={userData?.img_location || "/frontend/Icons/profile.svg"}
-            alt="photo_profile"
-            id="photo_profile"
-            className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
-          />
-        </Link>
+    <div className="main-layout">
+      <img src="/frontend/Icons/elipse.svg" alt="background" className="background-elipse" />
+      <div id="core" className="content">
+        <Header setShowMenu={setShowMenu} userData={userData} />
+        <main>
+          <NewsCarousel newsItems={newsItems} />
+          <AttendanceSummary userData={userData} />
+          <AttendanceNavigation />
+        </main>
       </div>
-    </nav>
-
-    {/* Main Content */}
-    <main className="mt-8 h-fit">
-      {/* News Carousel */}
-      <div id="news" className="relative w-full h-fit mb-4">
-        <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
-          {newsItems.map(({ src, title }, index) => (
-            <div key={index} className="relative">
-              <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
-              <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
-                {title}
-              </p>
-            </div>
-          ))}
-        </Carousel>
-      </div>
-
-      {/* Rekapan dan Navigasi Presensi */}
-      <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-6">
-        {/* Rekapan Presensi */}
-        <div className="flex flex-col items-center justify-center">
-          <h3 className="text-primary-md font-bold text-base mb-4">
-            Rekapan Presensi (Bulan Ini)
-          </h3>
-          <div className="flex justify-center w-full px-6 gap-6">
-            {["hadir", "tidak_hadir", "terlambat_pulang_cepat"].map((key, index) => (
-              <div
-                key={key}
-                className="w-24 flex flex-col items-center gap-2"
-              >
-                <div
-                  className={`size-[50px] rounded-full p-[10px] flex items-center justify-center ${
-                    index === 0
-                      ? "bg-secondary-green"
-                      : index === 1
-                      ? "bg-secondary-yellow"
-                      : "bg-secondary-red"
-                  }`}
-                >
-                  <p className="text-center text-lg font-bold">
-                    {userData?.[key] || 0}
-                  </p>
-                </div>
-                <h4 className="text-center text-xs font-bold text-primary-md mt-2">
-                  {index === 0 ? "Hadir" : index === 1 ? "Izin / Sakit" : "Terlambat"}
-                </h4>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Navigasi Presensi */}
-        <div className="flex flex-col gap-3">
-          {[
-            {
-              id: "presensi",
-              link: localStorage.getItem("group_id") === "4" ? "/presensi" : "/presensi/staff",
-              icon: <FaPersonCircleCheck className="size-6" />, 
-              text: "Presensi",
-            },
-            {
-              id: "riwayat_presensi",
-              link: "/riwayat",
-              icon: <FaCalendarCheck className="size-6" />,
-              text: "Riwayat Presensi",
-            },
-          ].map(({ id, link, icon, text }) => (
-            <Link
-              key={id}
-              id={id}
-              to={link}
-              className="flex items-center gap-3 px-6 py-3 bg-white border border-primary-low rounded-full shadow-md hover:shadow-lg hover:border-primary-md transition-all duration-300"
-            >
-              <div className="size-10 bg-primary-md text-white rounded-full flex justify-center items-center shadow-sm">
-                {icon}
-              </div>
-              <p className="text-primary-md font-semibold text-sm">{text}</p>
-              <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
-            </Link>
-          ))}
-        </div>
-      </div>
-    </main>
-  </div>
-
-  {/* Side Menu */}
-  <SideMenu show={show} userData={userData} closeMenu={closeMenu} intervalId={intervalId}/>
-</div>
-
+      <SideMenu show={showMenu} userData={userData} closeMenu={() => setShowMenu(false)} />
+    </div>
   );
 };
 export default Home;

@@ -1,4 +1,3 @@
-// import React from "react";
 import PropTypes from "prop-types";
 import { FaUser, FaUserTie, FaChalkboardTeacher } from "react-icons/fa";
 

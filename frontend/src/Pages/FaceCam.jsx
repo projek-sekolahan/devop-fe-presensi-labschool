@@ -229,7 +229,7 @@ export default function FaceCam() {
                 <div>
                     <p className="font-medium text-base">
                         {" "}
-                        Tekan tombol untuk melakukan presensi{" "}
+                        Tekan Tombol{" "}
                     </p>
                 </div>
                 <button
@@ -270,7 +270,7 @@ export default function FaceCam() {
                         </div>
                     </div>
                 </dialog>
-                <small>Pastikan pencahayaan memadai agar proses dapat berjalan lancar</small>
+                <small>Pastikan Cahaya Terang</small>
             </div>
         </div>
     );

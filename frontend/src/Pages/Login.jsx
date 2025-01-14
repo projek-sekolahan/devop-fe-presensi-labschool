@@ -9,7 +9,6 @@ import {
   getFormData,
   alertMessage,
   loading,
-  handleSessionError,
   addDefaultKeys,
 } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
@@ -34,8 +33,12 @@ const processLogin = async (formData, tokenKey) => {
 
     return loginResponse.data;
   } catch (error) {
-    handleSessionError(error, "/login");
-    throw error; // Ensure error is propagated
+    alertMessage(
+        loginResponse.title,
+        loginResponse.message,
+        "error",
+        () => window.location.replace("/login")
+    );
   }
 };
 
@@ -106,9 +109,14 @@ export default function Login({ isOpen, onToggle }) {
                     () => window.location.replace("/home")
                 );
             }
-        } catch (error) { alert(error)
+        } catch (error) {
         // Handle error during login
-        console.error("Login error:", error);
+            alertMessage(
+                loginResponse.title,
+                loginResponse.message,
+                "error",
+                () => window.location.replace("/login")
+            );
         }
     };
 
