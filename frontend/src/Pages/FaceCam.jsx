@@ -215,16 +215,23 @@ else if (isNode) {
       const userData = parseJwt(localStorage.getItem("token"));
       const descriptor = new Float32Array(userData.facecam_id.split(", "));
       console.log("Data Found.", descriptor);  
-      workerRef.current.postMessage({
-        type: "DETECT_FACE",
-        payload: {
-          image: imgRef.current.src,
-          descriptor: Array.from(descriptor),
-        },
-      });
+      if (workerRef.current) {
+        console.log("Web Worker initialized, sending face detection request...");
+        console.log("Image data URL:", imgRef.current.src);
+        workerRef.current.postMessage({
+          type: "DETECT_FACE",
+          payload: {
+            image: imgRef.current.src,
+            descriptor: Array.from(descriptor),
+          },
+        });
+      } else {
+        console.error("Web Worker not initialized");
+      }
     };
   
     const handleFaceDetection = (result) => {
+      console.log("Handle face detection result:", result);
       const { success, distance, descriptor } = result;
   
       if (success && distance <= 0.6) {
