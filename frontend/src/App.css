@@ -605,6 +605,7 @@ main::-webkit-scrollbar-track {
 /* Main Content */
 .home-form-container {
   position: absolute;
+  background-color: #ff7f27;
   bottom: 0;
   width: 100%;
   height: 75%; /* 3/4 layar */

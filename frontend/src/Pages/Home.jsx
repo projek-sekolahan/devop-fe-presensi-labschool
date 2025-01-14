@@ -13,7 +13,7 @@ import { Carousel } from "flowbite-react";
 import SideMenu from "/src/Components/SideMenu";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
-import "../App.css";
+// import "../App.css";
 
 // Constants for keys
 const AUTH_KEYS = ["AUTH_KEY", "token"];
@@ -159,8 +159,7 @@ const Home = () => {
 
 <div className="home-container">
   {/* Background Color */}
-  <div className="background-color"></div>
-
+  
   {/* Header Navigation */}
   <header className="header-navigation">
     <h1>Header Navigation</h1>
