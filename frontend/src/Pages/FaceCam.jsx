@@ -258,7 +258,33 @@ else if (isNode) {
       setIsLoading(false);
     };
   
-    const submitPresence = (faceDescriptor) => {
+    const submitPresence = async (faceDescriptor, canvasRef, state) => {
+
+      if (!faceDescriptor || !Array.isArray(faceDescriptor) || faceDescriptor.length === 0) {
+        console.error("Invalid face descriptor provided.");
+        return;
+      }
+    
+      if (!canvasRef.current) {
+        console.error("Canvas reference is null.");
+        return;
+      }
+    
+      const compressImage = (dataURL, quality = 0.8) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = dataURL;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+        });
+      };
+
       const keys = [
         "AUTH_KEY",
         "token",
@@ -290,14 +316,53 @@ else if (isNode) {
             ];
         }
 
-        values.push(
+        try {
+          const compressedImage = await compressImage(canvasRef.current.toDataURL());
+          values.push(
+            faceDescriptor.join(", "),
+            compressedImage,
+            localStorage.getItem("devop-sso"),
+            Cookies.get("csrf")
+          );
+      
+          console.log("Values initialized:", values);
+          console.log("Submitting presence data...");
+      
+          const response = await apiXML.presensiPost(
+            "process",
+            localStorage.getItem("AUTH_KEY"),
+            getFormData(combinedKeys, values)
+          );
+      
+          console.log("Presence data submitted successfully:", response);
+          Swal.close();
+          setIsLoading(false);
+          const parsedToken = parseJwt(res.data.token);
+          alertMessage(parsedToken.title, parsedToken.message, parsedToken.info, () => {
+            window.location.replace("/home");
+          });
+        } catch (err) {
+          console.error("Failed to submit presence data:", err);
+          saveOffline(values);
+          setIsLoading(false);
+          handleSessionError(err, "/facecam");
+        }
+      
+        const saveOffline = (data) => {
+          const offlineData = JSON.parse(localStorage.getItem("offlinePresence") || "[]");
+          offlineData.push(data);
+          localStorage.setItem("offlinePresence", JSON.stringify(offlineData));
+          console.log("Presence data saved offline:", data);
+        };
+
+        /* values.push(
             faceDescriptor.join(", "),
             `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf")
-        );
+        ); */
 
-      console.log("Values initialized:", values);
+      /* console.log("Values initialized:", values);
       console.log("Submitting presence data...");
       apiXML
         .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
@@ -314,7 +379,7 @@ else if (isNode) {
           console.error("Presence submission error:", err);
           setIsLoading(false);
           handleSessionError(err, "/facecam");
-        });
+        }); */
     };
 
     return (
