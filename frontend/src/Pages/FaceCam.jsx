@@ -75,7 +75,7 @@ if (isBrowser) {
       console.log("Web Worker supported in this browser.");
 
       // Verifikasi file worker.js
-      const workerPath = new URL("'https://smartapps.smalabschoolunesa1.sch.id/faceWorker.js'", import.meta.url).href;
+      const workerPath = new URL("/faceWorker.js", import.meta.url).href;
       checkPath(workerPath).then(() => {
         workerRef.current = new Worker(workerPath, { type: "module" });
         console.log("Web Worker initialized.");
