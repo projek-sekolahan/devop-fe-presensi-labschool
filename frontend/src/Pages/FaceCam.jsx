@@ -110,7 +110,7 @@ export default function FaceCam() {
     console.log("Data Found.", descriptor);
 
     try {
-      const detectionResult = await detectSingleFace(imgRef.current.src);
+      const detectionResult = await detectSingleFace(imgRef.current);
 
       if (detectionResult) {
         console.log("Face detected with result:", detectionResult);
