@@ -85,6 +85,11 @@ const detectFace = async ({ image, descriptor }) => {
   }
 };
 
+// Tangani error secara global di Web Worker
+self.onerror = (error) => {
+  console.error("Web Worker error:", error);
+};
+
 // Tangani pesan yang diterima oleh Web Worker
 onmessage = async (event) => {
   const { type, payload } = event.data;

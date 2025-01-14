@@ -19,7 +19,7 @@ export default function FaceCam() {
     const imgRef = useRef();
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
-    const workerRef = useRef(); // Ref for Web Worker
+    const workerRef = useRef(null); // Ref for Web Worker
   
     useEffect(() => {
       console.log("useEffect triggered"); // Log awal saat useEffect dipanggil
@@ -103,6 +103,9 @@ if (isBrowser) {
           } else {
             console.warn("Unknown message type received:", type);
           }
+        };
+        workerRef.current.onerror = (e) => {
+          console.error("Worker error:", e.message);
         };
       }).catch((error) => {
         console.error("Failed to verify Web Worker path:", error);
@@ -220,6 +223,8 @@ else if (isNode) {
         console.log("Image data URL:", imgRef.current.src);
         console.log("Image data URL length:", imgRef.current.src.length);
         console.log("Image data URL type:", typeof imgRef.current.src);
+        console.log("Sending message with image:", imgRef.current.src);
+        console.log("Sending message with descriptor:", Array.from(descriptor));
         if (imgRef.current.src.length < 1000) {
           console.error("Invalid image data URL");
         }
