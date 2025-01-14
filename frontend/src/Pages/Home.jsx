@@ -159,7 +159,6 @@ const Home = () => {
 
   // Render komponen utama
   return (
-
     <div className="main-layout">
       <img src="/frontend/Icons/elipse.svg" alt="background" className="background-elipse" />
       <div id="core" className="content">

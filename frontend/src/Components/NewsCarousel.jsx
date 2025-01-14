@@ -1,16 +1,16 @@
+import { Carousel } from "flowbite-react";
+
 const NewsCarousel = ({ newsItems }) => {
   return (
-    <div id="news-carousel" className="carousel-container">
-      {newsItems.length > 0 ? (
-        newsItems.map(({ src, title }, index) => (
+    <div id="news" className="news-carousel">
+      <Carousel slideInterval={3000} indicators={true}>
+        {newsItems.map(({ src, title }, index) => (
           <div key={index} className="carousel-slide">
-            <img src={src} alt={`Slide ${index}`} className="carousel-image" />
+            <img src={src} alt={`slide_${index + 1}`} className="carousel-image" />
             <p className="carousel-caption">{title}</p>
           </div>
-        ))
-      ) : (
-        <p>No news available</p>
-      )}
+        ))}
+      </Carousel>
     </div>
   );
 };
