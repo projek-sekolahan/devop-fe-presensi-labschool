@@ -1,5 +1,3 @@
-import "../App.css";
-
 const AttendanceSummary = ({ userData }) => {
   const keys = ["hadir", "tidak_hadir", "terlambat_pulang_cepat"];
   const labels = ["Hadir", "Izin / Sakit", "Terlambat"];

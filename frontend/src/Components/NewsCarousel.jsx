@@ -1,5 +1,3 @@
-import "../App.css";
-
 const NewsCarousel = ({ newsItems }) => {
   return (
     <div id="news-carousel" className="carousel-container">
