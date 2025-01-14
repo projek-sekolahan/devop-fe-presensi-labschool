@@ -41,73 +41,105 @@ export default function FaceCam() {
     
       initialize();
     
-      // Initialize Web Worker
-      console.log("Checking environment...");
-    
-      // Pengecekan apakah di dalam Browser atau Node.js
-      const isBrowser =
-        typeof window !== "undefined" && typeof window.document !== "undefined";
-      const isNode =
-        typeof global !== "undefined" && typeof global.process !== "undefined";
-    
-      console.log("isBrowser:", isBrowser);
-      console.log("isNode:", isNode);
-    
-      // Jika di dalam Browser
-      if (isBrowser) {
-        console.log("Environment detected: Browser");
-        try {
-          // Pengecekan apakah Web Worker didukung di browser
-          if (typeof Worker !== "undefined") {
-            console.log("Web Worker supported in this browser.");
-            // Inisialisasi Web Worker di browser
-            workerRef.current = new Worker(
-              new URL("/faceWorker.js", import.meta.url)
-            );
-            console.log("Web Worker initialized.");
-    
-            workerRef.current.onmessage = (event) => {
-              console.log("Message received from Web Worker:", event.data);
-              const { type, payload } = event.data;
-              if (type === "FACE_DETECTED") {
-                console.log("Face detected with payload:", payload);
-                handleFaceDetection(payload);
-              } else if (type === "ERROR") {
-                console.error("Worker error:", payload);
-              }
-            };
-          } else {
-            console.error("Web Worker is not supported in this browser.");
-          }
-        } catch (error) {
-          console.error("Error initializing Web Worker:", error);
-        }
-      }
-      // Jika di dalam Node.js
-      else if (isNode) {
-        console.log("Environment detected: Node.js");
-        const { Worker } = require("worker_threads");
-        try {
-          console.log("Initializing worker in Node.js...");
-          const worker = new Worker("/faceWorker.js");
-          console.log("Node.js Worker initialized.");
-    
-          worker.on("message", (message) => {
-            console.log("Message received from Node.js Worker:", message);
-            const { type, payload } = message;
+// Initialize Web Worker
+console.log("Checking environment...");
+
+// Pengecekan apakah di dalam Browser atau Node.js
+const isBrowser =
+  typeof window !== "undefined" && typeof window.document !== "undefined";
+const isNode =
+  typeof global !== "undefined" && typeof global.process !== "undefined";
+
+console.log("isBrowser:", isBrowser);
+console.log("isNode:", isNode);
+
+// Fungsi untuk memeriksa keberadaan file
+const checkPath = async (url) => {
+  try {
+    console.log(`Checking file path: ${url}`);
+    const response = await fetch(url, { method: "HEAD" }); // Cek keberadaan file tanpa mendownload
+    if (!response.ok) {
+      throw new Error(`File not found at ${url} (Status: ${response.status})`);
+    }
+    console.log(`File path verified: ${url}`);
+  } catch (error) {
+    console.error(`Error verifying file path: ${url}`, error);
+    throw error; // Lempar error agar dapat ditangani lebih lanjut
+  }
+};
+
+// Jika di dalam Browser
+if (isBrowser) {
+  console.log("Environment detected: Browser");
+  try {
+    // Pengecekan apakah Web Worker didukung di browser
+    if (typeof Worker !== "undefined") {
+      console.log("Web Worker supported in this browser.");
+
+      // Verifikasi path file faceWorker.js sebelum inisialisasi
+      const workerPath = new URL("/faceWorker.js", import.meta.url).href;
+      checkPath(workerPath)
+        .then(() => {
+          // Inisialisasi Web Worker di browser setelah path diverifikasi
+          workerRef.current = new Worker(workerPath);
+          console.log("Web Worker initialized.");
+
+          workerRef.current.onmessage = (event) => {
+            console.log("Message received from Web Worker:", event.data);
+            const { type, payload } = event.data;
             if (type === "FACE_DETECTED") {
               console.log("Face detected with payload:", payload);
               handleFaceDetection(payload);
             } else if (type === "ERROR") {
               console.error("Worker error:", payload);
             }
-          });
-        } catch (error) {
-          console.error("Error initializing Worker in Node.js:", error);
-        }
-      } else {
-        console.error("Unknown environment. Unable to initialize Web Worker.");
-      }
+          };
+        })
+        .catch((error) => {
+          console.error("Failed to verify Web Worker path:", error);
+        });
+    } else {
+      console.error("Web Worker is not supported in this browser.");
+    }
+  } catch (error) {
+    console.error("Error initializing Web Worker:", error);
+  }
+}
+// Jika di dalam Node.js
+else if (isNode) {
+  console.log("Environment detected: Node.js");
+  const { Worker } = require("worker_threads");
+  try {
+    console.log("Initializing worker in Node.js...");
+    
+    // Verifikasi path file faceWorker.js sebelum inisialisasi
+    const workerPath = "/faceWorker.js";
+    checkPath(workerPath)
+      .then(() => {
+        // Inisialisasi worker di Node.js setelah path diverifikasi
+        const worker = new Worker(workerPath);
+        console.log("Node.js Worker initialized.");
+
+        worker.on("message", (message) => {
+          console.log("Message received from Node.js Worker:", message);
+          const { type, payload } = message;
+          if (type === "FACE_DETECTED") {
+            console.log("Face detected with payload:", payload);
+            handleFaceDetection(payload);
+          } else if (type === "ERROR") {
+            console.error("Worker error:", payload);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to verify Web Worker path in Node.js:", error);
+      });
+  } catch (error) {
+    console.error("Error initializing Worker in Node.js:", error);
+  }
+} else {
+  console.error("Unknown environment. Unable to initialize Web Worker.");
+}
     
       return () => {
         console.log("Cleaning up Web Worker...");

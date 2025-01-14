@@ -1,6 +1,28 @@
-import { nets, fetchImage } from "face-api.js"; // Hanya impor bagian yang dibutuhkan
+import { env, nets, fetchImage } from "face-api.js";
 
 let modelsLoaded = false;
+
+// Override environment detection untuk mendukung Web Worker
+env.setEnv({
+  isBrowser: true, // Paksa mode browser
+  isNodejs: false, // Nonaktifkan mode Node.js
+  getEnv: () => "browser",
+});
+
+// Fungsi untuk memeriksa keberadaan file model
+const checkModelPath = async (url) => {
+  try {
+    console.log(`Checking model path: ${url}`);
+    const response = await fetch(url, { method: "HEAD" }); // Cek keberadaan file tanpa mendownload
+    if (!response.ok) {
+      throw new Error(`Model not found at ${url} (Status: ${response.status})`);
+    }
+    console.log(`Model path verified: ${url}`);
+  } catch (error) {
+    console.error(`Error verifying model path: ${url}`, error);
+    throw error; // Lempar error agar dapat ditangani lebih lanjut
+  }
+};
 
 // Fungsi untuk memuat model
 const loadFaceModels = async () => {
@@ -9,6 +31,12 @@ const loadFaceModels = async () => {
     const MODEL_URL = "/frontend/models";
 
     try {
+      // Verifikasi path model sebelum memuat
+      await checkModelPath(`${MODEL_URL}/tiny_face_detector_model-weights_manifest.json`);
+      await checkModelPath(`${MODEL_URL}/face_landmark_68_model-weights_manifest.json`);
+      await checkModelPath(`${MODEL_URL}/face_recognition_model-weights_manifest.json`);
+
+      // Muat model face-api.js
       await nets.tinyFaceDetector.loadFromUri(MODEL_URL);
       console.log("tinyFaceDetector loaded");
 
@@ -22,7 +50,7 @@ const loadFaceModels = async () => {
       modelsLoaded = true;
     } catch (error) {
       console.error("Error loading models in Web Worker:", error);
-      postMessage({ type: "ERROR", payload: error.message });
+      postMessage({ type: "ERROR", payload: `Model loading failed: ${error.message}` });
     }
   }
 };
@@ -30,22 +58,29 @@ const loadFaceModels = async () => {
 // Fungsi untuk mendeteksi wajah
 const detectFace = async ({ image, descriptor }) => {
   try {
+    console.log("Fetching image for face detection...");
     const img = await fetchImage(image);
+
+    console.log("Running face detection...");
     const faceData = await nets.tinyFaceDetector
       .detectSingleFace(img)
       .withFaceLandmarks()
       .withFaceDescriptor();
 
     if (faceData) {
+      console.log("Face detected, calculating distance...");
       const distance = nets.euclideanDistance(descriptor, faceData.descriptor);
+
       postMessage({
         type: "FACE_DETECTED",
         payload: { success: true, distance, descriptor: faceData.descriptor },
       });
     } else {
+      console.log("No face detected.");
       postMessage({ type: "FACE_DETECTED", payload: { success: false } });
     }
   } catch (error) {
+    console.error("Error during face detection:", error);
     postMessage({ type: "ERROR", payload: error.message });
   }
 };
@@ -53,14 +88,20 @@ const detectFace = async ({ image, descriptor }) => {
 // Tangani pesan yang diterima oleh Web Worker
 onmessage = async (event) => {
   const { type, payload } = event.data;
+
   if (type === "DETECT_FACE") {
     try {
+      console.log("Received DETECT_FACE message, initializing...");
       if (!modelsLoaded) {
         await loadFaceModels();
       }
       await detectFace(payload);
     } catch (error) {
+      console.error("Error handling DETECT_FACE message:", error);
       postMessage({ type: "ERROR", payload: error.message });
     }
+  } else {
+    console.error("Unknown message type received in Web Worker:", type);
+    postMessage({ type: "ERROR", payload: `Unknown message type: ${type}` });
   }
 };
