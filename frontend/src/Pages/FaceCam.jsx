@@ -105,40 +105,53 @@ export default function FaceCam() {
     const modal = document.getElementById("my_modal_1");
     if (modal) modal.close();
     loading("Loading", "Starting face detection and registration...");
-
+  
     const userData = parseJwt(localStorage.getItem("token"));
     const descriptor = new Float32Array(userData.facecam_id.split(", "));
     console.log("Data Found.", descriptor);
-
+  
     try {
       const detectionResult = await detectSingleFace(imgRef.current);
-      console.log("result detectetion", detectionResult)
+      console.log("Result detection:", detectionResult);
+  
       if (detectionResult) {
         const isMatched = Array.from(facecamCache.values()).some(
-          (descriptor) =>
-            faceapi.euclideanDistance(descriptor, faceData.descriptor) <= 0.6
+          (cacheDescriptor) =>
+            faceapi.euclideanDistance(cacheDescriptor, detectionResult.descriptor) <= 0.6
         );
+  
         console.log("Face detected with result:", isMatched);
-        handleFaceDetection({
-          success: true,
-          distance: detectionResult.distance,
-          descriptor: detectionResult.descriptor,
-        });
+  
+        if (isMatched) {
+          handleFaceDetection({
+            success: true,
+            distance: faceapi.euclideanDistance(descriptor, detectionResult.descriptor),
+            descriptor: detectionResult.descriptor,
+          });
+        } else {
+          console.warn("No face registered.");
+          handleFaceDetection({ success: false });
+        }
       } else {
         console.warn("No face detected.");
         handleFaceDetection({ success: false });
       }
     } catch (error) {
       console.error("Face detection error:", error);
+      alertMessage(
+        "Face Detection Error",
+        "Wajah tidak terdaftar, harap ulangi proses",
+        "error"
+      );
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   const handleFaceDetection = (result) => {
     console.log("Handle face detection result:", result);
     const { success, distance, descriptor } = result;
-
+  
     if (success && distance <= 0.6) {
       console.log("Face matched successfully.");
       submitPresence(descriptor);
@@ -150,7 +163,7 @@ export default function FaceCam() {
         "error"
       );
     }
-  };
+  };  
 
   const submitPresence = (faceDescriptor) => {
     const keys = [
