@@ -122,6 +122,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
         imgRef.current.src = image_data_url;
 
         console.log("Photo captured successfully.",imgRef.current);
+        console.log("Photo captured data.",imgRef.current.src);
     }
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
@@ -132,23 +133,24 @@ export default function RegisterFace({ isOpen, onToggle }) {
         loading("Loading", "Starting face detection and registration...");
         console.log("Starting face detection and registration...");
     
-        const maxAttempts = 10;
+        // const maxAttempts = 10;
         let attempts = 0;
         
         try {
             const attemptMatch = async () => {
                 console.log(`Attempt ${attempts + 1} to detect face...`);
     
-                if (attempts >= maxAttempts) {
+                /* if (attempts >= maxAttempts) {
                     setIsLoading(false);
                     console.error("Max attempts reached. Face detection failed.");
                     alertMessage(
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
                         "error",
+                        () => onToggle("facereg")
                     );
                     return;
-                }
+                } */
     
                 attempts++;
                 const faceData = await detectSingleFace(imgRef.current);
@@ -159,6 +161,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                         "Deteksi Gagal",
                         "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
                         "error",
+                        () => onToggle("facereg")
                     );
                     return;
                 }
