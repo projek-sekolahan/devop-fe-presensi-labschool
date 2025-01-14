@@ -78,10 +78,11 @@ if (isBrowser) {
 
       // Verifikasi path file faceWorker.js sebelum inisialisasi
       const workerPath = new URL("/faceWorker.js", import.meta.url).href;
+      console.log("Worker Path:", workerPath);
       checkPath(workerPath)
         .then(() => {
           // Inisialisasi Web Worker di browser setelah path diverifikasi
-          workerRef.current = new new Worker(workerPath, { type: "module" });
+          workerRef.current = new Worker(workerPath, { type: "module" }); // Koreksi: Hanya satu `new`
           console.log("Web Worker initialized.");
 
           workerRef.current.onmessage = (event) => {
@@ -114,6 +115,7 @@ else if (isNode) {
     
     // Verifikasi path file faceWorker.js sebelum inisialisasi
     const workerPath = "/faceWorker.js";
+    console.log("Worker Path:", workerPath);
     checkPath(workerPath)
       .then(() => {
         // Inisialisasi worker di Node.js setelah path diverifikasi
