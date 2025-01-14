@@ -55,16 +55,15 @@ console.log("isNode:", isNode);
 
 // Fungsi untuk memeriksa keberadaan file
 const checkPath = async (url) => {
+  console.log(`Checking file path: ${url}`);
   try {
-    console.log(`Checking file path: ${url}`);
-    const response = await fetch(url, { method: "HEAD" }); // Cek keberadaan file tanpa mendownload
+    const response = await fetch(url, { method: "HEAD" });
     if (!response.ok) {
       throw new Error(`File not found at ${url} (Status: ${response.status})`);
     }
     console.log(`File path verified: ${url}`);
   } catch (error) {
     console.error(`Error verifying file path: ${url}`, error);
-    throw error; // Lempar error agar dapat ditangani lebih lanjut
   }
 };
 
@@ -72,33 +71,42 @@ const checkPath = async (url) => {
 if (isBrowser) {
   console.log("Environment detected: Browser");
   try {
-    // Pengecekan apakah Web Worker didukung di browser
     if (typeof Worker !== "undefined") {
       console.log("Web Worker supported in this browser.");
 
-      // Verifikasi path file faceWorker.js sebelum inisialisasi
+      // Verifikasi file worker.js
       const workerPath = new URL("/faceWorker.js", import.meta.url).href;
-      console.log("Worker Path:", workerPath);
-      checkPath(workerPath)
-        .then(() => {
-          // Inisialisasi Web Worker di browser setelah path diverifikasi
-          workerRef.current = new Worker(workerPath, { type: "module" }); // Koreksi: Hanya satu `new`
-          console.log("Web Worker initialized.");
+      checkPath(workerPath).then(() => {
+        workerRef.current = new Worker(workerPath, { type: "module" });
+        console.log("Web Worker initialized.");
 
-          workerRef.current.onmessage = (event) => {
-            console.log("Message received from Web Worker:", event.data);
-            const { type, payload } = event.data;
-            if (type === "FACE_DETECTED") {
-              console.log("Face detected with payload:", payload);
-              handleFaceDetection(payload);
-            } else if (type === "ERROR") {
-              console.error("Worker error:", payload);
-            }
-          };
-        })
-        .catch((error) => {
-          console.error("Failed to verify Web Worker path:", error);
-        });
+        workerRef.current.onmessage = (event) => {
+          console.log("Message received from Web Worker:", event.data);
+
+          // Validasi data yang diterima
+          if (!event.data || typeof event.data !== "object") {
+            console.error("Invalid message format received from Web Worker:", event.data);
+            return;
+          }
+
+          const { type, payload } = event.data;
+          if (!type || !payload) {
+            console.error("Missing 'type' or 'payload' in message:", event.data);
+            return;
+          }
+
+          if (type === "FACE_DETECTED") {
+            console.log("Face detected with payload:", payload);
+            handleFaceDetection(payload);
+          } else if (type === "ERROR") {
+            console.error("Worker error:", payload);
+          } else {
+            console.warn("Unknown message type received:", type);
+          }
+        };
+      }).catch((error) => {
+        console.error("Failed to verify Web Worker path:", error);
+      });
     } else {
       console.error("Web Worker is not supported in this browser.");
     }
@@ -110,32 +118,26 @@ if (isBrowser) {
 else if (isNode) {
   console.log("Environment detected: Node.js");
   const { Worker } = require("worker_threads");
-  try {
-    console.log("Initializing worker in Node.js...");
-    
-    // Verifikasi path file faceWorker.js sebelum inisialisasi
-    const workerPath = "/faceWorker.js";
-    console.log("Worker Path:", workerPath);
-    checkPath(workerPath)
-      .then(() => {
-        // Inisialisasi worker di Node.js setelah path diverifikasi
-        const worker = new Worker(workerPath);
-        console.log("Node.js Worker initialized.");
 
-        worker.on("message", (message) => {
-          console.log("Message received from Node.js Worker:", message);
-          const { type, payload } = message;
-          if (type === "FACE_DETECTED") {
-            console.log("Face detected with payload:", payload);
-            handleFaceDetection(payload);
-          } else if (type === "ERROR") {
-            console.error("Worker error:", payload);
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("Failed to verify Web Worker path in Node.js:", error);
+  try {
+    const workerPath = "/faceWorker.js";
+    checkPath(workerPath).then(() => {
+      const worker = new Worker(workerPath);
+      console.log("Node.js Worker initialized.");
+
+      worker.on("message", (message) => {
+        console.log("Message received from Node.js Worker:", message);
+        const { type, payload } = message;
+        if (type === "FACE_DETECTED") {
+          console.log("Face detected with payload:", payload);
+          handleFaceDetection(payload);
+        } else if (type === "ERROR") {
+          console.error("Worker error:", payload);
+        }
       });
+    }).catch((error) => {
+      console.error("Failed to verify Web Worker path in Node.js:", error);
+    });
   } catch (error) {
     console.error("Error initializing Worker in Node.js:", error);
   }

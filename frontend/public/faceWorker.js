@@ -11,17 +11,17 @@ env.setEnv({
 
 // Fungsi untuk memeriksa keberadaan file model
 const checkModelPath = async (url) => {
+  console.log(`Start checking model path: ${url}`); // Debugging log awal
   try {
-    console.log(`Checking model path: ${url}`);
     const response = await fetch(url, { method: "HEAD" }); // Cek keberadaan file tanpa mendownload
     if (!response.ok) {
       throw new Error(`Model not found at ${url} (Status: ${response.status})`);
     }
-    console.log(`Model path verified: ${url}`);
+    console.log(`Model path verified: ${url}`); // Log berhasil
   } catch (error) {
-    console.error(`Error verifying model path: ${url}`, error);
-    throw error; // Lempar error agar dapat ditangani lebih lanjut
+    console.error(`Error verifying model path: ${url}`, error); // Log error
   }
+  console.log(`Finished checking model path: ${url}`); // Debugging log akhir
 };
 
 // Fungsi untuk memuat model
@@ -88,6 +88,17 @@ const detectFace = async ({ image, descriptor }) => {
 // Tangani pesan yang diterima oleh Web Worker
 onmessage = async (event) => {
   const { type, payload } = event.data;
+
+  // Validasi struktur pesan
+  if (!event.data || typeof event.data !== "object") {
+    console.error("Invalid message format received from Web Worker:", event.data);
+    return;
+  }
+
+  if (!type || !payload) {
+    console.error("Missing 'type' or 'payload' in message:", event.data);
+    return;
+  }
 
   if (type === "DETECT_FACE") {
     try {
