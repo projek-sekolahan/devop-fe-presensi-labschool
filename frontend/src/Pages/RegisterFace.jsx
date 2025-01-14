@@ -63,7 +63,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             }
         } catch (err) {
             console.error("Error preloading facecam data:", err);
-            handleSessionError(err, "/login");
+            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
         }
     };
     
@@ -86,7 +86,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     err.name === "NotAllowedError"
                         ? "Izin akses kamera ditolak oleh pengguna"
                         : "Tidak ada kamera yang tersedia pada perangkat";
-                alertMessage("Error", errorMessage, "error", () => onToggle("facereg"));
+                alertMessage("Error", errorMessage, "error", () => onToggle("login"));
             });
     };
     
@@ -170,9 +170,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
             registerNewFace(faceData);
             setIsLoading(false);
         } catch (err) {
-            console.error("Error during face detection/registration:", err);
-            handleSessionError(err, "/login");
             setIsLoading(false);
+            console.error("Error during face detection/registration:", err);
+            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
         }
     };    
     
@@ -207,12 +207,12 @@ export default function RegisterFace({ isOpen, onToggle }) {
             } else {
                 setIsLoading(false);
                 console.error("Failed to register face.");
-                alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("facereg"));
+                alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
             }
         } catch (err) {
             setIsLoading(false);
             console.error("Error during face registration:", err);
-            handleSessionError(err, "/facereg");
+            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
         }
     };
 
