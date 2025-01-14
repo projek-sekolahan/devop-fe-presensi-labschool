@@ -112,9 +112,13 @@ export default function FaceCam() {
 
     try {
       const detectionResult = await detectSingleFace(imgRef.current);
-
+      console.log("result detectetion", detectionResult)
       if (detectionResult) {
-        console.log("Face detected with result:", detectionResult);
+        const isMatched = Array.from(facecamCache.values()).some(
+          (descriptor) =>
+            faceapi.euclideanDistance(descriptor, faceData.descriptor) <= 0.6
+        );
+        console.log("Face detected with result:", isMatched);
         handleFaceDetection({
           success: true,
           distance: detectionResult.distance,
