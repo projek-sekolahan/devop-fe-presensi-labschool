@@ -29,9 +29,10 @@ const loadFaceModels = async () => {
   if (!modelsLoaded) {
     console.log("Loading models in Web Worker...");
     const MODEL_URL = "/frontend/models";
-
+    console.log("Verifying model paths...");
     try {
       // Verifikasi path model sebelum memuat
+      console.log("Verifying model paths...");
       await checkModelPath(`${MODEL_URL}/tiny_face_detector_model-weights_manifest.json`);
       await checkModelPath(`${MODEL_URL}/face_landmark_68_model-weights_manifest.json`);
       await checkModelPath(`${MODEL_URL}/face_recognition_model-weights_manifest.json`);
@@ -86,9 +87,30 @@ const detectFace = async ({ image, descriptor }) => {
 };
 
 // Tangani error secara global di Web Worker
-self.onerror = (event) => {
-  console.error("Global Web Worker error:", event.message || "Unknown error");
-  postMessage({ type: "ERROR", payload: `Worker error: ${event.message || "Unknown error"}` });
+self.onerror = (message, source, lineno, colno, error) => {
+  console.error("Global Web Worker error:", { message, source, lineno, colno, error });
+  postMessage({
+    type: "ERROR",
+    payload: {
+      message: message || "Unknown error",
+      source,
+      lineno,
+      colno,
+      stack: error ? error.stack : "No stack trace",
+    },
+  });
+};
+
+// Tangkap error unhandled promise rejection di Web Worker
+self.onunhandledrejection = (event) => {
+  console.error("Unhandled rejection in Web Worker:", event.reason);
+  postMessage({
+    type: "ERROR",
+    payload: {
+      message: event.reason?.message || "Unhandled rejection",
+      stack: event.reason?.stack || "No stack trace",
+    },
+  });
 };
 
 // Tangani pesan yang diterima oleh Web Worker
@@ -118,8 +140,14 @@ onmessage = async (event) => {
       postMessage({ type: "ERROR", payload: error.message });
     }
   } else {
-    console.error("Unknown message type received in Web Worker:", type);
-    postMessage({ type: "ERROR", payload: `Unknown message type: ${type}` });
+    console.error("Error processing message in Web Worker:", error);
+    postMessage({
+      type: "ERROR",
+      payload: {
+        message: error.message,
+        stack: error.stack,
+      },
+    });
   }
 };
 
