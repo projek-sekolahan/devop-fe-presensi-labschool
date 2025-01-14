@@ -81,7 +81,7 @@ if (isBrowser) {
       checkPath(workerPath)
         .then(() => {
           // Inisialisasi Web Worker di browser setelah path diverifikasi
-          workerRef.current = new Worker(workerPath);
+          workerRef.current = new new Worker(workerPath, { type: "module" });
           console.log("Web Worker initialized.");
 
           workerRef.current.onmessage = (event) => {

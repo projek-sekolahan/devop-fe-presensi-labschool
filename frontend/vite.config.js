@@ -55,5 +55,14 @@ export default defineConfig({
         chunkFileNames: "assets/[name]-[hash].js",       // Penamaan file untuk chunk
       },
     },
+    // Konfigurasi untuk Web Worker
+    worker: {
+      format: "es", // Gunakan format ES Module untuk worker
+      rollupOptions: {
+        output: {
+          entryFileNames: "workers/[name]-[hash].js", // Penamaan khusus untuk worker
+        },
+      },
+    },
   },
 });
