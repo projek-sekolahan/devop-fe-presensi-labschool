@@ -70,7 +70,7 @@ export default function FaceCam() {
       NotAllowedError: "Izin akses kamera ditolak oleh pengguna",
       NotFoundError: "Tidak ada kamera yang tersedia pada perangkat",
     };
-    alertMessage("Error", messages[err.name] || "Terjadi kesalahan pada kamera", "error");
+    alertMessage("Error", messages[err.name] || "Terjadi kesalahan pada kamera", "error",() => {window.location.replace("/home")});
   };
 
   const clickPhoto = () => {
@@ -141,7 +141,8 @@ export default function FaceCam() {
       alertMessage(
         "Face Detection Error",
         "Wajah tidak terdaftar, harap ulangi proses",
-        "error"
+        "error",
+        () => {window.location.replace("/home")}
       );
     } finally {
       setIsLoading(false);
@@ -160,7 +161,8 @@ export default function FaceCam() {
       alertMessage(
         "Pencocokan Gagal",
         "Wajah tidak terdaftar, harap ulangi proses",
-        "error"
+        "error",
+        () => {window.location.replace("/home")}
       );
     }
   };  
