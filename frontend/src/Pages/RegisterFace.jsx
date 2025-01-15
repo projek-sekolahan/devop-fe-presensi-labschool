@@ -148,6 +148,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
             }
             // Ambil descriptor dari faceData
             const descriptor = faceData.descriptor || faceData;
+            console.log("Detected face:", faceData);
+            console.log("Parsed descriptor:", descriptor);
+            console.log("Validating face with token and cache...", facecamCache);
             const isMatched = validateFaceDetection(faceData, descriptor, facecamCache);
     
             if (isMatched) {
