@@ -120,25 +120,33 @@ export default function FaceCam() {
     loading("Loading", "Detecting face...");
 
       try {
-        const userData = parseJwt(localStorage.getItem("token"));
-        const descriptor = new Float32Array(userData.facecam_id.split(", "));
-        console.log("Data Descriptor Found:", descriptor);
-        
-        // Deteksi wajah dari gambar
-        const detectionResult = await detectSingleFace(imgRef.current);
-        console.log("Detection Descriptor result:", detectionResult.descriptor);
-        
-        if (!detectionResult) {
-          console.warn("No face detected.");
-          handleFaceDetection({ success: false });
+        // Validasi elemen gambar
+        if (!imgRef.current) {
+          throw new Error("imgRef.current is not set or invalid.");
         }
 
-        // Validasi dengan data token user
+        // Ambil descriptor dari token
+        const userData = parseJwt(localStorage.getItem("token"));
+        if (!userData || !userData.facecam_id) {
+          throw new Error("Invalid or missing face descriptor in token.");
+        }
+        const descriptor = new Float32Array(userData.facecam_id.split(", ").map(Number));
+        console.log("Parsed descriptor from token:", descriptor);
+
+        // Deteksi wajah dari gambar
+        const detectionResult = await detectSingleFace(imgRef.current);
+        if (!detectionResult || !detectionResult.descriptor) {
+          console.warn("No face detected or descriptor is undefined.");
+          handleFaceDetection({ success: false });
+          return;
+        }
+        console.log("Detection Descriptor result:", detectionResult.descriptor);
+
+        // Validasi dengan data token
         const distanceWithToken = faceapi.euclideanDistance(descriptor, detectionResult.descriptor);
         const isMatchedToken = distanceWithToken <= 0.6;
-    
         console.log("Token match distance:", distanceWithToken, "Matched:", isMatchedToken);
-    
+
         // Evaluasi hasil
         if (isMatchedToken) {
           console.log("Face matched successfully.");
@@ -146,7 +154,7 @@ export default function FaceCam() {
             success: true,
             distance: distanceWithToken,
             descriptor: detectionResult.descriptor,
-          });
+        });
         } else {
           console.warn("Face match failed.");
           handleFaceDetection({ success: false });

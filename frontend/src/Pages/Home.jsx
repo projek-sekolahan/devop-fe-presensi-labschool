@@ -68,7 +68,7 @@ const Home = () => {
     } catch (error) {
       handleSessionExpired({
         title: "Load Data Profile",
-        message: error?.message || "Error saat mengambil data pengguna",
+        message: "Error saat mengambil data pengguna",
       });
     } finally {
       setLoading(false);
