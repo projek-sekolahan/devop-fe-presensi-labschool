@@ -18,8 +18,15 @@ export const detectSingleFace = async (imgElement) => {
         return null;
     }
 
-    return await faceapi
-        .detectSingleFace(imgElement, new faceapi.TinyFaceDetectorOptions())
+    const options = new faceapi.TinyFaceDetectorOptions({
+        inputSize: 320,
+        scoreThreshold: 0.5,
+      });
+    
+      const detection = await faceapi
+        .detectSingleFace(imgElement, options)
         .withFaceLandmarks()
         .withFaceDescriptor();
+    
+      return detection;
 };

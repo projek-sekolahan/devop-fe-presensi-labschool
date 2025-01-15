@@ -20,24 +20,36 @@ export default function FaceCam() {
   const imgRef = useRef();
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-
+  
   useEffect(() => {
     console.log("useEffect triggered");
 
     if (!localStorage.getItem("token")) {
       console.error("Token not found, redirecting to login...");
-      window.location.replace("/login");
+      alertMessage(
+        "Login Please",
+        "Token not found, redirecting to login...",
+        "error",
+        () => {window.location.replace("/login")}
+      );
       return;
     }
 
     const initialize = async () => {
       try {
-        console.log("Starting video...");
-        startVideo();
+        console.log("Initializing FaceCam...");
         await loadFaceModels();
         console.log("Face models loaded successfully.");
+        startVideo();
+        console.log("Starting video...");
       } catch (error) {
         console.error("Initialization error:", error);
+        alertMessage(
+          "Initialization error",
+          "Failed to initialize FaceCam",
+          "error",
+          () => {window.location.replace("/login")}
+        );
       }
     };
 
@@ -45,6 +57,8 @@ export default function FaceCam() {
 
     return () => {
       console.log("Cleaning up resources...");
+      const stream = videoRef.current?.srcObject;
+      stream?.getTracks().forEach((track) => track.stop());
     };
   }, []);
 
@@ -58,6 +72,7 @@ export default function FaceCam() {
         videoRef.current.setAttribute("autoplay", "");
         videoRef.current.setAttribute("muted", "");
         videoRef.current.setAttribute("playsinline", "");
+        console.log("Camera started successfully.");
       })
       .catch((err) => {
         console.error("Camera access error:", err);
@@ -80,10 +95,8 @@ export default function FaceCam() {
 
     const canvasWidth = 400;
     const canvasHeight = 400;
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
-    const cropX = videoWidth / 2 - canvasWidth / 2;
-    const cropY = videoHeight / 2 - canvasHeight / 2;
+    const cropX = video.videoWidth / 2 - canvasWidth / 2;
+    const cropY = video.videoHeight / 2 - canvasHeight / 2;
 
     canvasRef.current.width = canvasWidth;
     canvasRef.current.height = canvasHeight;
@@ -104,49 +117,46 @@ export default function FaceCam() {
     setIsLoading(true);
     const modal = document.getElementById("my_modal_1");
     if (modal) modal.close();
-    loading("Loading", "Starting face detection and registration...");
-  
-    const userData = parseJwt(localStorage.getItem("token"));
-    const descriptor = new Float32Array(userData.facecam_id.split(", "));
-    console.log("Data Found.", descriptor);
-  
-    try {
-      const detectionResult = await detectSingleFace(imgRef.current);
-      console.log("Result detection:", detectionResult);
-  
-      if (detectionResult) {
-        const isMatched = Array.from(facecamCache.values()).some(
-          (cacheDescriptor) =>
-            faceapi.euclideanDistance(cacheDescriptor, detectionResult.descriptor) <= 0.6
-        );
-  
-        console.log("Face detected with result:", isMatched);
-  
-        if (isMatched) {
+    loading("Loading", "Detecting face...");
+
+      try {
+        const userData = parseJwt(localStorage.getItem("token"));
+        const descriptor = new Float32Array(userData.facecam_id.split(", "));
+        console.log("Data Descriptor Found:", descriptor);
+        
+        // Deteksi wajah dari gambar
+        const detectionResult = await detectSingleFace(imgRef.current);
+        console.log("Detection Descriptor result:", detectionResult.descriptor);
+        
+        if (!detectionResult) {
+          console.warn("No face detected.");
+          handleFaceDetection({ success: false });
+        }
+
+        // Validasi dengan data token user
+        const distanceWithToken = faceapi.euclideanDistance(descriptor, detectionResult.descriptor);
+        const isMatchedToken = distanceWithToken <= 0.6;
+    
+        console.log("Token match distance:", distanceWithToken, "Matched:", isMatchedToken);
+    
+        // Evaluasi hasil
+        if (isMatchedToken) {
+          console.log("Face matched successfully.");
           handleFaceDetection({
             success: true,
-            distance: faceapi.euclideanDistance(descriptor, detectionResult.descriptor),
+            distance: distanceWithToken,
             descriptor: detectionResult.descriptor,
           });
         } else {
-          console.warn("No face registered.");
+          console.warn("Face match failed.");
           handleFaceDetection({ success: false });
         }
-      } else {
-        console.warn("No face detected.");
+      } catch (error) {
+        console.error("Face detection error:", error);
         handleFaceDetection({ success: false });
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Face detection error:", error);
-      alertMessage(
-        "Face Detection Error",
-        "Wajah tidak terdaftar, harap ulangi proses",
-        "error",
-        () => {window.location.replace("/home")}
-      );
-    } finally {
-      setIsLoading(false);
-    }
   };
   
   const handleFaceDetection = (result) => {
