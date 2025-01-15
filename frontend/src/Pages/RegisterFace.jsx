@@ -1,13 +1,11 @@
 import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import * as faceapi from "face-api.js";
-import { loadFaceModels, detectSingleFace } from "../utils/faceUtils";
+import { loadFaceModels, detectSingleFace, validateFaceDetection } from "../utils/faceUtils";
 import apiXML from "../utils/apiXML";
 import {
     alertMessage,
     loading,
-    handleSessionError,
     getFormData,
 } from "../utils/utils";
 
@@ -148,11 +146,8 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 );
                 return;
             }
-    
-            const isMatched = Array.from(facecamCache.values()).some(
-                (descriptor) =>
-                    faceapi.euclideanDistance(descriptor, faceData.descriptor) <= 0.6
-            );
+
+            const isMatched = validateFaceDetection(faceData, descriptor, facecamCache);
     
             if (isMatched) {
                 setIsLoading(false);

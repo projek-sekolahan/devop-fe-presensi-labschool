@@ -11,7 +11,7 @@ import {
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { loadFaceModels, detectSingleFace } from "../utils/faceUtils";
+import { loadFaceModels, detectSingleFace, validateFaceDetection } from "../utils/faceUtils";
 
 export default function FaceCam() {
 
@@ -130,60 +130,34 @@ export default function FaceCam() {
         if (!userData || !userData.facecam_id) {
           throw new Error("Invalid or missing face descriptor in token.");
         }
-        const descriptor = new Float32Array(userData.facecam_id.split(", ").map(Number));
-        console.log("Parsed descriptor from token:", descriptor);
+        const tokenDescriptor = new Float32Array(userData.facecam_id.split(", ").map(Number));
+        console.log("Parsed descriptor from token:", tokenDescriptor);
 
         // Deteksi wajah dari gambar
         const detectionResult = await detectSingleFace(imgRef.current);
         if (!detectionResult || !detectionResult.descriptor) {
           console.warn("No face detected or descriptor is undefined.");
-          handleFaceDetection({ success: false });
+          alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
           return;
         }
         console.log("Detection Descriptor result:", detectionResult.descriptor);
 
         // Validasi dengan data token
-        const distanceWithToken = faceapi.euclideanDistance(descriptor, detectionResult.descriptor);
-        const isMatchedToken = distanceWithToken <= 0.6;
-        console.log("Token match distance:", distanceWithToken, "Matched:", isMatchedToken);
-
-        // Evaluasi hasil
-        if (isMatchedToken) {
-          console.log("Face matched successfully.");
-          handleFaceDetection({
-            success: true,
-            distance: distanceWithToken,
-            descriptor: detectionResult.descriptor,
-        });
+        const isFaceMatched = validateFaceDetection(detectionResult, tokenDescriptor);
+        if (isFaceMatched) {
+          console.log("Face match successful.");
+          submitPresence(detectionResult.descriptor);
         } else {
           console.warn("Face match failed.");
-          handleFaceDetection({ success: false });
+          alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
         }
       } catch (error) {
         console.error("Face detection error:", error);
-        handleFaceDetection({ success: false });
+        alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
       } finally {
         setIsLoading(false);
       }
   };
-  
-  const handleFaceDetection = (result) => {
-    console.log("Handle face detection result:", result);
-    const { success, distance, descriptor } = result;
-  
-    if (success && distance <= 0.6) {
-      console.log("Face matched successfully.");
-      submitPresence(descriptor);
-    } else {
-      console.warn("Face match failed. Distance too large or no match found.");
-      alertMessage(
-        "Pencocokan Gagal",
-        "Wajah tidak terdaftar, harap ulangi proses",
-        "error",
-        () => {window.location.replace("/home")}
-      );
-    }
-  };  
 
   const submitPresence = (faceDescriptor) => {
     const keys = [
