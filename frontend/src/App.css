@@ -75,15 +75,30 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
+/* Animasi untuk kelas "open" */
 .bg-image.open {
-  top: 29%; /* Pusatkan secara vertikal */
-  left: 50%; /* Pusatkan secara horizontal */
-  transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
-  width: auto; /* Gunakan ukuran asli gambar */
-  height: auto; /* Gunakan ukuran asli gambar */
-  max-width: 100%; /* Batasi agar tidak melebihi lebar layar */
-  max-height: 100%; /* Batasi agar tidak melebihi tinggi layar */
-  opacity: 1; /* Atur opacity penuh */
+  animation: moveAndShrink 0.5s ease-in-out forwards;
+}
+
+/* Keyframes untuk animasi */
+@keyframes moveAndShrink {
+  0% {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: auto;
+  }
+  100% {
+    top: 29%; /* Pusatkan secara vertikal */
+    left: 50%; /* Pusatkan secara horizontal */
+    transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
+    width: auto; /* Gunakan ukuran asli gambar */
+    height: auto; /* Gunakan ukuran asli gambar */
+    max-width: 100%; /* Batasi agar tidak melebihi lebar layar */
+    max-height: 100%; /* Batasi agar tidak melebihi tinggi layar */
+    opacity: 1; /* Atur opacity penuh */
+  }
 }
 
 /* Form Container */
