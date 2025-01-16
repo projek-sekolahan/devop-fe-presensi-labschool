@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { checkSession } from "./sessionService"; // Import fungsi checkSession
 import { getFormData, addDefaultKeys } from "../utils/utils";
+import Cookies from "js-cookie";
 
 const SESSION_KEYS = ["AUTH_KEY"];
 const getCombinedValues = (keys) => {
