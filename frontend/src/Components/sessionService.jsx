@@ -15,7 +15,7 @@ export const checkSession = async (keys,formData) => {
       return false; // Sesi tidak valid
     }
   } catch (error) {
-    console.log(parsedResponse); return false;
+    console.log(error); return false;
     console.error("Error saat memeriksa sesi:", error);
     handleSessionExpired({
       title: "Session Timeout",
