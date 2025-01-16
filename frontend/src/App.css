@@ -404,7 +404,7 @@ body {
   left: 0;
   width: 100%;
   max-width: 400px;
-  min-height: calc(100vh - 200px);
+  min-height: 550px;
   background-color: #dfe0df;
   padding: 1rem 1.5rem;
   border-top-left-radius: 0.5rem;
@@ -417,19 +417,18 @@ body {
 #rekap {
   background-color: #ffffff; /* bg-white */
   width: 100%; /* w-full */
-  height: fit-content; /* h-fit */
   border-radius: 1rem; /* rounded-2xl */
   padding: 0.75rem 1rem; /* px-4 py-3 */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
   display: flex; /* flex */
   flex-direction: column; /* flex-col */
   gap: 1.5rem; /* gap-6 */
-  margin-top: 80%;
+  margin-top: 40%;
 }
 
 #news {
   position: absolute; /* Mengapung di atas layer lainnya */
-  margin-top: 80%; /* Atur jarak dari atas */
+  margin-top: 20%; /* Atur jarak dari atas */
   width: 100%;
   z-index: 15; /* Lebih tinggi dari #fixed-main */
 }
