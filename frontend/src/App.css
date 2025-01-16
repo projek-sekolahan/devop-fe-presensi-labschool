@@ -404,7 +404,7 @@ body {
   left: 0;
   width: 100%;
   max-width: 400px;
-  min-height: 550px;
+  min-height: 400px;
   background-color: #dfe0df;
   padding: 1rem 1.5rem;
   border-top-left-radius: 0.5rem;
