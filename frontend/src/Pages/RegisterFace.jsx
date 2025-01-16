@@ -146,7 +146,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 );
                 return;
             }
-            // Ambil descriptor dari faceData
+            /* // Ambil descriptor dari faceData
             const descriptor = faceData.descriptor || faceData;
             console.log("Detected face:", faceData);
             console.log("Parsed descriptor:", descriptor);
@@ -163,7 +163,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     () => onToggle("facereg")
                 );
                 return;
-            }
+            } */
     
             console.log("Registering new face...");
             registerNewFace(faceData);
