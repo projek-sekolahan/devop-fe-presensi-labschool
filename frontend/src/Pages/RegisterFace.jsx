@@ -146,24 +146,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 );
                 return;
             }
-            /* // Ambil descriptor dari faceData
-            const descriptor = faceData.descriptor || faceData;
-            console.log("Detected face:", faceData);
-            console.log("Parsed descriptor:", descriptor);
-            console.log("Validating face with token and cache...", facecamCache);
-            const isMatched = validateFaceDetection(faceData, descriptor, facecamCache);
-    
-            if (isMatched) {
-                setIsLoading(false);
-                console.warn("Face already registered.");
-                alertMessage(
-                    "Error",
-                    "Wajah sudah terdaftar, gunakan wajah lain",
-                    "error",
-                    () => onToggle("facereg")
-                );
-                return;
-            } */
     
             console.log("Registering new face...");
             registerNewFace(faceData);

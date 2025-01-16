@@ -16,7 +16,6 @@ import Loading from "../Components/Loading";
 
 // Constants for keys
 const AUTH_KEYS = ["AUTH_KEY", "token"];
-const SESSION_KEYS = ["AUTH_KEY"];
 const TOKEN_KEYS = ["AUTH_KEY", "token_fcm", "token"];
 
 // Helper function to get combined values from localStorage and Cookies
@@ -95,38 +94,6 @@ const Home = () => {
         });
       });
   };
-
-  // Check session
-  const checkSession = useCallback(async () => {
-    try {
-      const values = getCombinedValues(SESSION_KEYS);
-      
-      const res = await apiXML.authPost(
-        "sesstime",
-        values[0],
-        getFormData(addDefaultKeys(SESSION_KEYS), values)
-      );
-      const parsedRes = JSON.parse(res);
-
-      if (parsedRes.data.title === "Your Session OK") {
-        Cookies.set("csrf", parsedRes.csrfHash);
-      } else {
-        handleSessionExpired(parsedRes.data);
-      }
-    } catch (err) {
-      handleSessionExpired({
-        title: "Session Timeout",
-        message: err?.message || "Error saat memeriksa sesi",
-      });
-    }
-  }, []);
-
-  // useEffect untuk memeriksa sesi pengguna
-  useEffect(() => {
-    const id = setInterval(checkSession, 1800000);
-    setIntervalId(id);  // Simpan intervalId dalam state
-    return () => clearInterval(id);
-  }, [checkSession]);
 
   // useEffect untuk mengambil data pengguna
   useEffect(() => {

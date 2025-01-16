@@ -18,6 +18,7 @@ export default class apiXML {
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error("Error response body:", errorText);
+                window.location.href = "/login";
                 throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
@@ -25,6 +26,7 @@ export default class apiXML {
             Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
             console.log("Error fetching CSRF token:", error);
+            window.location.href = "/login";
             throw error;
         }
     }       
@@ -53,6 +55,7 @@ export default class apiXML {
             return await response.text();
         } catch (error) {
             console.error("Error or timeout in POST request:", error);
+            window.location.href = "/login";
             throw error;
         }
     }
