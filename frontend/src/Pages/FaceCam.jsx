@@ -36,6 +36,7 @@ export default function FaceCam() {
     }
 
     const initialize = async () => {
+      setIsLoading(true);
       try {
         console.log("Initializing FaceCam...");
         await loadFaceModels();
@@ -48,7 +49,7 @@ export default function FaceCam() {
           "Initialization error",
           "Failed to initialize FaceCam",
           "error",
-          () => {window.location.replace("/login")}
+          () => {window.location.replace("/home")}
         );
       }
     };
@@ -63,6 +64,7 @@ export default function FaceCam() {
   }, []);
 
   const startVideo = () => {
+    setIsLoading(false);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 640, height: 480 }, audio: false })
       .then((stream) => {
@@ -245,13 +247,21 @@ export default function FaceCam() {
                     </p>
                 </div>
                 <button
-                    className="btn"
+                    className="btn-submit"
+                    disabled={isLoading}
                     onClick={() => {
                         document.getElementById("my_modal_1").showModal();
                         clickPhoto();
                     }}
                 >
-                    Presensi
+                    {isLoading ? (
+                      <div className="flex justify-center items-center gap-2">
+                        <span>Loading...</span>
+                        <span className="loading loading-spinner"></span>
+                      </div>
+                    ) : (
+                      "Presensi"
+                    )}
                 </button>
                 <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
                     <div className="modal-box">
