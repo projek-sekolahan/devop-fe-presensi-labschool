@@ -163,7 +163,7 @@ const Home = ({ intervalId  }) => {
     <main id="fixed-main">
 
       {/* Rekapan dan Navigasi Presensi */}
-      <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-6">
+      <div id="rekap">
         {/* Rekapan Presensi */}
         <div className="flex flex-col items-center justify-center">
           <h3 className="text-primary-md font-bold text-base mb-4">
@@ -188,7 +188,7 @@ const Home = ({ intervalId  }) => {
                     {userData?.[key] || 0}
                   </p>
                 </div>
-                <h4 className="text-center text-xs font-bold text-primary-md mt-2">
+                <h4 className="heading-small">
                   {index === 0 ? "Hadir" : index === 1 ? "Izin / Sakit" : "Terlambat"}
                 </h4>
               </div>
@@ -216,13 +216,13 @@ const Home = ({ intervalId  }) => {
               key={id}
               id={id}
               to={link}
-              className="flex items-center gap-3 px-6 py-3 bg-white border border-primary-low rounded-full shadow-md hover:shadow-lg hover:border-primary-md transition-all duration-300"
+              className="link-container"
             >
-              <div className="size-10 bg-primary-md text-white rounded-full flex justify-center items-center shadow-sm">
+              <div className="link-icon">
                 {icon}
               </div>
-              <p className="text-primary-md font-semibold text-sm">{text}</p>
-              <ChevronRightIcon className="ml-auto size-4 stroke-bg-3" />
+              <p className="link-text">{text}</p>
+              <ChevronRightIcon className="link-chevron" />
             </Link>
           ))}
         </div>

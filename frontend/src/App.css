@@ -414,9 +414,22 @@ body {
   border-top: 3px solid var(--primary-low); /* Menggunakan CSS variabel */
 }
 
+#rekap {
+  background-color: #ffffff; /* bg-white */
+  width: 100%; /* w-full */
+  height: fit-content; /* h-fit */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 0.75rem 1rem; /* px-4 py-3 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  display: flex; /* flex */
+  flex-direction: column; /* flex-col */
+  gap: 1.5rem; /* gap-6 */
+  margin-top: 80%;
+}
+
 #news {
   position: absolute; /* Mengapung di atas layer lainnya */
-  top: 80%; /* Atur jarak dari atas */
+  margin-top: 80%; /* Atur jarak dari atas */
   width: 100%;
   z-index: 15; /* Lebih tinggi dari #fixed-main */
 }
@@ -424,4 +437,54 @@ body {
 #news img {
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.heading-small {
+  text-align: center; /* text-center */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: bold; /* font-bold */
+  color: #ff7f27; /* text-primary-md */
+  margin-top: 0.5rem; /* mt-2 */
+}
+
+.link-container {
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  gap: 0.75rem; /* gap-3 */
+  padding: 0.75rem 1.5rem; /* px-6 py-3 */
+  background-color: #ffffff; /* bg-white */
+  border: 1px solid #ff7f27; /* border border-primary-low */
+  border-radius: 9999px; /* rounded-full */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  transition: all 0.3s; /* transition-all duration-300 */
+}
+
+.link-container:hover {
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2); /* hover:shadow-lg */
+  border-color: #ff7f27; /* hover:border-primary-md */
+}
+
+.link-icon {
+  width: 2.5rem; /* size-10 */
+  height: 2.5rem; /* size-10 */
+  background-color: #ff7f27; /* bg-primary-md */
+  color: #ffffff; /* text-white */
+  border-radius: 9999px; /* rounded-full */
+  display: flex; /* flex */
+  justify-content: center; /* justify-center */
+  align-items: center; /* items-center */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* shadow-sm */
+}
+
+.link-text {
+  color: #ff7f27; /* text-primary-md */
+  font-weight: 600; /* font-semibold */
+  font-size: 0.875rem; /* text-sm */
+}
+
+.link-chevron {
+  margin-left: auto; /* ml-auto */
+  width: 1rem; /* size-4 */
+  height: 1rem; /* size-4 */
+  stroke: var(--bg-3); /* stroke-bg-3 */
 }
