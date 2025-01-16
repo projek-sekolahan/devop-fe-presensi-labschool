@@ -122,14 +122,7 @@ const Home = ({ intervalId  }) => {
   // Render komponen utama
   return (
 
-<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] pt-6 relative text-white px-6">
-  {/* Background Elipse */}
-  <img
-    src="/frontend/Icons/elipse.svg"
-    alt="elipse"
-    className="w-full min-h-fit absolute z-[1] left-0 top-[-30px]"
-  />
-  
+<div className="register-container">
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
     <nav className="flex items-center justify-between">
