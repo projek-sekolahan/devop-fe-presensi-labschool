@@ -122,7 +122,8 @@ const Home = ({ intervalId  }) => {
   // Render komponen utama
   return (
 
-<div className="register-container">
+<div className="home-container pt-6 relative px-6">
+  
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
     <nav className="flex items-center justify-between">
