@@ -146,7 +146,7 @@ const Home = ({ intervalId  }) => {
     </nav>
 
     {/* Main Content */}
-    <main className="mt-8 h-fit">
+    <main id="fixed-main">
       {/* News Carousel */}
       <div id="news" className="relative w-full h-fit mb-4">
         <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
