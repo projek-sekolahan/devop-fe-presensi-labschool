@@ -1,6 +1,6 @@
 // sessionService.js
 import Cookies from "js-cookie";
-import apiXML from "./apiXML";
+import apiXML from "../utils/apiXML.js";
 import { handleSessionExpired } from "../utils/utils";
 
 export const checkSession = async (keys,formData) => {
