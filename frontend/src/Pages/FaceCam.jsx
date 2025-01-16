@@ -139,7 +139,7 @@ export default function FaceCam() {
         const detectionResult = await detectSingleFace(imgRef.current);
         if (!detectionResult || !detectionResult.descriptor) {
           console.warn("No face detected or descriptor is undefined.");
-          alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
+          alertMessage("Pencocokan Gagal", "Harap Ulangi Proses.", "error", () => {window.location.replace("/home")});
           return;
         }
         console.log("Detection Descriptor result:", detectionResult.descriptor);
@@ -151,11 +151,11 @@ export default function FaceCam() {
           submitPresence(detectionResult.descriptor);
         } else {
           console.warn("Face match failed.");
-          alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
+          alertMessage("Pencocokan Gagal", "Harap Ulangi Proses.", "error", () => {window.location.replace("/home")});
         }
       } catch (error) {
         console.error("Face detection error:", error);
-        alertMessage("Pencocokan Gagal", "Wajah tidak terdaftar, harap ulangi proses.", "error", () => {window.location.replace("/home")});
+        alertMessage("Pencocokan Gagal", "Harap Ulangi Proses.", "error", () => {window.location.replace("/home")});
       } finally {
         setIsLoading(false);
       }
@@ -208,7 +208,8 @@ export default function FaceCam() {
         console.log("Presence data submitted successfully:", res);
         Swal.close();
         setIsLoading(false);
-        const parsedToken = parseJwt(res.data.token);
+        Cookies.set("csrf", JSON.parse(res).csrfHash);
+        const parsedToken = parseJwt(JSON.parse(res).data.token);
         alertMessage(parsedToken.title, parsedToken.message, parsedToken.info, () => {
           window.location.replace("/home");
         });
