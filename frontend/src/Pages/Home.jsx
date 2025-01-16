@@ -145,21 +145,22 @@ const Home = ({ intervalId  }) => {
       </div>
     </nav>
 
+  {/* News Layer */}
+  <div id="news">
+    <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
+      {newsItems.map(({ src, title }, index) => (
+        <div key={index} className="relative">
+          <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
+          <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
+            {title}
+          </p>
+        </div>
+      ))}
+    </Carousel>
+  </div>
+
     {/* Main Content */}
     <main id="fixed-main">
-      {/* News Carousel */}
-      <div id="news" className="relative w-full h-fit mb-4">
-        <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
-          {newsItems.map(({ src, title }, index) => (
-            <div key={index} className="relative">
-              <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
-              <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
-                {title}
-              </p>
-            </div>
-          ))}
-        </Carousel>
-      </div>
 
       {/* Rekapan dan Navigasi Presensi */}
       <div id="rekap" className="bg-white w-full h-fit rounded-2xl px-4 py-3 shadow-md flex flex-col gap-6">

@@ -412,3 +412,17 @@ body {
   z-index: 10;
   border-top: 3px solid var(--primary-low); /* Menggunakan CSS variabel */
 }
+
+#news {
+  position: absolute; /* Mengapung di atas layer lainnya */
+  top: 0; /* Atur jarak dari atas */
+  left: 0;
+  width: 100%;
+  z-index: 15; /* Lebih tinggi dari #fixed-main */
+  padding: 1rem;
+}
+
+#news img {
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
