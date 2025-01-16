@@ -404,10 +404,11 @@ body {
   left: 0;
   width: 100%;
   max-width: 400px;
-  background-color: #ffebcd;
+  min-height: calc(100vh - 200px);
+  background-color: #dfe0df;
   padding: 1rem 1.5rem;
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
   border-top: 3px solid var(--primary-low); /* Menggunakan CSS variabel */
@@ -415,11 +416,9 @@ body {
 
 #news {
   position: absolute; /* Mengapung di atas layer lainnya */
-  top: 0; /* Atur jarak dari atas */
-  left: 0;
+  top: 80%; /* Atur jarak dari atas */
   width: 100%;
   z-index: 15; /* Lebih tinggi dari #fixed-main */
-  padding: 1rem;
 }
 
 #news img {
