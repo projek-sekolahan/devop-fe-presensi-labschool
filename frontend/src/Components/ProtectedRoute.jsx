@@ -13,15 +13,16 @@ const getCombinedValues = (keys) => {
     return value;
   });
 };
-const values = getCombinedValues(SESSION_KEYS);
-const formData = getFormData(addDefaultKeys(SESSION_KEYS), values);
 
 export default function ProtectedRoute({ component: Component, isAuthenticated }) {
   const [isSessionValid, setIsSessionValid] = useState(true); // Status sesi
+  const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
     const validateSession = async () => {
       if (isAuthenticated) {
+        const values = getCombinedValues(SESSION_KEYS);
+        const formData = getFormData(addDefaultKeys(SESSION_KEYS), values);
         const isValid = await checkSession(values[0],formData);
         setIsSessionValid(isValid);
       } else {
@@ -29,7 +30,17 @@ export default function ProtectedRoute({ component: Component, isAuthenticated }
       }
     };
 
+    // Panggilan pertama untuk validasi sesi
     validateSession();
+
+    // Buat interval untuk validasi sesi periodik
+    const id = setInterval(() => {
+      validateSession();
+    }, 1800000); // 30 menit
+    setIntervalId(id); // Simpan intervalId
+
+    // Cleanup interval saat komponen dilepas
+    return () => clearInterval(id);
   }, [isAuthenticated]);
 
   // Redirect ke login jika sesi tidak valid
@@ -37,6 +48,6 @@ export default function ProtectedRoute({ component: Component, isAuthenticated }
     return <Navigate to="/login" />;
   }
 
-  // Jika sesi valid, render komponen
-  return <Component />;
+  // Jika sesi valid, Render komponen dengan intervalId diteruskan sebagai prop
+  return <Component intervalId={intervalId} />;
 }

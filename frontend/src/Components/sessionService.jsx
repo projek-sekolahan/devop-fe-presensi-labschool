@@ -6,7 +6,7 @@ import { handleSessionExpired } from "../utils/utils";
 export const checkSession = async (keys,formData) => {
   try {
     const response = await apiXML.authPost("sesstime", keys, formData);
-    const parsedResponse = JSON.parse(response); console.log(parsedResponse); //return false;
+    const parsedResponse = JSON.parse(response);
     if (parsedResponse?.data?.statusCode === 200) {
       Cookies.set("csrf", parsedResponse.csrfHash);
       return true; // Sesi valid
@@ -15,7 +15,6 @@ export const checkSession = async (keys,formData) => {
       return false; // Sesi tidak valid
     }
   } catch (error) {
-    console.log(error); //return false;
     console.error("Error saat memeriksa sesi:", error);
     handleSessionExpired({
       title: "Session Timeout",
