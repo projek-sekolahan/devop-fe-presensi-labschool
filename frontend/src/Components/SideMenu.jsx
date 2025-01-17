@@ -73,7 +73,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 			} w-screen h-screen absolute bg-transparent z-10 left-[-100vw] top-0 duration-500`}
 		>
 			<div className="relative w-3/4 h-full bg-white">
-				<div className="size-full px-4">
+				<div className="size-full">
 					<div id="bio">
 						<img
 							src={userData?.img_location || "/default-profile.png"}
@@ -83,9 +83,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 							<h4>Halo!</h4>
 							<p>{userData?.nama_lengkap}</p>
 						</div>
-						<button
-						onClick={closeMenu}
-						>
+						<button class="px-4 mt-6" onClick={closeMenu}>
 						<XMarkIcon className="icon" />
 						</button>
 					</div>

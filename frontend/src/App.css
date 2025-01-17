@@ -488,13 +488,21 @@ body {
   stroke: var(--bg-3); /* stroke-bg-3 */
 }
 
+.size-full {
+  width: 100%;
+  height: 100%;
+  background-color: #dfe0df;
+}
+
 #bio {
   position: absolute; /* absolute */
-  top: 2.25rem; /* top-9 (9 x 0.25rem = 2.25rem) */
-  left: 1rem; /* left-4 (4 x 0.25rem = 1rem) */
   display: flex; /* flex */
   gap: 0.5rem; /* gap-2 (2 x 0.25rem = 0.5rem) */
   background-color: #ff7f27;
+  width: 100%;
+  height: fit-content;
+  padding: 30 10 30 10;
+  border-bottom-left-radius: 10px;
 }
 
 #bio img {
@@ -538,14 +546,13 @@ body {
 
 #menu {
   position: absolute; /* absolute */
-  top: 10rem; /* top-40 (40 x 0.25rem = 10rem) */
-  width: 65vw; /* w-[65vw] */
-  max-width: 65%; /* sm:w-[65%] */
+  top: 8rem; /* top-40 (40 x 0.25rem = 10rem) */
+  width: 100%; /* w-[65vw] */
   color: #ff7f27; /* text-primary-high */
   display: flex; /* flex */
   flex-direction: column; /* flex-col */
   gap: 1rem; /* gap-4 (4 x 0.25rem = 1rem) */
-  background-color: #dfe0df;
+  padding: 10 20;
 }
 
 #menu a {
@@ -587,7 +594,7 @@ body {
 #menu a.btn {
   border: none; /* border-none */
   color: #ffffff; /* text-white */
-  background-color: var(--primary-low); /* bg-primary-low */
+  background-color: #ff7f27; /* bg-primary-low */
   text-align: center; /* text-center */
   font-weight: bold; /* font-bold */
   margin-top: 1rem; /* mt-4 (4 x 0.25rem = 1rem) */
