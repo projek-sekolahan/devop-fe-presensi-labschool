@@ -5,7 +5,7 @@ import { parseJwt } from "../utils/utils";
 export default function Profile() {
 	const userData = parseJwt(localStorage.getItem("token"));
 	return (
-	<div className="font-primary flex flex-col h-screen w-full sm:max-w-md sm:mx-auto pt-4 relative text-gray-900 bg-gray-50 px-6 sm:px-8">
+	  <div className="font-primary flex flex-col h-screen w-full sm:max-w-md sm:mx-auto pt-4 relative text-gray-900 bg-gray-50 px-6 sm:px-8">
       {/* Header Section */}
       <header className="bg-blue-500 rounded-b-2xl p-6 sm:p-8 shadow-lg text-white relative">
         <Link to="/home" className="absolute top-4 left-4 sm:top-6">
@@ -40,11 +40,6 @@ export default function Profile() {
           </div>
         ))}
       </main>
-
-      {/* Footer Section */}
-      <footer className="mt-auto py-4 text-center text-sm text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Profile App. All rights reserved.</p>
-      </footer>
     </div>		
 	);
 }
