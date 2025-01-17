@@ -83,14 +83,14 @@ body {
 /* Keyframes untuk animasi */
 @keyframes moveAndShrink {
   0% {
-    top: 40%;
+    top: 35%;
     left: 0;
     transform: translateY(-50%);
     width: 100%;
     height: auto;
   }
   100% {
-    top: 30%; /* Pusatkan secara vertikal */
+    top: 25%; /* Pusatkan secara vertikal */
     left: 50%; /* Pusatkan secara horizontal */
     transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
     width: auto; /* Gunakan ukuran asli gambar */
@@ -486,4 +486,109 @@ body {
   width: 1rem; /* size-4 */
   height: 1rem; /* size-4 */
   stroke: var(--bg-3); /* stroke-bg-3 */
+}
+
+#bio {
+  position: absolute; /* absolute */
+  top: 2.25rem; /* top-9 (9 x 0.25rem = 2.25rem) */
+  left: 1rem; /* left-4 (4 x 0.25rem = 1rem) */
+  display: flex; /* flex */
+  gap: 0.5rem; /* gap-2 (2 x 0.25rem = 0.5rem) */
+  background-color: #ff7f27;
+}
+
+#bio img {
+  width: 3rem; /* size-12 (12 x 0.25rem = 3rem) */
+  height: 3rem; /* size-12 */
+  border-radius: 9999px; /* rounded-full */
+  background-color: #ffffff; /* bg-white */
+}
+
+#bio .user-info {
+  font-weight: 400; /* font-normal */
+  font-size: 1rem; /* text-base */
+  color: var(--bg-2); /* text-bg-2 */
+}
+
+#bio .user-info h4 {
+  margin: 0; /* Menghapus default margin */
+}
+
+#bio .user-info p {
+  margin: 0; /* Menghapus default margin */
+}
+
+#bio button {
+  position: absolute; /* absolute */
+  top: 0; /* top-0 */
+  right: 0; /* right-0 */
+  font-size: 1.25rem; /* text-xl (xl = 1.25rem) */
+  font-weight: bold; /* font-bold */
+  color: var(--bg-2); /* text-bg-2 */
+  background: none; /* Menghapus background default button */
+  border: none; /* Menghapus border default button */
+  cursor: pointer; /* Menambahkan cursor pointer */
+}
+
+#bio button .icon {
+  width: 1.5rem; /* w-6 (6 x 0.25rem = 1.5rem) */
+  height: 1.5rem; /* h-6 */
+  color: var(--bg-2); /* text-bg-2 */
+}
+
+#menu {
+  position: absolute; /* absolute */
+  top: 10rem; /* top-40 (40 x 0.25rem = 10rem) */
+  width: 65vw; /* w-[65vw] */
+  max-width: 65%; /* sm:w-[65%] */
+  color: #ff7f27; /* text-primary-high */
+  display: flex; /* flex */
+  flex-direction: column; /* flex-col */
+  gap: 1rem; /* gap-4 (4 x 0.25rem = 1rem) */
+  background-color: #dfe0df;
+}
+
+#menu a {
+  width: 100%; /* w-full */
+  background-color: #ffffff; /* bg-bg-2 */
+  padding: 0.5rem; /* p-2 (2 x 0.25rem = 0.5rem) */
+  border-radius: 0.75rem; /* rounded-xl */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  gap: 0.75rem; /* gap-3 (3 x 0.25rem = 0.75rem) */
+  font-size: 1rem; /* text-base */
+  font-weight: 500; /* font-medium */
+  text-decoration: none; /* Menghapus garis bawah default pada <a> */
+  color: inherit; /* Menggunakan warna teks elemen induk */
+  transition: all 0.3s ease-in-out; /* Animasi hover */
+}
+
+#menu a:hover {
+  background-color: #e3f2fd; /* Tambahkan warna latar hover (opsional) */
+}
+
+#menu a .icon {
+  width: 1.5rem; /* w-6 (6 x 0.25rem = 1.5rem) */
+  height: 1.5rem; /* h-6 */
+}
+
+#menu a p {
+  font-size: 1rem; /* text-base */
+  margin: 0; /* Menghapus default margin */
+}
+
+#menu a .arrow {
+  width: 1.25rem; /* w-5 (5 x 0.25rem = 1.25rem) */
+  height: 1.25rem; /* h-5 */
+  stroke-width: 2; /* stroke-2 */
+  margin-left: auto; /* ml-auto */
+}
+
+#menu a.btn {
+  border: none; /* border-none */
+  color: #ffffff; /* text-white */
+  background-color: var(--primary-low); /* bg-primary-low */
+  text-align: center; /* text-center */
+  font-weight: bold; /* font-bold */
+  margin-top: 1rem; /* mt-4 (4 x 0.25rem = 1rem) */
 }
