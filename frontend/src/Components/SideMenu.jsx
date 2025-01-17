@@ -72,7 +72,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 				show ? "translate-x-[100vw]" : "translate-x-0"
 			} w-screen h-screen absolute bg-transparent z-10 left-[-100vw] top-0 duration-500`}
 		>
-			<div className="relative w-3/4 h-full bg-white">
+			<div className="relative w-full h-full bg-white">
 				<div className="size-full">
 					<div id="bio">
 						<img
