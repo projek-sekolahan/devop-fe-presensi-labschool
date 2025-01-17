@@ -5,14 +5,14 @@ import { parseJwt } from "../utils/utils";
 export default function Profile() {
 	const userData = parseJwt(localStorage.getItem("token"));
 	return (
-	  <div className="font-primary flex flex-col h-screen w-full sm:max-w-md sm:mx-auto pt-4 relative text-gray-900 bg-gray-50 px-6 sm:px-8">
+	  <div className="profile-container">
       {/* Header Section */}
-      <header className="bg-blue-500 rounded-b-2xl p-6 sm:p-8 shadow-lg text-white relative">
-        <Link to="/home" className="absolute top-4 left-4 sm:top-6">
+      <header>
+        <Link to="/home">
           <ArrowLeftIcon className="w-6 h-6 text-white" />
         </Link>
         <div className="text-center">
-          <h1 className="font-bold text-xl sm:text-2xl">Profile</h1>
+          <h1 className="profile-section-container">Profile</h1>
           <div className="mt-6">
             <img
               src={userData.img_location}
@@ -33,10 +33,10 @@ export default function Profile() {
         ].map((item, index) => (
           <div
             key={index}
-            className="bg-white p-4 rounded-lg shadow-md border border-gray-200"
+            className="profile-info"
           >
-            <h4 className="text-sm font-medium text-gray-500">{item.label}</h4>
-            <p className="text-base font-medium text-gray-800 mt-1">{item.value}</p>
+            <h4>{item.label}</h4>
+            <p>{item.value}</p>
           </div>
         ))}
       </main>

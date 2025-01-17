@@ -163,6 +163,19 @@ body {
   }
 }
 
+@media (min-width: 640px) {
+  header h1 {
+    font-size: 1.5rem; /* sm:text-2xl */
+  }
+  header a {
+    top: 1.5rem; /* sm:top-6 */
+  }
+  .profile-container {
+    padding-left: 2rem; /* sm:px-8 */
+    padding-right: 2rem;
+  }
+}
+
 .btn-toggle.open {
   background-color: #ff7f27;
 }
@@ -624,13 +637,6 @@ nav {
   font-family: 'Inter', sans-serif;
 }
 
-@media (min-width: 640px) {
-  .profile-container {
-    padding-left: 2rem; /* sm:px-8 */
-    padding-right: 2rem;
-  }
-}
-
 header {
   background-color: #ff7f27; /* bg-blue-500 */
   border-bottom-left-radius: 1rem; /* rounded-b-2xl */
@@ -647,22 +653,10 @@ header a {
   left: 1rem; /* left-4 */
 }
 
-@media (min-width: 640px) {
-  header a {
-    top: 1.5rem; /* sm:top-6 */
-  }
-}
-
 header h1 {
   font-weight: bold; /* font-bold */
   font-size: 1.25rem; /* text-xl */
   text-align: center; /* text-center */
-}
-
-@media (min-width: 640px) {
-  header h1 {
-    font-size: 1.5rem; /* sm:text-2xl */
-  }
 }
 
 header .profile-section-container {
