@@ -126,7 +126,7 @@ const Home = ({ intervalId  }) => {
   
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
-    <nav className="flex items-center justify-between">
+    <nav>
       <button onClick={() => setShow(true)}>
         <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>

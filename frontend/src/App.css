@@ -494,6 +494,13 @@ body {
   background-color: #dfe0df;
 }
 
+nav {
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: space-between; /* justify-between */
+  background-color: #ff7f27;
+}
+
 #bio {
   position: absolute; /* absolute */
   display: flex; /* flex */

@@ -103,7 +103,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 							<p>Bantuan</p>
 							<ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
 						</Link>
-						<Link to="#" onClick={clickHandler} className="btn-submit">
+						<Link to="#" onClick={clickHandler} className="btn">
 							<PowerIcon className="icon" />
 							<p>Logout</p>
 							<ArrowRightIcon className="w-5 h-5 stroke-2 ml-auto" />
