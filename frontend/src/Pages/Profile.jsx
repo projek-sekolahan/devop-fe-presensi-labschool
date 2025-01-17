@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { parseJwt } from "../utils/utils";
 
 export default function Profile() {
-	const userData = parseJwt(localStorage.getItem("token"));
+	const userData = parseJwt(localStorage.getItem("token")); console.log(userData);
 	return (
 	  <div className="profile-container">
       {/* Header Section */}
@@ -25,7 +25,7 @@ export default function Profile() {
       </header>
 
       {/* User Info Section */}
-      <main className="mt-20 space-y-6">
+      <main>
         {[
           { label: "Name", value: userData.nama_lengkap },
           { label: "Account Email", value: userData.email },
