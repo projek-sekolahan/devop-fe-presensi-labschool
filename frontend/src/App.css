@@ -65,7 +65,7 @@ body {
 /* Background Image */
 .bg-image {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 0;
   width: 100%;
   height: auto;
@@ -83,14 +83,14 @@ body {
 /* Keyframes untuk animasi */
 @keyframes moveAndShrink {
   0% {
-    top: 30%;
+    top: 40%;
     left: 0;
     transform: translateY(-50%);
     width: 100%;
     height: auto;
   }
   100% {
-    top: 20%; /* Pusatkan secara vertikal */
+    top: 30%; /* Pusatkan secara vertikal */
     left: 50%; /* Pusatkan secara horizontal */
     transform: translate(-50%, -50%); /* Pusatkan gambar sepenuhnya */
     width: auto; /* Gunakan ukuran asli gambar */
@@ -423,7 +423,7 @@ body {
   display: flex; /* flex */
   flex-direction: column; /* flex-col */
   gap: 1.5rem; /* gap-6 */
-  margin-top: 30%;
+  margin-top: 35%;
 }
 
 #news {
