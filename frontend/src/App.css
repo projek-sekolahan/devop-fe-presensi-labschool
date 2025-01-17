@@ -423,7 +423,7 @@ body {
   display: flex; /* flex */
   flex-direction: column; /* flex-col */
   gap: 1.5rem; /* gap-6 */
-  margin-top: 20%;
+  margin-top: 25%;
 }
 
 #news {
