@@ -256,7 +256,7 @@ const Home = ({ intervalId }) => {
   {/* Side Menu */}
   <SideMenu showMenu={showMenu} userData={userData} closeMenu={closeMenu} intervalId={intervalId} />
   {/* Profile Info */}
-  <Profile showProfile={showProfile} userData={userData} closeProfile={closeProfile} />
+  {/* <Profile showProfile={showProfile} userData={userData} closeProfile={closeProfile} /> */}
 </div>
 
   );
