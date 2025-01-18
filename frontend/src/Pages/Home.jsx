@@ -116,12 +116,6 @@ const Home = ({ intervalId  }) => {
     }
   }, [fetchUserData]);
 
-  window.addEventListener("click", (e) => {
-    if (e.pageX > (screen.width * 75) / 100) {
-      setShow(false);
-    }
-  });
-
   const newsItems = [
     { src: "/frontend/img/news.png", title: "Berita Utama 1" },
     { src: "/frontend/img/news.png", title: "Berita Utama 2" },
