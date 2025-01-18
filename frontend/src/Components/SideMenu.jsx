@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
 
-export default function SideMenu({ show, userData, closeMenu, intervalId }) {
+export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) {
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -69,7 +69,7 @@ export default function SideMenu({ show, userData, closeMenu, intervalId }) {
 		<div
 			id="container"
 			className={`${
-				show ? "translate-x-[100vw]" : "translate-x-0"
+				showMenu ? "translate-x-[100vw]" : "translate-x-0"
 			} w-screen h-screen absolute bg-transparent z-10 left-[-100vw] top-0 duration-500`}
 		>
 			<div className="relative w-full h-full bg-white">
