@@ -2,7 +2,16 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 export default function Profile({ showProfile, userData, closeProfile }) {
-  console.log("load userdata pada halaman profile", userData);
+  useEffect(() => {
+    if (!userData) {
+      console.log("User data not available, skipping render.");
+      return () => {
+        console.log("Profile component unmounted.");
+      };
+    }
+    console.log("Profile component mounted or updated.");
+    console.log("load userdata pada halaman profile", userData);
+  }, []);
 	return (
     <div
 			id="container"
@@ -13,9 +22,9 @@ export default function Profile({ showProfile, userData, closeProfile }) {
       <div className="profile-container">
         {/* Header Section */}
         <header>
-          <Link to="#" onClick={closeProfile}>
+          <button onClick={closeProfile}>
             <ArrowLeftIcon className="w-6 h-6 text-white" />
-          </Link>
+          </button>
           <div className="text-center">
             <h1 className="profile-section-container">Profile</h1>
             <div className="mt-6">
