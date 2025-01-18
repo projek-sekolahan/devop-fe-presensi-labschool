@@ -30,7 +30,7 @@ const getCombinedValues = (keys) => {
   });
 };
 
-const Home = ({ intervalId  }) => {
+const Home = ({ intervalId }) => {
   const [showMenu, setShowMenu] = useState(false); // Untuk SideMenu
   const [showProfile, setShowProfile] = useState(false); // Untuk Profile
   const [userData, setUserData] = useState(null);
@@ -150,7 +150,7 @@ const Home = ({ intervalId  }) => {
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
     <nav>
-      <button onClick={() => { setShowMenu(true) }}>
+      <button onClick={() => { console.log("SideMenu showMenu:", showMenu); setShowMenu(true) }}>
         <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
