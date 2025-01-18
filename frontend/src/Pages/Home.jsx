@@ -31,17 +31,18 @@ const getCombinedValues = (keys) => {
 };
 
 const Home = ({ intervalId  }) => {
-  const [show, setShow] = useState(false);
+  const [showMenu, setShowMenu] = useState(false); // Untuk SideMenu
+  const [showProfile, setShowProfile] = useState(false); // Untuk Profile
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const closeMenu = () => setShow(false);
+  const closeMenu = () => setShowMenu(false);
+  const closeProfile = () => setShowProfile(false);
   
   // Fetch user data
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-      
       const response = await apiXML.usersPost(
         "profile",
         values[0],
@@ -50,7 +51,6 @@ const Home = ({ intervalId  }) => {
       const res = JSON.parse(response);
 
       if (res?.data) {
-        
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
 
@@ -85,7 +85,7 @@ const Home = ({ intervalId  }) => {
         const datares = parseJwt(result.data.token);
         console.log("data token fcm regist", datares)
         Cookies.set("csrf", result.csrfHash);
-        localStorage.setItem("token_registered", "done");
+        localStorage.setItem("token_registered", "true");
       })
       .catch((error) => {
         handleSessionExpired({
@@ -93,6 +93,16 @@ const Home = ({ intervalId  }) => {
           message: error?.message || "Gagal mendaftarkan token ke server",
         });
       });
+  };
+
+  const handleProfileClick = () => {
+    setShowProfile((prev) => !prev); // Toggle profil
+    setShowMenu(false); // Pastikan SideMenu ditutup
+  };
+
+  const handleMenuClick = () => {
+    setShowMenu((prev) => !prev); // Toggle menu
+    setShowProfile(false); // Pastikan Profil ditutup
   };
 
   // useEffect untuk mengambil data pengguna
@@ -128,21 +138,21 @@ const Home = ({ intervalId  }) => {
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
     <nav>
-      <button onClick={() => setShow(true)}>
+      <button onClick={handleMenuClick}>
         <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
-      <Link to="/notifikasi">
+        <Link to="/notifikasi">
           <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
-        <Link to="#" onClick={() => setShow(true)}>
+        <button onClick={handleProfileClick} className="relative">
           <img
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
             id="photo_profile"
             className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
           />
-        </Link>
+        </button>
       </div>
     </nav>
 
@@ -232,9 +242,9 @@ const Home = ({ intervalId  }) => {
   </div>
 
   {/* Side Menu */}
-  <SideMenu show={show} userData={userData} closeMenu={closeMenu} intervalId={intervalId}/>
+  <SideMenu show={showMenu} userData={userData} closeMenu={closeMenu} intervalId={intervalId} />
   {/* Profile Info */}
-  <Profile show={show} userData={userData} closeMenu={closeMenu}/>
+  <Profile show={showProfile} userData={userData} closeMenu={closeProfile} />
 </div>
 
   );

@@ -635,7 +635,6 @@ nav {
   padding-left: 1.5rem; /* px-6 */
   padding-right: 1.5rem; /* px-6 */
   font-family: 'Inter', sans-serif;
-  transition: transform 0.5s ease-in-out; /* Animasi halus */
 }
 
 header {
