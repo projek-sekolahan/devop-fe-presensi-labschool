@@ -1,5 +1,4 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
 
 export default function Profile({ showProfile, userData, closeProfile }) {
   useEffect(() => {
@@ -9,8 +8,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
         console.log("Profile component unmounted.");
       };
     }
-    console.log("Profile component mounted or updated.");
-    console.log("load userdata pada halaman profile", userData);
+    console.log("Profile component mounted or updated.", userData);
   }, []);
 	return (
     <div
