@@ -17,7 +17,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
         showProfile ? "translate-x-[100vw]" : "translate-x-0"
       } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500`}
 		>
-      <div className="profile-container">
+      <div>
         {/* Header Section */}
         <header>
           <button onClick={closeProfile}>
