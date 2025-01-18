@@ -624,12 +624,12 @@ nav {
 .profile-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* h-screen */
+  height: fit-content; /* fit-content */
   width: 100%; /* w-full */
   max-width: 768px; /* sm:max-w-md */
   margin: 0 auto; /* sm:mx-auto */
   padding-top: 1rem; /* pt-4 */
-  position: relative; /* relative */
+  position: absolute; /* absolute */
   color: #1f2937; /* text-gray-900 */
   background-color: #dfe0df; /* bg-gray-50 */
   padding-left: 1.5rem; /* px-6 */

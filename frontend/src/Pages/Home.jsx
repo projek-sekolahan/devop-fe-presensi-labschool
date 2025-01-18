@@ -96,11 +96,13 @@ const Home = ({ intervalId  }) => {
   };
 
   const handleProfileClick = () => {
+    console.log("Profile button clicked");
     setShowProfile((prev) => !prev); // Toggle profil
     setShowMenu(false); // Pastikan SideMenu ditutup
   };
 
   const handleMenuClick = () => {
+    console.log("Menu button clicked");
     setShowMenu((prev) => !prev); // Toggle menu
     setShowProfile(false); // Pastikan Profil ditutup
   };
