@@ -12,8 +12,17 @@ import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
-
+import { useEffect } from "react";
 export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) {
+	useEffect(() => {
+		if (!userData) {
+		  console.log("User data not available, skipping render.");
+		  return () => {
+			console.log("Sidemenu component unmounted.");
+		  };
+		}
+		console.log("Sidemenu component mounted or updated.", userData);
+	}, []);
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
