@@ -635,6 +635,7 @@ nav {
   padding-left: 1.5rem; /* px-6 */
   padding-right: 1.5rem; /* px-6 */
   font-family: 'Inter', sans-serif;
+  transition: transform 0.5s ease-in-out; /* Animasi halus */
 }
 
 header {
@@ -692,7 +693,7 @@ main {
   padding: 1rem; /* p-4 */
   border-radius: 0.5rem; /* rounded-lg */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
-  border: 1px solid #ff7f27; /* border-gray-200 */
+  border: 1px solid #e5e7eb; /* border-gray-200 */
 }
 
 .profile-info h4 {

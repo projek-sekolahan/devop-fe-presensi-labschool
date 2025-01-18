@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Carousel } from "flowbite-react";
-import SideMenu from "/src/Components/SideMenu";
+import SideMenu from "../Components/SideMenu.jsx";
+import Profile from "../Pages/Profile.jsx";
 import Cookies from "js-cookie";
 import Loading from "../Components/Loading";
 
@@ -134,7 +135,7 @@ const Home = ({ intervalId  }) => {
       <Link to="/notifikasi">
           <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
-        <Link to="/profile">
+        <Link to="#" onClick={() => setShow(true)}>
           <img
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
@@ -232,6 +233,8 @@ const Home = ({ intervalId  }) => {
 
   {/* Side Menu */}
   <SideMenu show={show} userData={userData} closeMenu={closeMenu} intervalId={intervalId}/>
+  {/* Profile Info */}
+  <Profile show={show} userData={userData} closeMenu={closeMenu}/>
 </div>
 
   );

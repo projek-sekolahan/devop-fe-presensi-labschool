@@ -2,13 +2,15 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { parseJwt } from "../utils/utils";
 
-export default function Profile() {
-	const userData = parseJwt(localStorage.getItem("token")); console.log(userData);
+export default function Profile({ show, userData, closeMenu }) {
+	// const userData = parseJwt(localStorage.getItem("token")); console.log(userData);
 	return (
-	  <div className="profile-container">
+	  <div className={`${
+      show ? "translate-x-[100vw]" : "translate-x-0"
+    } profile-container duration-500`}>
       {/* Header Section */}
       <header>
-        <Link to="/home">
+        <Link to="#" onClick={closeMenu}>
           <ArrowLeftIcon className="w-6 h-6 text-white" />
         </Link>
         <div className="text-center">
