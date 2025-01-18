@@ -128,6 +128,22 @@ const Home = ({ intervalId  }) => {
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
 
+  useEffect(() => {
+    if (showProfile) {
+      console.log("Profile is shown");
+    } else {
+      console.log("Profile is hidden");
+    }
+  }, [showProfile]);
+  
+  useEffect(() => {
+    if (showMenu) {
+      console.log("Menu is shown");
+    } else {
+      console.log("Menu is hidden");
+    }
+  }, [showMenu]);
+  
   if (loading || !userData) return <Loading />;
 
   // Render komponen utama
