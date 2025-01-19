@@ -116,14 +116,15 @@ export default function Notification() {
   }, [data]);
 
   return (
-    <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white overflow-y-hidden">
-      <header className="min-h-[60px] bg-primary-md relative p-6 flex justify-start items-center gap-3">
+    <div className="notification-container">
+      <header>
         <Link to="/home">
-          <ArrowLeftIcon className="size-7" />
+          <ArrowLeftIcon className="w-6 h-6 text-white" />
         </Link>
-        <h2 className="text-2xl font-bold">Notifikasi</h2>
+        <h1 className="notification-section-container">Notifikasi</h1>
       </header>
-      <main className="w-full h-full relative bottom-0 left-0 px-8 pt-6 pb-4 text-black overflow-y-auto">
+      <main>
+        <div className="custom-card">
         {load ? (
           <div className="size-full flex justify-center items-center">
             <span className="loading loading-spinner text-white"></span>
@@ -131,6 +132,7 @@ export default function Notification() {
         ) : (
           <CardNotifikasi datas={data} />
         )}
+        </div>
       </main>
     </div>
   );
