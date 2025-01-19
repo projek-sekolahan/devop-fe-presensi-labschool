@@ -192,7 +192,7 @@ export default function Izin() {
 							) : null}
 							<button
 								type="submit"
-								className="btn"
+								className="btn-submit"
 							>
 								Submit
 							</button>

@@ -122,14 +122,14 @@ const Home = ({ intervalId }) => {
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
     <nav>
-      <button onClick={() => { console.log("SideMenu showMenu:", showMenu); setShowMenu(true) }}>
+      <button onClick={() => { setShowMenu(true) }}>
         <FaBars className="fill-white size-8 hover:opacity-80 transition-opacity" />
       </button>
       <div id="profile" className="flex items-center gap-3">
         <Link to="/notifikasi">
           <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
-        <button onClick={() => { console.log("ProfileMenu showProfile:", showProfile); setShowProfile(true) }} className="relative">
+        <button onClick={() => { setShowProfile(true) }} className="relative">
           <img
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
