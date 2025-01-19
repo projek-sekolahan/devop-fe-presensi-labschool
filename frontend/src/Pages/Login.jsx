@@ -35,12 +35,6 @@ const processLogin = async (formData, tokenKey) => {
     return loginResponse.data;
   } catch (error) {
     handleSessionError(error, "/login");
-    /* alertMessage(
-        loginResponse.title,
-        loginResponse.message,
-        "error",
-        () => window.location.replace("/login")
-    ); */
   }
 };
 
@@ -114,12 +108,6 @@ export default function Login({ isOpen, onToggle }) {
         } catch (error) {
         // Handle error during login
             handleSessionError(error, "/login");
-            /* alertMessage(
-                loginResponse.title,
-                loginResponse.message,
-                "error",
-                () => window.location.replace("/login")
-            ); */
         }
     };
 

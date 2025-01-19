@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import alertMessage from "../utils/utils";
 
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
@@ -17,17 +18,25 @@ export default class apiXML {
             
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error("Error response body:", errorText);
-                window.location.href = "/login";
-                throw new Error(`Failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
+                alertMessage(
+                    "error",
+                    "Error Response Server",
+                    "error",
+                    () => window.location.replace("/login")
+                );
+                console.error(`Error response body failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
             const res = await response.json();
             Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
+            alertMessage(
+                "error",
+                "Error Response Server",
+                "error",
+                () => window.location.replace("/login")
+            );
             console.log("Error fetching CSRF token:", error);
-            window.location.href = "/login";
-            throw error;
         }
     }       
 
@@ -54,9 +63,13 @@ export default class apiXML {
             clearTimeout(timeoutId);
             return await response.text();
         } catch (error) {
+            alertMessage(
+                "error",
+                "Error Timeout Response Server",
+                "error",
+                () => window.location.replace("/login")
+            );
             console.error("Error or timeout in POST request:", error);
-            window.location.href = "/login";
-            throw error;
         }
     }
 
