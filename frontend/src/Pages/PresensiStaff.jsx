@@ -19,7 +19,15 @@ export default function PresensiStaff() {
 				<h1 className="presensi-section-container">Presensi</h1>
 			</header>
 			<main>
-				
+				<div className="custom-card">
+					<div className="flex justify-between items-center w-full">
+						<p ref={timeRef} className="text-lg font-semibold"></p>
+						<div className="text-lg font-bold">
+							<small ref={dayRef}></small>
+							<small ref={dateRef}></small>
+						</div>
+					</div>
+				</div>
 			</main>
 		</div>
 	);
