@@ -14,7 +14,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
     <div
 			id="container"
 			className={`${
-        showProfile ? "translate-x-[100vw]" : "translate-x-0"
+        showProfile ? "translate-x-0" : "translate-x-[100vw]"
       } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500`}
 		>
       
