@@ -13,7 +13,6 @@ const loadingCircle = {
 	backgroundColor: "#ff7f27",
 	borderRadius: "0.5rem",
 };
-
 const loadingContainerVariants = {
 	start: {
 		transition: {
@@ -26,7 +25,6 @@ const loadingContainerVariants = {
 		},
 	},
 };
-
 const loadingCircleVariants = {
 	start: {
 		y: "0%",
@@ -73,5 +71,4 @@ const Loading = () => {
 		</div>
 	);
 };
-
 export default Loading;

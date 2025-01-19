@@ -58,7 +58,7 @@ const Home = ({ intervalId }) => {
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
 
-        if (!localStorage.getItem("token_registered")) {
+        if (!Cookies.get("token_registered")) {
           registerToken();
         }
       } else {
@@ -85,7 +85,7 @@ const Home = ({ intervalId }) => {
         const datares = parseJwt(result.data.token);
         console.log("data token fcm regist", datares)
         Cookies.set("csrf", result.csrfHash);
-        localStorage.setItem("token_registered", "true");
+        Cookies.set("token_registered", "true");
       })
       .catch((error) => {
         handleSessionExpired({

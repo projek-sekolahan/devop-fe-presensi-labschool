@@ -170,7 +170,7 @@ body {
   header a {
     top: 1.5rem; /* sm:top-6 */
   }
-  .profile-container {
+  .presensi-container {
     padding-left: 2rem; /* sm:px-8 */
     padding-right: 2rem;
   }
@@ -621,7 +621,7 @@ nav {
   margin-top: 1rem; /* mt-4 (4 x 0.25rem = 1rem) */
 }
 
-.profile-container {
+.presensi-container {
   display: flex;
   flex-direction: column;
   height: fit-content; /* fit-content */

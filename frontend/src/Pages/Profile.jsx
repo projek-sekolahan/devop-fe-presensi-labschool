@@ -15,7 +15,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
               <ArrowLeftIcon className="w-6 h-6 text-white" />
             </button>
             <div className="text-center">
-              <h1 className="profile-section-container">Profile</h1>
+              <h1 className="profile-section-container">Profile Anda</h1>
               <div className="mt-6">
                 <img
                   src={userData.img_location}

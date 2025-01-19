@@ -11,17 +11,17 @@ export default function PresensiStaff() {
 
 	useClock(timeRef, dateRef, dayRef);
 	return (
-		<div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px) relative text-white">
-			<header className="h-1/5 bg-primary-md relative p-6">
-				<Link to="/home" className="absolute top-5">
-					<ArrowLeftIcon className="size-7" />
+		<div className="presensi-container">
+			<header>
+				<Link to="/home">
+					<ArrowLeftIcon className="w-6 h-6 text-white" />
 				</Link>
 
 				<h2 className="text-[2.125rem] font-bold absolute bottom-5">
 					Presensi
 				</h2>
 			</header>
-			<main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-primary-md">
+			<main>
 				<div className="bg-white w-full rounded-xl p-4 flex flex-col gap-2">
 					<div className="flex justify-between items-center w-full">
 						<p ref={timeRef} className="text-lg font-semibold"></p>
