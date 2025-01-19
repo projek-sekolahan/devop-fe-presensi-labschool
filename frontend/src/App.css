@@ -709,4 +709,15 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  color: #ff7f27;
+}
+
+.presensi-icon-container {
+  padding: 1.25rem;
+  background-color: #38a169; /* Ganti warna sesuai kebutuhan */
+  border-radius: 0.375rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
