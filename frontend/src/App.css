@@ -710,6 +710,7 @@ main {
   flex-direction: column;
   gap: 0.5rem;
   color: #ff7f27;
+  margin-top: 25%;
 }
 
 .presensi-icon-container {
@@ -721,5 +722,4 @@ main {
   justify-content: center;
   align-items: center;
   border: 1px solid #ff7f27;
-  margin-top: 25%;
 }
