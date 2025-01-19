@@ -78,7 +78,7 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 		<div
 			id="container"
 			className={`${
-				showMenu ? "translate-x-0" : "translate-x-[100vw]"
+				showMenu ? "translate-x-[100vw]" : "translate-x-0"
 			} w-screen h-screen absolute bg-transparent z-10 left-[-100vw] top-0 duration-500`}
 		>
 			<div className="relative w-full h-full">
