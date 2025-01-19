@@ -1,6 +1,5 @@
 import AuthContainer from "../Pages/AuthContainer";
 import Home from "../Pages/Home";
-import Profile from "../Pages/Profile";
 import Presensi from "../Pages/Presensi";
 import Riwayat from "../Pages/Riwayat";
 import Bantuan from "../Pages/Bantuan";
@@ -27,7 +26,6 @@ export const routes = [
 
     // Rute yang dilindungi
     { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },
-    { path: "/profile", element: <ProtectedRoute component={Profile} isAuthenticated={isAuthenticated} /> },
     { path: "/presensi", element: <ProtectedRoute component={Presensi} isAuthenticated={isAuthenticated} /> },
     { path: "/riwayat", element: <ProtectedRoute component={Riwayat} isAuthenticated={isAuthenticated} /> },
     { path: "/bantuan", element: <ProtectedRoute component={Bantuan} isAuthenticated={isAuthenticated} /> },

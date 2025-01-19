@@ -12,17 +12,7 @@ import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) {
-	useEffect(() => {
-		if (!userData) {
-		  console.log("User data not available, skipping render.");
-		  return () => {
-			console.log("Sidemenu component unmounted.");
-		  };
-		}
-		console.log("Sidemenu component mounted or updated.", userData);
-	}, []);
 	let isLogout = false;
 	const clickHandler = () => {
 		isLogout = true;
@@ -97,17 +87,17 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 						</button>
 					</div>
 					<div id="menu">
-						<Link to="/profile">
+						<Link to="#" className="cursor-not-allowed opacity-50">
 							<UserCircleIcon className="icon" />
-							<p>Profil</p>
+							<p>Peringkat</p>
 							<ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
 						</Link>
-						<Link to="/setting">
+						<Link to="#" className="cursor-not-allowed opacity-50">
 							<Cog6ToothIcon className="icon" />
 							<p>Pengaturan</p>
 							<ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />
 						</Link>
-						<Link to="/bantuan">
+						<Link to="#" className="cursor-not-allowed opacity-50">
 							<QuestionMarkCircleIcon className="icon" />
 							<p>Bantuan</p>
 							<ChevronRightIcon className="w-5 h-5 stroke-2 ml-auto" />

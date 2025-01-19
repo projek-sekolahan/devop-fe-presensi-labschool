@@ -95,18 +95,6 @@ const Home = ({ intervalId }) => {
       });
   };
 
-  const handleProfileClick = () => {
-    console.log("Profile button clicked");
-    setShowProfile((prev) => !prev); // Toggle profil
-    setShowMenu(false); // Pastikan SideMenu ditutup
-  };
-
-  const handleMenuClick = () => {
-    console.log("Menu button clicked");
-    setShowMenu((prev) => !prev); // Toggle menu
-    setShowProfile(false); // Pastikan Profil ditutup
-  };
-
   // useEffect untuk mengambil data pengguna
   useEffect(() => {
     if (!localStorage.getItem("login_token")) {
@@ -123,22 +111,6 @@ const Home = ({ intervalId }) => {
     { src: "/frontend/img/news.png", title: "Berita Utama 4" },
     { src: "/frontend/img/news.png", title: "Berita Utama 5" },
   ];
-
-  useEffect(() => {
-    if (showProfile) {
-      console.log("Profile is shown");
-    } else {
-      console.log("Profile is hidden");
-    }
-  }, [showProfile]);
-  
-  useEffect(() => {
-    if (showMenu) {
-      console.log("Menu is shown");
-    } else {
-      console.log("Menu is hidden");
-    }
-  }, [showMenu]);
   
   if (loading || !userData) return <Loading />;
 
