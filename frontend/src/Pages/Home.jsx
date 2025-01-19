@@ -157,7 +157,7 @@ const Home = ({ intervalId }) => {
         <Link to="/notifikasi">
           <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
-        <button onClick={() => { console.log("ProfileMenu showProfile:", ShowProfile); setShowProfile(true) }} className="relative">
+        <button onClick={() => { console.log("ProfileMenu showProfile:", showProfile); setShowProfile(true) }} className="relative">
           <img
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
