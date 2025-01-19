@@ -1,8 +1,8 @@
 /* Base Style */
+@import "flowbite";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "flowbite";
 
 :root {
   --primary-low: #e0e0e0;

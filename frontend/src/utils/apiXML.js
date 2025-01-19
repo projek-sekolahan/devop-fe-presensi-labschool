@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import alertMessage from "../utils/utils";
+import { alertMessage } from "../utils/utils";
 
 const api_url = "https://devop-sso.smalabschoolunesa1.sch.id";
 
