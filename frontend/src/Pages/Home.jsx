@@ -117,7 +117,7 @@ const Home = ({ intervalId }) => {
   // Render komponen utama
   return (
 
-<div className="home-container pt-6 relative px-6">
+<div className="home-container pt-6 px-6">
   
   <div id="core" className="relative z-[2] size-full">
     {/* Header Navigation */}
@@ -134,7 +134,7 @@ const Home = ({ intervalId }) => {
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
             id="photo_profile"
-            className="size-12 rounded-full bg-white cursor-pointer border-2 border-primary-md hover:scale-105 transition-transform"
+            className="size-12 rounded-full border-2 border-primary-md transition-opacity"
           />
         </button>
       </div>
@@ -144,7 +144,7 @@ const Home = ({ intervalId }) => {
   <div id="news">
     <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
       {newsItems.map(({ src, title }, index) => (
-        <div key={index} className="relative">
+        <div key={index}>
           <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
           <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
             {title}

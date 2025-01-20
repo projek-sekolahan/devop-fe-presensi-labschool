@@ -232,22 +232,25 @@ export default function FaceCam() {
 			</header>
 			<main>
 				<div className="facecam-container">
-            <video
-                ref={videoRef}
-                crossOrigin="anonymous"
-                className={`-scale-x-100 translate-500 fixed w-auto max-w-screen-2xl h-[75vh]`}
-            />
-            <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-            <img ref={imgRef} className="absolute z-10 hidden" />
-
-            <div
-                className={`relative top-[15vh] left-[calc(50vw/2 - 125)] size-[250px] z-50`}
-            >
-                <span className="border-white border-t-2 border-l-2 rounded-tl-xl size-14 absolute top-0 left-0"></span>
-                <span className="border-white border-t-2 border-r-2 rounded-tr-xl size-14 absolute top-0 right-0"></span>
-                <span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
-                <span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
-            </div>
+          <video
+              ref={videoRef}
+              className="absolute w-full h-full object-cover mt-8"
+              autoPlay
+              playsInline
+          />
+          {/* Frame Overlay */}
+          <div
+              className="relative z-10"
+              style={{
+                  width: "300px", // Lebar bingkai
+                  height: "300px", // Tinggi bingkai
+                  border: "4px solid #00FF00", // Warna bingkai hijau
+                  borderRadius: "16px", // Membuat sudut membulat
+                  boxShadow: "0 0 15px rgba(0, 255, 0, 0.8)", // Efek glowing hijau
+              }}
+          ></div>
+          <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+          <img ref={imgRef} className="absolute z-10 hidden" />
         </div>
       </main>
 		</div>

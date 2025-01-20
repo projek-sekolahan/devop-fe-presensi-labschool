@@ -7,7 +7,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
         showProfile ? "translate-x-0" : "translate-x-[100vw]"
       } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500`}
 		>
-      <div className="relative w-full h-full">
+      <div className="w-full h-full">
 				<div className="size-full">
           {/* Header Section */}
           <header>
