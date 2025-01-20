@@ -129,7 +129,7 @@ const Home = ({ intervalId }) => {
         <Link to="/notifikasi">
           <FaBell className="fill-white size-8 hover:opacity-80 transition-opacity" />
         </Link>
-        <button onClick={() => { setShowProfile(true) }} className="relative">
+        <button onClick={() => { setShowProfile(true) }}>
           <img
             src={userData?.img_location || "/frontend/Icons/profile.svg"}
             alt="photo_profile"
