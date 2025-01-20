@@ -22,7 +22,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
                   alt="User Profile"
                   className="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white shadow-md"
                 />
-                <p className="font-semibold text-lg mt-4">{userData.nama_lengkap}</p>
+                <p className="font-semibold text-lg mt-4">@{userData.email.match(/@(.+)/)[1]}</p>
               </div>
             </div>
           </header>

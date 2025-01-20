@@ -729,13 +729,14 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #ff7f27;
 }
 
 .circle-container::after {
   content: '';
   width: 14rem; /* Ukuran 56 * 4px (size-56) */
   height: 14rem;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: #ffffffb3;
   border-radius: 50%;
   position: absolute;
   z-index: 4;
@@ -753,4 +754,13 @@ main {
   bottom: 0.75rem; /* bottom-3 (3 * 4px) */
   left: 1.5rem; /* left-6 (6 * 4px) */
   filter: blur(2px); /* blur-[2px] */
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding-left: 3rem; /* px-12 (12 * 4px) */
+  padding-right: 3rem;
+  color: #ff7f27;
 }

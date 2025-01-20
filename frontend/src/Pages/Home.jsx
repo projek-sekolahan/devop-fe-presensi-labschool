@@ -54,7 +54,7 @@ const Home = ({ intervalId }) => {
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
 
-        const user = parseJwt(res.data.token); console.log(user);
+        const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
 
