@@ -12,6 +12,7 @@ import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { loadFaceModels, detectSingleFace, validateFaceDetection } from "../utils/faceUtils";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function FaceCam() {
 
