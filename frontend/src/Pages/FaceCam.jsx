@@ -243,8 +243,8 @@ export default function FaceCam() {
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
         </div>
-        <div className="absolute flex flex-col items-center gap-10 bottom-10">
-          <div className="w-full px-6 relative">
+        <div className="flex flex-col items-center">
+          <div className="w-full px-6 absolute bottom-10">
             <button
               className="btn-submit"
               disabled={isLoading}
@@ -264,6 +264,35 @@ export default function FaceCam() {
             </button>
           </div>
         </div>
+                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
+                    <div className="modal-box">
+                        <h3 className="font-bold text-lg">Hasil Potret</h3>
+                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
+                        <div className="modal-action flex justify-center mt-4 gap-4">
+                            <form method="dialog" className="flex gap-4">
+                                {/* if there is a button in form, it will close the modal */}
+                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
+                                    Cancel
+                                </button>
+                                <button
+                                    className="py-2 px-6 btn-submit"
+                                    onClick={detectFace}
+                                    disabled={isLoading} // Nonaktifkan tombol jika sedang loading
+                                >
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center gap-2">
+                                        <span>Loading...</span>
+                                        <span className="loading loading-spinner text-black"></span>
+                                    </div>
+                                ) : (
+                                    "Proses"
+                                )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
       </main>
 		</div>
     );
