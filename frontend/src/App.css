@@ -723,3 +723,34 @@ main {
   align-items: center;
   border: 1px solid #ff7f27;
 }
+
+.circle-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-container::after {
+  content: '';
+  width: 14rem; /* Ukuran 56 * 4px (size-56) */
+  height: 14rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  position: absolute;
+  z-index: 4;
+  filter: blur(4px); /* blur-sm */
+}
+
+.circle-container::before {
+  content: '';
+  width: 14rem; /* Ukuran 56 * 4px (size-56) */
+  height: 14rem;
+  background-color: var(--color-primary-high); /* Ganti dengan warna yang sesuai */
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+  bottom: 0.75rem; /* bottom-3 (3 * 4px) */
+  left: 1.5rem; /* left-6 (6 * 4px) */
+  filter: blur(2px); /* blur-[2px] */
+}

@@ -116,7 +116,7 @@ export default function FaceVerification() {
 				<h1 className="presensi-section-container">Presensi</h1>
 			</header>
 			<div className="mt-[35%] flex flex-col items-center gap-12">
-				<div className="size-fit relative flex justify-center items-center after:size-56 after:bg-[rgba(255,255,255,0.7)] after:rounded-full after:absolute after:z-[4] after:blur-sm before:size-56 before:bg-primary-high before:rounded-full before:absolute before:z-[3] before:bottom-3 before:left-6 before:blur-[2px]">
+				<div className="circle-container">
 					<PiUserFocusThin className="size-48 z-[5]" />
 				</div>
 				<div className="flex flex-col text-center px-12">
