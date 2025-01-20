@@ -119,6 +119,7 @@ export const alertMessage = (title, message, type, callback) => {
         icon: type,
         allowOutsideClick: false,
         showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
         allowEscapeKey: false,
     }).then(() => {
         callback();
@@ -277,6 +278,7 @@ function alertError(title, message, type, callback) {
         icon: type,
         allowOutsideClick: false,
         showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
         allowEscapeKey: false,
     }).then(() => {
         callback();

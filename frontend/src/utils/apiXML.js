@@ -43,15 +43,15 @@ export default class apiXML {
     /**
      * Generic POST request with optional timeout and authorization.
      */
-    static async post(endpoint, formData, key = null, timeout = 10000) {
+    static async post(endpoint, formData, key = null, timeout = 30000) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
-
+    
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             ...(key && { Authorization: `Basic ${key}` }),
         };
-
+    
         try {
             const response = await fetch(`${api_url}${endpoint}`, {
                 method: "POST",
@@ -61,17 +61,29 @@ export default class apiXML {
                 signal: controller.signal,
             });
             clearTimeout(timeoutId);
+    
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+            }
+    
             return await response.text();
         } catch (error) {
+            clearTimeout(timeoutId);
+    
+            const errorMessage =
+                error.name === "AbortError"
+                    ? "Request Timeout: Server took too long to respond."
+                    : `Error during POST request: ${error.message}`;
+    
             alertMessage(
                 "error",
-                "Error Timeout Response Server",
+                errorMessage,
                 "error",
                 () => window.location.replace("/login")
             );
-            console.error("Error or timeout in POST request:", error);
+            console.error("POST request failed:", error);
         }
-    }
+    }    
 
     /**
      * Specific POST requests for different purposes.

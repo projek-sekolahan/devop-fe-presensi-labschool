@@ -222,7 +222,15 @@ export default function FaceCam() {
   };
 
     return (
-        <div className="bg-primary-low font-primary text-white flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] items-center overflow-hidden">
+    <div className="presensi-container">
+			<header>
+				<Link to="/home">
+					<ArrowLeftIcon className="w-6 h-6 text-white" />
+				</Link>
+				<h1 className="presensi-section-container">Presensi</h1>
+			</header>
+			<main>
+				<div className="custom-card">
             <video
                 ref={videoRef}
                 crossOrigin="anonymous"
@@ -239,62 +247,8 @@ export default function FaceCam() {
                 <span className="border-white border-b-2 border-l-2 rounded-bl-xl size-14 absolute bottom-0 left-0"></span>
                 <span className="border-white border-b-2 border-r-2 rounded-br-xl size-14 absolute bottom-0 right-0"></span>
             </div>
-            <div className="fixed bottom-0 -left-[calc(300px-50vw)] w-[600px] h-[300px] bg-white rounded-t-[65%] z-[6]"></div>
-            <div className="fixed bottom-24 left-0 w-screen h-fit flex flex-col g-white text-center text-primary-md px-10 items-center gap-3 z-[7]">
-                <div>
-                    <p className="font-medium text-base">
-                        {" "}
-                        Tekan Tombol{" "}
-                    </p>
-                </div>
-                <button
-                    className="btn-submit"
-                    disabled={isLoading}
-                    onClick={() => {
-                        document.getElementById("my_modal_1").showModal();
-                        clickPhoto();
-                    }}
-                >
-                    {isLoading ? (
-                      <div className="flex justify-center items-center gap-2">
-                        <span>Loading...</span>
-                        <span className="loading loading-spinner"></span>
-                      </div>
-                    ) : (
-                      "Presensi"
-                    )}
-                </button>
-                <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
-                        <div className="modal-action flex justify-center mt-4 gap-4">
-                            <form method="dialog" className="flex gap-4">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
-                                    Cancel
-                                </button>
-                                <button
-                                    className="py-2 px-6 btn-submit"
-                                    onClick={detectFace}
-                                    disabled={isLoading} // Nonaktifkan tombol jika sedang loading
-                                >
-                                {isLoading ? (
-                                    <div className="flex justify-center items-center gap-2">
-                                        <span>Loading...</span>
-                                        <span className="loading loading-spinner text-black"></span>
-                                    </div>
-                                ) : (
-                                    "Proses"
-                                )}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </dialog>
-                <small>Pastikan Cahaya Terang</small>
-            </div>
         </div>
+      </main>
+		</div>
     );
 }

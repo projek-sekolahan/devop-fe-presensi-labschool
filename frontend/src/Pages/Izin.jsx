@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Label, Textarea, FileInput } from "flowbite-react";
+import { Textarea } from "flowbite-react";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -109,15 +109,8 @@ export default function Izin() {
 			<main>
 				<div className="custom-card">
 					<form onSubmit={submitHandler}>
-						<div className="max-w-md">
-							<div className="mb-2 block">
-								<label
-									htmlFor="comment"
-									className="text-white text-base font-semibold"
-								>
-									Keterangan
-								</label>
-							</div>
+						<div className="input-group">
+							<label htmlFor="comment" className="input-label">Keterangan</label>
 							<Textarea
 								id="comment"
 								placeholder="Berikan alasan...."
@@ -127,15 +120,8 @@ export default function Izin() {
 								ref={keteranganRef}
 							></Textarea>
 						</div>
-						<div className="mt-4">
-							<div className="mb-2">
-								<label
-									htmlFor="file-upload-helper-text"
-									className="text-white text-base font-semibold"
-								>
-									Upload bukti{" "}
-								</label>
-							</div>
+						<div className="input-group">
+							<label htmlFor="file-upload-helper-text" className="input-label">Upload bukti{" "}</label>
 							<input
 								type="file"
 								id="file-upload-helper-text"
@@ -190,12 +176,7 @@ export default function Izin() {
 									750Kb
 								</p>
 							) : null}
-							<button
-								type="submit"
-								className="btn-submit"
-							>
-								Submit
-							</button>
+							<button type="submit" className="btn-submit mt-2">Submit</button>
 						</div>
 					</form>
 				</div>
