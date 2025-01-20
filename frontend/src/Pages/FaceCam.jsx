@@ -245,10 +245,8 @@ export default function FaceCam() {
         </div>
         <div className="absolute flex flex-col items-center gap-12 bottom-10">
           <div className="text-container">
-            <p className="font-semibold">
-            {" "}
-            Tekan Tombol{" "}
-            </p>
+            <h4 className="font-bold text-3xl mb-2">Pastikan Cahaya Terang</h4>
+            <p className="font-semibold">Tekan Tombol</p>
           </div>
           <div className="w-full px-6 relative">
             <button
@@ -269,36 +267,6 @@ export default function FaceCam() {
               )}
             </button>
           </div>
-            <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-                        <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
-                        <div className="modal-action flex justify-center mt-4 gap-4">
-                            <form method="dialog" className="flex gap-4">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
-                                    Cancel
-                                </button>
-                                <button
-                                    className="py-2 px-6 btn-submit"
-                                    onClick={detectFace}
-                                    disabled={isLoading} // Nonaktifkan tombol jika sedang loading
-                                >
-                                {isLoading ? (
-                                    <div className="flex justify-center items-center gap-2">
-                                        <span>Loading...</span>
-                                        <span className="loading loading-spinner text-black"></span>
-                                    </div>
-                                ) : (
-                                    "Proses"
-                                )}
-                                </button>
-                            </form>
-                        </div>
-                    </div>            
-            </dialog>
-            <small>Pastikan Cahaya Terang</small>
         </div>
       </main>
 		</div>
