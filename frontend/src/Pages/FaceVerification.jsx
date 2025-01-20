@@ -115,15 +115,15 @@ export default function FaceVerification() {
 				</Link>
 				<h1 className="presensi-section-container">Presensi</h1>
 			</header>
-			<div className="mt-[35%] flex flex-col items-center gap-12">
+			<div className="mt-4 flex flex-col items-center gap-12">
 				<div className="circle-container">
 					<PiUserFocusThin className="size-48 z-[5]" />
 				</div>
 				<div className="text-container">
 					<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
-					<p>Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
+					<p className="font-semibold">Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
 				</div>
-				<div className="w-full px-6 absolute bottom-16">
+				<div className="w-full px-6 absolute mt-2">
 					<button onClick={click} className="btn-submit">Verifikasi</button>
 				</div>
 			</div>

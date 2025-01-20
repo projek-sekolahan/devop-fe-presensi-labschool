@@ -231,7 +231,7 @@ export default function FaceCam() {
 				<h1 className="presensi-section-container">Presensi</h1>
 			</header>
 			<main>
-				<div className="custom-card">
+				<div className="facecam-container">
             <video
                 ref={videoRef}
                 crossOrigin="anonymous"
