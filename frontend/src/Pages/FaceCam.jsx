@@ -243,13 +243,15 @@ export default function FaceCam() {
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
         </div>
-        <div className="text-container">
-					<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
-					<p className="font-semibold">Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
-				</div>
-				<div className="w-full px-6 absolute bottom-10">
-					<button className="btn-submit">Verifikasi</button>
-				</div>
+        <div className="mt-[25%] flex flex-col items-center gap-12">
+          <div className="text-container">
+            <h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
+            <p className="font-semibold">Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
+          </div>
+          <div className="w-full px-6 absolute bottom-10">
+            <button className="btn-submit">Verifikasi</button>
+          </div>
+        </div>
       </main>
 		</div>
     );
