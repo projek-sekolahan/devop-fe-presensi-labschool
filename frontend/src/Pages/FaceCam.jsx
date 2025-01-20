@@ -248,7 +248,7 @@ export default function FaceCam() {
 					<p className="font-semibold">Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
 				</div>
 				<div className="w-full px-6 absolute bottom-10">
-					<button onClick={click} className="btn-submit">Verifikasi</button>
+					<button className="btn-submit">Verifikasi</button>
 				</div>
       </main>
 		</div>
