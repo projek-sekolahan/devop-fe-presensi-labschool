@@ -780,3 +780,19 @@ main {
   align-items: center;
   overflow: hidden;
 }
+
+.canvas-camera {
+  position: absolute;
+  width: 80%;
+  height: 40%;
+  object-fit: cover;
+  margin-top: 2rem; /* mt-8 (8 * 4px) */
+}
+
+.face-detector {
+  width: 300px; /* Lebar bingkai */
+  height: 300px; /* Tinggi bingkai */
+  border: 4px solid #00FF00; /* Warna bingkai hijau */
+  border-radius: 16px; /* Membuat sudut membulat */
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* Efek glowing hijau */
+}

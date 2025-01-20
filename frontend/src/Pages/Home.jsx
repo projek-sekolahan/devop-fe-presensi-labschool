@@ -144,7 +144,7 @@ const Home = ({ intervalId }) => {
   <div id="news">
     <Carousel slideInterval={3000} className="rounded-lg shadow-lg" data-carousel-touch>
       {newsItems.map(({ src, title }, index) => (
-        <div key={index}>
+        <div key={index} className="relative">
           <img src={src} alt={`slide_${index + 1}`} className="w-full h-auto object-cover rounded-lg" />
           <p className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm p-1 rounded">
             {title}
