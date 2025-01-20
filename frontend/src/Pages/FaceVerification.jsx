@@ -119,7 +119,7 @@ export default function FaceVerification() {
 				<div className="circle-container">
 					<PiUserFocusThin className="size-48 z-[5]" />
 				</div>
-				<div className="flex flex-col text-center px-12">
+				<div className="text-container">
 					<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
 					<p>Wajah anda akan diverifikasi untuk memenuhi syarat presensi</p>
 				</div>
