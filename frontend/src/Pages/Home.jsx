@@ -86,6 +86,7 @@ const Home = ({ intervalId }) => {
         console.log("data token fcm regist", datares)
         Cookies.set("csrf", result.csrfHash);
         Cookies.set("token_registered", "true");
+        Cookies.set("cookiesAccepted", "true");
       })
       .catch((error) => {
         handleSessionExpired({

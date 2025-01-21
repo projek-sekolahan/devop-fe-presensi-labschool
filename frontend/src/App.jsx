@@ -1,7 +1,5 @@
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import Cookies from "js-cookie";
 import Loading from "./Components/Loading";
 import { routes } from "./Components/routes";
 import { isMobile } from "react-device-detect";
@@ -9,27 +7,6 @@ import DesktopWarning from "./Components/DesktopWarning";
 import "./App.css";
 
 function App() {
-    useEffect(() => {
-        const handleCookies = () => {
-            if (!Cookies.get("cookiesAccepted")) {
-                Swal.fire({
-                    title: "Allow Cookies",
-                    text: "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
-                    icon: "warning",
-                    allowOutsideClick: false,
-                    showConfirmButton: true,
-                    allowEscapeKey: false,
-                });
-                Cookies.set("cookiesAccepted", "true", {
-                    expires: 1,
-                    secure: true,
-                    sameSite: "Strict",
-                });
-            }
-        };
-
-        handleCookies();
-    }, []);
 
     return (
         <Router>

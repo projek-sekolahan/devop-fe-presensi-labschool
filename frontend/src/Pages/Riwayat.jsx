@@ -109,16 +109,15 @@ export default function Riwayat() {
     };
 
     return (
-        <div className="bg-primary-low font-primary flex flex-col h-screen w-screen sm:w-[400px] sm:ml-[calc(50vw-200px)] relative text-white">
-            <header className="h-1/5 min-h-[130px] bg-primary-md relative p-6">
-                <Link to="/home" className="absolute top-5">
-                    <ArrowLeftIcon className="size-7" />
-                </Link>
-                <h2 className="text-[2.125rem] font-bold absolute bottom-5">
-                    Riwayat Presensi
-                </h2>
-            </header>
-            <main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
+    <div className="notification-container">
+      <header>
+        <Link to="/home">
+          <ArrowLeftIcon className="w-6 h-6 text-white" />
+        </Link>
+        <h1 className="notification-section-container">Riwayat</h1>
+      </header>
+      <main>
+        <div className="custom-card">
                 <div id="dropdown" className="w-fit mt-[-1.5rem]">
                     <button
                         className="btn m-1 ml-0 bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
@@ -176,7 +175,8 @@ export default function Riwayat() {
                         <p className="text-white">Belum ada riwayat.</p>
                     </div>
                 )}
-            </main>
         </div>
+      </main>
+    </div>
     );
 }
