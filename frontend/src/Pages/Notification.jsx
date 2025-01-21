@@ -6,7 +6,13 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
-  if (!Array.isArray(datas) || datas.length === 0) {
+  // Ubah objek menjadi array berdasarkan properti numerik
+  const dataArray = Object.keys(datas)
+    .filter((key) => !isNaN(key)) // Filter hanya properti numerik
+    .map((key) => datas[key]);
+
+  // Periksa apakah array hasil konversi kosong
+  if (!Array.isArray(dataArray) || dataArray.length === 0) {
     return (
       <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-3">
@@ -18,9 +24,10 @@ function CardNotifikasi({ datas }) {
     );
   }
 
+  // Render data notifikasi
   return (
     <div className="flex flex-col gap-4">
-      {datas.map((data, i) => {
+      {dataArray.map((data, i) => {
         const createdAt = data?.created_at || "";
         const category = data?.category || "notifikasi";
         const message = data?.message || "Tidak ada pesan";
@@ -87,15 +94,8 @@ export default function Notification() {
 
         if (parsedRes && parsedRes.data) {
           const response = parseJwt(parsedRes.data.token);
-          console.log("Decoded Token:", response); // return false
-
-          if (Array.isArray(response)) {
-            setData(response);
-          } else {
-            console.warn("Unexpected notifications format:", response);
-            setData([]);
-          }
-
+          console.log("Decoded Token:", response);
+          setData(response);
         } else {
           console.warn("No 'data' property found in response:", parsedRes);
           setData([]);
@@ -107,7 +107,6 @@ export default function Notification() {
         setLoad(false);
       }
     };
-
     fetchNotifications();
   }, []);
 
