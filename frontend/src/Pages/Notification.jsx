@@ -87,10 +87,10 @@ export default function Notification() {
 
         if (parsedRes && parsedRes.data) {
           const response = parseJwt(parsedRes.data.token);
-          console.log("Decoded Token:", response); return false
+          console.log("Decoded Token:", response); // return false
 
-          if (Array.isArray(response.notifications)) {
-            setData(response.notifications);
+          if (Array.isArray(response)) {
+            setData(response);
           } else {
             console.warn("Unexpected notifications format:", response);
             setData([]);
