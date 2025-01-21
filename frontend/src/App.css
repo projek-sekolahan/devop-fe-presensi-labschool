@@ -800,11 +800,11 @@ main {
 
 .card-notification {
   width: 100%; /* w-full */
-  height: fit-content; /* h-fit */
   background-color: white; /* bg-white */
   border-radius: 0.75rem; /* rounded-xl (12px radius) */
   color: black; /* text-black */
   padding: 1.5rem; /* p-6 (6 * 4px) */
   display: flex; /* flex */
   gap: 0.5rem; /* gap-2 (2 * 4px) */
+  border: 1px solid #ff7f27;
 }
