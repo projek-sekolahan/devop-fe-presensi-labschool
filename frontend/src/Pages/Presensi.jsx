@@ -15,7 +15,11 @@ export default function Presensi() {
 	return (
 		<div className="presensi-container">
 			<header>
-				<Link to="/home">
+				<Link to={
+						localStorage.getItem("group_id") == "4"
+							? "/home"
+							: "/presensi/staff"
+					}>
 					<ArrowLeftIcon className="w-6 h-6 text-white" />
 				</Link>
 				<h1 className="presensi-section-container">Presensi</h1>
