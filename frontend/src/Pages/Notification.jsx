@@ -90,11 +90,8 @@ export default function Notification() {
         );
         const parsedRes = JSON.parse(res);
 		    Cookies.set("csrf", parsedRes.csrfHash);
-        console.log("Parsed Response:", parsedRes);
-
         if (parsedRes && parsedRes.data) {
           const response = parseJwt(parsedRes.data.token);
-          console.log("Decoded Token:", response);
           setData(response);
         } else {
           console.warn("No 'data' property found in response:", parsedRes);
@@ -111,7 +108,6 @@ export default function Notification() {
   }, []);
 
   useEffect(() => {
-    console.log("Data state updated:", data);
   }, [data]);
 
   return (
