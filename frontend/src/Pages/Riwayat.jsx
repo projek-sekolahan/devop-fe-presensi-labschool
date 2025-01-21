@@ -91,7 +91,6 @@ export default function Riwayat() {
                     if (parsedErr.status === 500) {
                         setLoad(false);
                         setHistorys([]);
-                        console.log("No data found.");
                     } else {
                         handleSessionError(parsedErr, "/login");
                     }

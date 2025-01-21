@@ -58,7 +58,7 @@ body {
   z-index: 1;
   background-color: #dfe0df; /* bg-primary-low */
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: #ff7f27;
   overflow-y: auto; /* Scroll hanya pada kontainer ini */
 }
 

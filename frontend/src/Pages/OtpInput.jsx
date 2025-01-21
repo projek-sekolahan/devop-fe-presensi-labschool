@@ -28,7 +28,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 		apiXML
 			.postInput("verify", getFormData(keys, values))
 			.then((res) => {
-				res = JSON.parse(res); console.log(res.data.data.token);
+				res = JSON.parse(res);
 				setLoad(false);
 				localStorage.setItem("regist_token", res.data.data.token);
 				Cookies.set("csrf", res.csrfHash);

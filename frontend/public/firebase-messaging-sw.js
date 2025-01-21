@@ -7,10 +7,10 @@ const OFFLINE_URL = "offline.html";
 
 // Pre-cache offline.html
 self.addEventListener("install", (event) => {
-  console.log("Service Worker installing...");
+  // console.log("Service Worker installing...");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Caching offline page...");
+      // console.log("Caching offline page...");
       return cache.addAll([OFFLINE_URL]);
     })
   );
@@ -19,13 +19,13 @@ self.addEventListener("install", (event) => {
 
 // Activate Service Worker and clear old caches
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker activating...");
+  // console.log("Service Worker activating...");
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log("Deleting old cache:", cache);
+            // console.log("Deleting old cache:", cache);
             return caches.delete(cache);
           }
         })

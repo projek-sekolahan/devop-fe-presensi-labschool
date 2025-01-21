@@ -15,14 +15,11 @@ export default function RegisterFace({ isOpen, onToggle }) {
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [facecamCache, setFacecamCache] = useState(new Map());
     
     useEffect(() => {
         const init = async () => {
-            console.log("Initializing...");
             loading("Loading", "Getting camera access...");
             await loadFaceModels(); // Preload Face API models
-            console.log("Face models loaded.");
             await preloadFacecamData(); // Preload and cache facecam data
             startVideo();
         };
@@ -32,33 +29,17 @@ export default function RegisterFace({ isOpen, onToggle }) {
     // Fungsi untuk preload data facecam dan caching
     const preloadFacecamData = async () => {
         try {
-            console.log("Preloading facecam data...");
             let keys = ["devop-sso", "csrf_token"];
             let values = [
                 localStorage.getItem("regist_token"),
                 Cookies.get("csrf"),
             ];
-    
             const response = await apiXML.postInput(
                 "loadFace",
                 getFormData(keys, values)
             );
             const res = JSON.parse(response);
             Cookies.set("csrf", res.csrfHash);
-    
-            if (res.status && Array.isArray(res.data.data)) {
-                const cache = new Map();
-                res.data.data.forEach((facecam) => {
-                    const descriptor = new Float32Array(
-                        facecam.facecam_id.split(", ").map(Number)
-                    );
-                    cache.set(facecam.id, descriptor);
-                });
-                setFacecamCache(cache);
-                console.log("Facecam data cached successfully.", cache);
-            } else {
-                console.error("Failed to preload facecam data.");
-            }
         } catch (err) {
             console.error("Error preloading facecam data:", err);
             alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
@@ -67,11 +48,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
     
     // Fungsi untuk memulai kamera
     const startVideo = () => {
-        console.log("Starting video...");
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: false })
             .then((stream) => {
-                console.log("Camera access granted.");
                 Swal.close();
                 videoRef.current.srcObject = stream;
                 videoRef.current.setAttribute("autoplay", "");
@@ -90,37 +69,25 @@ export default function RegisterFace({ isOpen, onToggle }) {
     
     // Fungsi untuk mengambil gambar dari video
     function clickPhoto() {
-        console.log("Capturing photo...");
         const context = canvasRef.current.getContext("2d");
         const video = videoRef.current;
-
         const canvasWidth = 400;
         const canvasHeight = 400;
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
-
         const videoCenterX = videoWidth / 2;
         const videoCenterY = videoHeight / 2;
-
         const cropX = videoCenterX - canvasWidth / 2;
         const cropY = videoCenterY - canvasHeight / 2;
-
         canvasRef.current.width = canvasWidth;
         canvasRef.current.height = canvasHeight;
-
         context.save();
         context.scale(-1, 1);
         context.translate(-canvasWidth, 0);
-
         context.drawImage(video,cropX,cropY,canvasWidth,canvasHeight,0,0,canvasWidth,canvasHeight);
-
         context.restore();
-
         let image_data_url = canvasRef.current.toDataURL("image/jpeg");
         imgRef.current.src = image_data_url;
-
-        console.log("Photo captured successfully.",imgRef.current);
-        console.log("Photo captured data.",imgRef.current.src);
     }
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
@@ -128,13 +95,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
         setIsLoading(true);
         const modal = document.getElementById("my_modal_1");
         if (modal) modal.close();
-        loading("Loading", "Starting face detection and registration...");
-        console.log("Starting face detection and registration...");
-    
+        loading("Loading", "Starting face registration...");
         try {
-            console.log("Detecting face...");
             const faceData = await detectSingleFace(imgRef.current);
-    
             if (!faceData) {
                 setIsLoading(false);
                 console.error("Face not detected.");
@@ -146,8 +109,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 );
                 return;
             }
-    
-            console.log("Registering new face...");
             registerNewFace(faceData);
             setIsLoading(false);
         } catch (err) {
@@ -159,7 +120,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
     
     // Fungsi untuk mendaftarkan wajah baru
     const registerNewFace = async (faceData) => {
-        console.log("Preparing data for new face registration...");
         try {
             let keys = ["param", "img", "devop-sso", "csrf_token"];
             let values = [
@@ -168,17 +128,14 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 localStorage.getItem("regist_token"),
                 Cookies.get("csrf"),
             ];
-            console.log("Sending registration data to server...");
             const response = await apiXML.postInput(
                 "facecam",
                 getFormData(keys, values)
             );
             const res = JSON.parse(response);
             Cookies.set("csrf", res.csrfHash);
-    
             if (res.status) {
                 setIsLoading(false);
-                console.log("Face registration successful.");
                 alertMessage(
                     res.data.title,
                     res.data.message,
@@ -202,7 +159,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
     {/* Title and Subtitle */}
     <div className="text-center mt-6 mb-6">
         <h1 className="text-2xl font-bold">Pendaftaran Wajah</h1>
-        <p className="text-sm mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
+        <p className="text-sm font-semibold mt-2">Ambil Gambar Wajah Untuk Verifikasi</p>
     </div>
 
     {/* Video Feed with Frame Overlay */}

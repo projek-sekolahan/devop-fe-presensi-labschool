@@ -83,7 +83,6 @@ const Home = ({ intervalId }) => {
       .then((response) => {
         const result = JSON.parse(response);
         const datares = parseJwt(result.data.token);
-        console.log("data token fcm regist", datares)
         Cookies.set("csrf", result.csrfHash);
         Cookies.set("token_registered", "true");
         Cookies.set("cookiesAccepted", "true");

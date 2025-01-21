@@ -36,7 +36,6 @@ export default class apiXML {
                 "error",
                 () => window.location.replace("/login")
             );
-            console.log("Error fetching CSRF token:", error);
         }
     }       
 

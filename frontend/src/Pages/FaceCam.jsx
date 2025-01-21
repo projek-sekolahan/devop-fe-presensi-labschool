@@ -23,8 +23,6 @@ export default function FaceCam() {
   const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    console.log("useEffect triggered");
-
     if (!localStorage.getItem("token")) {
       console.error("Token not found, redirecting to login...");
       alertMessage(
@@ -39,11 +37,8 @@ export default function FaceCam() {
     const initialize = async () => {
       setIsLoading(true);
       try {
-        console.log("Initializing FaceCam...");
         await loadFaceModels();
-        console.log("Face models loaded successfully.");
         startVideo();
-        console.log("Starting video...");
       } catch (error) {
         console.error("Initialization error:", error);
         alertMessage(
@@ -58,7 +53,6 @@ export default function FaceCam() {
     initialize();
 
     return () => {
-      console.log("Cleaning up resources...");
       const stream = videoRef.current?.srcObject;
       stream?.getTracks().forEach((track) => track.stop());
     };
@@ -69,13 +63,11 @@ export default function FaceCam() {
     navigator.mediaDevices
       .getUserMedia({ video: { width: 640, height: 480 }, audio: false })
       .then((stream) => {
-        console.log("Camera access granted.");
         Swal.close();
         videoRef.current.srcObject = stream;
         videoRef.current.setAttribute("autoplay", "");
         videoRef.current.setAttribute("muted", "");
         videoRef.current.setAttribute("playsinline", "");
-        console.log("Camera started successfully.");
       })
       .catch((err) => {
         console.error("Camera access error:", err);
@@ -92,7 +84,6 @@ export default function FaceCam() {
   };
 
   const clickPhoto = () => {
-    console.log("Capturing photo...");
     const context = canvasRef.current.getContext("2d");
     const video = videoRef.current;
 
@@ -111,12 +102,9 @@ export default function FaceCam() {
     context.restore();
 
     imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
-    console.log("Photo captured successfully.", imgRef.current);
-    console.log("Photo captured data.",imgRef.current.src);
   };
 
   const detectFace = async () => {
-    console.log("Starting face detection...");
     setIsLoading(true);
     const modal = document.getElementById("my_modal_1");
     if (modal) modal.close();
@@ -134,7 +122,6 @@ export default function FaceCam() {
           throw new Error("Invalid or missing face descriptor in token.");
         }
         const tokenDescriptor = new Float32Array(userData.facecam_id.split(", ").map(Number));
-        console.log("Parsed descriptor from token:", tokenDescriptor);
 
         // Deteksi wajah dari gambar
         const detectionResult = await detectSingleFace(imgRef.current);
@@ -143,12 +130,10 @@ export default function FaceCam() {
           alertMessage("Pencocokan Gagal", "Harap Ulangi Proses.", "error", () => {window.location.replace("/home")});
           return;
         }
-        console.log("Detection Descriptor result:", detectionResult.descriptor);
 
         // Validasi dengan data token
         const isFaceMatched = validateFaceDetection(detectionResult, tokenDescriptor);
         if (isFaceMatched) {
-          console.log("Face match successful.");
           submitPresence(detectionResult.descriptor);
         } else {
           console.warn("Face match failed.");
@@ -174,11 +159,8 @@ export default function FaceCam() {
     ];
 
     const combinedKeys = addDefaultKeys(keys);
-    console.log("Combined keys initialized:", combinedKeys);
-
     let values = [];
     if (localStorage.getItem("group_id") === "4") {
-      console.log("User is in group 4, adding non-dinas status...");
       values = [
         localStorage.getItem("AUTH_KEY"),
         localStorage.getItem("login_token"),
@@ -186,7 +168,6 @@ export default function FaceCam() {
         ...state,
       ];
     } else {
-      console.log("User is not in group 4, skipping non-dinas status...");
       values = [
         localStorage.getItem("AUTH_KEY"),
         localStorage.getItem("login_token"),
@@ -201,12 +182,9 @@ export default function FaceCam() {
       Cookies.get("csrf")
     );
 
-    console.log("Values initialized:", values);
-    console.log("Submitting presence data...");
     apiXML
       .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
       .then((res) => {
-        console.log("Presence data submitted successfully:", res);
         Swal.close();
         setIsLoading(false);
         Cookies.set("csrf", JSON.parse(res).csrfHash);

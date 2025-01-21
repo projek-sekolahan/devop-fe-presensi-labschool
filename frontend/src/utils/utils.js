@@ -225,11 +225,6 @@ function clearCookies() {
         if (!cookieValue) {
             // Hapus cookie yang sudah kedaluwarsa
             Cookies.remove(cookieName);
-            console.log(
-                'Cookie "' +
-                    cookieName +
-                    '" sudah dihapus karena sudah kedaluwarsa.'
-            );
         }
     });
 }
@@ -242,7 +237,6 @@ export const getCookieValue = (cookieName) => {
 export const handleSessionError = (err, location) => {
     clearCookies();
     let res = JSON.parse(err.responseText);
-    console.log(err);
     if (err.status == 400 || err.status == 401 || err.status == 403 || err.status == 502) {
         res.data
             ? alertError(res.data.title, res.data.message, res.data.info, () =>

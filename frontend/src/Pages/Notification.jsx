@@ -82,7 +82,7 @@ export default function Notification() {
           getFormData(combinedKeys, values)
         );
         const parsedRes = JSON.parse(res);
-		Cookies.set("csrf", parsedRes.csrfHash);
+		    Cookies.set("csrf", parsedRes.csrfHash);
         console.log("Parsed Response:", parsedRes);
 
         if (parsedRes && parsedRes.data) {

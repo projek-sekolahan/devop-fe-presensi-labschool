@@ -10,7 +10,7 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener("fetch", (event) => {
-    console.log("Permintaan masuk:", event.request.url);
+    // console.log("Permintaan masuk:", event.request.url);
 
     const url = new URL(event.request.url);
     if (url.protocol === "chrome-extension:") {
@@ -42,11 +42,11 @@ self.addEventListener("fetch", (event) => {
 
 // Install Event: Cache Assets
 self.addEventListener("install", (event) => {
-    console.log("[Service Worker] Installing...");
+    // console.log("[Service Worker] Installing...");
 
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log("[Service Worker] Caching assets...");
+            // console.log("[Service Worker] Caching assets...");
 
             // Tambahkan asset satu per satu untuk mempermudah debugging
             const assetPromises = ASSETS_TO_CACHE.map((asset) => {
@@ -64,14 +64,14 @@ self.addEventListener("install", (event) => {
 
 // Activate Event: Clear Old Caches
 self.addEventListener("activate", (event) => {
-    console.log("[Service Worker] Activating...");
+    // console.log("[Service Worker] Activating...");
 
     event.waitUntil(
         caches.keys().then((cacheNames) =>
             Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log("[Service Worker] Deleting old cache:", cacheName);
+                        // console.log("[Service Worker] Deleting old cache:", cacheName);
                         return caches.delete(cacheName);
                     }
                 })
