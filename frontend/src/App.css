@@ -797,3 +797,14 @@ main {
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* Efek glowing hijau */
   margin-top: 3rem; /* mt-8 (8 * 4px) */
 }
+
+.card-notification {
+  width: 100%; /* w-full */
+  height: fit-content; /* h-fit */
+  background-color: white; /* bg-white */
+  border-radius: 0.75rem; /* rounded-xl (12px radius) */
+  color: black; /* text-black */
+  padding: 1.5rem; /* p-6 (6 * 4px) */
+  display: flex; /* flex */
+  gap: 0.5rem; /* gap-2 (2 * 4px) */
+}

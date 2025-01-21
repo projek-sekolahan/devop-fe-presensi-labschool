@@ -33,7 +33,7 @@ function CardNotifikasi({ datas }) {
         const message = data?.message || "Tidak ada pesan";
 
         return (
-          <div className="w-full h-fit bg-white rounded-xl text-black p-6 flex gap-2" key={i}>
+          <div className="card-notification" key={i}>
             <div className="flex flex-col justify-center">
               {category !== "notifikasi" ? (
                 <>
