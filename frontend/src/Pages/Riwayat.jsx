@@ -116,8 +116,7 @@ export default function Riwayat() {
         </Link>
         <h1 className="notification-section-container">Riwayat</h1>
       </header>
-      <main>
-        <div className="custom-card">
+            <main className="w-full h-full relative bottom-0 left-0 px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
                 <div id="dropdown" className="w-fit mt-[-1.5rem]">
                     <button
                         className="btn m-1 ml-0 bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
@@ -175,8 +174,7 @@ export default function Riwayat() {
                         <p className="text-white">Belum ada riwayat.</p>
                     </div>
                 )}
-        </div>
-      </main>
+            </main>
     </div>
     );
 }
