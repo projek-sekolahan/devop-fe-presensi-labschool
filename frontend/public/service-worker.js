@@ -3,52 +3,17 @@ importScripts("https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"
 importScripts("https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging-compat.js");
 
 // Cache Configuration
-const CACHE_NAME = "my-cache-v1";
+const CACHE_NAME = "offline-cache-v1";
 const OFFLINE_URL = "/frontend/offline.html"; // Offline fallback page
-const ASSETS_TO_CACHE = [
-    OFFLINE_URL,    // Offline fallback page
-];
-
-self.addEventListener("fetch", (event) => {
-    // console.log("Permintaan masuk:", event.request.url);
-
-    const url = new URL(event.request.url);
-    if (url.protocol === "chrome-extension:") {
-        console.warn("Permintaan tidak valid (chrome-extension):", url.href);
-        return;
-    }
-
-    // Lanjutkan caching hanya untuk protokol http/https
-    if (url.protocol === "http:" || url.protocol === "https:") {
-        event.respondWith(
-            caches.match(event.request).then((response) => {
-                return response || fetch(event.request).then((networkResponse) => {
-                    if (
-                        networkResponse &&
-                        networkResponse.status === 200 &&
-                        networkResponse.type === "basic"
-                    ) {
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    }
-                    return networkResponse;
-                });
-            })
-        );
-    }
-});
+const ASSETS_TO_CACHE = [OFFLINE_URL];
 
 // Install Event: Cache Assets
 self.addEventListener("install", (event) => {
-    // console.log("[Service Worker] Installing...");
-
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            // console.log("[Service Worker] Caching assets...");
+            console.log("[Service Worker] Caching assets...");
 
-            // Tambahkan asset satu per satu untuk mempermudah debugging
+            // Cache assets including the offline page
             const assetPromises = ASSETS_TO_CACHE.map((asset) => {
                 return cache.add(asset).catch((error) => {
                     console.error(`[Service Worker] Gagal cache asset: ${asset}`, error);
@@ -64,19 +29,17 @@ self.addEventListener("install", (event) => {
 
 // Activate Event: Clear Old Caches
 self.addEventListener("activate", (event) => {
-    // console.log("[Service Worker] Activating...");
-
     event.waitUntil(
-        caches.keys().then((cacheNames) =>
-            Promise.all(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        // console.log("[Service Worker] Deleting old cache:", cacheName);
+                        console.log("[Service Worker] Deleting old cache:", cacheName);
                         return caches.delete(cacheName);
                     }
                 })
-            )
-        )
+            );
+        })
     );
 
     self.clients.claim();
@@ -84,6 +47,13 @@ self.addEventListener("activate", (event) => {
 
 // Fetch Event: Serve Cached Resources or Fetch from Network
 self.addEventListener("fetch", (event) => {
+    const url = new URL(event.request.url);
+
+    if (url.protocol === "chrome-extension:") {
+        console.warn("[Service Worker] Ignoring chrome-extension request:", url.href);
+        return;
+    }
+
     if (event.request.mode === "navigate") {
         // Handle navigation requests (e.g., HTML pages)
         event.respondWith(
@@ -96,7 +66,6 @@ self.addEventListener("fetch", (event) => {
         event.respondWith(
             caches.match(event.request).then((response) => {
                 return response || fetch(event.request).then((networkResponse) => {
-                    // Cache the new response
                     if (
                         networkResponse &&
                         networkResponse.status === 200 &&
