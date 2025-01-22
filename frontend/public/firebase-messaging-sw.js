@@ -21,6 +21,10 @@ self.addEventListener("message", async (event) => {
         return;
     }
 
+    if (event.data.type === "INIT_FIREBASE") {
+      console.log("[SW] Konfigurasi Firebase:", event.data.config);
+    }
+
     if (event.data && event.data.type === "FCM_TOKEN") {
         console.log("[SW] Token FCM received:", event.data.token);
     }
@@ -31,7 +35,7 @@ self.addEventListener("message", async (event) => {
 
     if (event.data && event.data.type === "FIREBASE_INITIALIZED") {
         console.log("[SW] INITIALIZED received:", event.data.config);
-        
+
         try {
             const app = initializeApp(firebaseConfig);
             const messaging = getMessaging(app);
