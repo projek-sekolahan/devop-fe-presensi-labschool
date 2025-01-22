@@ -17,7 +17,7 @@ export const navigateToLogin = () => {
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
     console.error("firebaseConfig tidak valid.");
-    navigateToLogin();
+    //navigateToLogin();
     throw new Error("firebaseConfig tidak valid.");
 }
 
@@ -25,7 +25,7 @@ if (!firebaseConfig || typeof firebaseConfig !== "object") {
 export const registerServiceWorker = async () => {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
         console.warn("Service Worker atau Push API tidak didukung.");
-        navigateToLogin();
+        //navigateToLogin();
         return null;
     }
 
@@ -38,7 +38,7 @@ export const registerServiceWorker = async () => {
         return registration;
     } catch (err) {
         console.error("Pendaftaran Service Worker gagal:", err);
-        navigateToLogin();
+        //navigateToLogin();
         return null;
     }
 };
@@ -63,17 +63,17 @@ export const requestNotificationPermission = async () => {
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");
-                navigateToLogin();
+                //navigateToLogin();
                 return null;
             }
         } else {
             console.error("Izin notifikasi ditolak.");
-            navigateToLogin();
+            //navigateToLogin();
             return null;
         }
     } catch (err) {
         console.error("Error saat meminta izin notifikasi:", err);
-        navigateToLogin();
+        //navigateToLogin();
         return null;
     }
 };
