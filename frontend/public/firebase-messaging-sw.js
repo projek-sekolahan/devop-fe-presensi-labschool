@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js');
+importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging-compat.js');
 
 // Firebase Messaging Setup
 let firebaseConfig = null;
@@ -33,8 +33,8 @@ self.addEventListener("message", async (event) => {
         console.log("[SW] Firebase config received:", firebaseConfig);
 
         try {
-            const app = initializeApp(firebaseConfig);
-            const messaging = getMessaging(app);
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
 
             messaging.setBackgroundMessageHandler(function (payload) {
                 console.log("[firebase-messaging-sw] Background message received:", payload);
