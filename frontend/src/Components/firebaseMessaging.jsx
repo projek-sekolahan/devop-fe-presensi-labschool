@@ -1,5 +1,5 @@
 import firebaseConfig from "./firebaseConfig";
-import { alertMessage, getCookieValue } from "../utils/utils";
+import { alertMessage } from "../utils/utils";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
@@ -17,7 +17,6 @@ export const navigateToLogin = () => {
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
     console.error("firebaseConfig tidak valid.");
-    //navigateToLogin();
     throw new Error("firebaseConfig tidak valid.");
 }
 
@@ -25,7 +24,6 @@ if (!firebaseConfig || typeof firebaseConfig !== "object") {
 export const registerServiceWorker = async () => {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
         console.warn("Service Worker atau Push API tidak didukung.");
-        //navigateToLogin();
         return null;
     }
 
@@ -35,10 +33,21 @@ export const registerServiceWorker = async () => {
             { scope: "/" }
         );
         console.log("Service Worker berhasil didaftarkan:", registration.scope);
+
+        // Kirim pesan ke Service Worker setelah pendaftaran
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: "SW_REGISTERED",
+                message: "Service Worker telah berhasil didaftarkan."
+            });
+            console.log("Pesan dikirim ke Service Worker: Service Worker berhasil didaftarkan.");
+        } else {
+            console.warn("Tidak ada controller Service Worker untuk mengirim pesan.");
+        }
+
         return registration;
     } catch (err) {
         console.error("Pendaftaran Service Worker gagal:", err);
-        //navigateToLogin();
         return null;
     }
 };
@@ -60,20 +69,29 @@ export const requestNotificationPermission = async () => {
             if (currentToken) {
                 localStorage.setItem("token_fcm", currentToken);
                 console.log("Token FCM disimpan ke localStorage:", currentToken);
+
+                // Kirim token FCM ke Service Worker
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: "FCM_TOKEN",
+                        token: currentToken
+                    });
+                    console.log("Token FCM dikirim ke Service Worker.");
+                } else {
+                    console.warn("Tidak ada controller Service Worker untuk mengirim token FCM.");
+                }
+
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");
-                //navigateToLogin();
                 return null;
             }
         } else {
             console.error("Izin notifikasi ditolak.");
-            //navigateToLogin();
             return null;
         }
     } catch (err) {
         console.error("Error saat meminta izin notifikasi:", err);
-        //navigateToLogin();
         return null;
     }
 };
@@ -85,6 +103,17 @@ export const handleOnMessage = (callback) => {
             console.log("Pesan notifikasi diterima:", payload);
             if (callback && typeof callback === "function") {
                 callback(payload);
+            }
+
+            // Kirim pesan payload ke Service Worker
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: "NOTIFICATION_RECEIVED",
+                    payload
+                });
+                console.log("Pesan notifikasi dikirim ke Service Worker:", payload);
+            } else {
+                console.warn("Tidak ada controller Service Worker untuk mengirim pesan notifikasi.");
             }
         });
     } catch (err) {
