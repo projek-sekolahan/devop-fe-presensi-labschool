@@ -104,9 +104,9 @@ export const handleOnMessage = (callback) => {
             if (callback && typeof callback === "function") {
                 callback(payload);
             }
-
             // Kirim pesan payload ke Service Worker
             if (navigator.serviceWorker.controller) {
+                console.log("Mengirim pesan NOTIFICATION_RECEIVED ke Service Worker...");
                 navigator.serviceWorker.controller.postMessage({
                     type: "NOTIFICATION_RECEIVED",
                     payload,
@@ -118,6 +118,7 @@ export const handleOnMessage = (callback) => {
                     // Fallback jika SW belum mengontrol halaman
                     const registration = await navigator.serviceWorker.ready;
                     if (registration.active) {
+                        console.log("Mengirim kembali pesan active NOTIFICATION_RECEIVED ke Service Worker...");
                         registration.active.postMessage({
                             type: "NOTIFICATION_RECEIVED",
                             payload,
