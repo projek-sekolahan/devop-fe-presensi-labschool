@@ -9,13 +9,6 @@ console.log("Firebase Config:", app);
 const messaging = getMessaging(app);
 console.log("Firebase Messaging:", messaging);
 
-// Fungsi navigasi
-export const navigateToLogin = () => {
-    alertMessage("Error", "Terjadi kesalahan, Memuat ulang.", "error", () => {
-        window.location.href = "/login";
-    });
-};
-
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
     console.error("firebaseConfig tidak valid.");
@@ -70,7 +63,9 @@ export const registerServiceWorker = async () => {
 // Request izin notifikasi dan dapatkan token
 export const requestNotificationPermission = async () => {
     if (!("Notification" in window)) {
-        alertMessage("Notification", "Browser ini tidak mendukung notifikasi.", "error", navigateToLogin);
+        alertMessage("Notification", "Browser ini tidak mendukung notifikasi.", "error", () => {
+            window.location.href = "/login";
+        });
         return null;
     }
 
@@ -149,6 +144,8 @@ export const handleOnMessage = (callback) => {
         });
     } catch (err) {
         console.error("Gagal menerima pesan notifikasi:", err);
-        alertMessage("Error", `Terjadi kesalahan saat menerima pesan notifikasi: ${err.message}`, "error", navigateToLogin);
+        alertMessage("Error", `Terjadi kesalahan saat menerima pesan notifikasi: ${err.message}`, "error", () => {
+            window.location.href = "/login";
+        });
     }
 };
