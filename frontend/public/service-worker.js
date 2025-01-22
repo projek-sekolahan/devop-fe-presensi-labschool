@@ -13,10 +13,9 @@ self.addEventListener("install", (event) => {
         caches.open(CACHE_NAME).then((cache) => {
             console.log("[Service Worker] Caching assets...");
 
-            // Cache assets including the offline page
             const assetPromises = ASSETS_TO_CACHE.map((asset) => {
                 return cache.add(asset).catch((error) => {
-                    console.error(`[Service Worker] Gagal cache asset: ${asset}`, error);
+                    console.error(`[Service Worker] Failed to cache asset: ${asset}`, error);
                 });
             });
 
@@ -55,17 +54,15 @@ self.addEventListener("fetch", (event) => {
     }
 
     if (event.request.mode === "navigate") {
-        // Handle navigation requests (e.g., HTML pages)
         event.respondWith(
             fetch(event.request).catch(() => {
                 return caches.match(OFFLINE_URL);
             })
         );
     } else {
-        // Handle other requests (e.g., assets)
         event.respondWith(
-            caches.match(event.request).then((response) => {
-                return response || fetch(event.request).then((networkResponse) => {
+            caches.match(event.request).then((cachedResponse) => {
+                return cachedResponse || fetch(event.request).then((networkResponse) => {
                     if (
                         networkResponse &&
                         networkResponse.status === 200 &&
@@ -79,6 +76,15 @@ self.addEventListener("fetch", (event) => {
 
                     return networkResponse;
                 });
+            }).catch((err) => {
+                console.error("[Service Worker] Fetch error:", err);
+                if (event.request.mode === "navigate") {
+                    return caches.match(OFFLINE_URL);
+                }
+                return new Response("Resource not available.", {
+                    status: 503,
+                    statusText: "Service Unavailable",
+                });
             })
         );
     }
@@ -88,31 +94,48 @@ self.addEventListener("fetch", (event) => {
 let firebaseConfig = null;
 
 self.addEventListener("message", async (event) => {
+    if (event.data && event.data.type === "FCM_TOKEN") {
+        console.log("[SW] Token FCM received:", event.data.token);
+    }
+
+    if (event.data && event.data.type === "NOTIFICATION_RECEIVED") {
+        console.log("[SW] Notification received:", event.data.payload);
+    }
+
     if (event.data && event.data.type === "INIT_FIREBASE") {
         firebaseConfig = event.data.config;
-        console.log("Menerima konfigurasi Firebase:", firebaseConfig);
+        console.log("[SW] Firebase config received:", firebaseConfig);
+
+        if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.messagingSenderId) {
+            console.error("[SW] Invalid Firebase configuration:", firebaseConfig);
+            event.source.postMessage({
+                type: "FIREBASE_INITIALIZED",
+                success: false,
+                error: "Invalid Firebase configuration."
+            });
+            return;
+        }
 
         try {
             const app = initializeApp(firebaseConfig);
-            const messaging = messaging(app);
+            const messaging = getMessaging(app);
 
-            // Setup untuk pesan latar belakang
             messaging.setBackgroundMessageHandler(function (payload) {
-                console.log("[firebase-messaging-sw] Pesan background diterima:", payload);
-                const notificationTitle = payload.notification?.title || "Pesan Baru";
+                console.log("[firebase-messaging-sw] Background message received:", payload);
+                const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
-                    body: payload.notification?.body || "Anda memiliki pesan baru.",
+                    body: payload.notification?.body || "You have a new message.",
+                    icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
 
-            // Kirim pesan ke aplikasi utama bahwa Firebase berhasil diinisialisasi
             event.source.postMessage({
                 type: "FIREBASE_INITIALIZED",
                 success: true,
             });
         } catch (error) {
-            console.error("Error initializing Firebase in Service Worker:", error);
+            console.error("[SW] Error initializing Firebase:", error);
             event.source.postMessage({
                 type: "FIREBASE_INITIALIZED",
                 success: false,

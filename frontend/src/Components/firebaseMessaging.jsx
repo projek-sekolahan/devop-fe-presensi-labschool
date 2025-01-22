@@ -38,7 +38,7 @@ export const registerServiceWorker = async () => {
         if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 type: "SW_REGISTERED",
-                message: "Service Worker telah berhasil didaftarkan."
+                message: "Service Worker telah berhasil didaftarkan.",
             });
             console.log("Pesan dikirim ke Service Worker: Service Worker berhasil didaftarkan.");
         } else {
@@ -74,7 +74,7 @@ export const requestNotificationPermission = async () => {
                 if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage({
                         type: "FCM_TOKEN",
-                        token: currentToken
+                        token: currentToken,
                     });
                     console.log("Token FCM dikirim ke Service Worker.");
                 } else {
@@ -99,7 +99,7 @@ export const requestNotificationPermission = async () => {
 // Menerima pesan notifikasi
 export const handleOnMessage = (callback) => {
     try {
-        onMessage(messaging, (payload) => {
+        onMessage(messaging, async (payload) => {
             console.log("Pesan notifikasi diterima:", payload);
             if (callback && typeof callback === "function") {
                 callback(payload);
@@ -109,11 +109,26 @@ export const handleOnMessage = (callback) => {
             if (navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({
                     type: "NOTIFICATION_RECEIVED",
-                    payload
+                    payload,
                 });
                 console.log("Pesan notifikasi dikirim ke Service Worker:", payload);
             } else {
-                console.warn("Tidak ada controller Service Worker untuk mengirim pesan notifikasi.");
+                console.warn("Tidak ada controller Service Worker. Menunggu hingga Service Worker siap...");
+                try {
+                    // Fallback jika SW belum mengontrol halaman
+                    const registration = await navigator.serviceWorker.ready;
+                    if (registration.active) {
+                        registration.active.postMessage({
+                            type: "NOTIFICATION_RECEIVED",
+                            payload,
+                        });
+                        console.log("Pesan notifikasi dikirim ke Service Worker setelah siap:", payload);
+                    } else {
+                        console.error("Service Worker tetap tidak siap setelah fallback.");
+                    }
+                } catch (err) {
+                    console.error("Error pada fallback Service Worker:", err);
+                }
             }
         });
     } catch (err) {
