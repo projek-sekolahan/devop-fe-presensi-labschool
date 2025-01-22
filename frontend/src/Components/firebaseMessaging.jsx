@@ -30,15 +30,24 @@ export const registerServiceWorker = async () => {
     }
 
     try {
-        /* const registration = await navigator.serviceWorker.register(
-            `/service-worker.js?v=${new Date().getTime()}`,
-            { scope: "/" }
-        ); */
         const registration = await navigator.serviceWorker.register(
             `/firebase-messaging-sw.js?v=${new Date().getTime()}`,
             { scope: "/" }
         );
         console.log("Service Worker berhasil didaftarkan:", registration.scope);
+
+        // Kirim konfigurasi Firebase ke Service Worker
+        const firebaseConfigMessage = {
+            type: "FIREBASE_INITIALIZED",
+            config: firebaseConfig,
+        };
+
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
+            console.log("Konfigurasi Firebase dikirim ke Service Worker:", firebaseConfig);
+        } else {
+            console.warn("Tidak ada controller Service Worker untuk mengirim konfigurasi Firebase.");
+        }
 
         // Kirim pesan ke Service Worker setelah pendaftaran
         if (navigator.serviceWorker.controller) {
