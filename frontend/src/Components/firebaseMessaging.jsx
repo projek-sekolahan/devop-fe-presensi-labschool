@@ -5,7 +5,9 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
+console.log("Firebase Config:", app);
 const messaging = getMessaging(app);
+console.log("Firebase Messaging:", messaging);
 
 // Fungsi navigasi
 export const navigateToLogin = () => {
