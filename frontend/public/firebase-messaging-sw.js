@@ -1,6 +1,6 @@
 // Import Firebase modules
-import { initializeApp } from "firebase/app";
-import { getMessaging, onBackgroundMessage } from "firebase/messaging/sw";
+import { initializeApp } from "./firebase-app.js";
+import { getMessaging, onBackgroundMessage } from "./firebase-messaging.js";
 
 // Firebase Messaging Setup
 let firebaseConfig = null;
