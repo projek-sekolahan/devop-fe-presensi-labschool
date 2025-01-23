@@ -1,8 +1,8 @@
 // Import Firebase modules
-/* import { initializeApp } from "./firebase-app.js";
-import { getMessaging, onBackgroundMessage } from "./firebase-messaging.js"; */
-importScripts("/frontend/firebase-app.js");
-importScripts("/frontend/firebase-messaging.js");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getMessaging, onBackgroundMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
+/* importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"); */
 
 // Firebase Messaging Setup
 let firebaseConfig = null;
