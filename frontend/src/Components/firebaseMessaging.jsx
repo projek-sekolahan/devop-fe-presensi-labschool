@@ -25,7 +25,7 @@ export const registerServiceWorker = async () => {
     try {
         const registration = await navigator.serviceWorker.register(
             `/firebase-messaging-sw.js?v=${new Date().getTime()}`,
-            { scope: "/" }
+            { scope: "/", type: "module" }
         );
         console.log("Service Worker berhasil didaftarkan:", registration.scope);
 
