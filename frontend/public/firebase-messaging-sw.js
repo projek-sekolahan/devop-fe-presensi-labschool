@@ -73,23 +73,25 @@ self.addEventListener("message", async (event) => {
         try {
             // Initialize Firebase App
             // Pastikan Firebase hanya diinisialisasi sekali
-            console.log("[SW] Firebase App length,",firebase.apps.length );
+            console.log("[SW] Firebase App length:", firebase.apps.length);
             if (!firebase.apps.length) {
-              firebase.initializeApp(firebaseConfig);
+                firebase.initializeApp(firebaseConfig);
+                console.log("[SW] Firebase App initialized.");
             } else {
-              console.log("[SW] Firebase App already initialized.");
+                console.log("[SW] Firebase App already initialized.");
             }
+
             const messaging = firebase.messaging();
 
             // Handle background messages
             messaging.onBackgroundMessage((payload) => {
-              console.log("[firebase-messaging-sw] Background message received:", payload);
-              const notificationTitle = payload.notification?.title || "New Message";
-              const notificationOptions = {
-                  body: payload.notification?.body || "You have a new message.",
-                  icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
-              };
-              self.registration.showNotification(notificationTitle, notificationOptions);
+                console.log("[firebase-messaging-sw] Background message received:", payload);
+                const notificationTitle = payload.notification?.title || "New Message";
+                const notificationOptions = {
+                    body: payload.notification?.body || "You have a new message.",
+                    icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
+                };
+                self.registration.showNotification(notificationTitle, notificationOptions);
             });
 
             event.source.postMessage({
