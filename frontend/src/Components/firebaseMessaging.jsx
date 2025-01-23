@@ -29,7 +29,7 @@ export const registerServiceWorker = async () => {
         console.log("Service Worker berhasil didaftarkan:", registration.scope);
 
         // Kirim pesan ke Service Worker setelah pendaftaran
-        if (navigator.serviceWorker.controller) {
+        /* if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 type: "SW_REGISTERED",
                 message: "Service Worker telah berhasil didaftarkan.",
@@ -37,7 +37,7 @@ export const registerServiceWorker = async () => {
             console.log("Pesan dikirim ke Service Worker: Service Worker berhasil didaftarkan.");
         } else {
             console.warn("Tidak ada controller Service Worker untuk mengirim pesan.");
-        }
+        } */
 
         return registration;
     } catch (err) {
@@ -67,7 +67,7 @@ export const requestNotificationPermission = async () => {
                 console.log("Token FCM disimpan ke localStorage:", currentToken);
 
                 // Kirim token FCM ke Service Worker
-                if (navigator.serviceWorker.controller) {
+                /* if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage({
                         type: "FCM_TOKEN",
                         token: currentToken,
@@ -75,7 +75,7 @@ export const requestNotificationPermission = async () => {
                     console.log("Token FCM dikirim ke Service Worker.");
                 } else {
                     console.warn("Tidak ada controller Service Worker untuk mengirim token FCM.");
-                }
+                } */
 
         // Kirim konfigurasi Firebase ke Service Worker
         const firebaseConfigMessage = {
