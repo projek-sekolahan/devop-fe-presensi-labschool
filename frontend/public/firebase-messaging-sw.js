@@ -1,5 +1,6 @@
-importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging-compat.js');
+// Import Firebase modules
+import { initializeApp } from "firebase/app";
+import { getMessaging, onBackgroundMessage } from "firebase/messaging/sw";
 
 // Firebase Messaging Setup
 let firebaseConfig = null;
@@ -19,24 +20,14 @@ self.addEventListener("message", async (event) => {
         return;
     }
 
-    if (event.data && event.data.type === "FCM_TOKEN") {
-        console.log("[SW] Token FCM received:", event.data.token);
-    }
-
-    if (event.data && event.data.type === "NOTIFICATION_RECEIVED") {
-        console.log("[SW] Notification received:", event.data.payload);
-    }
-
-    if (event.data && event.data.type === "FIREBASE_INITIALIZED") {
+    if (event.data.type === "FIREBASE_INITIALIZED") {
         console.log("[SW] INITIALIZED received:", event.data.config);
-        console.log("[SW] Konfigurasi Firebase:", event.data.config);
-        console.log("[SW] Firebase config received:", firebaseConfig);
 
         try {
-            firebase.initializeApp(firebaseConfig);
-            const messaging = firebase.messaging();
+            const app = initializeApp(firebaseConfig);
+            const messaging = getMessaging(app);
 
-            messaging.setBackgroundMessageHandler(function (payload) {
+            onBackgroundMessage(messaging, (payload) => {
                 console.log("[firebase-messaging-sw] Background message received:", payload);
                 const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
@@ -58,6 +49,24 @@ self.addEventListener("message", async (event) => {
                 error: error.message,
             });
         }
+    }
+});
+
+// iOS Fallback for Notifications
+self.addEventListener("notificationclick", (event) => {
+    if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
+        console.warn("[SW] Notifications are not fully supported on iOS Safari.");
+        // Handle fallback logic, e.g., open a help page or provide user guidance
+        event.notification.close();
+        event.waitUntil(
+            self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+                if (clientList.length > 0) {
+                    return clientList[0].focus();
+                }
+                return self.clients.openWindow("/help"); // Redirect to help or fallback page
+            })
+        );
+        return;
     }
 });
 
