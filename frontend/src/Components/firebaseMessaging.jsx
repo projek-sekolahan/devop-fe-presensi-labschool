@@ -28,19 +28,6 @@ export const registerServiceWorker = async () => {
         const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js",{ scope: "/" });
         console.log("Service Worker berhasil didaftarkan:", registration.scope);
 
-        // Kirim konfigurasi Firebase ke Service Worker
-        const firebaseConfigMessage = {
-            type: "FIREBASE_INITIALIZED",
-            config: firebaseConfig,
-        };
-
-        if (navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
-            console.log("Konfigurasi Firebase dikirim ke Service Worker:", firebaseConfig);
-        } else {
-            console.warn("Tidak ada controller Service Worker untuk mengirim konfigurasi Firebase.");
-        }
-
         // Kirim pesan ke Service Worker setelah pendaftaran
         if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
@@ -90,6 +77,18 @@ export const requestNotificationPermission = async () => {
                     console.warn("Tidak ada controller Service Worker untuk mengirim token FCM.");
                 }
 
+        // Kirim konfigurasi Firebase ke Service Worker
+        const firebaseConfigMessage = {
+            type: "FIREBASE_INITIALIZED",
+            config: firebaseConfig,
+        };
+
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
+            console.log("Konfigurasi Firebase dikirim ke Service Worker:", firebaseConfig);
+        } else {
+            console.warn("Tidak ada controller Service Worker untuk mengirim konfigurasi Firebase.");
+        }
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");
