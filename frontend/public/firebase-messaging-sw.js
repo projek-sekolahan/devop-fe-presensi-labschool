@@ -26,17 +26,20 @@ self.addEventListener("message", async (event) => {
         console.log("[SW] INITIALIZED received:", event.data.config);
 
         try {
-            const app = initializeApp(firebaseConfig);
-            const messaging = getMessaging(app);
+            // Initialize Firebase App
+            firebase.initializeApp(firebaseConfig);
 
-            onBackgroundMessage(messaging, (payload) => {
-                console.log("[firebase-messaging-sw] Background message received:", payload);
-                const notificationTitle = payload.notification?.title || "New Message";
-                const notificationOptions = {
-                    body: payload.notification?.body || "You have a new message.",
-                    icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
-                };
-                self.registration.showNotification(notificationTitle, notificationOptions);
+            const messaging = firebase.messaging();
+
+            // Handle background messages
+            messaging.onBackgroundMessage((payload) => {
+              console.log("[firebase-messaging-sw] Background message received:", payload);
+              const notificationTitle = payload.notification?.title || "New Message";
+              const notificationOptions = {
+                  body: payload.notification?.body || "You have a new message.",
+                  icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
+              };
+              self.registration.showNotification(notificationTitle, notificationOptions);
             });
 
             event.source.postMessage({
