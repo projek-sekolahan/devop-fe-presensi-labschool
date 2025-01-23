@@ -27,8 +27,13 @@ self.addEventListener("message", async (event) => {
 
         try {
             // Initialize Firebase App
-            firebase.initializeApp(firebaseConfig);
-
+            // Pastikan Firebase hanya diinisialisasi sekali
+            console.log("[SW] Firebase App length,",firebase.apps.length );
+            if (!firebase.apps.length) {
+              firebase.initializeApp(firebaseConfig);
+            } else {
+              console.log("[SW] Firebase App already initialized.");
+            }
             const messaging = firebase.messaging();
 
             // Handle background messages
