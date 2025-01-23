@@ -4,6 +4,51 @@ import { getMessaging, onBackgroundMessage } from "https://www.gstatic.com/fireb
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js");
 
+// Push Event
+self.addEventListener('push', (event) => {
+  console.log('[SW] Push event received:', event);
+  if (event.data) {
+      const payload = event.data.json();
+      const notificationTitle = payload.notification?.title || "New Message";
+      const notificationOptions = {
+          body: payload.notification?.body || "You have a new message.",
+          icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
+      };
+      event.waitUntil(
+          self.registration.showNotification(notificationTitle, notificationOptions)
+      );
+  }
+});
+
+// Push Subscription Change Event
+self.addEventListener('pushsubscriptionchange', (event) => {
+  console.log('[SW] Push subscription change event:', event);
+  event.waitUntil(
+      self.registration.pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
+          console.log('[Service Worker] Resubscribed:', subscription);
+      })
+  );
+});
+
+// iOS Fallback for Notifications
+self.addEventListener("notificationclick", (event) => {
+  console.log("[SW] Notification clicked:", event.notification);
+  if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
+      console.warn("[SW] Notifications are not fully supported on iOS Safari.");
+      // Handle fallback logic, e.g., open a help page or provide user guidance
+      event.notification.close();
+      event.waitUntil(
+          self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+              if (clientList.length > 0) {
+                  return clientList[0].focus();
+              }
+              return self.clients.openWindow("/help"); // Redirect to help or fallback page
+          })
+      );
+      return;
+  }
+});
+
 // Firebase Messaging Setup
 let firebaseConfig = null;
 
@@ -59,24 +104,6 @@ self.addEventListener("message", async (event) => {
                 error: error.message,
             });
         }
-    }
-});
-
-// iOS Fallback for Notifications
-self.addEventListener("notificationclick", (event) => {
-    if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
-        console.warn("[SW] Notifications are not fully supported on iOS Safari.");
-        // Handle fallback logic, e.g., open a help page or provide user guidance
-        event.notification.close();
-        event.waitUntil(
-            self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-                if (clientList.length > 0) {
-                    return clientList[0].focus();
-                }
-                return self.clients.openWindow("/help"); // Redirect to help or fallback page
-            })
-        );
-        return;
     }
 });
 
@@ -165,20 +192,4 @@ self.addEventListener("fetch", (event) => {
             })
         );
     }
-});
-
-// Notification Click Event: Handle notification interactions
-self.addEventListener("notificationclick", (event) => {
-    console.log("[Service Worker] Notification clicked:", event.notification);
-
-    event.notification.close();
-
-    event.waitUntil(
-        self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-            if (clientList.length > 0) {
-                return clientList[0].focus();
-            }
-            return self.clients.openWindow("/");
-        })
-    );
 });
