@@ -31,7 +31,7 @@ export default function Register({ isOpen, onToggle }) {
   });
 
   // Helper function for registration process
-  const processRegister = async (formData) => {
+  const processRegister = async (formData) => { console.log(formData); return false;
     try {
       const response = await apiXML.postInput("register", formData);
       const res = JSON.parse(response);
