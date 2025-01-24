@@ -31,7 +31,7 @@ export default function Register({ isOpen, onToggle }) {
   });
 
   // Helper function for registration process
-  const processRegister = async (formData) => { console.log(formData); return false;
+  const processRegister = async (formData) => {
     try {
       const response = await apiXML.postInput("register", formData);
       const res = JSON.parse(response);
@@ -90,9 +90,10 @@ export default function Register({ isOpen, onToggle }) {
         Cookies.get("csrf"),
     ];
     const formData = getFormData(FORM_KEYS, values);
-
+    console.log(formData); return false;
     try {
         // Process registration
+        // console.log(formData); return false;
         await processRegister(formData);
     } finally {
         setIsLoading(false);
