@@ -2,14 +2,10 @@ import firebaseConfig from "./firebaseConfig";
 import { alertMessage } from "../utils/utils";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
-/* import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging"; */
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
-console.log("Firebase Config:", app);
 const messaging = getMessaging(app);
-console.log("Firebase Messaging:", messaging);
 
 // Validasi firebaseConfig
 if (!firebaseConfig || typeof firebaseConfig !== "object") {
@@ -20,28 +16,15 @@ if (!firebaseConfig || typeof firebaseConfig !== "object") {
 // Daftarkan Service Worker
 export const registerServiceWorker = async () => {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-        console.warn("Service Worker atau Push API tidak didukung.");
+        console.warn("SW atau Push API tidak didukung.");
         return null;
     }
 
     try {
         const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js",{ scope: "/" });
-        console.log("Service Worker berhasil didaftarkan:", registration.scope);
-
-        // Kirim pesan ke Service Worker setelah pendaftaran
-        /* if (navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-                type: "SW_REGISTERED",
-                message: "Service Worker telah berhasil didaftarkan.",
-            });
-            console.log("Pesan dikirim ke Service Worker: Service Worker berhasil didaftarkan.");
-        } else {
-            console.warn("Tidak ada controller Service Worker untuk mengirim pesan.");
-        } */
-
         return registration;
     } catch (err) {
-        console.error("Pendaftaran Service Worker gagal:", err);
+        console.error("Pendaftaran SW gagal:", err);
         return null;
     }
 };
@@ -58,37 +41,22 @@ export const requestNotificationPermission = async () => {
     try {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-            console.log("Izin notifikasi diberikan.");
             const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
             const currentToken = await getToken(messaging, { vapidKey });
 
             if (currentToken) {
                 localStorage.setItem("token_fcm", currentToken);
-                console.log("Token FCM disimpan ke localStorage:", currentToken);
+                // Kirim konfigurasi Firebase ke Service Worker
+                const firebaseConfigMessage = {
+                    type: "FIREBASE_INITIALIZED",
+                    config: firebaseConfig,
+                };
 
-                // Kirim token FCM ke Service Worker
-                /* if (navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.controller.postMessage({
-                        type: "FCM_TOKEN",
-                        token: currentToken,
-                    });
-                    console.log("Token FCM dikirim ke Service Worker.");
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
                 } else {
-                    console.warn("Tidak ada controller Service Worker untuk mengirim token FCM.");
-                } */
-
-        // Kirim konfigurasi Firebase ke Service Worker
-        const firebaseConfigMessage = {
-            type: "FIREBASE_INITIALIZED",
-            config: firebaseConfig,
-        };
-
-        if (navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
-            console.log("Konfigurasi Firebase dikirim ke Service Worker:", firebaseConfig);
-        } else {
-            console.warn("Tidak ada controller Service Worker untuk mengirim konfigurasi Firebase.");
-        }
+                    console.warn("Tidak ada controller SW untuk mengirim konfigurasi Firebase.");
+                }
                 return currentToken;
             } else {
                 console.error("Gagal mendapatkan token notifikasi.");
@@ -104,39 +72,49 @@ export const requestNotificationPermission = async () => {
     }
 };
 
+// Tambahkan Listener untuk Refresh Token
+messaging.onTokenRefresh(() => {
+    const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+
+    messaging.getToken({ vapidKey })
+        .then((newToken) => {
+            localStorage.setItem("token_fcm", newToken);
+            // Kirim token baru ke backend
+            Cookies.set("token_registered", "false");
+        })
+        .catch((error) => {
+            console.error("Error saat memperbarui token:", error);
+        });
+});
+
 // Menerima pesan notifikasi
 export const handleOnMessage = (callback) => {
     try {
         onMessage(messaging, async (payload) => {
-            console.log("Pesan notifikasi diterima:", payload);
             if (callback && typeof callback === "function") {
                 callback(payload);
             }
             // Kirim pesan payload ke Service Worker
             if (navigator.serviceWorker.controller) {
-                console.log("Mengirim pesan NOTIFICATION_RECEIVED ke Service Worker...");
                 navigator.serviceWorker.controller.postMessage({
                     type: "NOTIFICATION_RECEIVED",
                     payload,
                 });
-                console.log("Pesan notifikasi dikirim ke Service Worker:", payload);
             } else {
-                console.warn("Tidak ada controller Service Worker. Menunggu hingga Service Worker siap...");
+                console.warn("Tidak ada controller SW. Menunggu hingga SW siap...");
                 try {
                     // Fallback jika SW belum mengontrol halaman
                     const registration = await navigator.serviceWorker.ready;
                     if (registration.active) {
-                        console.log("Mengirim kembali pesan active NOTIFICATION_RECEIVED ke Service Worker...");
                         registration.active.postMessage({
                             type: "NOTIFICATION_RECEIVED",
                             payload,
                         });
-                        console.log("Pesan notifikasi dikirim ke Service Worker setelah siap:", payload);
                     } else {
-                        console.error("Service Worker tetap tidak siap setelah fallback.");
+                        console.error("SW tetap tidak siap setelah fallback.");
                     }
                 } catch (err) {
-                    console.error("Error pada fallback Service Worker:", err);
+                    console.error("Error pada fallback SW:", err);
                 }
             }
         });

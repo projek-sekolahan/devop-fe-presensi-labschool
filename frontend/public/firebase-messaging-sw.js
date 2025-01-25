@@ -1,38 +1,37 @@
 // Import Firebase modules
-/* import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getMessaging, onBackgroundMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js"; */
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js");
 
 // Push Event
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push event received:', event);
   if (event.data) {
       const payload = event.data.json();
       const notificationTitle = payload.notification?.title || "New Message";
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
-          icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
+          icon: payload.notification?.icon || "/frontend/Icons/splash.png",
       };
       event.waitUntil(
           self.registration.showNotification(notificationTitle, notificationOptions)
       );
   }
+  else {
+    console.warn("[SW] Push event received without data.");
+    return;
+  }
 });
 
 // Push Subscription Change Event
 self.addEventListener('pushsubscriptionchange', (event) => {
-  console.log('[SW] Push subscription change event:', event);
   event.waitUntil(
       self.registration.pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
-          console.log('[Service Worker] Resubscribed:', subscription);
+          console.log('[SW] Resubscribed:', subscription);
       })
   );
 });
 
 // iOS Fallback for Notifications
 self.addEventListener("notificationclick", (event) => {
-  console.log("[SW] Notification clicked:", event.notification);
   if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
       console.warn("[SW] Notifications are not fully supported on iOS Safari.");
       // Handle fallback logic, e.g., open a help page or provide user guidance
@@ -53,10 +52,7 @@ self.addEventListener("notificationclick", (event) => {
 let firebaseConfig = null;
 
 self.addEventListener("message", async (event) => {
-    console.log("[SW] Pesan diterima:", event.data);
-
     firebaseConfig = event.data.config;
-
     if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.messagingSenderId) {
         console.error("[SW] Invalid Firebase configuration:", firebaseConfig);
         event.source.postMessage({
@@ -66,34 +62,23 @@ self.addEventListener("message", async (event) => {
         });
         return;
     }
-
     if (event.data.type === "FIREBASE_INITIALIZED") {
-        console.log("[SW] INITIALIZED received:", event.data.config);
-
         try {
             // Initialize Firebase App
             // Pastikan Firebase hanya diinisialisasi sekali
-            console.log("[SW] Firebase App length:", firebase.apps.length);
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                console.log("[SW] Firebase App initialized.");
-            } else {
-                console.log("[SW] Firebase App already initialized.");
             }
-
             const messaging = firebase.messaging();
-
             // Handle background messages
             messaging.onBackgroundMessage((payload) => {
-                console.log("[firebase-messaging-sw] Background message received:", payload);
                 const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",
-                    icon: payload.notification?.icon || "/frontend/assets/default-icon.png",
+                    icon: payload.notification?.icon || "/frontend/Icons/splash.png",
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
-
             event.source.postMessage({
                 type: "FIREBASE_INITIALIZED",
                 success: true,
@@ -118,18 +103,14 @@ const ASSETS_TO_CACHE = [OFFLINE_URL];
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log("[Service Worker] Caching assets...");
-
             const assetPromises = ASSETS_TO_CACHE.map((asset) => {
                 return cache.add(asset).catch((error) => {
-                    console.error(`[Service Worker] Failed to cache asset: ${asset}`, error);
+                    console.error(`[SW] Failed to cache asset: ${asset}`, error);
                 });
             });
-
             return Promise.all(assetPromises);
         })
     );
-
     self.skipWaiting();
 });
 
@@ -140,26 +121,22 @@ self.addEventListener("activate", (event) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log("[Service Worker] Deleting old cache:", cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         })
     );
-
     self.clients.claim();
 });
 
 // Fetch Event: Serve Cached Resources or Fetch from Network
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
-
     if (url.protocol === "chrome-extension:") {
-        console.warn("[Service Worker] Ignoring chrome-extension request:", url.href);
+        console.warn("[SW] Ignoring chrome-extension request:", url.href);
         return;
     }
-
     if (event.request.mode === "navigate") {
         event.respondWith(
             fetch(event.request).catch(() => {
@@ -183,7 +160,7 @@ self.addEventListener("fetch", (event) => {
                     return networkResponse;
                 });
             }).catch((err) => {
-                console.error("[Service Worker] Fetch error:", err);
+                console.error("[SW] Fetch error:", err);
                 if (event.request.mode === "navigate") {
                     return caches.match(OFFLINE_URL);
                 }

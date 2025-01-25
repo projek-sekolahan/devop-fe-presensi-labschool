@@ -90,10 +90,9 @@ export default function Register({ isOpen, onToggle }) {
         Cookies.get("csrf"),
     ];
     const formData = getFormData(FORM_KEYS, values);
-    console.log(formData); return false;
+    
     try {
         // Process registration
-        // console.log(formData); return false;
         await processRegister(formData);
     } finally {
         setIsLoading(false);
