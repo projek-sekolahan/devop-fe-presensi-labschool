@@ -58,7 +58,7 @@ const Home = ({ intervalId }) => {
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
 
-        if (!Cookies.get("token_registered")) {
+        if (Cookies.get("token_registered")==false || Cookies.get("token_registered")=="false") {
           registerToken();
         }
       } else {
