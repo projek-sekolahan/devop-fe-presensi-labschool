@@ -19,9 +19,10 @@ export const registerServiceWorker = async () => {
         console.warn("SW atau Push API tidak didukung.");
         return null;
     }
-
     try {
         const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js",{ scope: "/" });
+        // Saat SW berhasil terdaftar, perbarui token FCM
+        await refreshFCMToken();
         return registration;
     } catch (err) {
         console.error("Pendaftaran SW gagal:", err);
@@ -37,13 +38,11 @@ export const requestNotificationPermission = async () => {
         });
         return null;
     }
-
     try {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
             const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
             const currentToken = await getToken(messaging, { vapidKey });
-
             if (currentToken) {
                 localStorage.setItem("token_fcm", currentToken);
                 // Kirim konfigurasi Firebase ke Service Worker
@@ -51,7 +50,6 @@ export const requestNotificationPermission = async () => {
                     type: "FIREBASE_INITIALIZED",
                     config: firebaseConfig,
                 };
-
                 if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage(firebaseConfigMessage);
                 } else {
@@ -73,19 +71,28 @@ export const requestNotificationPermission = async () => {
 };
 
 // Tambahkan Listener untuk Refresh Token
-messaging.onTokenRefresh(() => {
-    const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+const refreshFCMToken = async () => {
+    try {
+        const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+        const newToken = await getToken(messaging, { vapidKey });
 
-    messaging.getToken({ vapidKey })
-        .then((newToken) => {
+        if (newToken) {
+            console.log("FCM Token diperbarui:", newToken);
             localStorage.setItem("token_fcm", newToken);
-            // Kirim token baru ke backend
+            // Tandai token belum terdaftar di backend
             Cookies.set("token_registered", "false");
-        })
-        .catch((error) => {
-            console.error("Error saat memperbarui token:", error);
-        });
-});
+        } else {
+            console.warn("Tidak ada token baru yang tersedia.");
+        }
+    } catch (error) {
+        console.error("Error saat memperbarui token:", error);
+    }
+};
+
+// Pemanggilan manual saat token perlu diperbarui
+setInterval(() => {
+    refreshFCMToken(); // Atur interval pembaruan token (contoh: setiap 24 jam)
+}, 24 * 60 * 60 * 1000); // 24 jam
 
 // Menerima pesan notifikasi
 export const handleOnMessage = (callback) => {
