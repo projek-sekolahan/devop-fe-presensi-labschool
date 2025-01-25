@@ -87,11 +87,11 @@ const Home = ({ intervalId }) => {
         Cookies.set("token_registered", "true");
         Cookies.set("cookiesAccepted", "true");
       })
-      .catch((error) => {
-        handleSessionExpired({
+      .catch((error) => { console.log("ini error nya: ", error)
+        /* handleSessionExpired({
           title: "Register Token",
           message: error?.message || "Gagal mendaftarkan token ke server",
-        });
+        }); */
       });
   };
 

@@ -152,7 +152,7 @@ export default function Login({ isOpen, onToggle }) {
                 {/* <Link to="#" onClick={() => onToggle("register")} className="text-link">
                     Belum Punya Akun?
                 </Link> */}
-                <Link to="#" onClick={() => onToggle("recover")} className="text-link">
+                <Link to="#" onClick={() => onToggle("recover")} className="text-link ml-auto">
                     Lupa password?
                 </Link>
             </div>
