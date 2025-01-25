@@ -81,7 +81,7 @@ const refreshFCMToken = async () => {
             console.log("FCM Token diperbarui:", newToken);
             localStorage.setItem("token_fcm", newToken);
             Cookies.set("token_registered", "false");
-            window.location.reload();
+            // window.location.reload();
         } else {
             console.warn("Tidak ada token baru yang tersedia.");
         }
