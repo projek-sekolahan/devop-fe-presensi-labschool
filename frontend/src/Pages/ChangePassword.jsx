@@ -105,12 +105,12 @@ export default function ChangePassword({ isOpen, onToggle }) {
                 {/* Separator with Clickable Text */}
                 <div className="flex items-center gap-2 w-full mt-4">
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
-                    <Link
+                    {/* <Link
                         to="#" onClick={() => onToggle("register")}
                         className="text-link text-sm font-light text-white underline hover:underline"
                     >
                         Belum Punya Akun?
-                    </Link>
+                    </Link> */}
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
                 </div>
             </div>

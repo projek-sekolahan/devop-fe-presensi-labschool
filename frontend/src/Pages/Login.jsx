@@ -149,9 +149,9 @@ export default function Login({ isOpen, onToggle }) {
             })}
             {/* Forgot Password and Register Link */}
             <div className="flex justify-between items-center text-sm">
-                <Link to="#" onClick={() => onToggle("register")} className="text-link">
+                {/* <Link to="#" onClick={() => onToggle("register")} className="text-link">
                     Belum Punya Akun?
-                </Link>
+                </Link> */}
                 <Link to="#" onClick={() => onToggle("recover")} className="text-link">
                     Lupa password?
                 </Link>

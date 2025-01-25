@@ -57,7 +57,7 @@ const Home = ({ intervalId }) => {
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
-
+        console.log(!Cookies.get("token_registered"))
         if (Cookies.get("token_registered")==false || Cookies.get("token_registered")=="false") {
           registerToken();
         }
