@@ -58,7 +58,7 @@ const Home = ({ intervalId }) => {
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
         console.log(!Cookies.get("token_registered"))
-        if (Cookies.get("token_registered")==false || Cookies.get("token_registered")=="false") {
+        if (!Cookies.get("token_registered")) {
           registerToken();
         }
       } else {
@@ -82,16 +82,15 @@ const Home = ({ intervalId }) => {
       .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
         const result = JSON.parse(response);
-        const datares = parseJwt(result.data.token); console.log(datares);
         Cookies.set("csrf", result.csrfHash);
         Cookies.set("token_registered", "true");
         Cookies.set("cookiesAccepted", "true");
       })
-      .catch((error) => { console.log("ini error nya: ", error)
-        /* handleSessionExpired({
+      .catch((error) => {
+        handleSessionExpired({
           title: "Register Token",
           message: error?.message || "Gagal mendaftarkan token ke server",
-        }); */
+        });
       });
   };
 

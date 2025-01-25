@@ -76,12 +76,9 @@ const refreshFCMToken = async () => {
     try {
         const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
         const newToken = await getToken(messaging, { vapidKey });
-
         if (newToken) {
-            console.log("FCM Token diperbarui:", newToken);
             localStorage.setItem("token_fcm", newToken);
             Cookies.set("token_registered", "false");
-            // window.location.reload();
         } else {
             console.warn("Tidak ada token baru yang tersedia.");
         }
