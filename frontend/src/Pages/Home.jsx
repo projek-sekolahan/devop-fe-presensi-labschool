@@ -82,7 +82,7 @@ const Home = ({ intervalId }) => {
       .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
         const result = JSON.parse(response);
-        const datares = parseJwt(result.data.token);
+        const datares = parseJwt(result.data.token); console.log(datares);
         Cookies.set("csrf", result.csrfHash);
         Cookies.set("token_registered", "true");
         Cookies.set("cookiesAccepted", "true");
