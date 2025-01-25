@@ -18,24 +18,25 @@ export default class apiXML {
             
             if (!response.ok) {
                 const errorText = await response.text();
-                alertMessage(
+                /* alertMessage(
                     "error",
                     "Error Response Server",
                     "error",
                     () => window.location.replace("/login")
-                );
+                ); */
                 console.error(`Error response body failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
             const res = await response.json();
             Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
-            alertMessage(
+            console.error(`Error response body failed to fetch CSRF token: ${error}`);
+            /* alertMessage(
                 "error",
                 "Error Response Server",
                 "error",
                 () => window.location.replace("/login")
-            );
+            ); */
         }
     }       
 
