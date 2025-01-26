@@ -49,15 +49,12 @@ const Home = ({ intervalId }) => {
         getFormData(addDefaultKeys(AUTH_KEYS), values)
       );
       const res = JSON.parse(response);
-
       if (res?.data) {
         localStorage.setItem("token", res.data.token);
         Cookies.set("csrf", res.csrfHash);
-
         const user = parseJwt(res.data.token);
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
-        console.log(!Cookies.get("token_registered"))
         if (Cookies.get("token_registered")==false || Cookies.get("token_registered")=="false") {
           registerToken();
         }
@@ -77,7 +74,6 @@ const Home = ({ intervalId }) => {
   // Register token
   const registerToken = () => {
     const values = getCombinedValues(TOKEN_KEYS);
-    
     apiXML
       .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
