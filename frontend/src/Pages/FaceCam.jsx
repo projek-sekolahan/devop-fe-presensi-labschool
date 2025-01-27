@@ -181,7 +181,7 @@ export default function FaceCam() {
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf")
     );
-
+    console.log(getFormData(combinedKeys, values)); return false;
     apiXML
       .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
       .then((res) => {
