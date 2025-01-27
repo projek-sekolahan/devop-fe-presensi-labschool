@@ -18,12 +18,12 @@ export default class apiXML {
             
             if (!response.ok) {
                 const errorText = await response.text();
-                /* alertMessage(
+                alertMessage(
                     "error",
                     "Error Response Server",
                     "error",
                     () => window.location.replace("/login")
-                ); */
+                );
                 console.error(`Error response body failed to fetch CSRF token: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
     
@@ -31,12 +31,12 @@ export default class apiXML {
             Cookies.set("csrf", res.csrfHash); // Simpan di cookies
         } catch (error) {
             console.error(`Error response body failed to fetch CSRF token: ${error}`);
-            /* alertMessage(
+            alertMessage(
                 "error",
                 "Error Response Server",
                 "error",
                 () => window.location.replace("/login")
-            ); */
+            );
         }
     }       
 
@@ -75,12 +75,12 @@ export default class apiXML {
                     ? "Request Timeout: Server took too long to respond."
                     : `Error during POST request: ${error.message}`;
     
-            /* alertMessage(
+            alertMessage(
                 "error",
                 errorMessage,
                 "error",
                 () => window.location.replace("/login")
-            ); */
+            );
             console.error("POST request failed:", error);
         }
     }    

@@ -33,7 +33,6 @@ export default function FaceCam() {
       );
       return;
     }
-
     const initialize = async () => {
       setIsLoading(true);
       try {
@@ -49,9 +48,7 @@ export default function FaceCam() {
         );
       }
     };
-
     initialize();
-
     return () => {
       const stream = videoRef.current?.srcObject;
       stream?.getTracks().forEach((track) => track.stop());
@@ -86,21 +83,17 @@ export default function FaceCam() {
   const clickPhoto = () => {
     const context = canvasRef.current.getContext("2d");
     const video = videoRef.current;
-
     const canvasWidth = 400;
     const canvasHeight = 400;
     const cropX = video.videoWidth / 2 - canvasWidth / 2;
     const cropY = video.videoHeight / 2 - canvasHeight / 2;
-
     canvasRef.current.width = canvasWidth;
     canvasRef.current.height = canvasHeight;
-
     context.save();
     context.scale(-1, 1);
     context.translate(-canvasWidth, 0);
     context.drawImage(video, cropX, cropY, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
     context.restore();
-
     imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
   };
 
@@ -109,20 +102,17 @@ export default function FaceCam() {
     const modal = document.getElementById("my_modal_1");
     if (modal) modal.close();
     loading("Loading", "Detecting face...");
-
       try {
         // Validasi elemen gambar
         if (!imgRef.current) {
           throw new Error("imgRef.current is not set or invalid.");
         }
-
         // Ambil descriptor dari token
         const userData = parseJwt(localStorage.getItem("token"));
         if (!userData || !userData.facecam_id) {
           throw new Error("Invalid or missing face descriptor in token.");
         }
         const tokenDescriptor = new Float32Array(userData.facecam_id.split(", ").map(Number));
-
         // Deteksi wajah dari gambar
         const detectionResult = await detectSingleFace(imgRef.current);
         if (!detectionResult || !detectionResult.descriptor) {
@@ -130,7 +120,6 @@ export default function FaceCam() {
           alertMessage("Pencocokan Gagal", "Harap Ulangi Proses.", "error", () => {window.location.replace("/home")});
           return;
         }
-
         // Validasi dengan data token
         const isFaceMatched = validateFaceDetection(detectionResult, tokenDescriptor);
         if (isFaceMatched) {
@@ -146,7 +135,6 @@ export default function FaceCam() {
         setIsLoading(false);
       }
   };
-
   const submitPresence = (faceDescriptor) => {
     const keys = [
       "AUTH_KEY",
@@ -157,7 +145,6 @@ export default function FaceCam() {
       "facecam_id",
       "foto_presensi",
     ];
-
     const combinedKeys = addDefaultKeys(keys);
     let values = [];
     if (localStorage.getItem("group_id") === "4") {
@@ -174,14 +161,12 @@ export default function FaceCam() {
         ...state,
       ];
     }
-
     values.push(
       faceDescriptor.join(", "),
       `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf")
     );
-    // console.log(getFormData(combinedKeys, values)); return false;
     apiXML
       .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
       .then((res) => {
@@ -196,7 +181,7 @@ export default function FaceCam() {
       .catch((err) => {
         console.error("Presence submission error:", err);
         setIsLoading(false);
-        // handleSessionError(err, "/facecam");
+        handleSessionError(err, "/facecam");
       });
   };
 
