@@ -181,7 +181,7 @@ export default function FaceCam() {
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf")
     );
-    console.log(getFormData(combinedKeys, values)); return false;
+    // console.log(getFormData(combinedKeys, values)); return false;
     apiXML
       .presensiPost("process", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
       .then((res) => {
@@ -196,7 +196,7 @@ export default function FaceCam() {
       .catch((err) => {
         console.error("Presence submission error:", err);
         setIsLoading(false);
-        handleSessionError(err, "/facecam");
+        // handleSessionError(err, "/facecam");
       });
   };
 
