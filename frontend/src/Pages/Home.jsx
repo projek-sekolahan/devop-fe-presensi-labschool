@@ -160,7 +160,7 @@ const Home = ({ intervalId }) => {
             Rekapan Presensi (Bulan Ini)
           </h3>
           <div className="flex justify-center w-full px-6 gap-6">
-            {["hadir", "tidak_hadir", "terlambat_pulang_cepat"].map((key, index) => (
+            {["hadir", "tidak_hadir", "tidak_normal"].map((key, index) => (
               <div
                 key={key}
                 className="w-24 flex flex-col items-center gap-2"
