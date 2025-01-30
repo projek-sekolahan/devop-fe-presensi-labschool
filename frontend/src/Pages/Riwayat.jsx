@@ -56,7 +56,7 @@ export default function Riwayat() {
             .then((res) => {
                 const parsedRes = JSON.parse(res);
                 Cookies.set("csrf", parsedRes.csrfHash);
-                
+                console.log(parseJwt(parsedRes.data.token).data);
                 if (parsedRes.data.length > 0) {
                     setHistoryData(prev => [...prev, ...parseJwt(parsedRes.data.token).data]);
                     setPage(prev => prev + 1);
