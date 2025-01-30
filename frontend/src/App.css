@@ -35,8 +35,9 @@ input[type=number] {
 /* Pastikan HTML dan Body Mendukung Tampilan */
 html,
 body {
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -625,7 +626,7 @@ nav {
 }
 
 .presensi-container, .notification-container {
-  height: 100%; /* fit-content */
+  height: 100vh; /* fit-content */
   width: 100%; /* w-full */
   max-width: 768px; /* sm:max-w-md */
   position: absolute; /* absolute */
