@@ -809,3 +809,17 @@ main {
   gap: 0.5rem; /* gap-2 (2 * 4px) */
   border: 1px solid #ff7f27;
 }
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #ff7f27;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

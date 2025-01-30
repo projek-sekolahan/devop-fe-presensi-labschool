@@ -109,7 +109,7 @@ export default function Riwayat() {
                 </div>
                 {isLoading ? (
                     <div className="size-full flex justify-center items-center">
-                        <span className="loading loading-spinner text-white"></span>
+                        <span className="loading-spinner"></span>
                     </div>
                 ) : historyData?.length ? (
                     historyData.map((history, i) => (
@@ -117,7 +117,7 @@ export default function Riwayat() {
                     ))
                 ) : (
                     <div className="size-full flex justify-center items-center">
-                        <p className="text-white">Belum ada riwayat.</p>
+                        <p className="text-white text-xl">Belum ada riwayat.</p>
                     </div>
                 )}
             </main>
