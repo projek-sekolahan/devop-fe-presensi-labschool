@@ -12,7 +12,7 @@ export default function Riwayat() {
     const [historyData, setHistoryData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const observer = useRef();
+    const observer = useRef(null);
 
     const userToken = localStorage.getItem("token");
     const userData = userToken ? parseJwt(userToken) : null;
@@ -21,39 +21,17 @@ export default function Riwayat() {
         if (!userToken) window.location.replace("/login");
     }, [userToken]);
 
-    const handleClickOutside = useCallback((e) => {
-        const dropdown = document.getElementById("dropdown");
-        if (dropdown && !dropdown.contains(e.target)) {
-            setIsDropdownOpen(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (isDropdownOpen) {
-            window.addEventListener("click", handleClickOutside);
-        } else {
-            window.removeEventListener("click", handleClickOutside);
-        }
-        return () => window.removeEventListener("click", handleClickOutside);
-    }, [isDropdownOpen, handleClickOutside]);
-
     const fetchHistory = useCallback(() => {
         setIsLoading(true);
         const keys = ["AUTH_KEY", "token", "table", "key", "page"];
         const combinedKeys = addDefaultKeys(keys);
-
         const values = combinedKeys.map((key) => {
             let value = localStorage.getItem(key);
             if (key === "csrf_token" && !value) value = Cookies.get("csrf");
             if (key === "token") value = localStorage.getItem("login_token");
             if (key === "table" && !value) value = "tab-presensi";
             if (key === "key" && !value) {
-                switch (filter) {
-                    case "7 Hari": value = "7 DAY"; break;
-                    case "14 Hari": value = "14 DAY"; break;
-                    case "30 Hari": value = "30 DAY"; break;
-                    default: value = "7 DAY";
-                }
+                value = filter === "7 Hari" ? "7 DAY" : filter === "14 Hari" ? "14 DAY" : "30 DAY";
             }
             if (key === "page") value = page;
             return value;
@@ -68,33 +46,27 @@ export default function Riwayat() {
             })
             .catch((err) => {
                 const parsedErr = JSON.parse(err);
-                if (parsedErr.status === 500) {
-                    setIsLoading(false);
-                } else {
+                setIsLoading(false);
+                if (parsedErr.status !== 500) {
                     handleSessionError(parsedErr, "/login");
                 }
             });
     }, [filter, page]);
 
-    useEffect(fetchHistory, [fetchHistory]);
+    useEffect(() => {
+        fetchHistory();
+    }, [fetchHistory]);
 
-    const handleFilterChange = (newFilter) => {
-        setFilter(newFilter);
-        setIsDropdownOpen(false);
-        setHistoryData([]);
-        setPage(1);
-        setIsLoading(true);
-    };
-
-    const lastElementRef = useCallback((node) => {
-        if (isLoading) return;
-        if (observer.current) observer.current.disconnect();
+    useEffect(() => {
         observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
+            if (entries[0].isIntersecting && !isLoading) {
                 setPage((prev) => prev + 1);
             }
         });
-        if (node) observer.current.observe(node);
+        if (observer.current) {
+            observer.current.observe(document.getElementById("load-more"));
+        }
+        return () => observer.current.disconnect();
     }, [isLoading]);
 
     return (
@@ -106,24 +78,34 @@ export default function Riwayat() {
                 <h1 className="notification-section-container">Riwayat</h1>
             </header>
             <main className="w-full h-full relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
-                <div id="dropdown" className="w-fit mt-[-1.5rem] relative">
-                    <button className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
-                        onClick={() => setIsDropdownOpen((prev) => !prev)}>
+                <div className="w-fit mt-[-1.5rem] relative">
+                    <button
+                        className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
+                        onClick={() => setIsDropdownOpen((prev) => !prev)}
+                    >
                         <p>{filter}</p>
                         {isDropdownOpen ? <ChevronUpIcon className="size-5" /> : <ChevronDownIcon className="size-5" />}
                     </button>
                     {isDropdownOpen && (
-                        <ul id="dropdown-content" className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52">
+                        <ul className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52">
                             {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
-                                <li key={item}><button onClick={() => handleFilterChange(item)}>{item}</button></li>
+                                <li key={item}>
+                                    <button onClick={() => setFilter(item)}>{item}</button>
+                                </li>
                             ))}
                         </ul>
                     )}
                 </div>
-                {historyData.map((history, i) => (
-                    <CardRiwayat key={i} index={i} history={history} biodata={userData} />
-                ))}
-                <div ref={lastElementRef} className="w-full h-10"></div>
+                {historyData.length ? (
+                    historyData.map((history, i) => (
+                        <CardRiwayat key={i} index={i} history={history} biodata={userData} />
+                    ))
+                ) : (
+                    <div className="size-full flex justify-center items-center">
+                        <p className="text-white">Belum ada riwayat.</p>
+                    </div>
+                )}
+                <div id="load-more" className="h-10"></div>
                 {isLoading && (
                     <div className="size-full flex justify-center items-center">
                         <span className="loading loading-spinner text-white"></span>
