@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowLeftIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
@@ -9,8 +9,11 @@ import Cookies from "js-cookie";
 export default function Riwayat() {
     const [filter, setFilter] = useState("7 Hari");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [historyData, setHistoryData] = useState(null);
+    const [historyData, setHistoryData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const observer = useRef();
     
     const userToken = localStorage.getItem("token");
     const userData = userToken ? parseJwt(userToken) : null;
@@ -19,32 +22,18 @@ export default function Riwayat() {
         if (!userToken) window.location.replace("/login");
     }, [userToken]);
 
-    const handleClickOutside = useCallback((e) => {
-        const dropdown = document.getElementById("dropdown");
-        const dropdownContent = document.getElementById("dropdown-content");
-        if (dropdown && dropdownContent && !dropdown.contains(e.target)) {
-            setIsDropdownOpen(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (isDropdownOpen) {
-            window.addEventListener("click", handleClickOutside);
-        } else {
-            window.removeEventListener("click", handleClickOutside);
-        }
-        return () => window.removeEventListener("click", handleClickOutside);
-    }, [isDropdownOpen, handleClickOutside]);
-
     const fetchHistory = useCallback(() => {
-        const keys = ["AUTH_KEY", "token", "table", "key"];
+        if (!hasMore || !isLoading) return;
+        
+        const keys = ["AUTH_KEY", "token", "table", "key", "page"];
         const combinedKeys = addDefaultKeys(keys);
-
+        
         const values = combinedKeys.map((key) => {
             let value = localStorage.getItem(key);
             if (key === "csrf_token" && !value) value = Cookies.get("csrf");
             if (key === "token") value = localStorage.getItem("login_token");
             if (key === "table" && !value) value = "tab-presensi";
+            if (key === "page") value = page;
             if (key === "key" && !value) {
                 switch (filter) {
                     case "7 Hari":
@@ -57,41 +46,44 @@ export default function Riwayat() {
                         value = "30 DAY";
                         break;
                     default:
-                        value = "7 DAY"; // Default ke 7 Hari jika tidak ada nilai yang cocok
+                        value = "7 DAY";
                 }
-            }            
+            }
             return value;
         });
-
-        if (!historyData && isLoading) {
-            apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
-                .then((res) => {
-                    const parsedRes = JSON.parse(res);
-                    Cookies.set("csrf", parsedRes.csrfHash);
-                    setHistoryData(parseJwt(parsedRes.data.token).data);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    const parsedErr = JSON.parse(err);
-                    if (parsedErr.status === 500) {
-                        setIsLoading(false);
-                        setHistoryData([]);
-                    } else {
-                        handleSessionError(parsedErr, "/login");
-                    }
-                });
-        }
-    }, [historyData, isLoading, filter]);
-
+        
+        apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
+            .then((res) => {
+                const parsedRes = JSON.parse(res);
+                Cookies.set("csrf", parsedRes.csrfHash);
+                
+                if (parsedRes.data.length > 0) {
+                    setHistoryData(prev => [...prev, ...parseJwt(parsedRes.data.token).data]);
+                    setPage(prev => prev + 1);
+                } else {
+                    setHasMore(false);
+                }
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                handleSessionError(JSON.parse(err), "/login");
+            });
+    }, [filter, page, hasMore, isLoading]);
+    
     useEffect(fetchHistory, [fetchHistory]);
 
-    const handleFilterChange = (newFilter) => {
-        setFilter(newFilter);
-        setIsDropdownOpen(false);
-        setHistoryData(null);
-        setIsLoading(true);
-    };
-
+    const lastElementRef = useCallback((node) => {
+        if (isLoading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && hasMore) {
+                setIsLoading(true);
+            }
+        });
+        if (node) observer.current.observe(node);
+    }, [isLoading, hasMore]);
+    
     return (
         <div className="notification-container">
             <header>
@@ -104,7 +96,7 @@ export default function Riwayat() {
                 <div id="dropdown" className="w-fit mt-[-1.5rem] relative">
                     <button
                         className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
-                        onClick={() => setIsDropdownOpen((prev) => !prev)}
+                        onClick={() => setIsDropdownOpen(prev => !prev)}
                     >
                         <p>{filter}</p>
                         {isDropdownOpen ? <ChevronUpIcon className="size-5" /> : <ChevronDownIcon className="size-5" />}
@@ -113,25 +105,19 @@ export default function Riwayat() {
                         <ul id="dropdown-content" className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52">
                             {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
                                 <li key={item}>
-                                    <button onClick={() => handleFilterChange(item)}>{item}</button>
+                                    <button onClick={() => setFilter(item)}>{item}</button>
                                 </li>
                             ))}
                         </ul>
                     )}
                 </div>
-                {isLoading ? (
-                    <div className="size-full flex justify-center items-center">
-                        <span className="loading loading-spinner text-white"></span>
-                    </div>
-                ) : historyData?.length ? (
-                    historyData.map((history, i) => (
-                        <CardRiwayat key={i} index={i} history={history} biodata={userData} />
-                    ))
-                ) : (
-                    <div className="size-full flex justify-center items-center">
-                        <p className="text-white">Belum ada riwayat.</p>
-                    </div>
-                )}
+                {historyData.map((history, i) => {
+                    if (historyData.length === i + 1) {
+                        return <CardRiwayat ref={lastElementRef} key={i} index={i} history={history} biodata={userData} />;
+                    }
+                    return <CardRiwayat key={i} index={i} history={history} biodata={userData} />;
+                })}
+                {isLoading && <div className="size-full flex justify-center items-center"><span className="loading loading-spinner text-white"></span></div>}
             </main>
         </div>
     );
