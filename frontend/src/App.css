@@ -37,7 +37,7 @@ html,
 body {
   min-height: 100vh;
   margin: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 /* Login Container */
