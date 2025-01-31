@@ -100,7 +100,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 <div className="modal-box overflow-y-auto">
                     {loading ? (
                         <div className="size-full flex justify-center items-center">
-                            <span className="loading loading-spinner text-gray-500"></span>
+                            <span className="loading-spinner"></span>
                         </div>
                     ) : (
                         <>
