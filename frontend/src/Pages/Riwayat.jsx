@@ -56,7 +56,7 @@ export default function Riwayat() {
             apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
                     const parsedRes = JSON.parse(res);
-                    Cookies.set("csrf", parsedRes.csrfHash);
+                    Cookies.set("csrf", parsedRes.csrfHash);console.log(parseJwt(parsedRes.data.token));
                     setHistoryData(parseJwt(parsedRes.data.token).data);
                     setIsLoading(false);
                 })

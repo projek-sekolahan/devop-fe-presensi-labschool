@@ -9,11 +9,15 @@ import Swal from "sweetalert2";
 export default function CardRiwayat({ index, history, biodata }) {
     const [datas, setDatas] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [cardLoading, setCardLoading] = useState(true); // State untuk animasi card
+    const [pulsing, setPulsing] = useState(true); // State untuk efek pulsing
     const closeBtn = useRef(null);
 
     const clickHandler = () => {
         document.getElementById(`my_modal_${index}`).showModal();
         setDatas(null);
+        setCardLoading(true); // Set card loading saat modal dibuka
+        setPulsing(true); // Set pulsing saat modal dibuka
         const keys = ["AUTH_KEY", "token", "param"];
         const combinedKeys = addDefaultKeys(keys);
         let values = [
@@ -30,14 +34,18 @@ export default function CardRiwayat({ index, history, biodata }) {
                 .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
                     res = JSON.parse(res);
-                    Cookies.set("csrf", res.csrfHash);
+                    Cookies.set("csrf", res.csrfHash); console.log(parseJwt(res.data.token));
                     setDatas(parseJwt(res.data.token).result);
                     setLoading(false);
+                    setCardLoading(false); // Matikan card loading setelah data dimuat
+                    setTimeout(() => setPulsing(false), 600); // Matikan efek pulsing setelah animasi selesai
                 })
                 .catch((e) => {
                     const res = JSON.parse(e.responseText);
                     Cookies.set("csrf", res.csrfHash);
                     setLoading(false);
+                    setCardLoading(false); // Matikan card loading jika terjadi error
+                    setPulsing(false); // Matikan efek pulsing jika terjadi error
                     closeBtn.current.click();
                     alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
                 });
@@ -106,23 +114,25 @@ export default function CardRiwayat({ index, history, biodata }) {
                                         exit={{ opacity: 0, y: 20 }}
                                         transition={{ delay: i * 0.1 }}
                                     >
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <img
-                                                src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
-                                                alt="foto_presensi"
-                                                className="rounded-xl border-4 border-white"
-                                            />
-                                            <div>
-                                                <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
-                                                <p className="text-sm font-normal">{data.waktu_presensi}</p>
-                                                <div
-                                                    className={`${
-                                                        data.keterangan.split(" ")[1] === "Normal"
-                                                            ? "bg-secondary-green"
-                                                            : "bg-secondary-red"
-                                                    } justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
-                                                >
-                                                    {data.keterangan}
+                                        <div className={`${pulsing ? "pulse" : ""} loadable`}>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <img
+                                                    src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
+                                                    alt="foto_presensi"
+                                                    className="rounded-xl border-4 border-white"
+                                                />
+                                                <div>
+                                                    <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
+                                                    <p className="text-sm font-normal">{data.waktu_presensi}</p>
+                                                    <div
+                                                        className={`${
+                                                            data.keterangan.split(" ")[1] === "Normal"
+                                                                ? "bg-secondary-green"
+                                                                : "bg-secondary-red"
+                                                        } justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
+                                                    >
+                                                        {data.keterangan}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,6 +147,8 @@ export default function CardRiwayat({ index, history, biodata }) {
                                 onClick={() => {
                                     setDatas(null);
                                     setLoading(true);
+                                    setCardLoading(true); // Reset state card loading saat modal ditutup
+                                    setPulsing(true); // Reset state pulsing saat modal ditutup
                                 }}
                                 className="btn"
                                 ref={closeBtn}
