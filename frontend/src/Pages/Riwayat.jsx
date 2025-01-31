@@ -122,17 +122,24 @@ export default function Riwayat() {
                     </div>
                 ) : historyData?.length ? (
                     <AnimatePresence>
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.2 } }
+                        }}
+                        className="flex flex-col gap-4"
+                    >
                         {historyData.map((history, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 20 }}
-                                transition={{ delay: i * 0.1 }}
-                            >
+                        <motion.div
+                            key={i}
+                            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                        >
                                 <CardRiwayat index={i} history={history} biodata={userData} />
-                            </motion.div>
+                        </motion.div>
                         ))}
+                    </motion.div>
                     </AnimatePresence>
                 ) : (
                     <div className="size-full flex justify-center items-center">

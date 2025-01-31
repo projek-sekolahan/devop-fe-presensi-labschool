@@ -58,6 +58,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                 className="btn w-full h-fit bg-white rounded-xl text-black flex flex-col justify-center items-center p-4 gap-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
             >
                 <img src={biodata.img_location} alt="photo_profile" className="size-12 rounded-full bg-white" />
                 <p className="font-bold text-base">{history["Nama Lengkap"]}</p>
