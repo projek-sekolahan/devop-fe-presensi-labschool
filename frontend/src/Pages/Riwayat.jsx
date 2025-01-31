@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
+import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 import { ArrowLeftIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
@@ -9,9 +10,11 @@ import Cookies from "js-cookie";
 export default function Riwayat() {
     const [filter, setFilter] = useState("7 Hari");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [historyData, setHistoryData] = useState(null);
+    const [historyData, setHistoryData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     const userToken = localStorage.getItem("token");
     const userData = userToken ? parseJwt(userToken) : null;
 
@@ -19,24 +22,10 @@ export default function Riwayat() {
         if (!userToken) window.location.replace("/login");
     }, [userToken]);
 
-    const handleClickOutside = useCallback((e) => {
-        const dropdown = document.getElementById("dropdown");
-        const dropdownContent = document.getElementById("dropdown-content");
-        if (dropdown && dropdownContent && !dropdown.contains(e.target)) {
-            setIsDropdownOpen(false);
-        }
-    }, []);
+    const fetchHistory = useCallback(async () => {
+        if (!hasMore || isLoading) return;
 
-    useEffect(() => {
-        if (isDropdownOpen) {
-            window.addEventListener("click", handleClickOutside);
-        } else {
-            window.removeEventListener("click", handleClickOutside);
-        }
-        return () => window.removeEventListener("click", handleClickOutside);
-    }, [isDropdownOpen, handleClickOutside]);
-
-    const fetchHistory = useCallback(() => {
+        setIsLoading(true);
         const keys = ["AUTH_KEY", "token", "table", "key"];
         const combinedKeys = addDefaultKeys(keys);
 
@@ -51,34 +40,56 @@ export default function Riwayat() {
             return value;
         });
 
-        if (!historyData && isLoading) {
-            apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
-                .then((res) => {
-                    const parsedRes = JSON.parse(res);
-                    Cookies.set("csrf", parsedRes.csrfHash);
-                    setHistoryData(parseJwt(parsedRes.data.token).data);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    const parsedErr = JSON.parse(err);
-                    if (parsedErr.status === 500) {
-                        setIsLoading(false);
-                        setHistoryData([]);
-                    } else {
-                        handleSessionError(parsedErr, "/login");
-                    }
-                });
+        try {
+            const res = await apiXML.presensiPost(
+                "reports",
+                localStorage.getItem("AUTH_KEY"),
+                getFormData(combinedKeys, values)
+            );
+            const parsedRes = JSON.parse(res);
+            Cookies.set("csrf", parsedRes.csrfHash);
+            const newData = parseJwt(parsedRes.data.token).data;
+            console.log(parseJwt(parsedRes.data.token));
+            if (newData.length === 0) {
+                setHasMore(false);
+            } else {
+                setHistoryData((prevData) => [...prevData, ...newData]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch (err) {
+            const parsedErr = JSON.parse(err);
+            if (parsedErr.status === 500) {
+                setHasMore(false);
+            } else {
+                handleSessionError(parsedErr, "/login");
+            }
+        } finally {
+            setIsLoading(false);
         }
-    }, [historyData, isLoading, filter]);
+    }, [filter, hasMore, isLoading]);
 
-    useEffect(fetchHistory, [fetchHistory]);
+    useEffect(() => {
+        fetchHistory();
+    }, [fetchHistory]);
 
     const handleFilterChange = (newFilter) => {
         setFilter(newFilter);
         setIsDropdownOpen(false);
-        setHistoryData(null);
-        setIsLoading(true);
+        setHistoryData([]);
+        setPage(1);
+        setHasMore(true);
     };
+
+    // Infinite Scroll Trigger
+    const { ref: loadMoreRef, inView } = useInView({
+        threshold: 0.5,
+    });
+
+    useEffect(() => {
+        if (inView && hasMore) {
+            fetchHistory();
+        }
+    }, [inView, hasMore]);
 
     return (
         <div className="notification-container h-screen flex flex-col overflow-y-auto">
@@ -107,17 +118,18 @@ export default function Riwayat() {
                         </ul>
                     )}
                 </div>
-                {isLoading ? (
+                {historyData.map((history, i) => (
+                    <CardRiwayat key={i} index={i} history={history} biodata={userData} />
+                ))}
+                {isLoading && (
                     <div className="size-full flex justify-center items-center">
                         <span className="loading-spinner"></span>
                     </div>
-                ) : historyData?.length ? (
-                    historyData.map((history, i) => (
-                        <CardRiwayat key={i} index={i} history={history} biodata={userData} />
-                    ))
-                ) : (
+                )}
+                {!isLoading && hasMore && <div ref={loadMoreRef}></div>}
+                {!hasMore && (
                     <div className="size-full flex justify-center items-center">
-                        <p className="text-white text-xl">Belum ada riwayat.</p>
+                        <p className="text-white text-2xl">Tidak ada data lagi.</p>
                     </div>
                 )}
             </main>
