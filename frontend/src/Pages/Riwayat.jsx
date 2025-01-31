@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowLeftIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
@@ -10,10 +10,8 @@ import Cookies from "js-cookie";
 export default function Riwayat() {
     const [filter, setFilter] = useState("7 Hari");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [historyData, setHistoryData] = useState([]);
+    const [historyData, setHistoryData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
 
     const userToken = localStorage.getItem("token");
     const userData = userToken ? parseJwt(userToken) : null;
@@ -22,10 +20,24 @@ export default function Riwayat() {
         if (!userToken) window.location.replace("/login");
     }, [userToken]);
 
-    const fetchHistory = useCallback(async () => {
-        if (!hasMore || isLoading) return;
+    const handleClickOutside = useCallback((e) => {
+        const dropdown = document.getElementById("dropdown");
+        const dropdownContent = document.getElementById("dropdown-content");
+        if (dropdown && dropdownContent && !dropdown.contains(e.target)) {
+            setIsDropdownOpen(false);
+        }
+    }, []);
 
-        setIsLoading(true);
+    useEffect(() => {
+        if (isDropdownOpen) {
+            window.addEventListener("click", handleClickOutside);
+        } else {
+            window.removeEventListener("click", handleClickOutside);
+        }
+        return () => window.removeEventListener("click", handleClickOutside);
+    }, [isDropdownOpen, handleClickOutside]);
+
+    const fetchHistory = useCallback(() => {
         const keys = ["AUTH_KEY", "token", "table", "key"];
         const combinedKeys = addDefaultKeys(keys);
 
@@ -40,56 +52,34 @@ export default function Riwayat() {
             return value;
         });
 
-        try {
-            const res = await apiXML.presensiPost(
-                "reports",
-                localStorage.getItem("AUTH_KEY"),
-                getFormData(combinedKeys, values)
-            );
-            const parsedRes = JSON.parse(res);
-            Cookies.set("csrf", parsedRes.csrfHash);
-            const newData = parseJwt(parsedRes.data.token).data;
-            console.log(parseJwt(parsedRes.data.token));
-            if (newData.length === 0) {
-                setHasMore(false);
-            } else {
-                setHistoryData((prevData) => [...prevData, ...newData]);
-                setPage((prevPage) => prevPage + 1);
-            }
-        } catch (err) {
-            const parsedErr = JSON.parse(err);
-            if (parsedErr.status === 500) {
-                setHasMore(false);
-            } else {
-                handleSessionError(parsedErr, "/login");
-            }
-        } finally {
-            setIsLoading(false);
+        if (!historyData && isLoading) {
+            apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
+                .then((res) => {
+                    const parsedRes = JSON.parse(res);
+                    Cookies.set("csrf", parsedRes.csrfHash);
+                    setHistoryData(parseJwt(parsedRes.data.token).data);
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    const parsedErr = JSON.parse(err);
+                    if (parsedErr.status === 500) {
+                        setIsLoading(false);
+                        setHistoryData([]);
+                    } else {
+                        handleSessionError(parsedErr, "/login");
+                    }
+                });
         }
-    }, [filter, hasMore, isLoading]);
+    }, [historyData, isLoading, filter]);
 
-    useEffect(() => {
-        fetchHistory();
-    }, [fetchHistory]);
+    useEffect(fetchHistory, [fetchHistory]);
 
     const handleFilterChange = (newFilter) => {
         setFilter(newFilter);
         setIsDropdownOpen(false);
-        setHistoryData([]);
-        setPage(1);
-        setHasMore(true);
+        setHistoryData(null);
+        setIsLoading(true);
     };
-
-    // Infinite Scroll Trigger
-    const { ref: loadMoreRef, inView } = useInView({
-        threshold: 0.5,
-    });
-
-    useEffect(() => {
-        if (inView && hasMore) {
-            fetchHistory();
-        }
-    }, [inView, hasMore]);
 
     return (
         <div className="notification-container h-screen flex flex-col overflow-y-auto">
@@ -108,28 +98,45 @@ export default function Riwayat() {
                         <p>{filter}</p>
                         {isDropdownOpen ? <ChevronUpIcon className="size-5" /> : <ChevronDownIcon className="size-5" />}
                     </button>
-                    {isDropdownOpen && (
-                        <ul id="dropdown-content" className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52">
-                            {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
-                                <li key={item}>
-                                    <button onClick={() => handleFilterChange(item)}>{item}</button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    <AnimatePresence>
+                        {isDropdownOpen && (
+                            <motion.ul
+                                id="dropdown-content"
+                                className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
+                                    <li key={item}>
+                                        <button onClick={() => handleFilterChange(item)}>{item}</button>
+                                    </li>
+                                ))}
+                            </motion.ul>
+                        )}
+                    </AnimatePresence>
                 </div>
-                {historyData.map((history, i) => (
-                    <CardRiwayat key={i} index={i} history={history} biodata={userData} />
-                ))}
-                {isLoading && (
+                {isLoading ? (
                     <div className="size-full flex justify-center items-center">
                         <span className="loading-spinner"></span>
                     </div>
-                )}
-                {!isLoading && hasMore && <div ref={loadMoreRef}></div>}
-                {!hasMore && (
+                ) : historyData?.length ? (
+                    <AnimatePresence>
+                        {historyData.map((history, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                <CardRiwayat index={i} history={history} biodata={userData} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                ) : (
                     <div className="size-full flex justify-center items-center">
-                        <p className="text-white text-2xl">Tidak ada data lagi.</p>
+                        <p className="text-white text-xl">Belum ada riwayat.</p>
                     </div>
                 )}
             </main>

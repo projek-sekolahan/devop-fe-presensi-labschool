@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import { parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/utils";
@@ -30,7 +30,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
                     res = JSON.parse(res);
-                    Cookies.set("csrf", res.csrfHash); console.log(parseJwt(res.data.token));
+                    Cookies.set("csrf", res.csrfHash);
                     setDatas(parseJwt(res.data.token).result);
                     setLoading(false);
                 })
@@ -44,14 +44,12 @@ export default function CardRiwayat({ index, history, biodata }) {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-        >
-            <button
+        <>
+            <motion.button
                 onClick={clickHandler}
                 className="btn w-full h-fit bg-white rounded-xl text-black flex flex-col justify-center items-center p-4 gap-2"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
             >
                 <img src={biodata.img_location} alt="photo_profile" className="size-12 rounded-full bg-white" />
                 <p className="font-bold text-base">{history["Nama Lengkap"]}</p>
@@ -78,28 +76,36 @@ export default function CardRiwayat({ index, history, biodata }) {
                                 : "bg-secondary-yellow"
                         } row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
                     >
-                        {history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
-                            ? "Normal"
-                            : history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
-                            ? "Tidak Normal"
-                            : history["Keterangan"] == "Dinas Luar"
-                            ? "Dinas Luar"
-                            : "Izin/Sakit"}
+                        {`${
+                            history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
+                                ? "Normal"
+                                : history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
+                                ? "Tidak Normal"
+                                : history["Keterangan"] == "Dinas Luar"
+                                ? "Dinas Luar"
+                                : "Izin/Sakit"
+                        }`}
                     </div>
                 </div>
-            </button>
+            </motion.button>
             <dialog id={`my_modal_${index}`} className="modal">
                 <div className="modal-box max-h-screen overflow-y-auto">
                     {loading ? (
                         <div className="size-full flex justify-center items-center">
-                            <span className="loading-spinner"></span>
+                            <span className="loading loading-spinner text-gray-500"></span>
                         </div>
                     ) : (
                         <>
                             <h3 className="font-semibold text-xl mb-4">Detail</h3>
-                            {datas.map((data, i) => {
-                                return (
-                                    <div key={i}>
+                            <AnimatePresence>
+                                {datas.map((data, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 20 }}
+                                        transition={{ delay: i * 0.1 }}
+                                    >
                                         <div className="grid grid-cols-2 gap-4">
                                             <img
                                                 src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
@@ -120,9 +126,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </>
                     )}
                     <div className="modal-action">
@@ -141,6 +147,6 @@ export default function CardRiwayat({ index, history, biodata }) {
                     </div>
                 </div>
             </dialog>
-        </motion.div>
+        </>
     );
 }
