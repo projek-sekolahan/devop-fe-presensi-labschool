@@ -97,7 +97,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </div>
             </motion.button>
             <dialog id={`my_modal_${index}`} className="modal">
-                <div className="modal-box max-h-screen overflow-y-auto">
+                <div className="modal-box overflow-y-auto">
                     {loading ? (
                         <div className="size-full flex justify-center items-center">
                             <span className="loading loading-spinner text-gray-500"></span>
@@ -117,7 +117,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                                         <div className={`${pulsing ? "pulse" : ""} loadable`}>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <img
-                                                    src={`https://devop-sso.smalabschoolunesa1.sch.id/${data.foto_presensi}`}
+                                                    src={`${data.foto_presensi}`}
                                                     alt="foto_presensi"
                                                     className="rounded-xl border-4 border-white"
                                                 />
