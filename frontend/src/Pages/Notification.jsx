@@ -112,7 +112,7 @@ export default function Notification() {
       }
   
       const response = parseJwt(parsedRes.data.token);
-  
+      console.log("Response:", response);
       if (!response || typeof response !== "object") {
         console.warn("Invalid response data:", response);
         setHasMore(false);
