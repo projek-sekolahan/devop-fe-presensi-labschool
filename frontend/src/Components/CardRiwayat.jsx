@@ -144,9 +144,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                             </AnimatePresence>
                         </>
                     )}
-                    {loading ? "": (
                     <div className="modal-action">
                         <form method="dialog">
+                        {loading ? <></>: (
                             <button
                                 onClick={() => {
                                     setDatas(null);
@@ -159,9 +159,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                             >
                                 Close
                             </button>
+                        )}
                         </form>
                     </div>
-                    )}
                 </div>
             </dialog>
         </>
