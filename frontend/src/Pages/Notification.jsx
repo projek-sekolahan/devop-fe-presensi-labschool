@@ -2,32 +2,14 @@ import { Link } from "react-router-dom";
 import { ArrowLeftIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
-  // Ubah objek menjadi array berdasarkan properti numerik
-  const dataArray = Object.keys(datas)
-    .filter((key) => !isNaN(key)) // Filter hanya properti numerik
-    .map((key) => datas[key]);
-
-  // Periksa apakah array hasil konversi kosong
-  if (!Array.isArray(dataArray) || dataArray.length === 0) {
-    return (
-      <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
-        <div className="flex items-center gap-3">
-          <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
-          <h4 className="text-lg font-semibold">Warning</h4>
-        </div>
-        <p className="mt-2 text-sm">Tidak ada data notifikasi yang tersedia. Harap coba lagi nanti.</p>
-      </div>
-    );
-  }
-
-  // Render data notifikasi
   return (
     <div className="flex flex-col gap-4">
-      {dataArray.map((data, i) => {
+      {datas.map((data, i) => {
         const createdAt = data?.created_at || "";
         const category = data?.category || "notifikasi";
         const message = data?.message || "Tidak ada pesan";
@@ -70,45 +52,56 @@ function CardNotifikasi({ datas }) {
 export default function Notification() {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const { ref, inView } = useInView({ threshold: 0.1 });
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const keys = ["AUTH_KEY", "token"];
-      const combinedKeys = addDefaultKeys(keys);
-      const values = [
+  const fetchNotifications = useCallback(async () => {
+    if (!hasMore) return;
+    setLoad(true);
+
+    const keys = ["AUTH_KEY", "token"];
+    const combinedKeys = addDefaultKeys(keys);
+    const values = [
+      localStorage.getItem("AUTH_KEY"),
+      localStorage.getItem("login_token"),
+      localStorage.getItem("devop-sso"),
+      Cookies.get("csrf"),
+    ];
+
+    try {
+      const res = await apiXML.notificationsPost(
+        "detail",
         localStorage.getItem("AUTH_KEY"),
-        localStorage.getItem("login_token"),
-        localStorage.getItem("devop-sso"),
-        Cookies.get("csrf"),
-      ];
-
-      try {
-        const res = await apiXML.notificationsPost(
-          "detail",
-          localStorage.getItem("AUTH_KEY"),
-          getFormData(combinedKeys, values)
-        );
-        const parsedRes = JSON.parse(res);
-		    Cookies.set("csrf", parsedRes.csrfHash);
-        if (parsedRes && parsedRes.data) {
-          const response = parseJwt(parsedRes.data.token);
-          setData(response);
-        } else {
-          console.warn("No 'data' property found in response:", parsedRes);
-          setData([]);
-        }
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-        setData([]);
-      } finally {
-        setLoad(false);
+        getFormData(combinedKeys, values)
+      );
+      const parsedRes = JSON.parse(res);
+      Cookies.set("csrf", parsedRes.csrfHash);
+      
+      if (parsedRes && parsedRes.data) {
+        const response = parseJwt(parsedRes.data.token);
+        setData((prevData) => [...prevData, ...response.slice((page - 1) * 10, page * 10)]);
+        setHasMore(response.length > page * 10);
+      } else {
+        setHasMore(false);
       }
-    };
-    fetchNotifications();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setHasMore(false);
+    } finally {
+      setLoad(false);
+    }
+  }, [page, hasMore]);
 
   useEffect(() => {
-  }, [data]);
+    fetchNotifications();
+  }, [page]);
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [inView, hasMore]);
 
   return (
     <div className="notification-container h-screen flex flex-col overflow-y-auto">
@@ -120,13 +113,19 @@ export default function Notification() {
       </header>
       <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
         <div className="custom-card">
-        {load ? (
-          <div className="size-full flex justify-center items-center">
-            <span className="loading loading-spinner text-white"></span>
-          </div>
-        ) : (
-          <CardNotifikasi datas={data} />
-        )}
+          {data.length === 0 && !load ? (
+            <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
+              <div className="flex items-center gap-3">
+                <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
+                <h4 className="text-lg font-semibold">Warning</h4>
+              </div>
+              <p className="mt-2 text-sm">Tidak ada data notifikasi yang tersedia.</p>
+            </div>
+          ) : (
+            <CardNotifikasi datas={data} />
+          )}
+          {load && <div className="size-full flex justify-center items-center"><span className="loading loading-spinner text-white"></span></div>}
+          <div ref={ref} className="h-10" />
         </div>
       </main>
     </div>
