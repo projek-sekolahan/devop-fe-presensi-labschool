@@ -102,7 +102,7 @@ export default function CardRiwayat({ index, history, biodata }) {
             <dialog id={`my_modal_${index}`} className="modal">
                 <div className="modal-box">
                     {loading ? (
-                        <div className="size-full flex justify-center items-center">
+                        <div className="flex justify-center items-center">
                             <span className="loading-spinner"></span>
                         </div>
                     ) : (

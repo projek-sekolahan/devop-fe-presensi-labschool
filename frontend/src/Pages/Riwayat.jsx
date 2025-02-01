@@ -51,7 +51,7 @@ export default function Riwayat() {
             }
             return value;
         });
-
+        console.log(values); return false;
         if (!historyData && isLoading) {
             apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
