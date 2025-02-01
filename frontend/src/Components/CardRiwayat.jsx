@@ -144,6 +144,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                             </AnimatePresence>
                         </>
                     )}
+                    {loading ? "": (
                     <div className="modal-action">
                         <form method="dialog">
                             <button
@@ -160,6 +161,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                             </button>
                         </form>
                     </div>
+                    )}
                 </div>
             </dialog>
         </>
