@@ -90,34 +90,19 @@ export default function Riwayat() {
                 <h1 className="notification-section-container">Riwayat</h1>
             </header>
             <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
-                <div id="dropdown" className="w-fit mt-[-1.5rem] relative">
-                    <button
-                        className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center"
-                        onClick={() => setIsDropdownOpen((prev) => !prev)}
+                <div className="w-fit mt-[-1.5rem] relative">
+                    <select
+                        className="select bg-white border-none text-bg-3 select-sm"
+                        value={filter}
+                        onChange={(e) => handleFilterChange(e.target.value)}
                     >
-                        <p>{filter}</p>
-                        {isDropdownOpen ? <ChevronUpIcon className="size-5" /> : <ChevronDownIcon className="size-5" />}
-                    </button>
-                    <AnimatePresence>
-                        {isDropdownOpen && (
-                            <motion.ul
-                                id="dropdown-content"
-                                className="absolute z-10 menu p-2 shadow bg-white rounded-box w-52"
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                            >
-                                {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
-                                    <li key={item}>
-                                        <button onClick={() => handleFilterChange(item)}>{item}</button>
-                                    </li>
-                                ))}
-                            </motion.ul>
-                        )}
-                    </AnimatePresence>
+                        {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
+                            <option key={item} value={item}>{item}</option>
+                        ))}
+                    </select>
                 </div>
                 {isLoading ? (
-                    <div className="size-full flex justify-center items-center">
+                    <div className="mt-8 flex justify-center items-center">
                         <span className="loading-spinner"></span>
                     </div>
                 ) : historyData?.length ? (
