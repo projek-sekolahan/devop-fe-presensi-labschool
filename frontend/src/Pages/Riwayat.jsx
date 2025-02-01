@@ -6,6 +6,7 @@ import CardRiwayat from "../Components/CardRiwayat";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
+import { Dropdown, DropdownTrigger, DropdownContent, DropdownItem } from "flowbite-react";
 
 export default function Riwayat() {
     const [filter, setFilter] = useState("7 Hari");
@@ -91,15 +92,19 @@ export default function Riwayat() {
             </header>
             <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="w-fit mt-[-1.5rem] relative">
-                    <select
-                        className="select bg-white border-none text-bg-3 select-sm"
-                        value={filter}
-                        onChange={(e) => handleFilterChange(e.target.value)}
-                    >
-                        {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
-                            <option key={item} value={item}>{item}</option>
-                        ))}
-                    </select>
+                    <Dropdown>
+                        <DropdownTrigger className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center">
+                            <p>{filter}</p>
+                            <ChevronDownIcon className="size-5" />
+                        </DropdownTrigger>
+                        <DropdownContent className="absolute z-10 p-2 shadow bg-white rounded-box w-52">
+                            {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
+                                <DropdownItem key={item} onClick={() => handleFilterChange(item)}>
+                                    {item}
+                                </DropdownItem>
+                            ))}
+                        </DropdownContent>
+                    </Dropdown>
                 </div>
                 {isLoading ? (
                     <div className="mt-8 flex justify-center items-center">
