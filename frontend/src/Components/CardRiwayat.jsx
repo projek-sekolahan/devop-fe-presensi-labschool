@@ -146,20 +146,18 @@ export default function CardRiwayat({ index, history, biodata }) {
                     )}
                     <div className="modal-action">
                         <form method="dialog">
-                        {loading ? <></>: (
                             <button
                                 onClick={() => {
                                     setDatas(null);
-                                    setLoading(false);
-                                    setCardLoading(false); // Reset state card loading saat modal ditutup
-                                    setPulsing(false); // Reset state pulsing saat modal ditutup
+                                    setLoading(true);
+                                    setCardLoading(true); // Reset state card loading saat modal ditutup
+                                    setPulsing(true); // Reset state pulsing saat modal ditutup
                                 }}
                                 className="btn"
                                 ref={closeBtn}
                             >
-                                Close
+                                {loading ? "Loading":"Close"}
                             </button>
-                        )}
                         </form>
                     </div>
                 </div>
