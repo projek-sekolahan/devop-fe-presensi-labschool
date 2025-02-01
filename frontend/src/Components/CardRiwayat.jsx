@@ -27,7 +27,7 @@ export default function CardRiwayat({ index, history, biodata }) {
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf"),
         ];
-
+        console.log(values); return false;
         loading &&
             !datas &&
             apiXML
