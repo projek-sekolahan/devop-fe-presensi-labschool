@@ -52,12 +52,12 @@ export default function Riwayat() {
             }
             return value;
         });
-        console.log(values); return false;
+        
         if (!historyData && isLoading) {
             apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
                     const parsedRes = JSON.parse(res);
-                    Cookies.set("csrf", parsedRes.csrfHash);console.log(parseJwt(parsedRes.data.token));
+                    Cookies.set("csrf", parsedRes.csrfHash);
                     setHistoryData(parseJwt(parsedRes.data.token).data);
                     setIsLoading(false);
                 })
@@ -91,7 +91,7 @@ export default function Riwayat() {
                 <h1 className="notification-section-container">Riwayat</h1>
             </header>
             <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
-                <div className="w-fit mt-[-1.5rem] relative">
+                <div className="w-full mt-[-1.5rem] relative">
                     <Dropdown label={filter} className="btn bg-white border-none text-bg-3 btn-sm flex justify-between items-center">
                         {["7 Hari", "14 Hari", "30 Hari"].map((item) => (
                             <Dropdown.Item key={item} onClick={() => handleFilterChange(item)}>

@@ -27,14 +27,14 @@ export default function CardRiwayat({ index, history, biodata }) {
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf"),
         ];
-        console.log(values); return false;
+        
         loading &&
             !datas &&
             apiXML
                 .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values))
                 .then((res) => {
                     res = JSON.parse(res);
-                    Cookies.set("csrf", res.csrfHash); console.log(parseJwt(res.data.token));
+                    Cookies.set("csrf", res.csrfHash);
                     setDatas(parseJwt(res.data.token).result);
                     setLoading(false);
                     setCardLoading(false); // Matikan card loading setelah data dimuat
