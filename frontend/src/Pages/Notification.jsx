@@ -77,7 +77,7 @@ export default function Notification() {
 
   const fetchNotifications = async () => {
     if (!hasMore || loading) return;
-
+  
     setLoading(true);
     const keys = ["AUTH_KEY", "token"];
     const combinedKeys = addDefaultKeys(keys);
@@ -87,47 +87,65 @@ export default function Notification() {
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf"),
     ];
-
+  
     try {
       const res = await apiXML.notificationsPost(
         "detail",
         localStorage.getItem("AUTH_KEY"),
         getFormData(combinedKeys, values)
       );
-
+  
+      console.log("Raw Response:", res);
       const parsedRes = JSON.parse(res);
       Cookies.set("csrf", parsedRes.csrfHash);
-
-      if (parsedRes && parsedRes.data) {
-        const response = parseJwt(parsedRes.data.token);
-
-        // Pastikan response adalah objek dan filter properti numerik
-        const filteredData = Object.keys(response)
-          .filter((key) => !isNaN(key))
-          .map((key) => response[key]);
-
-        console.log("Filtered Response:", filteredData);
-
-        if (Array.isArray(filteredData)) {
-          const newData = filteredData.slice((page - 1) * 10, page * 10);
-          setData((prevData) => [...prevData, ...newData]);
-          setHasMore(newData.length === 10);
-          setPage(page + 1);
-        } else {
-          console.warn("Response is not an array:", response);
-          setHasMore(false);
-        }
-      } else {
-        console.warn("No 'data' property found in response:", parsedRes);
+  
+      if (!parsedRes || typeof parsedRes !== "object") {
+        console.warn("Invalid response format:", parsedRes);
         setHasMore(false);
+        return;
       }
+  
+      if (!parsedRes.data) {
+        console.warn("No 'data' property in response:", parsedRes);
+        setHasMore(false);
+        return;
+      }
+  
+      const response = parseJwt(parsedRes.data.token);
+  
+      if (!response || typeof response !== "object") {
+        console.warn("Invalid response data:", response);
+        setHasMore(false);
+        return;
+      }
+  
+      // **Validasi sebelum memfilter**
+      const filteredData = Object.keys(response)
+        .filter((key) => !isNaN(key) && Array.isArray(response[key])) // Pastikan ini array
+        .map((key) => response[key]);
+  
+      console.log("Filtered Response (Before Slice):", filteredData);
+  
+      // **Pastikan hasil akhirnya array sebelum slice**
+      if (!Array.isArray(filteredData)) {
+        console.warn("Filtered data is not an array:", filteredData);
+        setHasMore(false);
+        return;
+      }
+  
+      const newData = filteredData.slice((page - 1) * 10, page * 10);
+      console.log("New Data (After Slice):", newData);
+  
+      setData((prevData) => [...prevData, ...newData]);
+      setHasMore(newData.length === 10);
+      setPage(page + 1);
     } catch (error) {
       console.error("Error fetching notifications:", error);
       setHasMore(false);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchNotifications();
