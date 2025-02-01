@@ -118,7 +118,7 @@ export default function Notification() {
         </Link>
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
-      <main>
+      <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
         <div className="custom-card">
         {load ? (
           <div className="size-full flex justify-center items-center">
