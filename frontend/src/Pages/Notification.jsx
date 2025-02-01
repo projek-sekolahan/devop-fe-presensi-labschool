@@ -111,7 +111,7 @@ export default function Notification() {
   }, [data]);
 
   return (
-    <div className="notification-container">
+    <div className="notification-container h-screen flex flex-col overflow-y-auto">
       <header>
         <Link to="/home">
           <ArrowLeftIcon className="w-6 h-6 text-white" />
