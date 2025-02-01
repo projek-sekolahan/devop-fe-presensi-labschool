@@ -7,7 +7,10 @@ import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
-  // Ubah objek menjadi array berdasarkan properti numerik
+  if (!datas || Object.keys(datas).length === 0) {
+    return null; // Jangan render apapun sampai data tersedia
+  }
+
   const dataArray = Object.keys(datas)
     .filter((key) => !isNaN(key)) // Filter hanya properti numerik
     .map((key) => datas[key]);
@@ -164,11 +167,12 @@ export default function Notification() {
       </header>
       <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
         <div className="custom-card">
-          <CardNotifikasi datas={data} />
-          {loading && (
+          {loading ? (
             <div className="size-full flex justify-center items-center">
               <span className="loading loading-spinner text-white"></span>
             </div>
+          ) : (
+            <CardNotifikasi datas={data} />
           )}
         </div>
         <div ref={ref}></div>
