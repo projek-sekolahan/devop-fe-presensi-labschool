@@ -106,29 +106,26 @@ export default function Notification() {
       }
   
       if (!parsedRes.data) {
-        console.warn("No 'data' property in response:", parsedRes);
+        console.warn("No 'data' property found in response:", parsedRes);
         setHasMore(false);
         return;
       }
   
       const response = parseJwt(parsedRes.data.token);
-      console.log("Response:", response);
+      console.log("Parsed Response:", response);
+  
       if (!response || typeof response !== "object") {
         console.warn("Invalid response data:", response);
         setHasMore(false);
         return;
       }
   
-      // **Validasi sebelum memfilter**
-      const filteredData = Object.keys(response)
-        .filter((key) => !isNaN(key) && Array.isArray(response[key])) // Pastikan ini array
-        .map((key) => response[key]);
-  
+      // **Gunakan Object.values untuk mengambil array dari properti numerik**
+      const filteredData = Object.values(response).filter((item) => typeof item === "object");
       console.log("Filtered Response (Before Slice):", filteredData);
   
-      // **Pastikan hasil akhirnya array sebelum slice**
-      if (!Array.isArray(filteredData)) {
-        console.warn("Filtered data is not an array:", filteredData);
+      if (!Array.isArray(filteredData) || filteredData.length === 0) {
+        console.warn("Filtered data is empty or not an array:", filteredData);
         setHasMore(false);
         return;
       }
@@ -145,7 +142,7 @@ export default function Notification() {
     } finally {
       setLoading(false);
     }
-  };  
+  };   
 
   useEffect(() => {
     fetchNotifications();
