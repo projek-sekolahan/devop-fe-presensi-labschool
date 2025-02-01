@@ -150,9 +150,9 @@ export default function CardRiwayat({ index, history, biodata }) {
                             <button
                                 onClick={() => {
                                     setDatas(null);
-                                    setLoading(true);
-                                    setCardLoading(true); // Reset state card loading saat modal ditutup
-                                    setPulsing(true); // Reset state pulsing saat modal ditutup
+                                    setLoading(false);
+                                    setCardLoading(false); // Reset state card loading saat modal ditutup
+                                    setPulsing(false); // Reset state pulsing saat modal ditutup
                                 }}
                                 className="btn"
                                 ref={closeBtn}
