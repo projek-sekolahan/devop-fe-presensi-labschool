@@ -142,7 +142,15 @@ export default function Notification() {
             <span className="loading loading-spinner text-white"></span>
           </div>
         ) : (
-          <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
+          <Tabs.Group
+            aria-label="Tabs Notifikasi"
+            style="underline"
+            onActiveTabChange={(tabIndex) => {
+              const selectedCategory = categories[tabIndex];
+              console.log("Tab berubah ke:", selectedCategory); // Debugging
+              setActiveCategory(selectedCategory);
+            }}
+          >
             {categories.map((category) => (
               <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>
                 <div className="custom-card">
@@ -150,7 +158,7 @@ export default function Notification() {
                 </div>
               </Tabs.Item>
             ))}
-          </Tabs>
+          </Tabs.Group>
         )}
         <div ref={ref}></div>
       </main>
