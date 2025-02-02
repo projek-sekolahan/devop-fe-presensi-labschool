@@ -7,14 +7,8 @@ import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 
-function CardNotifikasi({ datas, activeCategory }) {
-  const filterDataArray =
-    activeCategory === "Semua"
-      ? datas
-      : datas.filter((data) => data.category === activeCategory);
-
-  // Periksa apakah array hasil konversi kosong
-  if (filterDataArray.length === 0) {
+function CardNotifikasi({ datas }) {
+  if (datas.length === 0) {
     return (
       <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-3">
@@ -26,33 +20,31 @@ function CardNotifikasi({ datas, activeCategory }) {
     );
   }
 
-  // Render data notifikasi
   return (
     <div className="flex flex-col gap-4">
-      {filterDataArray.map((data, i) => {
-        return (
-          <div className="card-notification" key={i}>
-            <div className="flex flex-col justify-center">
-              <h4 className="font-semibold text-[12px] text-primary-low">
-                {data.category.replace(/\b\w/g, (char) => char.toUpperCase())}
-                <span className="text-bg-3 ml-3 opacity-50">{data.created_at.slice(10, 16)}</span>
-              </h4>
-              <h4 className="font-semibold text-[12px]">{data.title}</h4>
-              <p className="text-bg-3 font-light text-[10px] text-justify">{data.message}</p>
-            </div>
+      {datas.map((data, i) => (
+        <div className="card-notification" key={i}>
+          <div className="flex flex-col justify-center">
+            <h4 className="font-semibold text-[12px] text-primary-low">
+              {data.category.replace(/\b\w/g, (char) => char.toUpperCase())}
+              <span className="text-bg-3 ml-3 opacity-50">{data.created_at.slice(10, 16)}</span>
+            </h4>
+            <h4 className="font-semibold text-[12px]">{data.title}</h4>
+            <p className="text-bg-3 font-light text-[10px] text-justify">{data.message}</p>
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 }
 
 export default function Notification() {
-  const [data, setData] = useState([]);
+  const [allData, setAllData] = useState([]); // Simpan semua data hasil fetch
+  const [data, setData] = useState([]); // Data yang akan ditampilkan
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(["Semua"]);
   const [activeCategory, setActiveCategory] = useState("Semua");
   const { ref, inView } = useInView();
 
@@ -67,6 +59,7 @@ export default function Notification() {
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf"),
     ];
+
     try {
       const res = await apiXML.notificationsPost(
         "detail",
@@ -75,37 +68,33 @@ export default function Notification() {
       );
       const parsedRes = JSON.parse(res);
       Cookies.set("csrf", parsedRes.csrfHash);
-      if (!parsedRes || typeof parsedRes !== "object") {
-        console.warn("Invalid response format:", parsedRes);
+
+      if (!parsedRes || !parsedRes.data) {
+        console.warn("Invalid response:", parsedRes);
         setHasMore(false);
         return;
       }
-      if (!parsedRes.data) {
-        console.warn("No 'data' property found in response:", parsedRes);
-        setHasMore(false);
-        return;
-      }
+
       const response = parseJwt(parsedRes.data.token);
-      if (!response || typeof response !== "object") {
-        console.warn("Invalid response data:", response);
-        setHasMore(false);
-        return;
-      }
-      // **Gunakan Object.values untuk mengambil array dari properti numerik**
-      const filteredData = activeCategory === "Semua" ? Object.values(
+
+      // Mengambil semua data notifikasi
+      const allNotifications = Object.values(
         Object.fromEntries(
           Object.entries(response).filter(([key, value]) => Array.isArray(value) && key !== "category")
         )
-      ).flat() : response[activeCategory] || [];
-      if (!Array.isArray(filteredData) || filteredData.length === 0) {
-        console.warn("Filtered data is empty or not an array:", filteredData);
+      ).flat();
+
+      if (!Array.isArray(allNotifications) || allNotifications.length === 0) {
+        console.warn("Filtered data is empty or not an array:", allNotifications);
         setHasMore(false);
         return;
       }
-      const newData = filteredData.slice((page - 1) * 10, page * 10);
+
+      const newData = allNotifications.slice((page - 1) * 10, page * 10);
       const allCategories = ["Semua", ...new Set(response.category)];
+
+      setAllData((prevData) => [...prevData, ...allNotifications]); // Simpan semua data
       setCategories(allCategories);
-      setData((prevData) => [...prevData, ...newData]);
       setHasMore(newData.length === 10);
       setPage(page + 1);
     } catch (error) {
@@ -115,14 +104,28 @@ export default function Notification() {
       setLoading(false);
     }
   };
+
+  // Fetch data pertama kali saat halaman dimuat
   useEffect(() => {
     fetchNotifications();
   }, []);
+
+  // Load data tambahan saat scroll ke bawah
   useEffect(() => {
     if (inView) {
       fetchNotifications();
     }
   }, [inView]);
+
+  // **Gunakan useEffect untuk filter tanpa fetch ulang**
+  useEffect(() => {
+    console.log("Kategori aktif berubah:", activeCategory);
+    if (activeCategory === "Semua") {
+      setData(allData);
+    } else {
+      setData(allData.filter((item) => item.category === activeCategory));
+    }
+  }, [activeCategory, allData]);
 
   return (
     <div className="notification-container h-screen flex flex-col overflow-y-auto">
@@ -132,22 +135,23 @@ export default function Notification() {
         </Link>
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
+
       <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
-      {loading ? (
-        <div className="size-full flex justify-center items-center">
-          <span className="loading loading-spinner text-white"></span>
-        </div>
-      ) : (
-        <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
-          {categories.map((category) => (
-            
-              <div className="custom-card">
-                <CardNotifikasi datas={data} activeCategory={category} />
-              </div>
-           
-          ))}
-        </Tabs>
-      )}
+        {loading && allData.length === 0 ? (
+          <div className="size-full flex justify-center items-center">
+            <span className="loading loading-spinner text-white"></span>
+          </div>
+        ) : (
+          <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
+            {categories.map((category) => (
+              <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>
+                <div className="custom-card">
+                  <CardNotifikasi datas={data} />
+                </div>
+              </Tabs.Item>
+            ))}
+          </Tabs>
+        )}
         <div ref={ref}></div>
       </main>
     </div>
