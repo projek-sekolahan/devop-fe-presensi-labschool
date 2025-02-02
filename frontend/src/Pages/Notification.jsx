@@ -144,7 +144,6 @@ export default function Notification() {
         ) : (
           <Tabs
             aria-label="Tabs Notifikasi"
-            style="underline"
             onActiveTabChange={(tabIndex) => {
               const selectedCategory = categories[tabIndex];
               console.log("Tab berubah ke:", selectedCategory); // Debugging
