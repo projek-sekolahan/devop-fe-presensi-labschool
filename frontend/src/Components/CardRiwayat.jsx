@@ -5,8 +5,30 @@ import { parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/ut
 import { useState, useRef } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { Card } from "flowbite-react";
+import { HiOutlineClock } from "react-icons/hi";
 
 export default function CardRiwayat({ index, history, biodata }) {
+    const statusColors = {
+        "Normal": "bg-green-500 text-white",
+        "Tidak Normal": "bg-red-500 text-white",
+        "Dinas Luar": "bg-gray-600 text-white",
+        "Izin/Sakit": "bg-yellow-500 text-black",
+    };
+
+    const statusMasuk = history["Status Masuk"];
+    const statusPulang = history["Status Pulang"];
+    const keterangan = history["Keterangan"];
+  
+    const statusLabel =
+      statusMasuk === "Masuk Normal" && statusPulang === "Pulang Normal"
+        ? "Normal"
+        : statusMasuk === "Terlambat Masuk" || statusPulang === "Pulang Cepat"
+        ? "Tidak Normal"
+        : keterangan === "Dinas Luar"
+        ? "Dinas Luar"
+        : "Izin/Sakit";
+    
     const [datas, setDatas] = useState(null);
     const [loading, setLoading] = useState(true);
     const [cardLoading, setCardLoading] = useState(true); // State untuk animasi card
@@ -59,45 +81,38 @@ export default function CardRiwayat({ index, history, biodata }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
         >
-        <div className="card-history" key={index}>
-                <img src={biodata.img_location} alt="photo_profile" className="size-12 rounded-full bg-white" />
-                <p className="font-bold text-base">{history["Nama Lengkap"]}</p>
-                <div className="w-full flex gap-2 justify-between">
-                    <div className="flex flex-col">
-                        <p className="font-medium text-xs">{formatDate(history["Tanggal Presensi"])}</p>
-                        <p className="text-xs font-normal">
-                            <span className="text-secondary-green">Masuk : </span>
-                            {history["Jam Masuk"]}
-                        </p>
-                        <p className="text-xs font-normal">
-                            <span className="text-secondary-red">Keluar : </span>
-                            {history["Jam Pulang"]}
-                        </p>
-                    </div>
-                    <div
-                        className={`${
-                            history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
-                                ? "bg-secondary-green"
-                                : history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
-                                ? "bg-secondary-red"
-                                : history["Status Masuk"] == null && history["Status Pulang"] == null && history["Keterangan"] == "Dinas Luar"
-                                ? "bg-gray-600"
-                                : "bg-secondary-yellow"
-                        } row-span-3 justify-self-center self-center w-full max-w-28 mt-3 py-[0.4rem] text-center text-sm font-bold text-white rounded-md flex-shrink`}
-                    >
-                        {`${
-                            history["Status Masuk"] == "Masuk Normal" && history["Status Pulang"] == "Pulang Normal"
-                                ? "Normal"
-                                : history["Status Masuk"] == "Terlambat Masuk" || history["Status Pulang"] == "Pulang Cepat"
-                                ? "Tidak Normal"
-                                : history["Keterangan"] == "Dinas Luar"
-                                ? "Dinas Luar"
-                                : "Izin/Sakit"
-                        }`}
-                    </div>
-                </div>
-            ini history ke {index}
+        
+    <Card className="card-history" key={index}>
+      <div className="flex items-center gap-3 border-b pb-2">
+        <img
+          src={biodata.img_location}
+          alt="photo_profile"
+          className="w-12 h-12 rounded-full bg-white border"
+        />
+        <p className="font-semibold text-lg">{history["Nama Lengkap"]}</p>
+      </div>
+      <div className="flex justify-between items-center mt-3">
+        <div className="text-sm">
+          <p className="font-medium text-gray-600 flex items-center gap-1">
+            <HiOutlineClock /> {formatDate(history["Tanggal Presensi"])}
+          </p>
+          <p>
+            <span className="text-green-600 font-medium">Masuk: </span>
+            {history["Jam Masuk"]}
+          </p>
+          <p>
+            <span className="text-red-600 font-medium">Keluar: </span>
+            {history["Jam Pulang"]}
+          </p>
         </div>
+        <span 
+          className={`px-3 py-1 rounded-md font-semibold text-sm cursor-pointer ${statusColors[statusLabel]}`} 
+          onClick={() => clickHandler(statusLabel)}
+        >
+          {statusLabel}
+        </span>
+      </div>
+    </Card>
         </motion.div>
         <dialog id={`my_modal_${index}`} className="modal">
         <div className="modal-box">
