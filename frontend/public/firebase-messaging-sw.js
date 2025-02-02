@@ -10,7 +10,7 @@ self.addEventListener('push', (event) => {
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
           icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-          data: { url: payload.notification?.click_action || "/bantuan" } // Menyimpan URL
+          data: { url: payload.notification?.click_action || "https://smartapps.smalabschoolunesa1.sch.id/bantuan" } // Menyimpan URL
       };
       event.waitUntil(
           self.registration.showNotification(notificationTitle, notificationOptions)
@@ -50,7 +50,7 @@ self.addEventListener("notificationclick", (event) => {
     }
 
     // Ambil URL dari notifikasi jika tersedia
-    const clickUrl = event.notification?.click_action || "/bantuan";
+    const clickUrl = event.notification.data?.url || "https://smartapps.smalabschoolunesa1.sch.id/bantuan";
 
     event.waitUntil(
         self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
@@ -93,7 +93,7 @@ self.addEventListener("message", async (event) => {
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",
                     icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-                    data: { url: payload.notification?.click_action || "/bantuan" } // Menyimpan URL
+                    data: { url: payload.notification?.click_action || "https://smartapps.smalabschoolunesa1.sch.id/bantuan" } // Menyimpan URL
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
