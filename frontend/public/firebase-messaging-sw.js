@@ -5,7 +5,7 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js")
 // Push Event
 self.addEventListener('push', (event) => {
   if (event.data) {
-      const payload = event.data.json(); console.log("payload on push: ",payload);
+      const payload = event.data.json();
       const notificationTitle = payload.notification?.title || "New Message";
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
@@ -88,7 +88,7 @@ self.addEventListener("message", async (event) => {
             }
             const messaging = firebase.messaging();
             // Handle background messages
-            messaging.onBackgroundMessage((payload) => { console.log("payload onbackground: ",payload);
+            messaging.onBackgroundMessage((payload) => {
                 const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",

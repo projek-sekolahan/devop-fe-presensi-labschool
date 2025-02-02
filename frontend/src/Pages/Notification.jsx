@@ -5,6 +5,7 @@ import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
+import { Tabs } from "flowbite-react";
 
 function CardNotifikasi({ datas }) {
   const dataArray = Object.keys(datas)
@@ -162,15 +163,19 @@ export default function Notification() {
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
       <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
-        <div className="custom-card">
-          {loading ? (
-            <div className="size-full flex justify-center items-center">
-              <span className="loading loading-spinner text-white"></span>
+        <Tabs>
+          <Tabs.Item title="Semua">
+            <div className="custom-card">
+              {loading ? (
+                <div className="size-full flex justify-center items-center">
+                  <span className="loading loading-spinner text-white"></span>
+                </div>
+              ) : (
+                <CardNotifikasi datas={data} />
+              )}
             </div>
-          ) : (
-            <CardNotifikasi datas={data} />
-          )}
-        </div>
+          </Tabs.Item>
+        </Tabs>
         <div ref={ref}></div>
       </main>
     </div>
