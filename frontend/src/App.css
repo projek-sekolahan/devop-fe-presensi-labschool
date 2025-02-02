@@ -707,10 +707,8 @@ main {
 }
 
 .custom-card {
-  background-color: #ffffff;
   width: 100%;
   border-radius: 1rem;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
