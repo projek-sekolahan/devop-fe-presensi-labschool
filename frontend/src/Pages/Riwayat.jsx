@@ -44,6 +44,7 @@ export default function Riwayat() {
             const allCategories = ["30 Hari", ...new Set(response.category)];
             setCategories(allCategories);
         } catch (err) {
+            console.log(err);
             const parsedErr = JSON.parse(err.responseText);
             Cookies.set("csrf", parsedErr.csrfHash);
             if (parsedErr.status === 500) {
@@ -80,6 +81,27 @@ export default function Riwayat() {
                     <div className="flex justify-center items-center">
                         <span className="loading loading-spinner text-white"></span>
                     </div>
+                ) : historyData.length ? (
+                    <AnimatePresence>
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.2 } }
+                            }}
+                            className="flex flex-col gap-4"
+                        >
+                {historyData.map((history, i) => (
+                            <motion.div
+                                key={i}
+                                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                            >
+                                <CardRiwayat index={i} history={history} biodata={userData} />
+                            </motion.div>
+                ))}
+                        </motion.div>
+                    </AnimatePresence>
                 ) : (
                     <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
                         <div className="flex items-center gap-3">
