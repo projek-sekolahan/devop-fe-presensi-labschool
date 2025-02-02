@@ -142,22 +142,22 @@ export default function Notification() {
             <span className="loading loading-spinner text-white"></span>
           </div>
         ) : (
-          <Tabs
-            aria-label="Tabs Notifikasi"
-            onActiveTabChange={(tabIndex) => {
-              const selectedCategory = categories[tabIndex];
-              console.log("Tab berubah ke:", selectedCategory); // Debugging
-              setActiveCategory(selectedCategory);
-            }}
-          >
-            {categories.map((category) => (
-              <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>
                 <div className="custom-card">
-                  <CardNotifikasi datas={data} />
+                  <Tabs
+                    aria-label="Tabs Notifikasi"
+                    onActiveTabChange={(tabIndex) => {
+                      const selectedCategory = categories[tabIndex];
+                      console.log("Tab berubah ke:", selectedCategory); // Debugging
+                      setActiveCategory(selectedCategory);
+                    }}
+                  >
+                    {categories.map((category) => (
+                      <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>  
+                        <CardNotifikasi datas={data} />
+                      </Tabs.Item>
+                    ))}
+                  </Tabs>
                 </div>
-              </Tabs.Item>
-            ))}
-          </Tabs>
         )}
         <div ref={ref}></div>
       </main>
