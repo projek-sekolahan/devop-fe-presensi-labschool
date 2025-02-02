@@ -171,7 +171,7 @@ body {
   header a {
     top: 1.5rem; /* sm:top-6 */
   }
-  .presensi-container, .notification-container {
+  .presensi-container, .notification-container, .history-container {
     padding-left: 2rem; /* sm:px-8 */
     padding-right: 2rem;
   }
@@ -625,7 +625,7 @@ nav {
   margin-top: 1rem; /* mt-4 (4 x 0.25rem = 1rem) */
 }
 
-.presensi-container, .notification-container {
+.presensi-container, .notification-container, .history-container {
   height: 100vh; /* fit-content */
   width: 100%; /* w-full */
   max-width: 768px; /* sm:max-w-md */
@@ -657,7 +657,7 @@ header h1 {
   text-align: center; /* text-center */
 }
 
-header .profile-section-container, .presensi-section-container, .notification-section-container{
+header .profile-section-container, .presensi-section-container, .notification-section-container, .history-section-container {
   margin-top: 1.5rem; /* mt-6 */
   text-align: center;
 }

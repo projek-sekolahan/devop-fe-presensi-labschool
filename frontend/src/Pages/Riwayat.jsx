@@ -62,12 +62,12 @@ export default function Riwayat() {
     }, [fetchHistory]);
 
     return (
-        <div className="notification-container h-screen flex flex-col overflow-y-auto">
+        <div className="history-container h-screen flex flex-col overflow-y-auto">
             <header>
                 <Link to="/home">
                     <ArrowLeftIcon className="w-6 h-6 text-white" />
                 </Link>
-                <h1 className="notification-section-container">Riwayat</h1>
+                <h1 className="history-section-container">Riwayat</h1>
             </header>
             <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
