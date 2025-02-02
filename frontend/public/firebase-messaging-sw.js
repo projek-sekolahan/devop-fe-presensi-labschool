@@ -5,12 +5,12 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js")
 // Push Event
 self.addEventListener('push', (event) => {
   if (event.data) {
-      const payload = event.data.json();
+      const payload = event.data.json(); console.log(payload);
       const notificationTitle = payload.notification?.title || "New Message";
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
           icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-          data: { url: "https://smartapps.smalabschoolunesa1.sch.id" + payload.notification?.url || "/" } // Menyimpan URL
+          data: { url: "https://smartapps.smalabschoolunesa1.sch.id/" + payload.notification?.url || "/" } // Menyimpan URL
       };
       event.waitUntil(
           self.registration.showNotification(notificationTitle, notificationOptions)
@@ -88,12 +88,12 @@ self.addEventListener("message", async (event) => {
             }
             const messaging = firebase.messaging();
             // Handle background messages
-            messaging.onBackgroundMessage((payload) => {
+            messaging.onBackgroundMessage((payload) => { console.log(payload);
                 const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",
                     icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-                    data: { url: "https://smartapps.smalabschoolunesa1.sch.id" + payload.notification?.url || "/" } // Menyimpan URL
+                    data: { url: "https://smartapps.smalabschoolunesa1.sch.id/" + payload.notification?.url || "/" } // Menyimpan URL
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
