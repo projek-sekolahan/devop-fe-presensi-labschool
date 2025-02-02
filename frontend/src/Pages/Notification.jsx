@@ -7,13 +7,14 @@ import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 
-function CardNotifikasi({ datas }) {
-  const dataArray = Object.keys(datas)
-    .filter((key) => !isNaN(key)) // Filter hanya properti numerik
-    .map((key) => datas[key]);
+function CardNotifikasi({ datas, activeCategory }) {
+  const filterDataArray =
+    activeCategory === "Semua"
+      ? datas
+      : datas.filter((data) => data.category === activeCategory);
 
   // Periksa apakah array hasil konversi kosong
-  if (!Array.isArray(dataArray) || dataArray.length === 0) {
+  if (filteredData.length === 0) {
     return (
       <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-3">
@@ -28,7 +29,7 @@ function CardNotifikasi({ datas }) {
   // Render data notifikasi
   return (
     <div className="flex flex-col gap-4">
-      {dataArray.map((data, i) => {
+      {filteredData.map((data, i) => {
         const createdAt = data?.created_at || "";
         const category = data?.category || "notifikasi";
         const message = data?.message || "Tidak ada pesan";
@@ -174,14 +175,14 @@ export default function Notification() {
       <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
         <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
           {categories.map((category) => (
-            <Tabs.Item key={category} title={category}>
+            <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>
               <div className="custom-card">
                 {loading ? (
                   <div className="size-full flex justify-center items-center">
                     <span className="loading loading-spinner text-white"></span>
                   </div>
                 ) : (
-                  <CardNotifikasi datas={data} />
+                  <CardNotifikasi datas={data} activeCategory={activeCategory} />
                 )}
               </div>
             </Tabs.Item>
