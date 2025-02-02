@@ -139,7 +139,7 @@ export default function Notification() {
             {categories.map((category) => (
               <Tabs.Item key={category} title={category.replace(/\b\w/g, (char) => char.toUpperCase())}>
                 {loading && allNotifications.length === 0 ? (
-                  <div className="animate-pulse bg-gray-200 h-32 w-full rounded-md"></div>
+                  <div className="animate-pulse bg-white h-32 w-full rounded-md"></div>
                 ) : (
                   <NotificationCard notifications={filteredNotifications} />
                 )}

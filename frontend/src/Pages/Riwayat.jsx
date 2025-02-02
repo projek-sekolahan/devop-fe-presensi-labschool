@@ -96,7 +96,7 @@ export default function Riwayat() {
 }
 
 const LoadingPlaceholder = () => (
-    <div className="animate-pulse bg-gray-200 h-32 w-full rounded-md"></div>
+    <div className="animate-pulse bg-white h-32 w-full rounded-md"></div>
 );
 
 const HistoryList = ({ historyData, biodata }) => (
