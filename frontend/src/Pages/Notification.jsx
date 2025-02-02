@@ -132,22 +132,22 @@ export default function Notification() {
         </Link>
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
-      <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
+      <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
+      {loading ? (
+        <div className="size-full flex justify-center items-center">
+          <span className="loading loading-spinner text-white"></span>
+        </div>
+      ) : (
         <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
           {categories.map((category) => (
-            <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>
+            
               <div className="custom-card">
-                {loading ? (
-                  <div className="size-full flex justify-center items-center">
-                    <span className="loading loading-spinner text-white"></span>
-                  </div>
-                ) : (
-                  <CardNotifikasi datas={data} activeCategory={activeCategory} />
-                )}
+                <CardNotifikasi datas={data} activeCategory={category} />
               </div>
-            </Tabs.Item>
+           
           ))}
         </Tabs>
+      )}
         <div ref={ref}></div>
       </main>
     </div>
