@@ -91,11 +91,11 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </Card>
             </motion.div>
 
-            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="mx-auto">
+            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="mx-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <Modal.Header>Detail</Modal.Header>
                 <Modal.Body>
                     {loading ? (
-                        <div className="flex justify-center items-center"><span className="loading-spinner"></span></div>
+                        <div className="animate-pulse bg-gray-200 h-32 w-full rounded-md"></div>
                     ) : (
                         <AnimatePresence>
                             {datas?.map((data, i) => (
