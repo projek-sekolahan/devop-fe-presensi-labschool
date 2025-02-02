@@ -123,7 +123,8 @@ export default function Notification() {
       }
   
       // **Gunakan Object.values untuk mengambil array dari properti numerik**
-      const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : Object.values(response).flat().filter((item) => item.category === activeCategory);
+      const filteredData = activeCategory === "Semua" ? Object.fromEntries(Object.entries(response).filter(([key, value]) => Array.isArray(value))) : response[activeCategory] || [];
+      // const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : Object.values(response).flat().filter((item) => item.category === activeCategory);
       // const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : (response[activeCategory] || []);
       // const filteredData = Object.values(response).filter((item) => typeof item === "object");
       console.log("Filtered Response (Before Slice):", filteredData);
