@@ -7,10 +7,6 @@ import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 
 function CardNotifikasi({ datas }) {
-  if (!datas || Object.keys(datas).length === 0) {
-    return null; // Jangan render apapun sampai data tersedia
-  }
-
   const dataArray = Object.keys(datas)
     .filter((key) => !isNaN(key)) // Filter hanya properti numerik
     .map((key) => datas[key]);
