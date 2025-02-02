@@ -91,7 +91,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </Card>
             </motion.div>
 
-            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="pt-25">
+            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="pt-20">
                 <Modal.Header>Detail</Modal.Header>
                 <Modal.Body>
                     {loading ? (
