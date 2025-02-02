@@ -123,12 +123,13 @@ export default function Notification() {
       }
   
       // **Gunakan Object.values untuk mengambil array dari properti numerik**
-      const filteredData = activeCategory === "Semua" ? Object.fromEntries(Object.entries(response).filter(([key, value]) => Array.isArray(value))) : response[activeCategory] || [];
-      // const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : Object.values(response).flat().filter((item) => item.category === activeCategory);
-      // const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : (response[activeCategory] || []);
-      // const filteredData = Object.values(response).filter((item) => typeof item === "object");
+      // const filteredData = activeCategory === "Semua" ? Object.fromEntries(Object.entries(response).filter(([key, value]) => Array.isArray(value))) : response[activeCategory] || [];
+      const filteredData = activeCategory === "Semua" ? Object.values(
+        Object.fromEntries(
+          Object.entries(response).filter(([key, value]) => Array.isArray(value) && key !== "category")
+        )
+      ).flat() : response[activeCategory] || [];
       console.log("Filtered Response (Before Slice):", filteredData);
-  
       if (!Array.isArray(filteredData) || filteredData.length === 0) {
         console.warn("Filtered data is empty or not an array:", filteredData);
         setHasMore(false);
