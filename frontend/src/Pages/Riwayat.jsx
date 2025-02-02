@@ -11,8 +11,8 @@ import { Tabs } from "flowbite-react";
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [categories, setCategories] = useState(["7 Hari", "14 Hari", "30 Hari"]);
-    const [activeCategory, setActiveCategory] = useState("30 Hari");
+    const [categories, setCategories] = useState(["Semua"]);
+    const [activeCategory, setActiveCategory] = useState("Semua");
     
     const userToken = localStorage.getItem("token");
     const userData = userToken ? parseJwt(userToken) : null;
@@ -31,7 +31,7 @@ export default function Riwayat() {
             if (key === "token") value = localStorage.getItem("login_token");
             if (key === "table" && !value) value = "tab-presensi";
             if (key === "key" && !value) {
-                value = activeCategory === "7 Hari" ? "7 DAY" : activeCategory === "14 Hari" ? "14 DAY" : "30 DAY";
+                value = activeCategory === "Semua" ? "30 DAY" : activeCategory === "7 Hari" ? "7 DAY" : activeCategory === "14 Hari" ? "14 DAY" : "30 DAY";
             }
             return value;
         });
@@ -41,7 +41,7 @@ export default function Riwayat() {
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
             setHistoryData(parseJwt(parsedRes.data.token).data);
-            const allCategories = ["30 Hari", ...new Set(response.category)];
+            const allCategories = ["Semua", ...new Set(["7 Hari", "14 Hari", "30 Hari"])];
             setCategories(allCategories);
         } catch (err) {
             console.log(err);
