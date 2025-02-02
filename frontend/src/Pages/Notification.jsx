@@ -14,7 +14,7 @@ function CardNotifikasi({ datas, activeCategory }) {
       : datas.filter((data) => data.category === activeCategory);
 
   // Periksa apakah array hasil konversi kosong
-  if (filteredData.length === 0) {
+  if (filterDataArray.length === 0) {
     return (
       <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-3">
@@ -29,39 +29,16 @@ function CardNotifikasi({ datas, activeCategory }) {
   // Render data notifikasi
   return (
     <div className="flex flex-col gap-4">
-      {filteredData.map((data, i) => {
-        const createdAt = data?.created_at || "";
-        const category = data?.category || "notifikasi";
-        const message = data?.message || "Tidak ada pesan";
-        const title = data?.title || "Tidak ada judul";
-
+      {filterDataArray.map((data, i) => {
         return (
           <div className="card-notification" key={i}>
             <div className="flex flex-col justify-center">
-              {category !== "presensi" ? (
-                <>
-                  <h4 className="font-semibold text-[12px] text-primary-low inline">
-                    {category.replace(/\b\w/g, char => char.toUpperCase())}
-                    <span className="text-bg-3 ml-3 opacity-50">{createdAt.slice(10, 16)}</span>
-                  </h4>
-                  <h4 className="font-semibold text-[12px]">{title.replace(/\b\w/g, char => char.toUpperCase())}</h4>
-                </>
-              ) : (
-                <>
-                  <h4 className="font-semibold text-[12px] text-primary-low">
-                    {category.replace(/\b\w/g, char => char.toUpperCase())}
-                    <span className="text-bg-3 ml-3 opacity-50">{createdAt.slice(10, 16)}</span>
-                  </h4>
-                  <h4
-                    className={`font-semibold text-[12px] ${
-                      data.type === "success" ? "text-secondary-green" : "text-secondary-red"
-                    }`}
-                  >
-                    {title.replace(/\b\w/g, char => char.toUpperCase())}
-                  </h4>
-                </>
-              )}
-              <p className="text-bg-3 font-light text-[10px] text-justify">{message}</p>
+              <h4 className="font-semibold text-[12px] text-primary-low">
+                {data.category.replace(/\b\w/g, (char) => char.toUpperCase())}
+                <span className="text-bg-3 ml-3 opacity-50">{data.created_at.slice(10, 16)}</span>
+              </h4>
+              <h4 className="font-semibold text-[12px]">{data.title}</h4>
+              <p className="text-bg-3 font-light text-[10px] text-justify">{data.message}</p>
             </div>
           </div>
         );
@@ -81,7 +58,6 @@ export default function Notification() {
 
   const fetchNotifications = async () => {
     if (!hasMore || loading) return;
-  
     setLoading(true);
     const keys = ["AUTH_KEY", "token"];
     const combinedKeys = addDefaultKeys(keys);
@@ -91,56 +67,42 @@ export default function Notification() {
       localStorage.getItem("devop-sso"),
       Cookies.get("csrf"),
     ];
-  
     try {
       const res = await apiXML.notificationsPost(
         "detail",
         localStorage.getItem("AUTH_KEY"),
         getFormData(combinedKeys, values)
       );
-  
-      console.log("Raw Response:", res);
       const parsedRes = JSON.parse(res);
       Cookies.set("csrf", parsedRes.csrfHash);
-  
       if (!parsedRes || typeof parsedRes !== "object") {
         console.warn("Invalid response format:", parsedRes);
         setHasMore(false);
         return;
       }
-  
       if (!parsedRes.data) {
         console.warn("No 'data' property found in response:", parsedRes);
         setHasMore(false);
         return;
       }
-  
       const response = parseJwt(parsedRes.data.token);
-      console.log("Parsed Response:", response);
-  
       if (!response || typeof response !== "object") {
         console.warn("Invalid response data:", response);
         setHasMore(false);
         return;
       }
-  
       // **Gunakan Object.values untuk mengambil array dari properti numerik**
-      // const filteredData = activeCategory === "Semua" ? Object.fromEntries(Object.entries(response).filter(([key, value]) => Array.isArray(value))) : response[activeCategory] || [];
       const filteredData = activeCategory === "Semua" ? Object.values(
         Object.fromEntries(
           Object.entries(response).filter(([key, value]) => Array.isArray(value) && key !== "category")
         )
       ).flat() : response[activeCategory] || [];
-      console.log("Filtered Response (Before Slice):", filteredData);
       if (!Array.isArray(filteredData) || filteredData.length === 0) {
         console.warn("Filtered data is empty or not an array:", filteredData);
         setHasMore(false);
         return;
       }
-  
       const newData = filteredData.slice((page - 1) * 10, page * 10);
-      console.log("New Data (After Slice):", newData);
-  
       const allCategories = ["Semua", ...new Set(response.category)];
       setCategories(allCategories);
       setData((prevData) => [...prevData, ...newData]);
@@ -152,12 +114,10 @@ export default function Notification() {
     } finally {
       setLoading(false);
     }
-  };   
-
+  };
   useEffect(() => {
     fetchNotifications();
   }, []);
-
   useEffect(() => {
     if (inView) {
       fetchNotifications();
