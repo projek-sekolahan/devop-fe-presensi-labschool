@@ -798,7 +798,7 @@ main {
   margin-top: 3rem; /* mt-8 (8 * 4px) */
 }
 
-.card-notification {
+.card-notification, .card-history {
   width: 100%; /* w-full */
   background-color: white; /* bg-white */
   border-radius: 0.75rem; /* rounded-xl (12px radius) */
