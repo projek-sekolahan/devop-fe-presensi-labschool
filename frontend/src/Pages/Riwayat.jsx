@@ -31,7 +31,7 @@ export default function Riwayat() {
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
         const values = keys.map((key) => {
             switch (key) {
-                case "csrf_token": return Cookies.get("csrf") || "";
+                case "csrf_token": return Cookies.get("csrf");
                 case "token": return loginToken;
                 case "table": return "tab-presensi";
                 case "key": return category === "Semua" ? "30 DAY" : category === "7 Hari" ? "7 DAY" : "14 DAY";
@@ -74,9 +74,10 @@ export default function Riwayat() {
             <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
                     <Tabs
-                        aria-label="Tabs Riwayat" className="bg-white"
+                        aria-label="Tabs Riwayat"
                         onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
                     >
+                        <div className="bg-white p-2 rounded-t-lg shadow">
                         {categories.map(category => (
                             <Tabs.Item key={category} title={category}>
                                 {cardLoading ? (
@@ -88,6 +89,7 @@ export default function Riwayat() {
                                 )}
                             </Tabs.Item>
                         ))}
+                        </div>
                     </Tabs>
                 </div>
             </main>
