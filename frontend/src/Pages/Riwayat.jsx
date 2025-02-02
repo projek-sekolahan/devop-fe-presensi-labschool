@@ -9,9 +9,9 @@ import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 
 export default function Riwayat() {
-    const [historyData, setHistoryData] = useState([]);
+    const [historyData, setHistoryData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [categories, setCategories] = useState(["Semua"]);
+    const [categories] = useState(["Semua", "7 Hari", "14 Hari"]);
     const [activeCategory, setActiveCategory] = useState("Semua");
     
     const userToken = localStorage.getItem("token");
@@ -21,7 +21,12 @@ export default function Riwayat() {
         if (!userToken) window.location.replace("/login");
     }, [userToken]);
 
-    const fetchHistory = useCallback(async () => {
+    const fetchHistory = useCallback(async (category) => {
+        if (historyData[category]) {
+            setIsLoading(false);
+            return;
+        }
+        
         setIsLoading(true);
         const keys = ["AUTH_KEY", "token", "table", "key"];
         const combinedKeys = addDefaultKeys(keys);
@@ -31,7 +36,7 @@ export default function Riwayat() {
             if (key === "token") value = localStorage.getItem("login_token");
             if (key === "table" && !value) value = "tab-presensi";
             if (key === "key" && !value) {
-                value = activeCategory === "Semua" ? "30 DAY" : activeCategory === "7 Hari" ? "7 DAY" : "14 DAY";
+                value = category === "Semua" ? "30 DAY" : category === "7 Hari" ? "7 DAY" : "14 DAY";
             }
             return value;
         });
@@ -40,26 +45,24 @@ export default function Riwayat() {
             const res = await apiXML.presensiPost("reports", localStorage.getItem("AUTH_KEY"), getFormData(combinedKeys, values));
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
-            setHistoryData(parseJwt(parsedRes.data.token).data);
-            const allCategories = ["Semua", ...new Set(["7 Hari", "14 Hari"])];
-            setCategories(allCategories);
+            setHistoryData((prevData) => ({ ...prevData, [category]: parseJwt(parsedRes.data.token).data }));
         } catch (err) {
             console.log(err);
             const parsedErr = JSON.parse(err.responseText);
             Cookies.set("csrf", parsedErr.csrfHash);
             if (parsedErr.status === 500) {
-                setHistoryData([]);
+                setHistoryData((prevData) => ({ ...prevData, [category]: [] }));
             } else {
                 handleSessionError(parsedErr, "/login");
             }
         } finally {
             setIsLoading(false);
         }
-    }, [activeCategory]);
+    }, [historyData]);
 
     useEffect(() => {
-        fetchHistory();
-    }, [fetchHistory]);
+        fetchHistory(activeCategory);
+    }, [activeCategory, fetchHistory]);
 
     return (
         <div className="history-container h-screen flex flex-col overflow-y-auto">
@@ -71,49 +74,49 @@ export default function Riwayat() {
             </header>
             <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
-                <Tabs
-                    aria-label="Tabs Riwayat"
-                    onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
-                >
-                {categories.map((category) => (
-                <Tabs.Item key={category} title={category}>
-                {isLoading ? (
-                    <div className="flex justify-center items-center">
-                        <span className="loading loading-spinner text-white"></span>
-                    </div>
-                ) : historyData.length ? (
-                    <AnimatePresence>
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            variants={{
-                                hidden: { opacity: 0, y: 20 },
-                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.2 } }
-                            }}
-                            className="flex flex-col gap-4"
-                        >
-                {historyData.map((history, i) => (
-                            <motion.div
-                                key={i}
-                                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                            >
-                                <CardRiwayat index={i} history={history} biodata={userData} />
-                            </motion.div>
-                ))}
-                        </motion.div>
-                    </AnimatePresence>
-                ) : (
-                    <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
-                        <div className="flex items-center gap-3">
-                            <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
-                            <h4 className="text-lg font-semibold">Warning</h4>
-                        </div>
-                        <p className="mt-2 text-sm">Tidak ada data riwayat presensi yang tersedia. Harap coba lagi nanti.</p>
-                    </div>
-                )}
-                </Tabs.Item>
-                ))}
-                </Tabs>
+                    <Tabs
+                        aria-label="Tabs Riwayat"
+                        onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
+                    >
+                        {categories.map((category) => (
+                            <Tabs.Item key={category} title={category}>
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center">
+                                        <span className="loading loading-spinner text-white"></span>
+                                    </div>
+                                ) : historyData[category]?.length ? (
+                                    <AnimatePresence>
+                                        <motion.div
+                                            initial="hidden"
+                                            animate="visible"
+                                            variants={{
+                                                hidden: { opacity: 0, y: 20 },
+                                                visible: { opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.2 } }
+                                            }}
+                                            className="flex flex-col gap-4"
+                                        >
+                                            {historyData[category].map((history, i) => (
+                                                <motion.div
+                                                    key={i}
+                                                    variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                                                >
+                                                    <CardRiwayat index={i} history={history} biodata={userData} />
+                                                </motion.div>
+                                            ))}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                ) : (
+                                    <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
+                                        <div className="flex items-center gap-3">
+                                            <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
+                                            <h4 className="text-lg font-semibold">Warning</h4>
+                                        </div>
+                                        <p className="mt-2 text-sm">Tidak ada data riwayat presensi yang tersedia. Harap coba lagi nanti.</p>
+                                    </div>
+                                )}
+                            </Tabs.Item>
+                        ))}
+                    </Tabs>
                 </div>
             </main>
         </div>
