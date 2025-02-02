@@ -10,6 +10,7 @@ self.addEventListener('push', (event) => {
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
           icon: payload.notification?.icon || "/frontend/Icons/splash.png",
+          data: { url: "https://smartapps.smalabschoolunesa1.sch.id" + payload.notification?.url || "/" } // Menyimpan URL
       };
       event.waitUntil(
           self.registration.showNotification(notificationTitle, notificationOptions)
@@ -32,20 +33,37 @@ self.addEventListener('pushsubscriptionchange', (event) => {
 
 // iOS Fallback for Notifications
 self.addEventListener("notificationclick", (event) => {
-  if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
-      console.warn("[SW] Notifications are not fully supported on iOS Safari.");
-      // Handle fallback logic, e.g., open a help page or provide user guidance
-      event.notification.close();
-      event.waitUntil(
-          self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-              if (clientList.length > 0) {
-                  return clientList[0].focus();
-              }
-              return self.clients.openWindow("/help"); // Redirect to help or fallback page
-          })
-      );
-      return;
-  }
+    event.notification.close(); // Menutup notifikasi saat diklik
+
+    // Cek apakah pengguna menggunakan iOS (iPhone atau iPad)
+    if (navigator.userAgent.includes("iPhone") || navigator.userAgent.includes("iPad")) {
+        console.warn("[SW] Notifications are not fully supported on iOS Safari.");
+        event.waitUntil(
+            self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+                if (clientList.length > 0) {
+                    return clientList[0].focus();
+                }
+                return self.clients.openWindow("https://smartapps.smalabschoolunesa1.sch.id/bantuan"); // Redirect ke halaman bantuan
+            })
+        );
+        return;
+    }
+
+    // Ambil URL dari notifikasi jika tersedia
+    const clickUrl = event.notification.data?.url || "/";
+
+    event.waitUntil(
+        self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+            for (const client of clientList) {
+                if (client.url === clickUrl && "focus" in client) {
+                    return client.focus();
+                }
+            }
+            if (self.clients.openWindow) {
+                return self.clients.openWindow(clickUrl);
+            }
+        })
+    );
 });
 
 // Firebase Messaging Setup
@@ -64,8 +82,7 @@ self.addEventListener("message", async (event) => {
     }
     if (event.data.type === "FIREBASE_INITIALIZED") {
         try {
-            // Initialize Firebase App
-            // Pastikan Firebase hanya diinisialisasi sekali
+            // Initialize Firebase App Pastikan Firebase hanya diinisialisasi sekali
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
@@ -76,6 +93,7 @@ self.addEventListener("message", async (event) => {
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",
                     icon: payload.notification?.icon || "/frontend/Icons/splash.png",
+                    data: { url: "https://smartapps.smalabschoolunesa1.sch.id" + payload.notification?.url || "/" } // Menyimpan URL
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
