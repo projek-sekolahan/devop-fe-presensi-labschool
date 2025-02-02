@@ -31,7 +31,6 @@ export default function CardRiwayat({ index, history, biodata }) {
 
     const [datas, setDatas] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [cardLoading, setCardLoading] = useState(true);
     const [pulsing, setPulsing] = useState(true);
     const closeBtn = useRef(null);
 
@@ -41,7 +40,6 @@ export default function CardRiwayat({ index, history, biodata }) {
             modal.showModal();
         }
         setDatas(null);
-        setCardLoading(true);
         setPulsing(true);
 
         const keys = ["AUTH_KEY", "token", "param"];
@@ -62,14 +60,12 @@ export default function CardRiwayat({ index, history, biodata }) {
                     Cookies.set("csrf", parsedRes.csrfHash);
                     setDatas(parseJwt(parsedRes.data.token).result);
                     setLoading(false);
-                    setCardLoading(false);
                     setTimeout(() => setPulsing(false), 600);
                 })
                 .catch((e) => {
                     const res = JSON.parse(e.responseText);
                     Cookies.set("csrf", res.csrfHash);
                     setLoading(false);
-                    setCardLoading(false);
                     setPulsing(false);
                     closeBtn.current.click();
                     alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
@@ -86,9 +82,6 @@ export default function CardRiwayat({ index, history, biodata }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-                {cardLoading ? (
-                    <div className="animate-pulse bg-gray-200 h-32 w-full rounded-md"></div>
-                ) : (
                     <Card className="card-history" key={index}>
                         <div className="flex items-center gap-3 border-b pb-2">
                             <img
@@ -118,7 +111,6 @@ export default function CardRiwayat({ index, history, biodata }) {
                             {statusLabel}
                         </Button>
                     </Card>
-                )}
             </motion.div>
             <dialog id={`my_modal_${index}`} className="modal">
                 <div className="modal-box">

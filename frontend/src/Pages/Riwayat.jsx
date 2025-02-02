@@ -10,7 +10,7 @@ import { Tabs } from "flowbite-react";
 
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [cardLoading, setCardLoading] = useState(true);
     const [categories] = useState(["Semua", "7 Hari", "14 Hari"]);
     const [activeCategory, setActiveCategory] = useState("Semua");
     
@@ -23,11 +23,11 @@ export default function Riwayat() {
 
     const fetchHistory = useCallback(async (category) => {
         if (historyData[category]) {
-            setIsLoading(false);
+            setCardLoading(false);
             return;
         }
         
-        setIsLoading(true);
+        setCardLoading(true);
         const keys = ["AUTH_KEY", "token", "table", "key"];
         const combinedKeys = addDefaultKeys(keys);
         const values = combinedKeys.map((key) => {
@@ -56,7 +56,7 @@ export default function Riwayat() {
                 handleSessionError(parsedErr, "/login");
             }
         } finally {
-            setIsLoading(false);
+            setCardLoading(false);
         }
     }, [historyData]);
 
@@ -80,10 +80,8 @@ export default function Riwayat() {
                     >
                         {categories.map((category) => (
                             <Tabs.Item key={category} title={category}>
-                                {isLoading ? (
-                                    <div className="flex justify-center items-center">
-                                        <span className="loading loading-spinner text-white"></span>
-                                    </div>
+                                {cardLoading ? (
+                                    <div className="animate-pulse bg-gray-200 h-32 w-full rounded-md"></div>
                                 ) : historyData[category]?.length ? (
                                     <AnimatePresence>
                                         <motion.div
