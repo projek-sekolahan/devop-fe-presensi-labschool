@@ -36,10 +36,10 @@ function CardNotifikasi({ datas }) {
         return (
           <div className="card-notification" key={i}>
             <div className="flex flex-col justify-center">
-              {category !== "notifikasi" ? (
+              {category !== "presensi" ? (
                 <>
                   <h4 className="font-semibold text-[12px] text-primary-low inline">
-                    Berita
+                    {category.replace(/\b\w/g, char => char.toUpperCase())}
                     <span className="text-bg-3 ml-3 opacity-50">{createdAt.slice(10, 16)}</span>
                   </h4>
                   <h4 className="font-semibold text-[12px]">{data.title || "Judul tidak tersedia"}</h4>
@@ -47,7 +47,7 @@ function CardNotifikasi({ datas }) {
               ) : (
                 <>
                   <h4 className="font-semibold text-[12px] text-primary-low">
-                    Notifikasi
+                    {category.replace(/\b\w/g, char => char.toUpperCase())}
                     <span className="text-bg-3 ml-3 opacity-50">{createdAt.slice(10, 16)}</span>
                   </h4>
                   <h4
