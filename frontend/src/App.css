@@ -820,3 +820,7 @@ main {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+[aria-label="Tabs Riwayat"], [aria-label="Tabs Notifikasi"] {
+  background-color: white;
+}

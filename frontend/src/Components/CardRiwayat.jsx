@@ -91,7 +91,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </Card>
             </motion.div>
 
-            <Modal dismissible position="center" show={showModal} onClose={() => setShowModal(false)}>
+            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="mx-auto">
                 <Modal.Header>Detail</Modal.Header>
                 <Modal.Body>
                     {loading ? (
@@ -117,8 +117,8 @@ export default function CardRiwayat({ index, history, biodata }) {
                         </AnimatePresence>
                     )}
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button color="gray" onClick={() => setShowModal(false)}>{loading ? "Loading" : "Close"}</Button>
+                <Modal.Footer className="flex justify-end">
+                    <Button className="ml-auto" color="gray" onClick={() => setShowModal(false)}>{loading ? "Loading" : "Close"}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

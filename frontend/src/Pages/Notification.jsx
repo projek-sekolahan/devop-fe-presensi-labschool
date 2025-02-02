@@ -136,7 +136,7 @@ export default function Notification() {
             aria-label="Tabs Notifikasi"
             onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
           >
-            <div className="bg-white p-2 rounded-t-lg shadow">
+            
             {categories.map((category) => (
               <Tabs.Item key={category} title={category.replace(/\b\w/g, (char) => char.toUpperCase())}>
                 {loading && allNotifications.length === 0 ? (
@@ -146,7 +146,7 @@ export default function Notification() {
                 )}
               </Tabs.Item>
             ))}
-            </div>
+            
           </Tabs>
         </div>
         <div ref={ref}></div>

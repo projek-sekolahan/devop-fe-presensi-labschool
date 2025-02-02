@@ -77,7 +77,7 @@ export default function Riwayat() {
                         aria-label="Tabs Riwayat"
                         onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
                     >
-                        <div className="bg-white p-2 rounded-t-lg shadow">
+                        
                         {categories.map(category => (
                             <Tabs.Item key={category} title={category}>
                                 {cardLoading ? (
@@ -89,7 +89,7 @@ export default function Riwayat() {
                                 )}
                             </Tabs.Item>
                         ))}
-                        </div>
+                        
                     </Tabs>
                 </div>
             </main>
