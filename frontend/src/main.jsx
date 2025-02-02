@@ -13,12 +13,19 @@ const Root = () => {
                 console.error("Gagal mendaftarkan Service Worker.");
                 return;
             }
+
             // Minta izin notifikasi
             const token = await requestNotificationPermission();
             if (!token) {
                 console.error("Gagal mendapatkan token notifikasi.");
                 return;
             }
+
+            // Tangani pesan masuk
+            handleOnMessage((payload) => {
+                const { title, body } = payload.notification;
+                console.log(`${title}: ${body}`);
+            });
         };
 
         initializeFirebase();
