@@ -32,6 +32,7 @@ function CardNotifikasi({ datas }) {
         const createdAt = data?.created_at || "";
         const category = data?.category || "notifikasi";
         const message = data?.message || "Tidak ada pesan";
+        const title = data?.title || "Tidak ada judul";
 
         return (
           <div className="card-notification" key={i}>
@@ -42,7 +43,7 @@ function CardNotifikasi({ datas }) {
                     {category.replace(/\b\w/g, char => char.toUpperCase())}
                     <span className="text-bg-3 ml-3 opacity-50">{createdAt.slice(10, 16)}</span>
                   </h4>
-                  <h4 className="font-semibold text-[12px]">{data.title || "Judul tidak tersedia"}</h4>
+                  <h4 className="font-semibold text-[12px]">{title.replace(/\b\w/g, char => char.toUpperCase())}</h4>
                 </>
               ) : (
                 <>
@@ -52,10 +53,10 @@ function CardNotifikasi({ datas }) {
                   </h4>
                   <h4
                     className={`font-semibold text-[12px] ${
-                      data.title === "Presensi Berhasil" ? "text-secondary-green" : "text-secondary-red"
+                      data.type === "success" ? "text-secondary-green" : "text-secondary-red"
                     }`}
                   >
-                    {data.title || "Presensi Gagal!"}
+                    {title.replace(/\b\w/g, char => char.toUpperCase())}
                   </h4>
                 </>
               )}
