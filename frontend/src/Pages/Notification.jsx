@@ -119,7 +119,6 @@ export default function Notification() {
 
   // **Gunakan useEffect untuk filter tanpa fetch ulang**
   useEffect(() => {
-    console.log("Kategori aktif berubah:", activeCategory);
     if (activeCategory === "Semua") {
       setData(allData);
     } else {
@@ -135,16 +134,11 @@ export default function Notification() {
         </Link>
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
-
       <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
                   <Tabs
                     aria-label="Tabs Notifikasi"
-                    onActiveTabChange={(tabIndex) => {
-                      const selectedCategory = categories[tabIndex];
-                      console.log("Tab berubah ke:", selectedCategory); // Debugging
-                      setActiveCategory(selectedCategory);
-                    }}
+                    onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
                   >
                     {categories.map((category) => (
                       <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>  
