@@ -91,27 +91,25 @@ export default function CardRiwayat({ index, history, biodata }) {
         />
         <p className="font-semibold text-lg">{history["Nama Lengkap"]}</p>
       </div>
-      <div className="flex justify-between items-center mt-3">
-        <div className="text-sm">
-          <p className="font-medium text-gray-600 flex items-center gap-1">
-            <HiOutlineClock /> {formatDate(history["Tanggal Presensi"])}
-          </p>
-          <p>
-            <span className="text-green-600 font-medium">Masuk: </span>
-            {history["Jam Masuk"]}
-          </p>
-          <p>
-            <span className="text-red-600 font-medium">Keluar: </span>
-            {history["Jam Pulang"]}
-          </p>
-        </div>
-        <span 
-          className={`px-3 py-1 rounded-md font-semibold text-sm cursor-pointer ${statusColors[statusLabel]}`} 
-          onClick={() => clickHandler(statusLabel)}
-        >
-          {statusLabel}
-        </span>
+      <p className="font-medium text-gray-600 flex items-center gap-1 mt-3">
+        <HiOutlineClock /> {formatDate(history["Tanggal Presensi"])}
+      </p>
+      <div className="grid grid-cols-2 gap-4 mt-2 text-sm">
+        <p>
+          <span className="text-green-600 font-medium">Masuk: </span>
+          {history["Jam Masuk"]}
+        </p>
+        <p>
+          <span className="text-red-600 font-medium">Keluar: </span>
+          {history["Jam Pulang"]}
+        </p>
       </div>
+      <span 
+        className={`block text-center px-3 py-1 rounded-md font-semibold text-sm cursor-pointer mt-3 ${statusColors[statusLabel]}`} 
+        onClick={() => clickHandler(statusLabel)}
+      >
+        {statusLabel}
+      </span>
     </Card>
         </motion.div>
         <dialog id={`my_modal_${index}`} className="modal">
