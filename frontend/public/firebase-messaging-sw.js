@@ -5,12 +5,12 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js")
 // Push Event
 self.addEventListener('push', (event) => {
   if (event.data) {
-      const payload = event.data.json(); console.log(payload);
+      const payload = event.data.json(); console.log("payload on push: ",payload);
       const notificationTitle = payload.notification?.title || "New Message";
       const notificationOptions = {
           body: payload.notification?.body || "You have a new message.",
           icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-          data: { url: "https://smartapps.smalabschoolunesa1.sch.id/" + payload.notification?.url || "/" } // Menyimpan URL
+          data: { url: payload.notification?.click_action || "/bantuan" } // Menyimpan URL
       };
       event.waitUntil(
           self.registration.showNotification(notificationTitle, notificationOptions)
@@ -50,7 +50,7 @@ self.addEventListener("notificationclick", (event) => {
     }
 
     // Ambil URL dari notifikasi jika tersedia
-    const clickUrl = event.notification.data?.url || "/";
+    const clickUrl = event.notification?.click_action || "/bantuan";
 
     event.waitUntil(
         self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
@@ -88,12 +88,12 @@ self.addEventListener("message", async (event) => {
             }
             const messaging = firebase.messaging();
             // Handle background messages
-            messaging.onBackgroundMessage((payload) => { console.log(payload);
+            messaging.onBackgroundMessage((payload) => { console.log("payload onbackground: ",payload);
                 const notificationTitle = payload.notification?.title || "New Message";
                 const notificationOptions = {
                     body: payload.notification?.body || "You have a new message.",
                     icon: payload.notification?.icon || "/frontend/Icons/splash.png",
-                    data: { url: "https://smartapps.smalabschoolunesa1.sch.id/" + payload.notification?.url || "/" } // Menyimpan URL
+                    data: { url: payload.notification?.click_action || "/bantuan" } // Menyimpan URL
                 };
                 self.registration.showNotification(notificationTitle, notificationOptions);
             });
