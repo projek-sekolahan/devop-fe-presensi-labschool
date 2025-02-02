@@ -73,6 +73,8 @@ export default function Notification() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("Semua");
   const { ref, inView } = useInView();
 
   const fetchNotifications = async () => {
@@ -121,7 +123,9 @@ export default function Notification() {
       }
   
       // **Gunakan Object.values untuk mengambil array dari properti numerik**
-      const filteredData = Object.values(response).filter((item) => typeof item === "object");
+      const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : Object.values(response).flat().filter((item) => item.category === activeCategory);
+      // const filteredData = activeCategory === "Semua" ? Object.values(response).flat() : (response[activeCategory] || []);
+      // const filteredData = Object.values(response).filter((item) => typeof item === "object");
       console.log("Filtered Response (Before Slice):", filteredData);
   
       if (!Array.isArray(filteredData) || filteredData.length === 0) {
@@ -133,6 +137,8 @@ export default function Notification() {
       const newData = filteredData.slice((page - 1) * 10, page * 10);
       console.log("New Data (After Slice):", newData);
   
+      const allCategories = ["Semua", ...new Set(response.category)];
+      setCategories(allCategories);
       setData((prevData) => [...prevData, ...newData]);
       setHasMore(newData.length === 10);
       setPage(page + 1);
@@ -163,18 +169,20 @@ export default function Notification() {
         <h1 className="notification-section-container">Notifikasi</h1>
       </header>
       <main className="w-full min-h-screen relative px-8 pt-10 pb-4 text-black flex flex-col gap-4 overflow-y-auto">
-        <Tabs>
-          <Tabs.Item title="Semua">
-            <div className="custom-card">
-              {loading ? (
-                <div className="size-full flex justify-center items-center">
-                  <span className="loading loading-spinner text-white"></span>
-                </div>
-              ) : (
-                <CardNotifikasi datas={data} />
-              )}
-            </div>
-          </Tabs.Item>
+        <Tabs activeTab={activeCategory} onChange={(tab) => setActiveCategory(tab)}>
+          {categories.map((category) => (
+            <Tabs.Item key={category} title={category}>
+              <div className="custom-card">
+                {loading ? (
+                  <div className="size-full flex justify-center items-center">
+                    <span className="loading loading-spinner text-white"></span>
+                  </div>
+                ) : (
+                  <CardNotifikasi datas={data} />
+                )}
+              </div>
+            </Tabs.Item>
+          ))}
         </Tabs>
         <div ref={ref}></div>
       </main>
