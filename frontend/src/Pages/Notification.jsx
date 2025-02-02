@@ -137,11 +137,6 @@ export default function Notification() {
       </header>
 
       <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
-        {loading && allData.length === 0 ? (
-          <div className="flex justify-center items-center">
-            <span className="loading loading-spinner text-white"></span>
-          </div>
-        ) : (
                 <div className="custom-card">
                   <Tabs
                     aria-label="Tabs Notifikasi"
@@ -153,12 +148,17 @@ export default function Notification() {
                   >
                     {categories.map((category) => (
                       <Tabs.Item key={category} title={category.replace(/\b\w/g, char => char.toUpperCase())}>  
+                      {loading && allData.length === 0 ? (
+                        <div className="flex justify-center items-center">
+                          <span className="loading loading-spinner text-white"></span>
+                        </div>
+                      ) : (
                         <CardNotifikasi datas={data} />
+                      )}
                       </Tabs.Item>
                     ))}
                   </Tabs>
                 </div>
-        )}
         <div ref={ref}></div>
       </main>
     </div>
