@@ -138,7 +138,7 @@ export default function Notification() {
 
       <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
         {loading && allData.length === 0 ? (
-          <div className="size-full flex justify-center items-center">
+          <div className="flex justify-center items-center">
             <span className="loading loading-spinner text-white"></span>
           </div>
         ) : (
