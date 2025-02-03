@@ -73,22 +73,24 @@ export default function Riwayat() {
             </header>
             <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
-                    <Tabs
-                        aria-label="Tabs Riwayat"
-                        onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
-                    >
-                        {categories.map(category => (
-                            <Tabs.Item key={category} title={category}>
-                                {cardLoading ? (
-                                    <LoadingPlaceholder />
-                                ) : historyData[category]?.length ? (
-                                    <HistoryList historyData={historyData[category]} biodata={userData} />
-                                ) : (
-                                    <NoDataMessage />
-                                )}
-                            </Tabs.Item>
-                        ))}
-                    </Tabs>
+                    <div className="sticky top-16 w-full bg-white z-10 shadow-sm">
+                        <Tabs
+                            aria-label="Tabs Riwayat"
+                            onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
+                        >
+                            {categories.map(category => (
+                                <Tabs.Item key={category} title={category}>
+                                    {cardLoading ? (
+                                        <LoadingPlaceholder />
+                                    ) : historyData[category]?.length ? (
+                                        <HistoryList historyData={historyData[category]} biodata={userData} />
+                                    ) : (
+                                        <NoDataMessage />
+                                    )}
+                                </Tabs.Item>
+                            ))}
+                        </Tabs>
+                    </div>
                 </div>
             </main>
         </div>
