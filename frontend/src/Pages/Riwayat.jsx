@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeftIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
+import Layout from "../Components/Layout";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
@@ -64,6 +65,7 @@ export default function Riwayat() {
     }, [activeCategory, fetchHistory]);
 
     return (
+    <Layout>
         <div className="history-container h-screen flex flex-col overflow-y-auto">
             <header>
                 <Link to="/home">
@@ -71,7 +73,7 @@ export default function Riwayat() {
                 </Link>
                 <h1 className="history-section-container">Riwayat</h1>
             </header>
-            <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
+            <div className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
                     <div className="sticky top-16 w-full bg-white z-10 shadow-sm">
                         <Tabs
@@ -92,8 +94,9 @@ export default function Riwayat() {
                         </Tabs>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
+    </Layout>
     );
 }
 
