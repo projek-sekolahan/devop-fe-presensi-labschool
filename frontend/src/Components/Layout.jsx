@@ -30,7 +30,7 @@ export default function Layout({ children, link, label }) {
         )}
         {label && <h1 className="section-container">{label}</h1>}
       </header>
-      <main style={{ paddingTop: `${headerHeight}px` }} className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
+      <main style={{ paddingTop: `${headerHeight}px` }} className="w-full min-h-screen px-8 mt-4 text-black flex flex-col gap-4 ">
         {children}
       </main>
     </div>

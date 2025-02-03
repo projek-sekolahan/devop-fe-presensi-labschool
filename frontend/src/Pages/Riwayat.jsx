@@ -68,7 +68,7 @@ export default function Riwayat() {
             <Layout link="/home" label="Riwayat">
                 
                     <div className="custom-card">
-                        <div className="sticky top-16 w-full z-10 shadow-sm">
+                        <div className="sticky top-16 w-full z-20 shadow-sm">
                             <Tabs
                                 aria-label="Tabs Riwayat"
                                 onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
