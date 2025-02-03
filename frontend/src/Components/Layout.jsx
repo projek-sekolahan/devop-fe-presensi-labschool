@@ -23,16 +23,14 @@ export default function Layout({ children, link, label }) {
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 bg-orange-500 p-6 shadow-lg text-white"
       >
-        <div className="flex items-center gap-2">
-          {link && (
+        {link && (
             <Link to={link}>
               <ArrowLeftIcon className="w-6 h-6 text-white" />
             </Link>
-          )}
-          {label && <h1 className="text-white">{label}</h1>}
-        </div>
+        )}
+        {label && <h1 className="section-container">{label}</h1>}
       </header>
-      <main style={{ paddingTop: `${headerHeight}px` }} className="flex flex-col">
+      <main style={{ paddingTop: `${headerHeight}px` }} className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
         {children}
       </main>
     </div>

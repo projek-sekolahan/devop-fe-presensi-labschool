@@ -662,7 +662,7 @@ header h1 {
   text-align: center; /* text-center */
 }
 
-header .profile-section-container, .presensi-section-container, .notification-section-container, .history-section-container {
+header .section-container {
   margin-top: 1.5rem; /* mt-6 */
   text-align: center;
 }

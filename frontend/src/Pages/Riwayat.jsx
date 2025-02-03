@@ -64,30 +64,32 @@ export default function Riwayat() {
     }, [activeCategory, fetchHistory]);
 
     return (
-        <Layout link="/home" label="Riwayat">
-            <div className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
-                <div className="custom-card">
-                    <div className="sticky top-16 w-full bg-white z-10 shadow-sm">
-                        <Tabs
-                            aria-label="Tabs Riwayat"
-                            onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
-                        >
-                            {categories.map(category => (
-                                <Tabs.Item key={category} title={category}>
-                                    {cardLoading ? (
-                                        <LoadingPlaceholder />
-                                    ) : historyData[category]?.length ? (
-                                        <HistoryList historyData={historyData[category]} biodata={userData} />
-                                    ) : (
-                                        <NoDataMessage />
-                                    )}
-                                </Tabs.Item>
-                            ))}
-                        </Tabs>
+        <div className="history-container h-screen flex flex-col overflow-y-auto">
+            <Layout link="/home" label="Riwayat">
+                
+                    <div className="custom-card">
+                        <div className="sticky top-16 w-full z-10 shadow-sm">
+                            <Tabs
+                                aria-label="Tabs Riwayat"
+                                onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
+                            >
+                                {categories.map(category => (
+                                    <Tabs.Item key={category} title={category}>
+                                        {cardLoading ? (
+                                            <LoadingPlaceholder />
+                                        ) : historyData[category]?.length ? (
+                                            <HistoryList historyData={historyData[category]} biodata={userData} />
+                                        ) : (
+                                            <NoDataMessage />
+                                        )}
+                                    </Tabs.Item>
+                                ))}
+                            </Tabs>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </Layout>
+                
+            </Layout>
+        </div>
     );
 }
 
