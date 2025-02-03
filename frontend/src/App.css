@@ -647,6 +647,7 @@ header {
   left: 0;
   width: 100%;
   z-index: 50; /* Agar tidak tertutup elemen lain */
+  height: auto; /* Biar mengikuti kontennya */
 }
 
 header a {
@@ -683,7 +684,7 @@ header .profile-section-container p {
 }
 
 main {
-  padding-top: 2rem; /* mt-20 */
+  padding-top: var(--header-height); /* Menyesuaikan tinggi header */
   display: flex;
   flex-direction: column;
   gap: 1.5rem; /* space-y-6 */
