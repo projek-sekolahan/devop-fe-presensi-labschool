@@ -828,7 +828,7 @@ main {
 [aria-label="Tabs Riwayat"], [aria-label="Tabs Notifikasi"] {
   background-color: white;
   position: fixed; /* Tetap di atas saat scroll */
-  top: 0;
+  top: 90;
   left: 0;
   width: 100%;
   z-index: 50; /* Agar tidak tertutup elemen lain */

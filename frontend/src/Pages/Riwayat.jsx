@@ -67,7 +67,7 @@ export default function Riwayat() {
         <div className="history-container h-screen flex flex-col overflow-y-auto">
             <Layout link="/home" label="Riwayat">
                 
-                    <div className="custom-card">
+                    <div className="custom-card mt-10">
                         
                             <Tabs
                                 aria-label="Tabs Riwayat"
