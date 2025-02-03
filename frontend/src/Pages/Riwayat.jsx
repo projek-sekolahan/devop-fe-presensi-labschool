@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeftIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import Layout from "../Components/Layout";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
@@ -65,14 +64,7 @@ export default function Riwayat() {
     }, [activeCategory, fetchHistory]);
 
     return (
-    <Layout>
-        <div className="history-container h-screen flex flex-col overflow-y-auto">
-            <header>
-                <Link to="/home">
-                    <ArrowLeftIcon className="w-6 h-6 text-white" />
-                </Link>
-                <h1 className="history-section-container">Riwayat</h1>
-            </header>
+        <Layout link="/home" label="Riwayat">
             <div className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
                 <div className="custom-card">
                     <div className="sticky top-16 w-full bg-white z-10 shadow-sm">
@@ -95,8 +87,7 @@ export default function Riwayat() {
                     </div>
                 </div>
             </div>
-        </div>
-    </Layout>
+        </Layout>
     );
 }
 

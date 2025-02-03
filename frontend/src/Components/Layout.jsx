@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export default function Layout({ children }) {
+export default function Layout({ children, link, label }) {
+  const headerRef = useRef(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   useEffect(() => {
     const updateHeaderHeight = () => {
-      setTimeout(() => {
-        const header = document.querySelector("header");
-        if (header) {
-          const height = header.offsetHeight;
-          setHeaderHeight(height);
-          document.documentElement.style.setProperty("--header-height", `${height}px`);
-        }
-      }, 100); // Tunggu sebentar agar header benar-benar ada di DOM
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+        document.documentElement.style.setProperty("--header-height", `${headerRef.current.offsetHeight}px`);
+      }
     };
     updateHeaderHeight();
     window.addEventListener("resize", updateHeaderHeight);
@@ -20,7 +19,20 @@ export default function Layout({ children }) {
 
   return (
     <div className="layout">
-      <main style={{ paddingTop: `${headerHeight}px` }}>
+      <header
+        ref={headerRef}
+        className="fixed top-0 left-0 w-full z-50 bg-orange-500 p-6 shadow-lg text-white"
+      >
+        <div className="flex items-center gap-2">
+          {link && (
+            <Link to={link}>
+              <ArrowLeftIcon className="w-6 h-6 text-white" />
+            </Link>
+          )}
+          {label && <h1 className="text-white">{label}</h1>}
+        </div>
+      </header>
+      <main style={{ paddingTop: `${headerHeight}px` }} className="flex flex-col">
         {children}
       </main>
     </div>
