@@ -66,9 +66,7 @@ export default function Riwayat() {
     return (
         <div className="history-container h-screen flex flex-col overflow-y-auto">
             <Layout link="/home" label="Riwayat">
-                
                     <div className="custom-card mt-10">
-                        
                             <Tabs
                                 aria-label="Tabs Riwayat"
                                 onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
@@ -85,9 +83,7 @@ export default function Riwayat() {
                                     </Tabs.Item>
                                 ))}
                             </Tabs>
-                        
                     </div>
-                
             </Layout>
         </div>
     );

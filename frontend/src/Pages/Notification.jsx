@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { ArrowLeftIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 import apiXML from "../utils/apiXML.js";
 import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
+import Layout from "../Components/Layout";
 
 function NotificationCard({ notifications }) {
   if (notifications.length === 0) {
@@ -124,14 +124,8 @@ export default function Notification() {
 
   return (
     <div className="notification-container h-screen flex flex-col overflow-y-auto">
-      <header>
-        <Link to="/home">
-          <ArrowLeftIcon className="w-6 h-6 text-white" />
-        </Link>
-        <h1 className="notification-section-container">Notifikasi</h1>
-      </header>
-      <main className="w-full min-h-screen relative px-8 text-black flex flex-col gap-4 overflow-y-auto">
-        <div className="custom-card">
+      <Layout link="/home" label="Notifikasi">
+        <div className="custom-card mt-10">
           <Tabs
             aria-label="Tabs Notifikasi"
             onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
@@ -148,7 +142,7 @@ export default function Notification() {
           </Tabs>
         </div>
         <div ref={ref}></div>
-      </main>
+      </Layout>
     </div>
   );
 }
