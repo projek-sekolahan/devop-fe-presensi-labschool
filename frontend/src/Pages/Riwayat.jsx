@@ -70,7 +70,6 @@ export default function Riwayat() {
                     <div className="custom-card">
                         
                             <Tabs
-                                className="fixed left-0 w-full z-20 bg-white shadow-sm"
                                 aria-label="Tabs Riwayat"
                                 onActiveTabChange={(tabIndex) => setActiveCategory(categories[tabIndex])}
                             >
