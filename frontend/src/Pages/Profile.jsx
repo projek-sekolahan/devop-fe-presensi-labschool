@@ -10,7 +10,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
       <div className="w-full h-full">
 				<div className="size-full">
           {/* Header Section */}
-          <header>
+          <header className="pt-8">
             <button onClick={closeProfile}>
               <ArrowLeftIcon className="w-6 h-6 text-white" />
             </button>
@@ -28,7 +28,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
           </header>
 
           {/* User Info Section */}
-          <div className="mt-10">
+          <main style="margin-top:20rem; padding:2rem;">
             {[
               { label: "Name", value: userData.nama_lengkap },
               { label: "Account Email", value: userData.email },
@@ -42,7 +42,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
                 <p>{item.value}</p>
               </div>
             ))}
-          </div>
+          </main>
         </div>
       </div>
     </div>
