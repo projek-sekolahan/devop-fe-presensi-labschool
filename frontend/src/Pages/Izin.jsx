@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Textarea } from "flowbite-react";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
@@ -14,6 +12,7 @@ import {
 } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
+import Layout from "../Components/Layout";
 
 export default function Izin() {
 	const [Alert, setAlert] = useState({ ext: false, size: false });
@@ -69,7 +68,6 @@ export default function Izin() {
 				keteranganRef.current.value,
 			];
 		}
-
 		if (imageUrl) {
 			updatedCombinedKeys = [...updatedCombinedKeys, "foto_surat"];
 
@@ -96,18 +94,12 @@ export default function Izin() {
 	};
 	return (
 		<div className="presensi-container">
-			<header>
-				<Link to={
+			<Layout link={
 						localStorage.getItem("group_id") == "4"
 							? "/presensi"
 							: "/presensi/staff"
-					}>
-					<ArrowLeftIcon className="w-6 h-6 text-white" />
-				</Link>
-				<h1 className="presensi-section-container">Bukti Pendukung</h1>
-			</header>
-			<main>
-				<div className="custom-card">
+					} label="Bukti Pendukung">
+				<div className="custom-card mt-10">
 					<form onSubmit={submitHandler}>
 						<div className="input-group">
 							<label htmlFor="comment" className="input-label">Keterangan</label>
@@ -179,8 +171,8 @@ export default function Izin() {
 							<button type="submit" className="btn-submit mt-2">Submit</button>
 						</div>
 					</form>
-				</div>
-			</main>
+				</div>			
+			</Layout>
 		</div>
 	);
 }

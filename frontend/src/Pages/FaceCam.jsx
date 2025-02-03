@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
     getFormData,
     loading,
@@ -12,7 +12,7 @@ import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { loadFaceModels, detectSingleFace, validateFaceDetection } from "../utils/faceUtils";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import Layout from "../Components/Layout";
 
 export default function FaceCam() {
 
@@ -187,18 +187,12 @@ export default function FaceCam() {
 
     return (
     <div className="presensi-container">
-			<header>
-				<Link to={
+      <Layout link={
 						localStorage.getItem("group_id") == "4"
 							? "/presensi"
 							: "/presensi/staff"
-					}>
-					<ArrowLeftIcon className="w-6 h-6 text-white" />
-				</Link>
-				<h1 className="presensi-section-container">Presensi</h1>
-			</header>
-			<main>
-				<div className="facecam-container">
+					} label="Presensi">
+        <div className="facecam-container mt-10">
           <video
               ref={videoRef}
               className="canvas-camera"
@@ -260,7 +254,7 @@ export default function FaceCam() {
                         </div>
                     </div>
                 </dialog>
-      </main>
+      </Layout>
 		</div>
     );
 }

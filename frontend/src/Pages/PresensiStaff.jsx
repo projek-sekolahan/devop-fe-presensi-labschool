@@ -1,8 +1,8 @@
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { FaHouseUser, FaBuildingUser  } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useClock } from "../utils/utils";
+import Layout from "../Components/Layout";
 
 export default function PresensiStaff() {
 	const timeRef = useRef(null);
@@ -12,14 +12,8 @@ export default function PresensiStaff() {
 	useClock(timeRef, dateRef, dayRef);
 	return (
 		<div className="presensi-container">
-			<header>
-				<Link to="/home">
-					<ArrowLeftIcon className="w-6 h-6 text-white" />
-				</Link>
-				<h1 className="presensi-section-container">Presensi</h1>
-			</header>
-			<main>
-				<div className="custom-card">
+			<Layout link="/home" label="Presensi">
+				<div className="custom-card mt-10">
 					<div className="flex justify-between items-center w-full">
 						<p ref={timeRef} className="text-lg font-semibold"></p>
 						<div className="text-lg font-bold">
@@ -49,8 +43,8 @@ export default function PresensiStaff() {
 							</p>
 						</Link>
 					</div>
-				</div>
-			</main>
+				</div>			
+			</Layout>
 		</div>
 	);
 }

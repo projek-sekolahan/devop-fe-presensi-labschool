@@ -1,9 +1,9 @@
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { FaHospitalUser, FaHouseChimneyUser  } from "react-icons/fa6";
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import { useRef } from "react";
 import { useClock } from "../utils/utils";
+import Layout from "../Components/Layout";
 
 export default function Presensi() {
 	const timeRef = useRef(null);
@@ -14,18 +14,12 @@ export default function Presensi() {
 
 	return (
 		<div className="presensi-container">
-			<header>
-				<Link to={
+			<Layout link={
 						localStorage.getItem("group_id") == "4"
 							? "/home"
 							: "/presensi/staff"
-					}>
-					<ArrowLeftIcon className="w-6 h-6 text-white" />
-				</Link>
-				<h1 className="presensi-section-container">Presensi</h1>
-			</header>
-			<main>
-				<div className="custom-card">
+					} label="Presensi">
+				<div className="custom-card mt-10">
 					<div className="flex justify-between items-center w-full">
 						<p ref={timeRef} className="text-lg font-semibold"></p>
 						<div className="text-lg font-bold">
@@ -75,8 +69,8 @@ export default function Presensi() {
 							<p className="text-center font-semibold">Izin</p>
 						</Link>
 					</div>
-				</div>
-			</main>
+				</div>			
+			</Layout>
 		</div>
 	);
 }

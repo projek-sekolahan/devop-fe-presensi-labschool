@@ -1,7 +1,7 @@
 import { PiUserFocusThin } from "react-icons/pi";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { alertMessage } from "../utils/utils";
+import Layout from "../Components/Layout";
 
 export default function FaceVerification() {
 	const { state } = useLocation();
@@ -109,28 +109,24 @@ export default function FaceVerification() {
 
 	return (
 		<div className="presensi-container">
-			<header>
-				<Link to={
+			<Layout link={
 						localStorage.getItem("group_id") == "4"
 							? "/presensi"
 							: "/presensi/staff"
-					}>
-					<ArrowLeftIcon className="w-6 h-6 text-white" />
-				</Link>
-				<h1 className="presensi-section-container">Presensi</h1>
-			</header>
-			<div className="mt-[25%] flex flex-col items-center gap-12">
-				<div className="circle-container">
-					<PiUserFocusThin className="size-48 z-[5]" />
+					} label="Presensi">
+				<div className="mt-10 flex flex-col items-center gap-12">
+					<div className="circle-container">
+						<PiUserFocusThin className="size-48 z-[5]" />
+					</div>
+					<div className="text-container">
+						<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
+						<p className="font-semibold">Wajah anda untuk syarat presensi</p>
+					</div>
+					<div className="w-full px-6 absolute bottom-10">
+						<button onClick={click} className="btn-submit">Verifikasi</button>
+					</div>
 				</div>
-				<div className="text-container">
-					<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
-					<p className="font-semibold">Wajah anda untuk syarat presensi</p>
-				</div>
-				<div className="w-full px-6 absolute bottom-10">
-					<button onClick={click} className="btn-submit">Verifikasi</button>
-				</div>
-			</div>
+			</Layout>
 		</div>
 	);
 }

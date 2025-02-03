@@ -28,7 +28,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
           </header>
 
           {/* User Info Section */}
-          <main>
+          <div className="mt-10">
             {[
               { label: "Name", value: userData.nama_lengkap },
               { label: "Account Email", value: userData.email },
@@ -42,7 +42,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
                 <p>{item.value}</p>
               </div>
             ))}
-          </main>
+          </div>
         </div>
       </div>
     </div>
