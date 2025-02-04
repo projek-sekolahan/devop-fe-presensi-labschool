@@ -23,10 +23,14 @@ export default function Layout({ children, link, label }) {
         ref={headerRef}
         className="fixed top-0 left-0 w-full z-50 bg-orange-500 p-6 shadow-lg text-white"
       >
-        {link && (
-            <Link to={link}>
-              <ArrowLeftIcon className="w-6 h-6 text-white" />
-            </Link>
+        {typeof link === "function" ? (
+          <button onClick={link} className="flex items-center">
+            <ArrowLeftIcon className="w-6 h-6 text-white" />
+          </button>
+        ) : (
+          <Link to={link}>
+            <ArrowLeftIcon className="w-6 h-6 text-white" />
+          </Link>
         )}
         {label && <h1 className="section-container">{label}</h1>}
       </header>

@@ -10,7 +10,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
         showProfile ? "translate-x-0" : "translate-x-[100vw]"
       } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500`}
 		>
-      <Layout link="/home" label="Profile Anda">
+      <Layout link={closeProfile} label="Profile Anda">
         <div className="custom-card mt-10">
           <Card className="p-6 text-center">
             <img
