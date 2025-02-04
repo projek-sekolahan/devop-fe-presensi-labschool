@@ -2,10 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import { Card, Button } from "flowbite-react";
+import { Card, Button, Modal } from "flowbite-react";
 import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/utils";
 import apiXML from "../utils/apiXML";
-import DetailModal from "../Components/DetailModal";
 
 const STATUS_COLORS = {
     "Normal": "bg-green-500 text-white",
@@ -92,41 +91,36 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </Card>
             </motion.div>
 
-            <DetailModal showModal={showModal} setShowModal={setShowModal} headerTitle="Detail Presensi" loading={loading}>
-                {loading && (
-                    <div className="animate-pulse bg-gray-400 h-32 w-full rounded-md"></div>
-                )}
-                {!loading && datas?.length > 0 && (
-                    <AnimatePresence>
-                        {datas?.map((data, i) => (
-                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ delay: i * 0.1 }}>
-                                <div className={`${pulsing ? "pulse" : ""} loadable`}>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <img src={data.foto_presensi} alt="foto_presensi" className="rounded-xl border-4 border-white" />
-                                        <div>
-                                            <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
-                                            <p className="text-sm font-normal">{data.waktu_presensi}</p>
-                                            <div className={`text-center w-full max-w-28 mt-3 py-1 text-sm font-bold text-white rounded-md ${data.keterangan.includes("Normal") ? "bg-secondary-green" : "bg-secondary-red"}`}>
-                                                {data.keterangan}
+            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="pt-20">
+                <Modal.Header>Detail</Modal.Header>
+                <Modal.Body>
+                    {loading ? (
+                        <div className="animate-pulse bg-gray-400 h-32 w-full rounded-md"></div>
+                    ) : (
+                        <AnimatePresence>
+                            {datas?.map((data, i) => (
+                                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ delay: i * 0.1 }}>
+                                    <div className={`${pulsing ? "pulse" : ""} loadable`}>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <img src={data.foto_presensi} alt="foto_presensi" className="rounded-xl border-4 border-white" />
+                                            <div>
+                                                <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
+                                                <p className="text-sm font-normal">{data.waktu_presensi}</p>
+                                                <div className={`text-center w-full max-w-28 mt-3 py-1 text-sm font-bold text-white rounded-md ${data.keterangan.includes("Normal") ? "bg-secondary-green" : "bg-secondary-red"}`}>
+                                                    {data.keterangan}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                )}
-                {!loading && (!datas || datas.length === 0) && (
-                    <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
-                        <div className="flex items-center gap-3">
-                            <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
-                            <h4 className="text-lg font-semibold">Warning</h4>
-                        </div>
-                        <p className="mt-2 text-sm">Tidak ada data detail presensi yang tersedia. Harap coba lagi nanti.</p>
-                    </div>
-                )}
-            </DetailModal>
-
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    )}
+                </Modal.Body>
+                <Modal.Footer className="flex justify-end">
+                    <Button className="ml-auto" color="gray" onClick={() => setShowModal(false)}>{loading ? "Loading" : "Close"}</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
