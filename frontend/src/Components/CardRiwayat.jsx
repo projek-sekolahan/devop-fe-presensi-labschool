@@ -2,9 +2,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import { Card, Button, Modal } from "flowbite-react";
+import { Card, Button } from "flowbite-react";
 import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/utils";
 import apiXML from "../utils/apiXML";
+import DetailModal from "../Components/DetailModal";
 
 const STATUS_COLORS = {
     "Normal": "bg-green-500 text-white",
@@ -91,36 +92,31 @@ export default function CardRiwayat({ index, history, biodata }) {
                 </Card>
             </motion.div>
 
-            <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="pt-20">
-                <Modal.Header>Detail</Modal.Header>
-                <Modal.Body>
-                    {loading ? (
-                        <div className="animate-pulse bg-gray-400 h-32 w-full rounded-md"></div>
-                    ) : (
-                        <AnimatePresence>
-                            {datas?.map((data, i) => (
-                                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ delay: i * 0.1 }}>
-                                    <div className={`${pulsing ? "pulse" : ""} loadable`}>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <img src={data.foto_presensi} alt="foto_presensi" className="rounded-xl border-4 border-white" />
-                                            <div>
-                                                <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
-                                                <p className="text-sm font-normal">{data.waktu_presensi}</p>
-                                                <div className={`text-center w-full max-w-28 mt-3 py-1 text-sm font-bold text-white rounded-md ${data.keterangan.includes("Normal") ? "bg-secondary-green" : "bg-secondary-red"}`}>
-                                                    {data.keterangan}
-                                                </div>
+            <DetailModal showModal={showModal} setShowModal={setShowModal} headerTitle="Detail Presensi" loading={loading}>
+                {loading ? (
+                    <div className="animate-pulse bg-gray-400 h-32 w-full rounded-md"></div>
+                ) : (
+                    <AnimatePresence>
+                        {datas?.map((data, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ delay: i * 0.1 }}>
+                                <div className={`${pulsing ? "pulse" : ""} loadable`}>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <img src={data.foto_presensi} alt="foto_presensi" className="rounded-xl border-4 border-white" />
+                                        <div>
+                                            <p className="font-medium text-md">{formatDate(data.tanggal_presensi)}</p>
+                                            <p className="text-sm font-normal">{data.waktu_presensi}</p>
+                                            <div className={`text-center w-full max-w-28 mt-3 py-1 text-sm font-bold text-white rounded-md ${data.keterangan.includes("Normal") ? "bg-secondary-green" : "bg-secondary-red"}`}>
+                                                {data.keterangan}
                                             </div>
                                         </div>
                                     </div>
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
-                    )}
-                </Modal.Body>
-                <Modal.Footer className="flex justify-end">
-                    <Button className="ml-auto" color="gray" onClick={() => setShowModal(false)}>{loading ? "Loading" : "Close"}</Button>
-                </Modal.Footer>
-            </Modal>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                )}
+            </DetailModal>
+
         </div>
     );
 }
