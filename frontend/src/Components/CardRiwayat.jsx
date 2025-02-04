@@ -93,9 +93,10 @@ export default function CardRiwayat({ index, history, biodata }) {
             </motion.div>
 
             <DetailModal showModal={showModal} setShowModal={setShowModal} headerTitle="Detail Presensi" loading={loading}>
-                {loading ? (
+                {loading && (
                     <div className="animate-pulse bg-gray-400 h-32 w-full rounded-md"></div>
-                ) : (
+                )}
+                {!loading && datas?.length > 0 && (
                     <AnimatePresence>
                         {datas?.map((data, i) => (
                             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ delay: i * 0.1 }}>
@@ -114,6 +115,15 @@ export default function CardRiwayat({ index, history, biodata }) {
                             </motion.div>
                         ))}
                     </AnimatePresence>
+                )}
+                {!loading && (!datas || datas.length === 0) && (
+                    <div className="w-full max-w-md mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-md">
+                        <div className="flex items-center gap-3">
+                            <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500" />
+                            <h4 className="text-lg font-semibold">Warning</h4>
+                        </div>
+                        <p className="mt-2 text-sm">Tidak ada data detail presensi yang tersedia. Harap coba lagi nanti.</p>
+                    </div>
                 )}
             </DetailModal>
 
