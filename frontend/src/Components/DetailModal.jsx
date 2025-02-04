@@ -1,5 +1,5 @@
 import { Modal, Button } from "flowbite-react";
-export default function DetailModal({ showModal, setShowModal, headerTitle, loading }) {
+export default function DetailModal({ showModal, setShowModal, headerTitle, children, loading }) {
     return (
         <Modal dismissible size="md" position="center" show={showModal} onClose={() => setShowModal(false)} className="pt-20">
             <Modal.Header>{headerTitle}</Modal.Header>
