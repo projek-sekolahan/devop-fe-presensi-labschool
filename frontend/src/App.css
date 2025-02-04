@@ -690,24 +690,31 @@ main {
 }
 
 .profile-info {
-  background-color: #ffffff; /* bg-white */
-  padding: 1rem; /* p-4 */
+  display: flex;
+  align-items: start;
+  gap: 1rem; /* Jarak antara ikon dan teks */
   border-radius: 0.5rem; /* rounded-lg */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
-  border: 1px solid #e5e7eb; /* border-gray-200 */
+  border: 1px solid #ff5a1f; /* border-gray-200 */
 }
 
-.profile-info h4 {
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 500; /* font-medium */
-  color: #ff5a1f; /* text-gray-500 */
+.profile-info-icon {
+  width: 1.5rem; /* w-6 */
+  height: 1.5rem; /* h-6 */
+  color: #ff5a1f; /* text-gray-600 */
 }
 
-.profile-info p {
-  font-size: 1rem; /* text-base */
+.profile-info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info-label {
   font-weight: 500; /* font-medium */
   color: #ff5a1f; /* text-gray-800 */
-  margin-top: 0.25rem; /* mt-1 */
+}
+
+.profile-info-value {
+  color: #ff5a1f; /* text-gray-700 */
 }
 
 .custom-card {

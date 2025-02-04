@@ -13,25 +13,25 @@ export default function Profile({ showProfile, userData, closeProfile }) {
     <div className="w-full h-full">
 				<div className="size-full">
           <Layout link={closeProfile} label="Profile Anda">
-            <div className="custom-card mt-10">
+            <div className="custom-card">
               <Card className="p-6 text-center">
                 <img
                   src={userData.img_location}
                   alt="User Profile"
                   className="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white shadow-md"
                 />
-                <p className="font-semibold text-lg mt-4">{`@${userData.email.split('@')[0]}`}</p>
-                <div className="mt-4 space-y-2">
+                <p className="font-semibold text-lg">{`@${userData.email.split('@')[0]}`}</p>
+                <div className="mt-2">
                   {[ 
-                    { label: "Name", value: userData.nama_lengkap, icon: <UserIcon className="w-5 h-5 inline-block mr-2" /> },
-                    { label: "Account Email", value: userData.email, icon: <EnvelopeIcon className="w-5 h-5 inline-block mr-2" /> },
-                    { label: "Phone Number", value: userData.phone, icon: <PhoneIcon className="w-5 h-5 inline-block mr-2" /> }
+                    { label: "Name", value: userData.nama_lengkap, icon: <UserIcon className="profile-info-icon" /> },
+                    { label: "Account Email", value: userData.email, icon: <EnvelopeIcon className="profile-info-icon" /> },
+                    { label: "Phone Number", value: userData.phone, icon: <PhoneIcon className="profile-info-icon" /> }
                   ].map((item, index) => (
-                    <div key={index} className="profile-info flex items-center">
+                    <div key={index} className="profile-info">
                       {item.icon}
-                      <div>
-                        <h4 className="font-medium">{item.label}</h4>
-                        <p className="text-gray-700">{item.value}</p>
+                      <div className="profile-info-content">
+                        <h4 className="profile-info-label">{item.label}</h4>
+                        <p className="profile-info-value">{item.value}</p>
                       </div>
                     </div>
                   ))}
