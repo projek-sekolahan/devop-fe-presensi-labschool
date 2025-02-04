@@ -1,5 +1,7 @@
 import { Card } from "flowbite-react";
 import { UserIcon, EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import Layout from "../Components/Layout";
+
 export default function Profile({ showProfile, userData, closeProfile }) {
 	return (
     <div
