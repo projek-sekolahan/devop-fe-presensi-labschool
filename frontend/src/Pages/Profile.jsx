@@ -1,5 +1,5 @@
 import { Card } from "flowbite-react";
-import { UserIcon, MailIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import { UserIcon, EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
 export default function Profile({ showProfile, userData, closeProfile }) {
 	return (
     <div
@@ -20,7 +20,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
             <div className="mt-4 space-y-2">
               {[ 
                 { label: "Name", value: userData.nama_lengkap, icon: <UserIcon className="w-5 h-5 inline-block mr-2" /> },
-                { label: "Account Email", value: userData.email, icon: <MailIcon className="w-5 h-5 inline-block mr-2" /> },
+                { label: "Account Email", value: userData.email, icon: <EnvelopeIcon className="w-5 h-5 inline-block mr-2" /> },
                 { label: "Phone Number", value: userData.phone, icon: <PhoneIcon className="w-5 h-5 inline-block mr-2" /> }
               ].map((item, index) => (
                 <div key={index} className="profile-info flex items-center">
