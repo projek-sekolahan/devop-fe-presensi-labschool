@@ -10,11 +10,10 @@ export default function Profile({ showProfile, userData, closeProfile }) {
     showProfile ? "translate-x-0" : "translate-x-[100vw]"
   } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500`}
 >
-  <div className="w-full h-full flex justify-center items-center bg-gray-50">
-    <div className="size-full max-w-md w-full">
+  <div className="w-full h-full flex justify-center items-center bg-gray-200">
       <Layout link={closeProfile} label="Profile Anda">
         <div className="custom-card">
-          <Card className="p-6 text-center shadow-lg rounded-2xl bg-white">
+          <Card className="p-6 text-center shadow-lg rounded-2xl">
             <img
               src={userData.img_location}
               alt="User Profile"
@@ -36,14 +35,9 @@ export default function Profile({ showProfile, userData, closeProfile }) {
                 </div>
               ))}
             </div>
-            <div className="mt-6 flex justify-center gap-4">
-              <button className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow hover:bg-orange-600">Edit Profile</button>
-              <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-300">Logout</button>
-            </div>
           </Card>
         </div>
       </Layout>
-    </div>
   </div>
 </div>
 	);
