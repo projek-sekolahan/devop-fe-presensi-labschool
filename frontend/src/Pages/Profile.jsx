@@ -1,5 +1,5 @@
 import { Card } from "flowbite-react";
-import { MdOutlinePhoneAndroid, MdVerifiedUser, MdEmail } from "react-icons/md";
+import { FaSquareWhatsapp, FaUserCheck, FaEnvelopeCircleCheck } from "react-icons/fa6";
 import Layout from "../Components/Layout";
 
 export default function Profile({ showProfile, userData, closeProfile }) {
@@ -23,9 +23,9 @@ export default function Profile({ showProfile, userData, closeProfile }) {
             <p className="font-bold text-xl mt-4 text-gray-800">{`@${userData.email.split('@')[0]}`}</p>
             <div className="mt-6 space-y-4">
               {[ 
-                { label: "Name", value: userData.nama_lengkap, icon: <MdVerifiedUser className="profile-info-icon" /> },
-                { label: "Account Email", value: userData.email, icon: <MdEmail className="profile-info-icon" /> },
-                { label: "Phone Number", value: userData.phone, icon: <MdOutlinePhoneAndroid className="profile-info-icon" /> }
+                { label: "Name", value: userData.nama_lengkap, icon: <FaUserCheck className="profile-info-icon" /> },
+                { label: "Account Email", value: userData.email, icon: <FaEnvelopeCircleCheck className="profile-info-icon" /> },
+                { label: "Phone Number", value: userData.phone, icon: <FaSquareWhatsapp className="profile-info-icon" /> }
               ].map((item, index) => (
                 <div key={index} className="profile-info flex items-center gap-4 p-4 border rounded-lg bg-gray-50 hover:shadow-md">
                   {item.icon}
