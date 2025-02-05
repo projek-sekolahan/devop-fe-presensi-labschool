@@ -192,7 +192,7 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-        <div className="facecam-container mt-4">
+        <div className="facecam-container mt-10">
           <video
               ref={videoRef}
               className="canvas-camera"
