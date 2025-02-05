@@ -114,7 +114,7 @@ export default function FaceVerification() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-				<div className="mt-10 flex flex-col items-center gap-12">
+				<div className="mt-4 flex flex-col items-center gap-12">
 					<div className="circle-container">
 						<PiUserFocusThin className="size-48 z-[5]" />
 					</div>

@@ -99,7 +99,7 @@ export default function Izin() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Bukti Pendukung">
-				<div className="custom-card mt-10">
+				<div className="custom-card mt-4">
 					<form onSubmit={submitHandler}>
 						<div className="input-group">
 							<label htmlFor="comment" className="input-label">Keterangan</label>

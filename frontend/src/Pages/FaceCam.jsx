@@ -192,15 +192,13 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-        <div className="facecam-container mt-10">
+        <div className="facecam-container mt-4">
           <video
               ref={videoRef}
               className="canvas-camera"
               autoPlay
               playsInline
           />
-          {/* Frame Overlay */}
-          <div className="relative z-10 face-detector"></div>
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
         </div>
