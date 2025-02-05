@@ -691,30 +691,30 @@ main {
 
 .profile-info {
   display: flex;
-  align-items: start;
-  gap: 1rem; /* Jarak antara ikon dan teks */
-  border-radius: 0.5rem; /* rounded-lg */
-  border: 1px solid #ff5a1f; /* border-gray-200 */
+  align-items: center;
+  gap: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ff5a1f;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.profile-info:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-info-icon {
-  width: 1.5rem; /* w-6 */
-  height: 1.5rem; /* h-6 */
-  color: #ff5a1f; /* text-gray-600 */
-}
-
-.profile-info-content {
-  display: flex;
-  flex-direction: column;
+  width: 2rem;
+  height: 2rem;
+  color: #ff5a1f;
 }
 
 .profile-info-label {
-  font-weight: 500; /* font-medium */
-  color: #ff5a1f; /* text-gray-800 */
+  font-weight: 600;
+  color: #ff5a1f;
 }
 
 .profile-info-value {
-  color: #ff5a1f; /* text-gray-700 */
+  color: #4b5563;
 }
 
 .custom-card {
