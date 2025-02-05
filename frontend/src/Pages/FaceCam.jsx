@@ -192,7 +192,7 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-        <div className="facecam-container mt-10 relative">
+        <div className="facecam-container mt-10">
           <video
               ref={videoRef}
               className="canvas-camera"
@@ -202,7 +202,7 @@ export default function FaceCam() {
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
         </div>
-        <div className="w-full px-6 mt-4 flex justify-center">
+        <div className="w-full px-6 flex justify-center absolute bottom-10">
             <button
               className="btn-submit"
               disabled={isLoading}

@@ -1,4 +1,3 @@
-import { Card } from "flowbite-react";
 import { FaSquareWhatsapp, FaUserCheck, FaEnvelopeCircleCheck } from "react-icons/fa6";
 import Layout from "../Components/Layout";
 
@@ -6,8 +5,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
 	return (
 <div
   id="container"
-  className={`${
-    showProfile ? "translate-x-0" : "translate-x-[100vw]"
+  className={`${showProfile ? "translate-x-0" : "translate-x-[100vw]"
   } w-screen h-screen absolute bg-transparent z-10 left-0 top-0 duration-500 overflow-hidden`}
 >
   <div className="w-full h-full flex justify-center bg-gray-200">
