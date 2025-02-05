@@ -223,6 +223,7 @@ export default function FaceCam() {
             </button>
           </div>
         </div>
+      </Layout>
                 <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Hasil Potret</h3>
@@ -251,8 +252,7 @@ export default function FaceCam() {
                             </form>
                         </div>
                     </div>
-                </dialog>
-      </Layout>
+                </dialog>      
 		</div>
     );
 }
