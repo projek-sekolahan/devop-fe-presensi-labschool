@@ -201,9 +201,7 @@ export default function FaceCam() {
           />
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-full px-6 absolute bottom-10">
+          <div className="w-full px-6 mt-4">
             <button
               className="btn-submit"
               disabled={isLoading}
