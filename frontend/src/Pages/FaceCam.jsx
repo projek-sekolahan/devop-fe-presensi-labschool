@@ -192,7 +192,7 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-        <div className="facecam-container mt-10">
+        <div className="facecam-container mt-10 relative">
           <video
               ref={videoRef}
               className="canvas-camera"
@@ -201,7 +201,8 @@ export default function FaceCam() {
           />
           <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
           <img ref={imgRef} className="absolute z-10 hidden" />
-          <div className="w-full px-6 mt-4">
+        </div>
+        <div className="w-full px-6 mt-4 flex justify-center">
             <button
               className="btn-submit"
               disabled={isLoading}
@@ -219,8 +220,7 @@ export default function FaceCam() {
                 "Konfirmasi"
               )}
             </button>
-          </div>
-        </div>
+        </div>        
       </Layout>
                 <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
                     <div className="modal-box">

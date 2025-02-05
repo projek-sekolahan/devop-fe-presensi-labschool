@@ -122,7 +122,7 @@ export default function FaceVerification() {
 						<h4 className="font-bold text-3xl mb-2">Verifikasi</h4>
 						<p className="font-semibold">Wajah untuk syarat presensi</p>
 					</div>
-					<div className="w-full px-6 relative top-50">
+					<div className="w-full relative top-50">
 						<button onClick={click} className="btn-submit">Verifikasi</button>
 					</div>
 				</div>

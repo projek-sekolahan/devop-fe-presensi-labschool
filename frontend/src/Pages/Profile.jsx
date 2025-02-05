@@ -13,7 +13,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
   <div className="w-full h-full flex justify-center bg-gray-200">
       <Layout link={closeProfile} label="Profile Anda">
         <div className="custom-card">
-          <Card className="shadow-lg rounded-2xl !gap-4 !p-6">
+          <div className="flex h-full flex-col justify-center border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg rounded-2xl gap-2 p-6">
             <img
               src={userData.img_location}
               alt="User Profile"
@@ -35,7 +35,7 @@ export default function Profile({ showProfile, userData, closeProfile }) {
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
         </div>
       </Layout>
   </div>
