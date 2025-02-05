@@ -717,6 +717,11 @@ main {
   color: #4b5563;
 }
 
+.profile-info-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .custom-card {
   width: 100%;
   border-radius: 1rem;
