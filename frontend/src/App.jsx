@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loading from "./Components/Loading";
 import { routes } from "./Components/routes";
 import { isMobile } from "react-device-detect";
