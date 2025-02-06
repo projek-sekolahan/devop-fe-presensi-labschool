@@ -192,35 +192,35 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-        <div className="facecam-container mt-10">
-          <video
-              ref={videoRef}
-              className="canvas-camera"
-              autoPlay
-              playsInline
-          />
-          <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
-          <img ref={imgRef} className="absolute z-10 hidden" />
+<div className="facecam-container mt-10 flex flex-col items-center relative">
+  {/* Video Stream */}
+  <div className="relative">
+    <video ref={videoRef} className="canvas-camera" autoPlay playsInline />
+    <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
+    <img ref={imgRef} className="absolute z-10 hidden" />
+  </div>
+
+  {/* Tombol Konfirmasi */}
+  <div className="mt-4">
+    <button
+      className="btn-submit"
+      disabled={isLoading}
+      onClick={() => {
+        document.getElementById("my_modal_1").showModal();
+        clickPhoto();
+      }}
+    >
+      {isLoading ? (
+        <div className="flex justify-center items-center gap-2">
+          <span>Loading...</span>
+          <span className="loading loading-spinner"></span>
         </div>
-        <div className="w-full px-6 flex justify-center absolute bottom-10">
-            <button
-              className="btn-submit"
-              disabled={isLoading}
-              onClick={() => {
-                document.getElementById("my_modal_1").showModal();
-                clickPhoto();
-              }}
-            >
-            {isLoading ? (
-              <div className="flex justify-center items-center gap-2">
-                <span>Loading...</span>
-                <span className="loading loading-spinner"></span>
-              </div>
-              ) : (
-                "Konfirmasi"
-              )}
-            </button>
-        </div>        
+      ) : (
+        "Konfirmasi"
+      )}
+    </button>
+  </div>
+</div>        
       </Layout>
                 <dialog id="my_modal_1" className="modal text-black shadow-lg transition transform z-0">
                     <div className="modal-box">
