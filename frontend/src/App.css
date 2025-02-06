@@ -136,18 +136,6 @@ body {
   opacity: 0;
 }
 
-/* Responsif untuk Smartphone */
-@media (max-width: 768px) {
-  .login-form-container,
-  .register-form-container,
-  .reset-form-container,
-  .verification-form-container,
-  .confirmation-form-container,
-  .capture-form-container {
-    max-width: 100%; /* Full width pada layar lebih kecil */
-  }
-}
-
 /* Media Query untuk layar kecil */
 @media (max-width: 400px) {
   .login-form-container,

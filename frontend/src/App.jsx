@@ -7,10 +7,20 @@ import DesktopWarning from "./Components/DesktopWarning";
 import "./App.css";
 
 function App() {
+    const [isRestricted, setIsRestricted] = useState(false);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsRestricted(window.innerWidth > 500);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     return (
         <Router>
-            {!isMobile && <DesktopWarning />}
+            {(isRestricted || !isMobile) && <DesktopWarning />}
             <Suspense fallback={<Loading />}>
                 <Routes>
                     {routes.map(({ path, element }, index) => (
