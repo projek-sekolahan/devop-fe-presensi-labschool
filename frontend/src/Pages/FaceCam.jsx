@@ -192,16 +192,16 @@ export default function FaceCam() {
 							? "/presensi"
 							: "/presensi/staff"
 					} label="Presensi">
-<div className="facecam-container mt-10 flex flex-col items-center relative">
+<div className="facecam-container mt-10 flex flex-col">
   {/* Video Stream */}
-  <div className="relative">
+  <div className="flex flex-col p-2">
     <video ref={videoRef} className="canvas-camera" autoPlay playsInline />
     <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
     <img ref={imgRef} className="absolute z-10 hidden" />
   </div>
 
   {/* Tombol Konfirmasi */}
-  <div className="mt-4">
+  <div className="mt-[25rem] p-2">
     <button
       className="btn-submit"
       disabled={isLoading}
