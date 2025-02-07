@@ -201,7 +201,7 @@ export default function FaceCam() {
   </div>
 
   {/* Tombol Konfirmasi */}
-  <div className="mt-[25rem]">
+  <div className="btn-facecam">
     <button
       className="btn-submit"
       disabled={isLoading}

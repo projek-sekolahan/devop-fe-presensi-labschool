@@ -386,7 +386,6 @@ body {
 }
 
 /* desain homebased */
-
 .home-container {
   display: flex;
   flex-direction: column;
@@ -830,4 +829,8 @@ main {
   width: 100%;
   z-index: 50; /* Agar tidak tertutup elemen lain */
   height: auto; /* Biar mengikuti kontennya */
+}
+
+.btn-facecam {
+  margin-top: 30rem;
 }
