@@ -11,7 +11,7 @@ function App() {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsRestricted(window.innerWidth > 500);
+            setIsRestricted(window.innerWidth > 800);
         };
 
         handleResize(); // Set initial state
