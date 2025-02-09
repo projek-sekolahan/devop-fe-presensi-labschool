@@ -22,18 +22,32 @@ function NotificationCard({ notifications }) {
 
   return (
     <div className="flex flex-col gap-4">
-      {notifications.map((notification, index) => (
-        <div className="card-notification" key={index}>
-          <div className="flex flex-col justify-center">
-            <h4 className="font-semibold text-sm text-primary-low">
-              {notification.category.replace(/\b\w/g, (char) => char.toUpperCase())}
-              <span className="text-bg-3 ml-3 opacity-50">{notification.created_at.slice(10, 16)}</span>
-            </h4>
-            <h4 className="font-semibold text-sm">{notification.title}</h4>
-            <p className="text-bg-3 font-light text-xs text-justify">{notification.message}</p>
+      {notifications.map((notification, index) => {
+        const baseUrl = "https://smartapps.smalabschoolunesa1.sch.id";
+        const urlRegex = new RegExp(`${baseUrl}/\\S*`, "g"); // Deteksi URL dengan path apa pun setelah domain
+        // Mengubah semua URL dalam message menjadi tautan "klik disini"
+        const updatedMessage = notification.message.replace(
+          urlRegex,
+          (match) =>
+            `<a href="${match}" class="text-primary font-semibold underline">klik disini</a>`
+        );
+
+        return (
+          <div className="card-notification" key={index}>
+            <div className="flex flex-col justify-center w-full">
+              <h4 className="font-semibold text-sm text-primary-low">
+                {notification.category.replace(/\b\w/g, (char) => char.toUpperCase())}
+                <span className="text-bg-3 ml-3 opacity-50">{notification.created_at.slice(10, 16)}</span>
+              </h4>
+              <h4 className="font-semibold text-sm">{notification.title}</h4>
+              <p
+                className="text-bg-3 font-light text-xs text-justify break-words overflow-hidden"
+                dangerouslySetInnerHTML={{ __html: updatedMessage }} // Render HTML dalam message
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
