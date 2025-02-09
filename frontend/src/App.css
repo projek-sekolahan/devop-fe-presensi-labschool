@@ -782,9 +782,9 @@ main {
 .canvas-camera {
   position: absolute;
   width: 80%;
-  height: 45%;
+  height: 40%;
   object-fit: cover;
-  margin-top: 3rem; /* mt-8 (8 * 4px) */
+  margin-top: 2rem;
 }
 
 .face-detector {
@@ -832,5 +832,5 @@ main {
 }
 
 .btn-facecam {
-  margin-top: 26rem;
+  margin-top: 25rem;
 }
