@@ -9,6 +9,7 @@ import DetailModal from "../Components/DetailModal";
 
 const STATUS_COLORS = {
     "Normal": "bg-green-500 text-white",
+    "Hadir": "bg-green-500 text-white",
     "Tidak Normal": "bg-red-500 text-white",
     "Dinas Luar": "bg-gray-600 text-white",
     "Izin/Sakit": "bg-yellow-500 text-black",
@@ -35,7 +36,17 @@ export default function CardRiwayat({ index, history, biodata }) {
             }
         }
         
-        return history["Keterangan"] === "Dinas Luar" ? "Dinas Luar" : "Izin/Sakit";
+        // Perbaikan penanganan nilai "Keterangan"
+        if (history["Keterangan"] === "Dinas Luar") {
+            return "Dinas Luar";
+        }
+        
+        // Jika "Keterangan" kosong atau "---", cek apakah ada data presensi masuk/pulang
+        if (history["Status Masuk"] !== "---" || history["Status Pulang"] !== "---") {
+            return "Hadir";
+        }
+        
+        return "Izin/Sakit";        
         
     };
 
