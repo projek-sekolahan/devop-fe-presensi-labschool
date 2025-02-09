@@ -20,34 +20,22 @@ export default function CardRiwayat({ index, history, biodata }) {
     const [loading, setLoading] = useState(true);
     const [pulsing, setPulsing] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    console.log(history);
+    
     const getStatusLabel = () => {
-        if (history["Status Masuk"] === "Masuk Normal" && history["Status Pulang"] === "Pulang Normal") {
-            return "Normal";
-        }
-        
-        if (history["Status Masuk"] === "Terlambat Masuk" || history["Status Pulang"] === "Pulang Cepat") {
-            const masukNormal = history["Status Masuk"] === "Masuk Normal";
-            const pulangNormal = history["Status Pulang"] === "Pulang Normal";
-        
-            // Jika hanya salah satu yang normal, tetap dianggap "Tidak Normal"
-            if (masukNormal || pulangNormal) {
-                return "Tidak Normal";
-            }
-        }
-        
-        // Perbaikan penanganan nilai "Keterangan"
         if (history["Keterangan"] === "Dinas Luar") {
             return "Dinas Luar";
         }
         
-        // Jika "Keterangan" kosong atau "---", cek apakah ada data presensi masuk/pulang
-        if (history["Status Masuk"] !== "---" || history["Status Pulang"] !== "---") {
-            return "Hadir";
+        if (history["Status Masuk"] === "Masuk Normal" && history["Status Pulang"] === "Pulang Normal") {
+            return "Normal";
         }
         
-        return "Izin/Sakit";        
+        if (history["Status Masuk"] === "Terlambat Masuk" || history["Status Pulang"] === "Pulang Cepat" || 
+            history["Status Masuk"] === "---" || history["Status Pulang"] === "---") {
+            return "Tidak Normal";
+        }
         
+        return "Izin/Sakit";
     };
 
     const statusLabel = getStatusLabel();
