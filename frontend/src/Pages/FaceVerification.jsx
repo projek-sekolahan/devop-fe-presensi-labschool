@@ -76,26 +76,29 @@ export default function FaceVerification() {
 				coordinat.latitude,
 				coordinat.longitude,
 			);
-			alertMessage("Done", "Anda berada di area sekolah", "success", () =>
-				navigate("/facecam", {
-					state: [
-						...state,
-						JSON.stringify({
-							longitude: longitude.toString(),
-							latitude: latitude.toString(),
-						}),
-					],
-				}),
+			if (localStorage.getItem("group_id") == "1") {
+				alertMessage("Done", "Anda berada di area sekolah", "success", () =>
+					navigate("/facecam", {
+						state: [
+							...state,
+							JSON.stringify({
+								longitude: longitude.toString(),
+								latitude: latitude.toString(),
+							}),
+						],
+					}),
+				);
+			}
+			
+			alertMessage(
+				"warning",
+				"Kamu Diluar Sekolah",
+				`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
+				() =>
+					navigate("/presensi/verif", {
+						state: [...state],
+					}),
 			);
-			// alertMessage(
-			// 	"warning",
-			// 	"Kamu Diluar Sekolah",
-			// 	`Harap lakukan presensi didalam area sekolah, jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`,
-			// 	() =>
-			// 		navigate("/presensi/verif", {
-			// 			state: [...state],
-			// 		}),
-			// );
 		}
 	};
 
