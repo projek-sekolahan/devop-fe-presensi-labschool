@@ -19,7 +19,7 @@ export default function CardRiwayat({ index, history, biodata }) {
     const [loading, setLoading] = useState(true);
     const [pulsing, setPulsing] = useState(true);
     const [showModal, setShowModal] = useState(false);
-
+    console.log(history);
     const getStatusLabel = () => {
         if (history["Status Masuk"] === "Masuk Normal" && history["Status Pulang"] === "Pulang Normal") return "Normal";
         if (history["Status Masuk"] === "Terlambat Masuk" || history["Status Pulang"] === "Pulang Cepat") return "Tidak Normal";
@@ -27,13 +27,13 @@ export default function CardRiwayat({ index, history, biodata }) {
     };
 
     const statusLabel = getStatusLabel();
-
+    
     const fetchDetailPresensi = () => {
         const keys = addDefaultKeys(["AUTH_KEY", "token", "param"]);
         const values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
-            `${biodata.id},${history["Tanggal Presensi"]}`,
+            `${biodata.user_id},${history["Tanggal Presensi"]}`,
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf"),
         ];
