@@ -73,13 +73,18 @@ export default function Riwayat() {
                             >
                                 {categories.map(category => (
                                     <Tabs.Item key={category} title={category}>
-                                        {cardLoading ? (
-                                            <LoadingPlaceholder />
-                                        ) : historyData[category]?.length ? (
-                                            <HistoryList historyData={historyData[category]} biodata={userData} />
-                                        ) : (
-                                            <NoDataMessage />
-                                        )}
+{cardLoading ? (
+    <LoadingPlaceholder />
+) : (
+    <>
+        <p>Data untuk kategori {activeCategory}: {historyData[activeCategory]?.length}</p>
+        {historyData[activeCategory]?.length > 0 ? (
+            <HistoryList historyData={historyData[activeCategory]} biodata={userData} />
+        ) : (
+            <NoDataMessage />
+        )}
+    </>
+)}
                                     </Tabs.Item>
                                 ))}
                             </Tabs>
