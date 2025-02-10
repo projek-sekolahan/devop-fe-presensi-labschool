@@ -193,10 +193,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     
                 />
                 {/* Frame Overlay */}
-                <div
-                    className="relative z-10"
-                    
-                ></div>
+                <div className="relative z-10 face-detector"></div>
             </div>
 
             {/* Canvas and Captured Image (Hidden) */}
