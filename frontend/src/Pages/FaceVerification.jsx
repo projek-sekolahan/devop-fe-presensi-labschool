@@ -88,7 +88,7 @@ export default function FaceVerification() {
 							}),
 						],
 					}),
-				);
+				); return;
 			}
 			alertMessage(
 				"Anda Diluar Sekolah",
