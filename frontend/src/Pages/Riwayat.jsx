@@ -10,7 +10,7 @@ import { Tabs } from "flowbite-react";
 
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
-    const [cardLoading, setCardLoading] = useState(true);
+    const [cardLoading, setCardLoading] = useState(false);
     const categories = ["Semua", "7 Hari", "14 Hari"];
     const [activeCategory, setActiveCategory] = useState("Semua");
     const userToken = localStorage.getItem("token");
@@ -23,11 +23,16 @@ export default function Riwayat() {
     }, [userToken]);
 
     const fetchHistory = useCallback(async (category) => {
+        console.log("Fetching history for category:", category);
         if (historyData[category]) {
+            console.log("Data already exists for", category, "=>", historyData[category]);
             setCardLoading(false);
             return;
         }
+    
         setCardLoading(true);
+        console.log("Fetching new data for", category);
+    
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
         const values = keys.map((key) => {
             switch (key) {
@@ -38,26 +43,33 @@ export default function Riwayat() {
                 default: return localStorage.getItem(key);
             }
         });
+    
         try {
             const res = await apiXML.presensiPost("reports", authKey, getFormData(keys, values));
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
+    
             setHistoryData(prevData => ({
                 ...prevData,
                 [category]: parseJwt(parsedRes.data.token).data
             }));
+    
+            console.log("Fetched data for", category, "=>", parseJwt(parsedRes.data.token).data);
         } catch (err) {
+            console.error("Error fetching history for", category, ":", err);
             const parsedErr = JSON.parse(err.responseText);
             Cookies.set("csrf", parsedErr.csrfHash);
+    
             if (parsedErr.status === 500) {
                 setHistoryData(prevData => ({ ...prevData, [category]: [] }));
             } else {
                 handleSessionError(parsedErr, "/login");
             }
         } finally {
+            console.log("Setting cardLoading to false for", category);
             setCardLoading(false);
         }
-    }, [historyData, authKey, loginToken]);
+    }, [historyData, authKey, loginToken]);    
 
     useEffect(() => {
         fetchHistory(activeCategory);
