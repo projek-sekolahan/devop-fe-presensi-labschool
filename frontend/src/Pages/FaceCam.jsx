@@ -259,12 +259,9 @@ export default function FaceCam() {
                     <div className="flex flex-col">
                         <video
                             ref={videoRef}
-                            className="canvas-camera"
+                            className="canvas-camera -scale-x-100"
                             autoPlay
                             playsInline
-                            style={
-                                "-webkit-transform: scaleX(-1); transform: scaleX(-1);"
-                            }
                         />
                         <canvas
                             ref={canvasRef}

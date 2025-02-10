@@ -187,12 +187,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
             <div className="relative w-full h-[400px] flex justify-center items-center">
                 <video
                     ref={videoRef}
-                    className="absolute w-full h-full object-cover mt-8"
+                    className="absolute w-full h-full object-cover mt-8 -scale-x-100"
                     autoPlay
                     playsInline
-                    style={
-                        "-webkit-transform: scaleX(-1); transform: scaleX(-1);"
-                    }
                 />
                 {/* Frame Overlay */}
                 <div
