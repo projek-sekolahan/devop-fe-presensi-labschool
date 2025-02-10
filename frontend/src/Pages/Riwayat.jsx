@@ -11,6 +11,7 @@ import { Tabs } from "flowbite-react";
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
     const [cardLoading, setCardLoading] = useState(false);
+    const [isFetched, setIsFetched] = useState({});
     const categories = ["Semua", "7 Hari", "14 Hari"];
     const [activeCategory, setActiveCategory] = useState("Semua");
     const userToken = localStorage.getItem("token");
@@ -24,13 +25,14 @@ export default function Riwayat() {
 
     const fetchHistory = useCallback(async (category) => {
         console.log("Fetching history for category:", category);
-        if (historyData[category]) {
-            console.log("Data already exists for", category, "=>", historyData[category]);
+        if (isFetched[category]) {
+            console.log("Data already exists for", category);
             setCardLoading(false);
             return;
         }
     
         setCardLoading(true);
+        setIsFetched(prev => ({ ...prev, [category]: true })); // Tandai sudah di-fetch
         console.log("Fetching new data for", category);
     
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
@@ -46,6 +48,7 @@ export default function Riwayat() {
     
         try {
             const res = await apiXML.presensiPost("reports", authKey, getFormData(keys, values));
+            console.log("Raw response:", res);
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
     
@@ -56,20 +59,25 @@ export default function Riwayat() {
     
             console.log("Fetched data for", category, "=>", parseJwt(parsedRes.data.token).data);
         } catch (err) {
-            console.error("Error fetching history for", category, ":", err);
-            const parsedErr = JSON.parse(err.responseText);
-            Cookies.set("csrf", parsedErr.csrfHash);
-    
-            if (parsedErr.status === 500) {
-                setHistoryData(prevData => ({ ...prevData, [category]: [] }));
-            } else {
-                handleSessionError(parsedErr, "/login");
-            }
+    console.error("Error fetching history for", category, ":", err);
+    const parsedErr = JSON.parse(err.responseText);
+    Cookies.set("csrf", parsedErr.csrfHash);
+
+    setHistoryData(prevData => ({
+        ...prevData,
+        [category]: prevData[category] ?? [] // Gunakan array kosong jika data sebelumnya belum ada
+    }));
+
+    if (parsedErr.status === 500) {
+        setHistoryData(prevData => ({ ...prevData, [category]: [] }));
+    } else {
+        handleSessionError(parsedErr, "/login");
+    }
         } finally {
             console.log("Setting cardLoading to false for", category);
             setCardLoading(false);
         }
-    }, [historyData, authKey, loginToken]);    
+    }, [isFetched, authKey, loginToken]);    
 
     useEffect(() => {
         fetchHistory(activeCategory);
