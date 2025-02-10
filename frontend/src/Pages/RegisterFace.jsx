@@ -192,16 +192,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     playsInline
                 />
                 {/* Frame Overlay */}
-                <div
-                    className="relative z-10"
-                    style={{
-                        width: "300px", // Lebar bingkai
-                        height: "300px", // Tinggi bingkai
-                        border: "4px solid #00FF00", // Warna bingkai hijau
-                        borderRadius: "16px", // Membuat sudut membulat
-                        boxShadow: "0 0 15px rgba(0, 255, 0, 0.8)", // Efek glowing hijau
-                    }}
-                ></div>
+                <div className="relative z-10 face-detector"></div>
             </div>
 
             {/* Canvas and Captured Image (Hidden) */}
