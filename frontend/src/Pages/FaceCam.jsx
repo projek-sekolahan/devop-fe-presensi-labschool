@@ -262,9 +262,6 @@ export default function FaceCam() {
                             className="canvas-camera"
                             autoPlay
                             playsInline
-                            style={
-                                "-webkit-transform: scaleX(-1); transform: scaleX(-1);"
-                            }
                         />
                         <canvas
                             ref={canvasRef}
