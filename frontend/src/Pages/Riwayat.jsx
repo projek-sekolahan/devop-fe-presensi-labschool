@@ -11,6 +11,7 @@ import { Tabs } from "flowbite-react";
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
     const [cardLoading, setCardLoading] = useState(true);
+    const [localLoading, setLocalLoading] = useState(true);
     const [isFetched, setIsFetched] = useState({});
     const categories = ["Semua", "7 Hari", "14 Hari"];
     const [activeCategory, setActiveCategory] = useState("Semua");
@@ -80,7 +81,10 @@ export default function Riwayat() {
     }, [isFetched, authKey, loginToken]);    
 
     useEffect(() => {
-        fetchHistory(activeCategory);
+    setLocalLoading(true); // Selalu aktifkan loading saat kategori berubah
+    fetchHistory(activeCategory).finally(() => {
+        setLocalLoading(false); // Baru nonaktifkan loading setelah fetch selesai
+    });
     }, [activeCategory, fetchHistory]);
 
     return (
@@ -93,7 +97,7 @@ export default function Riwayat() {
                             >
                                 {categories.map(category => (
                                     <Tabs.Item key={category} title={category}>
-{cardLoading ? (
+{cardLoading || localLoading ? (
     <LoadingPlaceholder />
 ) : (
     <>
