@@ -10,7 +10,7 @@ import { Tabs } from "flowbite-react";
 
 export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
-    const [cardLoading, setCardLoading] = useState(false);
+    const [cardLoading, setCardLoading] = useState(true);
     const [isFetched, setIsFetched] = useState({});
     const categories = ["Semua", "7 Hari", "14 Hari"];
     const [activeCategory, setActiveCategory] = useState("Semua");
