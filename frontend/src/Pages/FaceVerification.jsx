@@ -51,7 +51,7 @@ export default function FaceVerification() {
 	const success = (position) => {
 		const latitude = position.coords.latitude;
 		const longitude = position.coords.longitude;
-		console.log(`koordinat anda : (${latitude}, ${longitude})`);
+		
 		if (
 			latitude >= coordinat.min_latitude &&
 			latitude <= coordinat.max_latitude &&
@@ -76,7 +76,7 @@ export default function FaceVerification() {
 				coordinat.latitude,
 				coordinat.longitude,
 			);
-			console.log(`jarak anda dengan sekolah adalah ${distance} meter. koordinat anda : (${latitude}, ${longitude})`);
+			
 			if (localStorage.getItem("group_id") == "1") {
 				alertMessage("Done", "Anda berada di area sekolah", "success", () =>
 					navigate("/facecam", {
