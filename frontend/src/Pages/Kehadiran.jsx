@@ -22,7 +22,7 @@ export default function Kehadiran() {
     return (
         <div>
             <h1>Riwayat Presensi</h1>
-            {id ? <p>Menampilkan data untuk ID: {id}</p> : <p>Sedang Menampilkan...</p>}
+            {id ? <p>Sedang Menampilkan data...</p> : <p>Sedang Menampilkan...</p>}
         </div>
     );
 }
