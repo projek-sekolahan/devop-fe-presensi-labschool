@@ -28,11 +28,15 @@ export default function Riwayat() {
         console.log("Fetching history for category:", category);
         if (isFetched[category]) {
             console.log("Data already exists for", category);
-            setCardLoading(false);
+    // Pastikan selalu set ke loading saat mulai fetching
+    setCardLoading(false);
+    setLocalLoading(false);
             return;
         }
     
-        setCardLoading(true);
+    // Pastikan selalu set ke loading saat mulai fetching
+    setCardLoading(true);
+    setLocalLoading(true);
         setIsFetched(prev => ({ ...prev, [category]: true })); // Tandai sudah di-fetch
         console.log("Fetching new data for", category);
     
@@ -76,16 +80,25 @@ export default function Riwayat() {
     }
         } finally {
             console.log("Setting cardLoading to false for", category);
-            setCardLoading(false);
+    // Pastikan selalu set ke loading saat mulai fetching
+    setCardLoading(false);
+    setLocalLoading(false);
         }
     }, [isFetched, authKey, loginToken]);    
 
     useEffect(() => {
-    setLocalLoading(true); // Selalu aktifkan loading saat kategori berubah
-    fetchHistory(activeCategory).finally(() => {
-        setLocalLoading(false); // Baru nonaktifkan loading setelah fetch selesai
-    });
+        setLocalLoading(true);
+        fetchHistory(activeCategory).finally(() => {
+            setTimeout(() => {
+                setLocalLoading(false); // Pastikan ada delay agar loading terlihat
+            }, 500); 
+        });
     }, [activeCategory, fetchHistory]);
+
+console.log("Render - activeCategory:", activeCategory);
+console.log("Render - cardLoading:", cardLoading);
+console.log("Render - localLoading:", localLoading);
+console.log("Render - historyData[activeCategory]:", historyData[activeCategory]);
 
     return (
         <div className="history-container h-screen flex flex-col overflow-y-auto">
@@ -97,12 +110,12 @@ export default function Riwayat() {
                             >
                                 {categories.map(category => (
                                     <Tabs.Item key={category} title={category}>
-{cardLoading || localLoading ? (
+{(cardLoading || localLoading) ? (
     <LoadingPlaceholder />
 ) : (
     <>
         <p>Data untuk kategori {activeCategory}: {historyData[activeCategory]?.length}</p>
-        {historyData[activeCategory]?.length > 0 ? (
+        {(historyData[activeCategory] && historyData[activeCategory].length > 0) ? (
             <HistoryList historyData={historyData[activeCategory]} biodata={userData} />
         ) : (
             <NoDataMessage />
