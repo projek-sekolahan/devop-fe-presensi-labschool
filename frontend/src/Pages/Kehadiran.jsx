@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function Riwayat() {
+export default function Kehadiran() {
     const { id } = useParams(); // Tangkap ID dari URL
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
