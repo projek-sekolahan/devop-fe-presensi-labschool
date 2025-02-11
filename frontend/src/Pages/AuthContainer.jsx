@@ -33,9 +33,9 @@ export default function AuthContainer() {
         } else {
             setCurrentPage(pageMap[location.pathname] || "login");
         }
-        const validPaths = ["/", "/register", "/verify", "/facereg", "/recover", "/setpassword"];
-        if (!validPaths.includes(location.pathname)) {
-            navigate("/");
+        const validPaths = ["/", "/register", "/verify", "/facereg", "/recover", "/setpassword", "/kehadiran"];
+        if (!validPaths.some(path => location.pathname.startsWith(path))) {
+            navigate("*");
         }
     }, [location.pathname, navigate]);
 
