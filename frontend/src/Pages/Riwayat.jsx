@@ -31,10 +31,10 @@ export default function Riwayat() {
             return;
         }
     
-    // Pastikan selalu set ke loading saat mulai fetching
-    setCardLoading(true);
-    setLocalLoading(true);
-        setIsFetched(prev => ({ ...prev, [category]: true })); // Tandai sudah di-fetch
+        setCardLoading(true);
+        setLocalLoading(true);
+        setIsFetched(prev => ({ ...prev, [category]: true }));
+    
         console.log("Fetching new data for", category);
     
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
@@ -53,7 +53,8 @@ export default function Riwayat() {
             console.log("Raw response:", res);
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
-            const parsedData = parseJwt(parsedRes.data.token).data;
+    
+            const parsedData = parseJwt(parsedRes.data.token).data || []; // Gunakan array kosong jika null
             setHistoryData(prevData => ({
                 ...prevData,
                 [category]: parsedData
@@ -61,39 +62,32 @@ export default function Riwayat() {
     
             console.log("Fetched data for", category, "=>", parsedData);
         } catch (err) {
-    console.error("Error fetching history for", category, ":", err);
-    const parsedErr = JSON.parse(err.responseText);
-    Cookies.set("csrf", parsedErr.csrfHash);
-
-    setHistoryData(prevData => ({
-        ...prevData,
-        [category]: prevData[category] ?? [] // Gunakan array kosong jika data sebelumnya belum ada
-    }));
-
-    if (parsedErr.status === 500) {
-        setHistoryData(prevData => ({ ...prevData, [category]: [] }));
-    } else {
-        handleSessionError(parsedErr, "/login");
-    }
+            console.error("Error fetching history for", category, ":", err);
+            const parsedErr = JSON.parse(err.responseText);
+            Cookies.set("csrf", parsedErr.csrfHash);
+    
+            setHistoryData(prevData => ({
+                ...prevData,
+                [category]: []
+            }));
+    
+            if (parsedErr.status === 500) {
+                setHistoryData(prevData => ({ ...prevData, [category]: [] }));
+            } else {
+                handleSessionError(parsedErr, "/login");
+            }
         } finally {
             console.log("Setting cardLoading to false for", category);
-            setTimeout(() => {
-                setCardLoading(false);
-                setLocalLoading(false);
-            }, 1000); // Tambahkan delay untuk memastikan loading terlihat
+            setCardLoading(false);
+            setLocalLoading(false);
         }
-    }, [isFetched, authKey, loginToken]);    
-
+    }, [isFetched, authKey, loginToken]);
+    
     useEffect(() => {
         setCardLoading(true);
         setLocalLoading(true);
-        fetchHistory(activeCategory).finally(() => {
-            setTimeout(() => {
-                setCardLoading(false);
-                setLocalLoading(false);
-            }, 1000); 
-        });
-    }, [activeCategory, fetchHistory]);
+        fetchHistory(activeCategory);
+    }, [activeCategory, fetchHistory]);    
 
 console.log("Render - activeCategory:", activeCategory);
 console.log("Render - cardLoading:", cardLoading);
