@@ -28,9 +28,6 @@ export default function Riwayat() {
         console.log("Fetching history for category:", category);
         if (isFetched[category]) {
             console.log("Data already exists for", category);
-    // Pastikan selalu set ke loading saat mulai fetching
-    setCardLoading(false);
-    setLocalLoading(false);
             return;
         }
     
@@ -56,13 +53,13 @@ export default function Riwayat() {
             console.log("Raw response:", res);
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
-    
+            const parsedData = parseJwt(parsedRes.data.token).data;
             setHistoryData(prevData => ({
                 ...prevData,
-                [category]: parseJwt(parsedRes.data.token).data
+                [category]: parsedData
             }));
     
-            console.log("Fetched data for", category, "=>", parseJwt(parsedRes.data.token).data);
+            console.log("Fetched data for", category, "=>", parsedData);
         } catch (err) {
     console.error("Error fetching history for", category, ":", err);
     const parsedErr = JSON.parse(err.responseText);
@@ -80,17 +77,20 @@ export default function Riwayat() {
     }
         } finally {
             console.log("Setting cardLoading to false for", category);
-    // Pastikan selalu set ke loading saat mulai fetching
-    setCardLoading(false);
-    setLocalLoading(false);
+            setTimeout(() => {
+                setCardLoading(false);
+                setLocalLoading(false);
+            }, 500); // Tambahkan delay untuk memastikan loading terlihat
         }
     }, [isFetched, authKey, loginToken]);    
 
     useEffect(() => {
+        setCardLoading(true);
         setLocalLoading(true);
         fetchHistory(activeCategory).finally(() => {
             setTimeout(() => {
-                setLocalLoading(false); // Pastikan ada delay agar loading terlihat
+                setCardLoading(false);
+                setLocalLoading(false);
             }, 500); 
         });
     }, [activeCategory, fetchHistory]);
@@ -118,7 +118,7 @@ console.log("Render - historyData[activeCategory]:", historyData[activeCategory]
         {(historyData[activeCategory] && historyData[activeCategory].length > 0) ? (
             <HistoryList historyData={historyData[activeCategory]} biodata={userData} />
         ) : (
-            <NoDataMessage />
+            (historyData[activeCategory] !== undefined) && <NoDataMessage />
         )}
     </>
 )}
