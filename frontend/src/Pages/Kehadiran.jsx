@@ -7,14 +7,14 @@ export default function Kehadiran() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("ID dari useParams:", id);
-        if (id === undefined) return; // Tunggu sampai ID tersedia
+        console.log("ID dari useParams:", id); return false;
+        /* if (id === undefined) return; // Tunggu sampai ID tersedia
 
         if (!id) {
             navigate("*"); // Redirect ke login jika ID kosong
         } else {
             setLoading(false); // ID valid, hentikan loading
-        }
+        } */
     }, [id, navigate]);
 
     if (loading) return <p>Loading...halaman kehadiran</p>;
