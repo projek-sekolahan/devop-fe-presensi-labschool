@@ -80,7 +80,7 @@ export default function Riwayat() {
             setTimeout(() => {
                 setCardLoading(false);
                 setLocalLoading(false);
-            }, 500); // Tambahkan delay untuk memastikan loading terlihat
+            }, 1000); // Tambahkan delay untuk memastikan loading terlihat
         }
     }, [isFetched, authKey, loginToken]);    
 
@@ -91,7 +91,7 @@ export default function Riwayat() {
             setTimeout(() => {
                 setCardLoading(false);
                 setLocalLoading(false);
-            }, 500); 
+            }, 1000); 
         });
     }, [activeCategory, fetchHistory]);
 
