@@ -23,6 +23,7 @@ export const routes = [
     { path: "/facereg", element: <AuthContainer /> },
     { path: "/recover", element: <AuthContainer /> },
     { path: "/setpassword", element: <AuthContainer /> },
+    { path: "/riwayat/:id?", element: <AuthContainer /> },  
 
     // Rute yang dilindungi
     { path: "/home", element: <ProtectedRoute component={Home} isAuthenticated={isAuthenticated} /> },

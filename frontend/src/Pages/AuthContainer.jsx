@@ -6,6 +6,7 @@ import OtpInput from "./OtpInput";
 import RegisterFace from "./RegisterFace";
 import ChangePassword from "./ChangePassword";
 import SetPassword from "./SetPassword";
+import Kehadiran from "./Kehadiran";
 
 export default function AuthContainer() {
     const location = useLocation();
@@ -27,8 +28,11 @@ export default function AuthContainer() {
             "/recover": "recover",
             "/setpassword": "setpassword",
         };
-        setCurrentPage(pageMap[location.pathname] || "login");
-
+        if (location.pathname.startsWith("/riwayat")) {
+            setCurrentPage("kehadiran");
+        } else {
+            setCurrentPage(pageMap[location.pathname] || "login");
+        }
         const validPaths = ["/", "/register", "/verify", "/facereg", "/recover", "/setpassword"];
         if (!validPaths.includes(location.pathname)) {
             navigate("/");
@@ -43,6 +47,7 @@ export default function AuthContainer() {
             verify: <OtpInput isOpen={true} onToggle={toggleForm} />,
             facereg: <RegisterFace isOpen={true} onToggle={toggleForm} />,
             setpassword: <SetPassword isOpen={true} onToggle={toggleForm} />,
+            kehadiran: <Kehadiran />,
         };
         return pageMap[currentPage] || pageMap.login;
     };
