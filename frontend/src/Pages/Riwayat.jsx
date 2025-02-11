@@ -12,7 +12,6 @@ export default function Riwayat() {
     const [historyData, setHistoryData] = useState({});
     const [cardLoading, setCardLoading] = useState(true);
     const [localLoading, setLocalLoading] = useState(true);
-    const [isFetched, setIsFetched] = useState({});
     const categories = ["Semua", "7 Hari", "14 Hari"];
     const [activeCategory, setActiveCategory] = useState("Semua");
     const userToken = localStorage.getItem("token");
@@ -26,16 +25,9 @@ export default function Riwayat() {
 
     const fetchHistory = useCallback(async (category) => {
         console.log("Fetching history for category:", category);
-        if (isFetched[category]) {
-            console.log("Data already exists for", category);
-            return;
-        }
     
         setCardLoading(true);
         setLocalLoading(true);
-        setIsFetched(prev => ({ ...prev, [category]: true }));
-    
-        console.log("Fetching new data for", category);
     
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
         const values = keys.map((key) => {
@@ -54,7 +46,7 @@ export default function Riwayat() {
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
     
-            const parsedData = parseJwt(parsedRes.data.token).data || []; // Gunakan array kosong jika null
+            const parsedData = parseJwt(parsedRes.data.token).data || []; // Pastikan data diinisialisasi sebagai array kosong jika null
             setHistoryData(prevData => ({
                 ...prevData,
                 [category]: parsedData
@@ -81,7 +73,7 @@ export default function Riwayat() {
             setCardLoading(false);
             setLocalLoading(false);
         }
-    }, [isFetched, authKey, loginToken]);
+    }, [authKey, loginToken]);
     
     useEffect(() => {
         setCardLoading(true);
