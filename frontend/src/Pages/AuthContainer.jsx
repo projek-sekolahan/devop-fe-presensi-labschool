@@ -28,7 +28,7 @@ export default function AuthContainer() {
             "/recover": "recover",
             "/setpassword": "setpassword",
         };
-        if (location.pathname.startsWith("/riwayat")) {
+        if (location.pathname.startsWith("/kehadiran")) {
             setCurrentPage("kehadiran");
         } else {
             setCurrentPage(pageMap[location.pathname] || "login");
