@@ -7,6 +7,7 @@ export default function Riwayat() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("ID dari useParams:", id);
         if (id === undefined) return; // Tunggu sampai ID tersedia
 
         if (!id) {
@@ -16,7 +17,7 @@ export default function Riwayat() {
         }
     }, [id, navigate]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading...halaman kehadiran</p>;
 
     return (
         <div>
