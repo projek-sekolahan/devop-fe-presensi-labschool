@@ -71,7 +71,7 @@ export default function Kehadiran() {
 
         try {
             const res = await apiXML.postInput("reports", getFormData(keys, values));
-            const parsedData = JSON.parse(res);
+            const parsedData = JSON.parse(res); console.log(parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
             setHistoryData(parsedData.data.data);
         } catch (err) {
