@@ -71,9 +71,9 @@ export default function Kehadiran() {
 
         try {
             const res = await apiXML.postInput("reports", getFormData(keys, values));
-            const parsedData = JSON.parse(res); console.log(parsedData.data.data);
+            const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
-            setHistoryData(parsedData.data.data);
+            setHistoryData(Array.isArray(parsedData.data) ? parsedData.data : []);
         } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
             handleSessionError(errorResponse, "*");
