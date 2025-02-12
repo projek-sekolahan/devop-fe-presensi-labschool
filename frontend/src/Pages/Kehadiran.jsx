@@ -130,33 +130,45 @@ const HistoryList = ({ historyData }) => (
             }}
             className="flex flex-col gap-4"
         >
-            {historyData.map((history, i) => { console.log(history);
+        <Card className="p-4 shadow-md rounded-xl w-full max-w-md mx-auto">
+            {/* Card Utama */}
+            <div className="flex items-center gap-4 border-b pb-3">
+                <img 
+                    src={historyData.img_location} 
+                    alt="Foto Profil" 
+                    className="w-16 h-16 rounded-full border-2 border-gray-300"
+                />
+                <p className="font-semibold text-lg truncate">{historyData.nama_lengkap}</p>
+            </div>
+            
+            {/* Card Anak */}
+            {historyData.result.map((history, i) => { console.log(history);
                 const statusLabel = getStatusLabel(history);
                 return (
-                    <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-                        <Card className="p-4 shadow-md rounded-xl w-full max-w-md mx-auto">
-                            <div className="flex items-center gap-4 border-b pb-3">
-                                <img 
-                                    src={history.img_location} 
-                                    alt="Foto Presensi" 
-                                    className="w-14 h-14 rounded-full border-2 border-gray-300"
-                                />
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-semibold text-lg truncate">{history["Nama Lengkap"]}</p>
-                                    <p className="text-sm text-gray-500">{formatDate(history.tanggal_presensi)}</p>
-                                    <p className="text-sm font-normal text-gray-600">{history.waktu_presensi}</p>
-                                </div>
-                            </div>
-                            <Badge 
-                                color={STATUS_COLORS[statusLabel]} 
-                                className="w-full text-center mt-3 px-4 py-2 rounded-lg font-medium text-sm"
-                            >
-                                {statusLabel}
-                            </Badge>
-                        </Card>
-                    </motion.div>
+                    <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>            
+            <Card className="mt-3 p-3 shadow-sm rounded-lg bg-gray-100">
+                <div className="flex items-center gap-3">
+                    <img 
+                        src={history.foto_presensi} 
+                        alt="Foto Presensi" 
+                        className="w-12 h-12 rounded-lg border border-gray-300"
+                    />
+                    <div className="flex-1">
+                        <p className="text-sm text-gray-500">{formatDate(history.tanggal_presensi)}</p>
+                        <p className="text-sm font-normal text-gray-600">{history.waktu_presensi}</p>
+                    </div>
+                </div>
+                <Badge 
+                    color={STATUS_COLORS[statusLabel]} 
+                    className="w-full text-center mt-3 px-4 py-2 rounded-lg font-medium text-sm"
+                >
+                    {statusLabel}
+                </Badge>
+            </Card>
+            </motion.div>
                 );
             })}
+        </Card>
         </motion.div>
     </AnimatePresence>
 );
