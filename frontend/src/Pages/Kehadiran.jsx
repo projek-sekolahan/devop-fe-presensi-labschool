@@ -37,6 +37,9 @@ export default function Kehadiran() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    // Mendapatkan CSRF Token
+    apiXML.getCsrf();
+    
     // Redirect if no id
     useEffect(() => {
         console.log("ID dari useParams:", id);
