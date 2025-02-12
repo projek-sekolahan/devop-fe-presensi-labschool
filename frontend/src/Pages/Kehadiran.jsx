@@ -15,7 +15,7 @@ const STATUS_COLORS = {
     "Izin/Sakit": "bg-yellow-500 text-black",
 };
 
-const getStatusLabel = (history) => {
+const getStatusLabel = (history) => { console.log("history keterangan", history)
     if (history["keterangan"] === "Dinas Luar") {
         return "Dinas Luar";
     }
@@ -176,7 +176,7 @@ const HistoryList = ({ historyData }) => (
                         animate="visible"
                         transition={{ duration: 0.3 }}
                     >
-                        <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-4">
+                        <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-2">
                             <div className="flex items-center gap-3">
                                 <img
                                     src={history.foto_presensi}
