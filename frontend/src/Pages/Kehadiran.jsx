@@ -150,7 +150,7 @@ const HistoryList = ({ historyData }) => (
             }}
             className="flex flex-col gap-4"
         >
-        <Card className="p-4 shadow-md rounded-xl w-full max-w-md mx-auto">
+        <Card className="shadow-md rounded-xl w-full max-w-md mx-auto p-0">
             {/* Card Utama */}
             <div className="flex items-center gap-4 border-b pb-3">
                 <img 
@@ -166,7 +166,7 @@ const HistoryList = ({ historyData }) => (
                 const statusLabel = getStatusLabel(history);
                 return (
                     <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>            
-            <Card className="mt-3 p-3 shadow-sm rounded-lg bg-gray-100">
+            <Card className="mt-3 shadow-sm rounded-lg bg-gray-100 p-0">
                 <div className="flex items-center gap-3">
                     <img 
                         src={history.foto_presensi} 
