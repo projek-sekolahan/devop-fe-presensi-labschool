@@ -70,7 +70,7 @@ export default function Kehadiran() {
         });
 
         try {
-            const res = await apiXML.postInput("reports", getFormData(keys, values)); console.log(res); return false;
+            const res = await apiXML.postInput("reports", getFormData(keys, values)); console.log(JSON.parse(res)); return false;
             Cookies.set("csrf", res.csrfHash);
             setHistoryData(res);
         } catch (err) { console.log(err); return false;
