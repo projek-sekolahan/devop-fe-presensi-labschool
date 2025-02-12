@@ -39,7 +39,7 @@ export default function Kehadiran() {
 
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
-    
+
     // Redirect if no id
     useEffect(() => {
         console.log("ID dari useParams:", id);
@@ -73,7 +73,7 @@ export default function Kehadiran() {
             const res = await apiXML.postInput("reports", getFormData(keys, values)); console.log(JSON.parse(res));
             Cookies.set("csrf", res.csrfHash);
             setHistoryData(res);
-        } catch (err) {
+        } catch (err) { console.log(err);
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
             Cookies.set("csrf", errorResponse.csrfHash);
             handleSessionError(errorResponse, "*");
