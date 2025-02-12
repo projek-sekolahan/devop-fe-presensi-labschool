@@ -70,12 +70,12 @@ export default function Kehadiran() {
         });
 
         try {
-            const res = await apiXML.postInput("reports", getFormData(keys, values)); console.log(JSON.parse(res)); return false;
-            Cookies.set("csrf", res.csrfHash);
-            setHistoryData(res);
-        } catch (err) { console.log(err); return false;
+            const res = await apiXML.postInput("reports", getFormData(keys, values));
+            const parsedData = JSON.parse(res);
+            Cookies.set("csrf", parsedData.csrfHash);
+            setHistoryData(parsedData.data.data);
+        } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
-            Cookies.set("csrf", errorResponse.csrfHash);
             handleSessionError(errorResponse, "*");
         } finally {
             setCardLoading(false);
@@ -125,7 +125,7 @@ const HistoryList = ({ historyData }) => (
             }}
             className="flex flex-col gap-4"
         >
-            {historyData.map((history, i) => {
+            {historyData.map((history, i) => { console.log(history);
                 const statusLabel = getStatusLabel(history);
                 return (
                     <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
