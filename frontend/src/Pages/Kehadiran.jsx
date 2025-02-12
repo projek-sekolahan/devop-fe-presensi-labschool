@@ -179,11 +179,11 @@ const HistoryList = ({ historyData }) => (
                         <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-2">
                             {/* Header Keterangan Presensi */}
                             <div
-                                className={`w-full text-center px-4 py-2 font-medium text-sm rounded-t-lg ${STATUS_COLORS[statusLabel]}`}
+                                className={`w-full text-center py-2 font-medium text-sm rounded-t-lg ${STATUS_COLORS[statusLabel]}`}
                             >
                                 {history.status_kehadiran}
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 py-4">
                                 <img
                                     src={history.foto_presensi}
                                     alt="Foto Presensi"
@@ -194,7 +194,7 @@ const HistoryList = ({ historyData }) => (
                                         <CalendarIcon className="w-4 h-4" />
                                         <p>{formatDate(history.tanggal_presensi)}</p>
                                     </div>
-                                    <div className="flex items-center gap-1 text-gray-600 text-sm">
+                                    <div className={`flex items-center gap-1 text-gray-600 text-sm ${STATUS_COLORS[statusLabel]}`}>
                                         <ClockIcon className="w-4 h-4" />
                                         <p>{history.waktu_presensi}</p>
                                     </div>
@@ -202,7 +202,7 @@ const HistoryList = ({ historyData }) => (
                             </div>
                             {/* Footer Status */}
                             <div
-                                className={`w-full text-center px-4 py-2 rounded-b-lg font-medium text-sm ${STATUS_COLORS[statusLabel]}`}
+                                className={`w-full text-center py-2 rounded-b-lg font-medium text-sm ${STATUS_COLORS[statusLabel]}`}
                             >
                                 {statusLabel}
                             </div>
