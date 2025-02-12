@@ -1,11 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon, CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 import Layout from "../Components/Layout";
 import { getFormData, handleSessionError, formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
-import { Card, Badge } from "flowbite-react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const STATUS_COLORS = {
@@ -150,49 +149,63 @@ const HistoryList = ({ historyData }) => (
             }}
             className="flex flex-col gap-4"
         >
-        
-        <div className="flex flex-col rounded-lg p-0 shadow-md w-full max-w-md mx-auto">
+        <div className="flex flex-col rounded-lg p-4 shadow-md w-full max-w-md mx-auto bg-white">
             {/* Card Utama */}
-            <div className="flex items-center gap-4 border-b pb-3">
-                <img 
-                    src={historyData.img_location} 
-                    alt="Foto Profil" 
-                    className="w-16 h-16 rounded-full border-2 border-gray-300"
+            <div className="flex flex-col items-center border-b pb-3">
+                <img
+                    src={historyData.img_location}
+                    alt="Foto Profil"
+                    className="w-20 h-20 rounded-full border-2 border-gray-300"
                 />
-                <p className="font-semibold text-lg truncate">{historyData.nama_lengkap}</p>
+                <p className="font-semibold text-lg mt-2 text-center">
+                    {historyData.nama_lengkap}
+                </p>
             </div>
-            
+
             {/* Card Anak */}
-            {historyData?.result?.map((history, i) => { console.log(history);
+            {historyData?.result?.map((history, i) => {
                 const statusLabel = getStatusLabel(history);
                 return (
-                    <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>            
-            
-            <div className="flex flex-col mt-2 shadow-sm rounded-lg bg-gray-100 p-0">
-                <div className="flex items-center gap-3">
-                    <img 
-                        src={history.foto_presensi} 
-                        alt="Foto Presensi" 
-                        className="w-12 h-12 rounded-lg border border-gray-300"
-                    />
-                    <div className="flex-1">
-                        <p className="text-sm text-gray-500">{formatDate(history.tanggal_presensi)}</p>
-                        <p className="text-sm font-normal text-gray-600">{history.waktu_presensi}</p>
-                    </div>
-                </div>
-                <Badge 
-                    color={STATUS_COLORS[statusLabel]} 
-                    className="w-full text-center mt-3 px-4 py-2 rounded-lg font-medium text-sm"
-                >
-                    {statusLabel}
-                </Badge>
-            </div>
-            
-            </motion.div>
+                    <motion.div
+                        key={i}
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0 },
+                        }}
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ duration: 0.3 }}
+                    >
+                        <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-4">
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={history.foto_presensi}
+                                    alt="Foto Presensi"
+                                    className="w-14 h-14 rounded-lg border border-gray-300"
+                                />
+                                <div className="flex-1">
+                                    <div className="flex items-center gap-1 text-gray-500 text-sm">
+                                        <CalendarIcon className="w-4 h-4" />
+                                        <p>{formatDate(history.tanggal_presensi)}</p>
+                                    </div>
+                                    <div className="flex items-center gap-1 text-gray-600 text-sm">
+                                        <ClockIcon className="w-4 h-4" />
+                                        <p>{history.waktu_presensi}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Footer Status */}
+                            <div
+                                className="w-full text-center mt-3 px-4 py-2 rounded-lg font-medium text-sm"
+                                style={{ backgroundColor: STATUS_COLORS[statusLabel] }}
+                            >
+                                {statusLabel}
+                            </div>
+                        </div>
+                    </motion.div>
                 );
             })}
-        </div>
-        
+        </div>        
         </motion.div>
     </AnimatePresence>
 );
