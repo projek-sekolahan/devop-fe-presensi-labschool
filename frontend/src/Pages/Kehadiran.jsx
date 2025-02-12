@@ -47,6 +47,7 @@ export default function Kehadiran() {
 
         if (!id) {
             navigate("*");
+            return;
         } else {
             setCardLoading(false);
             setLocalLoading(false);
@@ -55,6 +56,7 @@ export default function Kehadiran() {
 
     // Fetch history data with error handling
     const fetchHistory = useCallback(async () => {
+        if (!id) return;
         setCardLoading(true);
         setLocalLoading(true);
         const keys = ["csrf_token", "token"];
@@ -73,7 +75,7 @@ export default function Kehadiran() {
             const res = await apiXML.postInput("reports", getFormData(keys, values));
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
-            setHistoryData(Array.isArray(parsedData.data) ? parsedData.data : []);
+            setHistoryData(Array.isArray(parsedData.data.result) ? parsedData.data : []);
             // historyData.map((history, i) => { console.log(history) });
         } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
@@ -83,12 +85,17 @@ export default function Kehadiran() {
             setLocalLoading(false);
         }
 
-    }, []);
+    }, [id]);
 
-    // Initial fetch on mount
     useEffect(() => {
-        fetchHistory();
+        fetchHistory(); // Pastikan data di-fetch saat komponen pertama kali dimuat
     }, [fetchHistory]);
+    
+    useEffect(() => {
+        if (historyData.length > 0) {
+            console.log("State historyData saat ini:", historyData);
+        }
+    }, [historyData]);    
 
 console.log("State historyData saat ini:", historyData);
 console.log("Tipe historyData:", typeof historyData);
