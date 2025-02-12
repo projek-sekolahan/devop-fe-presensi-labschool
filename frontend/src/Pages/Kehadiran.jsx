@@ -16,14 +16,14 @@ const STATUS_COLORS = {
 };
 
 const getStatusLabel = (history) => { console.log("history keterangan", history)
-    if (history["keterangan"] === "Dinas Luar") {
+    if (history.keterangan === "Dinas Luar") {
         return "Dinas Luar";
     }
-    if (history["keterangan"] === "Masuk Normal" && history["keterangan"] === "Pulang Normal") {
+    if (history.keterangan === "Masuk Normal" && history.keterangan === "Pulang Normal") {
         return "Normal";
     }
-    if (history["keterangan"] === "Terlambat Masuk" || history["keterangan"] === "Pulang Cepat" || 
-        history["keterangan"] === "---" || history["keterangan"] === "---") {
+    if (history.keterangan === "Terlambat Masuk" || history.keterangan === "Pulang Cepat" || 
+        history.keterangan === "---" || history.keterangan === "---") {
         return "Tidak Normal";
     }
     return "Izin/Sakit";
