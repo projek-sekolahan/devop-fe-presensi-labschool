@@ -15,15 +15,15 @@ const STATUS_COLORS = {
     "Izin/Sakit": "bg-yellow-500 text-black",
 };
 
-const getStatusLabel = (history) => { console.log("history keterangan", history)
-    if (history.keterangan === "Dinas Luar") {
+const getStatusLabel = (keterangan) => { console.log("history keterangan", keterangan)
+    if (keterangan === "Dinas Luar") {
         return "Dinas Luar";
     }
-    if (history.keterangan === "Masuk Normal" && history.keterangan === "Pulang Normal") {
+    if (keterangan === "Masuk Normal" || keterangan === "Pulang Normal") {
         return "Normal";
     }
-    if (history.keterangan === "Terlambat Masuk" || history.keterangan === "Pulang Cepat" || 
-        history.keterangan === "---" || history.keterangan === "---") {
+    if (keterangan === "Terlambat Masuk" || keterangan === "Pulang Cepat" || 
+        keterangan === "---" || keterangan === "---") {
         return "Tidak Normal";
     }
     return "Izin/Sakit";
@@ -164,7 +164,7 @@ const HistoryList = ({ historyData }) => (
 
             {/* Card Anak */}
             {historyData?.result?.map((history, i) => {
-                const statusLabel = getStatusLabel(history);
+                const statusLabel = getStatusLabel(history.keterangan);
                 return (
                     <motion.div
                         key={i}
@@ -177,6 +177,13 @@ const HistoryList = ({ historyData }) => (
                         transition={{ duration: 0.3 }}
                     >
                         <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-2">
+                            {/* Header Keterangan Presensi */}
+                            <div
+                                className="w-full text-center px-4 py-2 font-medium text-sm rounded-t-lg"
+                                style={{ backgroundColor: STATUS_COLORS[statusLabel] }}
+                            >
+                                {history.keterangan_kehadiran}
+                            </div>
                             <div className="flex items-center gap-3">
                                 <img
                                     src={history.foto_presensi}
@@ -196,7 +203,7 @@ const HistoryList = ({ historyData }) => (
                             </div>
                             {/* Footer Status */}
                             <div
-                                className="w-full text-center mt-3 px-4 py-2 rounded-lg font-medium text-sm"
+                                className="w-full text-center px-4 py-2 rounded-b-lg font-medium text-sm"
                                 style={{ backgroundColor: STATUS_COLORS[statusLabel] }}
                             >
                                 {statusLabel}
