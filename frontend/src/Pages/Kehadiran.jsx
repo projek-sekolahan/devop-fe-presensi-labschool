@@ -75,8 +75,8 @@ export default function Kehadiran() {
             const res = await apiXML.postInput("reports", getFormData(keys, values));
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
-            if (parsedData.data && Array.isArray(parsedData.data.result)) {
-                setHistoryData(parsedData.data);
+            if ( parsedData.data.data && Array.isArray( parsedData.data.data.result)) {
+                setHistoryData( parsedData.data.data);
             } else {
                 console.warn("Data result tidak ditemukan atau bukan array");
                 setHistoryData([]);
