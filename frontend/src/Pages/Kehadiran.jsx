@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Layout from "../Components/Layout";
 import { getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
@@ -36,6 +36,7 @@ export default function Kehadiran() {
     const [localLoading, setLocalLoading] = useState(true);
     const { id } = useParams();
     const navigate = useNavigate();
+    const prevHistoryData = useRef(null);
 
     // Mendapatkan CSRF Token
     apiXML.getCsrf();
@@ -76,7 +77,9 @@ export default function Kehadiran() {
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
             if ( parsedData.data.data && Array.isArray( parsedData.data.data.result)) {
-                setHistoryData( parsedData.data.data);
+                if (JSON.stringify(historyData) !== JSON.stringify(parsedData.data.data)) {
+                    setHistoryData(parsedData.data.data);
+                }
             } else {
                 console.warn("Data result tidak ditemukan atau bukan array");
                 setHistoryData([]);
@@ -95,12 +98,16 @@ export default function Kehadiran() {
 
     useEffect(() => {
         fetchHistory(); // Pastikan data di-fetch saat komponen pertama kali dimuat
-    }, [fetchHistory]);
+    }, [id]);
     
     useEffect(() => {
-        if (historyData.length > 0) {
+        if (JSON.stringify(prevHistoryData.current) !== JSON.stringify(historyData)) {
             console.log("State historyData saat ini:", historyData);
+            prevHistoryData.current = historyData;
         }
+        /* if (historyData?.result?.length > 0) {
+            console.log("State historyData saat ini:", historyData);
+        } */
     }, [historyData]);    
 
 console.log("State historyData saat ini:", historyData);
@@ -115,7 +122,7 @@ console.log("Apakah historyData array?", Array.isArray(historyData));
                         <LoadingPlaceholder />
                     ) : (
                         <>
-                            {historyData.length > 0 ? (
+                            {historyData?.result?.length > 0 ? (
                                 <HistoryList historyData={historyData} />
                             ) : (
                                 <NoDataMessage />
@@ -155,7 +162,7 @@ const HistoryList = ({ historyData }) => (
             </div>
             
             {/* Card Anak */}
-            {historyData.result.map((history, i) => { console.log(history);
+            {historyData?.result?.map((history, i) => { console.log(history);
                 const statusLabel = getStatusLabel(history);
                 return (
                     <motion.div key={i} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>            
