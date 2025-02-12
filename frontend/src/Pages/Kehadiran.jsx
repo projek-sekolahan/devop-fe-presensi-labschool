@@ -179,10 +179,9 @@ const HistoryList = ({ historyData }) => (
                         <div className="flex flex-col mt-3 shadow-sm rounded-lg bg-gray-100 p-2">
                             {/* Header Keterangan Presensi */}
                             <div
-                                className="w-full text-center px-4 py-2 font-medium text-sm rounded-t-lg"
-                                style={{ backgroundColor: STATUS_COLORS[statusLabel] }}
+                                className={`w-full text-center px-4 py-2 font-medium text-sm rounded-t-lg ${STATUS_COLORS[statusLabel]}`}
                             >
-                                {history.keterangan_kehadiran}
+                                {history.status_kehadiran}
                             </div>
                             <div className="flex items-center gap-3">
                                 <img
@@ -203,8 +202,7 @@ const HistoryList = ({ historyData }) => (
                             </div>
                             {/* Footer Status */}
                             <div
-                                className="w-full text-center px-4 py-2 rounded-b-lg font-medium text-sm"
-                                style={{ backgroundColor: STATUS_COLORS[statusLabel] }}
+                                className={`w-full text-center px-4 py-2 rounded-b-lg font-medium text-sm ${STATUS_COLORS[statusLabel]}`}
                             >
                                 {statusLabel}
                             </div>
