@@ -74,7 +74,7 @@ export default function Kehadiran() {
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
             setHistoryData(Array.isArray(parsedData.data) ? parsedData.data : []);
-            historyData.map((history, i) => { console.log(history) });
+            // historyData.map((history, i) => { console.log(history) });
         } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
             handleSessionError(errorResponse, "*");
@@ -83,7 +83,7 @@ export default function Kehadiran() {
             setLocalLoading(false);
         }
 
-    }, [historyData]);
+    }, []);
 
     // Initial fetch on mount
     useEffect(() => {
