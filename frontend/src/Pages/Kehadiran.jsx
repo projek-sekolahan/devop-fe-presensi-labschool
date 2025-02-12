@@ -75,7 +75,13 @@ export default function Kehadiran() {
             const res = await apiXML.postInput("reports", getFormData(keys, values));
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
-            setHistoryData(Array.isArray(parsedData.data.result) ? parsedData.data : []);
+            if (parsedData.data && Array.isArray(parsedData.data.result)) {
+                setHistoryData(parsedData.data);
+            } else {
+                console.warn("Data result tidak ditemukan atau bukan array");
+                setHistoryData([]);
+            }
+            // setHistoryData(Array.isArray(parsedData.data.result) ? parsedData.data : []);
             // historyData.map((history, i) => { console.log(history) });
         } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
