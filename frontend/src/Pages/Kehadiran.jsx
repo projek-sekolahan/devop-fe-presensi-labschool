@@ -74,6 +74,7 @@ export default function Kehadiran() {
             const parsedData = JSON.parse(res); console.log("Data presensi ditemukan:", parsedData.data.data);
             Cookies.set("csrf", parsedData.csrfHash);
             setHistoryData(Array.isArray(parsedData.data) ? parsedData.data : []);
+            historyData.map((history, i) => { console.log(history) });
         } catch (err) {
             const errorResponse = err.response ? JSON.parse(err.responseText) : err;
             handleSessionError(errorResponse, "*");
@@ -82,12 +83,16 @@ export default function Kehadiran() {
             setLocalLoading(false);
         }
 
-    }, []);
+    }, [historyData]);
 
     // Initial fetch on mount
     useEffect(() => {
         fetchHistory();
     }, [fetchHistory]);
+
+console.log("State historyData saat ini:", historyData);
+console.log("Tipe historyData:", typeof historyData);
+console.log("Apakah historyData array?", Array.isArray(historyData));
 
     return (
         <div className="history-container h-screen flex flex-col overflow-y-auto">
