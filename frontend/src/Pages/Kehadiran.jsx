@@ -54,7 +54,7 @@ export default function Kehadiran() {
     const fetchHistory = useCallback(async () => {
         setCardLoading(true);
         setLocalLoading(true);
-        const keys = addDefaultKeys(["csrf_token", "token"]);
+        const keys = ["csrf_token", "token"];
         const values = keys.map((key) => {
             switch (key) {
                 case "csrf_token":
@@ -78,7 +78,7 @@ export default function Kehadiran() {
             setCardLoading(false);
             setLocalLoading(false);
         }
-        
+
     }, []);
 
     // Initial fetch on mount
