@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Layout from "../Components/Layout";
-import { getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
+import { getFormData, handleSessionError, formatDate } from "../utils/utils";
 import apiXML from "../utils/apiXML";
 import Cookies from "js-cookie";
 import { Card, Badge } from "flowbite-react";
@@ -111,8 +111,8 @@ export default function Kehadiran() {
     }, [historyData]);    
 
 console.log("State historyData saat ini:", historyData);
-console.log("Tipe historyData:", typeof historyData);
-console.log("Apakah historyData array?", Array.isArray(historyData));
+console.log("Tipe historyData:", typeof historyData.result);
+console.log("Apakah historyData array?", Array.isArray(historyData.result));
 
     return (
         <div className="history-container h-screen flex flex-col overflow-y-auto">
