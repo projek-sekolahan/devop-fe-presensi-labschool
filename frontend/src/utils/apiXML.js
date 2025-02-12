@@ -59,7 +59,7 @@ export default class apiXML {
                 credentials: "include",
                 body: createRequestBody(formData),
                 signal: controller.signal,
-            });
+            }); console.log(response);
             clearTimeout(timeoutId);
     
             if (!response.ok) {
@@ -67,7 +67,7 @@ export default class apiXML {
             }
     
             return await response.text();
-        } catch (error) {
+        } catch (error) { console.log(error);
             clearTimeout(timeoutId);
     
             const errorMessage =
