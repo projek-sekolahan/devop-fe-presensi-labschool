@@ -25,6 +25,7 @@ export default function FaceCam() {
     const imgRef = useRef();
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
@@ -39,6 +40,7 @@ export default function FaceCam() {
             );
             return;
         }
+
         const initialize = async () => {
             setIsLoading(true);
             try {
@@ -56,6 +58,7 @@ export default function FaceCam() {
                 );
             }
         };
+
         initialize();
         return () => {
             const stream = videoRef.current?.srcObject;
@@ -186,6 +189,7 @@ export default function FaceCam() {
             setIsLoading(false);
         }
     };
+
     const submitPresence = (faceDescriptor) => {
         const keys = [
             "AUTH_KEY",
@@ -245,6 +249,11 @@ export default function FaceCam() {
             });
     };
 
+    const clickHandler = () => {
+        setShowModal(true);
+        clickPhoto();
+    };
+
     return (
         <div className="presensi-container">
             <Layout
@@ -276,12 +285,7 @@ export default function FaceCam() {
                         <button
                             className="btn-submit"
                             disabled={isLoading}
-                            onClick={() => {
-                                document
-                                    .getElementById("my_modal_1")
-                                    .showModal();
-                                clickPhoto();
-                            }}
+                            onClick={clickHandler}
                         >
                             {isLoading ? (
                                 <div className="flex justify-center items-center gap-2">
