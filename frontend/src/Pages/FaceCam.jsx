@@ -23,6 +23,7 @@ export default function FaceCam() {
     const videoRef = useRef();
     const canvasRef = useRef();
     const imgRef = useRef();
+    const [imgSrc, setImgSrc] = useState(null);
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -122,13 +123,14 @@ export default function FaceCam() {
             canvasHeight
         );
         context.restore();
+        const imageData = canvasRef.current.toDataURL("image/jpeg");
+        setImgSrc(imageData);
         imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
     };
 
     const detectFace = async () => {
         setIsLoading(true);
-        const modal = document.getElementById("my_modal_1");
-        if (modal) modal.close();
+        setShowModal(false);
         loading("Loading", "Detecting face...");
         try {
             // Validasi elemen gambar
@@ -328,7 +330,7 @@ export default function FaceCam() {
     }
 >
     <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-    <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
+    {imgSrc && <img src={imgSrc} alt="Captured" className="w-full rounded-lg shadow-md mt-4"/>}
 </DetailModal>
 
         </div>
