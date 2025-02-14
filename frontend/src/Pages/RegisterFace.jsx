@@ -1,110 +1,29 @@
 import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import {
-    loadFaceModels,
-    detectSingleFace,
-    validateFaceDetection,
-} from "../utils/faceUtils";
+import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
+import { loadFaceModels } from "../utils/faceUtils";
+import { detectSingleFace } from "../utils/useFaceRecognition";
 import apiXML from "../utils/apiXML";
 import { alertMessage, loading, getFormData } from "../utils/utils";
 import DetailModal from "../Components/DetailModal";
 
 export default function RegisterFace({ isOpen, onToggle }) {
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
     const imgRef = useRef(null);
     const [imgSrc, setImgSrc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const init = async () => {
             loading("Loading", "Getting camera access...");
             await loadFaceModels(); // Preload Face API models
-            await preloadFacecamData(); // Preload and cache facecam data
-            startVideo();
+            setIsLoading(false);
+            Swal.close();
+            await startVideo();
         };
         init();
     }, []);
-
-    // Fungsi untuk preload data facecam dan caching
-    const preloadFacecamData = async () => {
-        try {
-            let keys = ["devop-sso", "csrf_token"];
-            let values = [
-                localStorage.getItem("regist_token"),
-                Cookies.get("csrf"),
-            ];
-            const response = await apiXML.postInput(
-                "loadFace",
-                getFormData(keys, values)
-            );
-            const res = JSON.parse(response);
-            Cookies.set("csrf", res.csrfHash);
-        } catch (err) {
-            console.error("Error preloading facecam data:", err);
-            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
-                onToggle("login")
-            );
-        }
-    };
-
-    // Fungsi untuk memulai kamera
-    const startVideo = () => {
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
-            .then((stream) => {
-                Swal.close();
-                videoRef.current.srcObject = stream;
-                videoRef.current.setAttribute("autoplay", "");
-                videoRef.current.setAttribute("muted", "");
-                videoRef.current.setAttribute("playsinline", "");
-            })
-            .catch((err) => {
-                console.error("Camera access error:", err);
-                const errorMessage =
-                    err.name === "NotAllowedError"
-                        ? "Izin akses kamera ditolak oleh pengguna"
-                        : "Tidak ada kamera yang tersedia pada perangkat";
-                alertMessage("Error", errorMessage, "error", () =>
-                    onToggle("login")
-                );
-            });
-    };
-
-    // Fungsi untuk mengambil gambar dari video
-    function clickPhoto() {
-        const context = canvasRef.current.getContext("2d");
-        const video = videoRef.current;
-        const canvasWidth = 400;
-        const canvasHeight = 400;
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
-        const videoCenterX = videoWidth / 2;
-        const videoCenterY = videoHeight / 2;
-        const cropX = videoCenterX - canvasWidth / 2;
-        const cropY = videoCenterY - canvasHeight / 2;
-        canvasRef.current.width = canvasWidth;
-        canvasRef.current.height = canvasHeight;
-        context.save();
-        context.scale(-1, 1);
-        context.translate(-canvasWidth, 0);
-        context.drawImage(
-            video,
-            cropX,
-            cropY,
-            canvasWidth,
-            canvasHeight,
-            0,
-            0,
-            canvasWidth,
-            canvasHeight
-        );
-        context.restore();
-        let image_data_url = canvasRef.current.toDataURL("image/jpeg");
-        imgRef.current.src = image_data_url;
-        setImgSrc(image_data_url);
-    }
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
     const detectAndRegisterFace = async () => {
@@ -114,15 +33,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
         try {
             const faceData = await detectSingleFace(imgRef.current);
             if (!faceData) {
-                setIsLoading(false);
-                console.error("Face not detected.");
-                alertMessage(
-                    "Deteksi Gagal",
-                    "Wajah tidak terdeteksi, pastikan pencahayaan memadai",
-                    "error",
-                    () => onToggle("facereg")
-                );
-                return;
+                throw new Error("No face detected or descriptor is undefined.");
             }
             registerNewFace(faceData);
             setIsLoading(false);
@@ -175,9 +86,15 @@ export default function RegisterFace({ isOpen, onToggle }) {
         }
     };
 
-    const clickHandler = () => {
+    const clickHandler = async () => {
         setShowModal(true);
-        clickPhoto();
+        const imageResult = await capturePhoto();
+        if (!imageResult) {
+            throw new Error("No image created.");
+        } else {
+            setImgSrc(imageResult);
+            imgRef.current.src = imageResult;
+        }
     };
 
     return (

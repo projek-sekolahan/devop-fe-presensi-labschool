@@ -11,17 +11,13 @@ import {
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import {
-    loadFaceModels,
-    detectSingleFace,
-    validateFaceDetection,
-} from "../utils/faceUtils";
+import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
+import { loadFaceModels } from "../utils/faceUtils";
+import { detectSingleFace, compareFaces} from "../utils/useFaceRecognition";
 import Layout from "../Components/Layout";
 import DetailModal from "../Components/DetailModal";
 
 export default function FaceCam() {
-    const videoRef = useRef();
-    const canvasRef = useRef();
     const imgRef = useRef();
     const [imgSrc, setImgSrc] = useState(null);
     const { state } = useLocation();
@@ -46,7 +42,9 @@ export default function FaceCam() {
             setIsLoading(true);
             try {
                 await loadFaceModels();
-                startVideo();
+                setIsLoading(false);
+                Swal.close();
+                await startVideo();
             } catch (error) {
                 console.error("Initialization error:", error);
                 alertMessage(
@@ -62,71 +60,9 @@ export default function FaceCam() {
 
         initialize();
         return () => {
-            const stream = videoRef.current?.srcObject;
-            stream?.getTracks().forEach((track) => track.stop());
+            stopVideo();
         };
     }, []);
-
-    const startVideo = () => {
-        setIsLoading(false);
-        navigator.mediaDevices
-            .getUserMedia({ video: { width: 640, height: 480 }, audio: false })
-            .then((stream) => {
-                Swal.close();
-                videoRef.current.srcObject = stream;
-                videoRef.current.setAttribute("autoplay", "");
-                videoRef.current.setAttribute("muted", "");
-                videoRef.current.setAttribute("playsinline", "");
-            })
-            .catch((err) => {
-                console.error("Camera access error:", err);
-                handleCameraError(err);
-            });
-    };
-
-    const handleCameraError = (err) => {
-        const messages = {
-            NotAllowedError: "Izin akses kamera ditolak oleh pengguna",
-            NotFoundError: "Tidak ada kamera yang tersedia pada perangkat",
-        };
-        alertMessage(
-            "Error",
-            messages[err.name] || "Terjadi kesalahan pada kamera",
-            "error",
-            () => {
-                window.location.replace("/home");
-            }
-        );
-    };
-
-    const clickPhoto = () => {
-        const context = canvasRef.current.getContext("2d");
-        const video = videoRef.current;
-        const canvasWidth = 400;
-        const canvasHeight = 400;
-        const cropX = video.videoWidth / 2 - canvasWidth / 2;
-        const cropY = video.videoHeight / 2 - canvasHeight / 2;
-        canvasRef.current.width = canvasWidth;
-        canvasRef.current.height = canvasHeight;
-        context.save();
-        context.scale(-1, 1);
-        context.translate(-canvasWidth, 0);
-        context.drawImage(
-            video,
-            cropX,
-            cropY,
-            canvasWidth,
-            canvasHeight,
-            0,
-            0,
-            canvasWidth,
-            canvasHeight
-        );
-        context.restore();
-        let imageData = canvasRef.current.toDataURL("image/jpeg");
-        setImgSrc(imageData);
-        imgRef.current.src = imageData;
-    };
 
     const detectFace = async () => {
         setIsLoading(true);
@@ -147,35 +83,15 @@ export default function FaceCam() {
             );
             // Deteksi wajah dari gambar
             const detectionResult = await detectSingleFace(imgRef.current);
-            if (!detectionResult || !detectionResult.descriptor) {
-                console.warn("No face detected or descriptor is undefined.");
-                alertMessage(
-                    "Pencocokan Gagal",
-                    "Harap Ulangi Proses.",
-                    "error",
-                    () => {
-                        window.location.replace("/home");
-                    }
-                );
-                return;
+            if (!detectionResult) {
+                throw new Error("No face detected or descriptor is undefined.");
             }
             // Validasi dengan data token
-            const isFaceMatched = validateFaceDetection(
-                detectionResult,
-                tokenDescriptor
-            );
+            const isFaceMatched = await compareFaces(detectionResult,tokenDescriptor);
             if (isFaceMatched) {
                 submitPresence(detectionResult.descriptor);
             } else {
-                console.warn("Face match failed.");
-                alertMessage(
-                    "Pencocokan Gagal",
-                    "Harap Ulangi Proses.",
-                    "error",
-                    () => {
-                        window.location.replace("/home");
-                    }
-                );
+                throw new Error("No face matched or descriptor is undefined.");
             }
         } catch (error) {
             console.error("Face detection error:", error);
@@ -251,9 +167,15 @@ export default function FaceCam() {
             });
     };
 
-    const clickHandler = () => {
+    const clickHandler = async () => {
         setShowModal(true);
-        clickPhoto();
+        const imageResult = await capturePhoto();
+        if (!imageResult) {
+            throw new Error("No image created.");
+        } else {
+            setImgSrc(imageResult);
+            imgRef.current.src = imageResult;
+        }
     };
 
     return (
