@@ -123,9 +123,9 @@ export default function FaceCam() {
             canvasHeight
         );
         context.restore();
-        const imageData = canvasRef.current.toDataURL("image/jpeg");
+        let imageData = canvasRef.current.toDataURL("image/jpeg");
         setImgSrc(imageData);
-        imgRef.current.src = canvasRef.current.toDataURL("image/jpeg");
+        imgRef.current.src = imageData;
     };
 
     const detectFace = async () => {
@@ -220,7 +220,7 @@ export default function FaceCam() {
         }
         values.push(
             faceDescriptor.join(", "),
-            `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+            `["${imageData}"]`,
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf")
         );
@@ -301,38 +301,38 @@ export default function FaceCam() {
                     </div>
                 </div>
             </Layout>
-            
-<DetailModal
-    showModal={showModal}
-    setShowModal={setShowModal}
-    headerTitle="Hasil Potret"
-    loading={isLoading}
-    footerButtons={
-        <div className="flex gap-4">
-            <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400" onClick={() => setShowModal(false)}>
-                Cancel
-            </button>
-            <button
-                className="py-2 px-6 btn-submit"
-                onClick={detectFace}
-                disabled={isLoading}
-            >
-                {isLoading ? (
-                    <div className="flex justify-center items-center gap-2">
-                        <span>Loading...</span>
-                        <span className="loading loading-spinner text-black"></span>
+            <DetailModal
+                showModal={showModal}
+                setShowModal={setShowModal}
+                headerTitle="Hasil Potret"
+                loading={isLoading}
+                footerButtons={
+                    <div className="flex gap-4">
+                        <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400" onClick={() => setShowModal(false)}>
+                            Cancel
+                        </button>
+                        <button
+                            className={`py-2 px-6 btn-submit ${
+                                isLoading ? "loading" : ""
+                            }`}
+                            onClick={detectFace}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <div className="flex justify-center items-center gap-2">
+                                    <span>Loading...</span>
+                                    <span className="loading loading-spinner text-black"></span>
+                                </div>
+                            ) : (
+                                "Proses"
+                            )}
+                        </button>
                     </div>
-                ) : (
-                    "Proses"
-                )}
-            </button>
-        </div>
-    }
->
-    <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-    {imgSrc && <img src={imgSrc} alt="Captured" className="w-full rounded-lg shadow-md mt-4"/>}
-</DetailModal>
-
+                }
+            >
+                <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+                {imgSrc && <img src={imgSrc} alt="Captured" className="w-full rounded-lg shadow-md mt-4"/>}
+            </DetailModal>
         </div>
     );
 }

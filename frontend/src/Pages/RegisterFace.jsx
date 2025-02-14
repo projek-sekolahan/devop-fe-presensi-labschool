@@ -8,11 +8,13 @@ import {
 } from "../utils/faceUtils";
 import apiXML from "../utils/apiXML";
 import { alertMessage, loading, getFormData } from "../utils/utils";
+import DetailModal from "../Components/DetailModal";
 
 export default function RegisterFace({ isOpen, onToggle }) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
+    const [imgSrc, setImgSrc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -101,13 +103,13 @@ export default function RegisterFace({ isOpen, onToggle }) {
         context.restore();
         let image_data_url = canvasRef.current.toDataURL("image/jpeg");
         imgRef.current.src = image_data_url;
+        setImgSrc(image_data_url);
     }
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data
     const detectAndRegisterFace = async () => {
         setIsLoading(true);
-        const modal = document.getElementById("my_modal_1");
-        if (modal) modal.close();
+        setShowModal(false);
         loading("Loading", "Starting face registration...");
         try {
             const faceData = await detectSingleFace(imgRef.current);
@@ -139,7 +141,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             let keys = ["param", "img", "devop-sso", "csrf_token"];
             let values = [
                 Array.from(faceData.descriptor).join(", "),
-                `["${canvasRef.current.toDataURL("image/jpeg")}"]`,
+                `["${image_data_url}"]`,
                 localStorage.getItem("regist_token"),
                 Cookies.get("csrf"),
             ];
@@ -171,6 +173,11 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 onToggle("login")
             );
         }
+    };
+
+    const clickHandler = () => {
+        setShowModal(true);
+        clickPhoto();
     };
 
     return (
@@ -206,55 +213,45 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 }`}
             >
                 <button
-                    onClick={() => {
-                        document.getElementById("my_modal_1").showModal();
-                        clickPhoto();
-                    }}
+                    onClick={clickHandler}
                     className="btn-submit"
                 >
                     Ambil Gambar
                 </button>
 
                 {/* Modal */}
-                <dialog
-                    id="my_modal_1"
-                    className="modal text-black shadow-lg transition transform z-0"
-                >
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg">Hasil Potret</h3>
-                        <p className="text-semibold mt-2 text-gray-600">
-                            Cek Hasil Gambar
-                        </p>
-                        <img
-                            ref={imgRef}
-                            className="w-full rounded-lg shadow-md mt-4"
-                            alt="Captured face"
-                        />
-                        <div className="modal-action flex justify-center mt-4 gap-4">
-                            <form method="dialog" className="flex gap-4">
-                                <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
-                                    Cancel
-                                </button>
-                                <button
-                                    disabled={isLoading}
-                                    onClick={detectAndRegisterFace}
-                                    className={`py-2 px-6 btn-submit ${
-                                        isLoading ? "loading" : ""
-                                    }`}
-                                >
-                                    {isLoading ? (
-                                        <div className="flex justify-center items-center gap-2">
-                                            <span>Loading...</span>
-                                            <span className="loading loading-spinner text-black"></span>
-                                        </div>
-                                    ) : (
-                                        "Proses"
-                                    )}
-                                </button>
-                            </form>
+                <DetailModal
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    headerTitle="Hasil Potret"
+                    loading={isLoading}
+                    footerButtons={
+                        <div className="flex gap-4">
+                            <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </button>
+                            <button
+                                className={`py-2 px-6 btn-submit ${
+                                    isLoading ? "loading" : ""
+                                }`}
+                                onClick={detectAndRegisterFace}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center gap-2">
+                                        <span>Loading...</span>
+                                        <span className="loading loading-spinner text-black"></span>
+                                    </div>
+                                ) : (
+                                    "Proses"
+                                )}
+                            </button>
                         </div>
-                    </div>
-                </dialog>
+                    }
+                >
+                    <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+                    {imgSrc && <img src={imgSrc} alt="Captured" className="w-full rounded-lg shadow-md mt-4"/>}
+                </DetailModal>
             </div>
         </div>
     );
