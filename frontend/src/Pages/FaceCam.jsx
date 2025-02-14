@@ -64,7 +64,7 @@ export default function FaceCam() {
         };
     }, []);
 
-    const detectFace = async () => {
+    const detectFacecam = async () => {
         setIsLoading(true);
         setShowModal(false);
         loading("Loading", "Detecting face...");
@@ -237,7 +237,7 @@ export default function FaceCam() {
                             className={`py-2 px-6 btn-submit ${
                                 isLoading ? "loading" : ""
                             }`}
-                            onClick={detectFace}
+                            onClick={detectFacecam}
                             disabled={isLoading}
                         >
                             {isLoading ? (
