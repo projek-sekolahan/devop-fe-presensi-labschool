@@ -1,5 +1,10 @@
 import { detectSingleFace, validateFaceDetection } from "./faceUtils";
 
+/**
+ * Deteksi wajah dari elemen gambar.
+ * @param {HTMLImageElement} imgElement
+ * @returns {Promise<Object>} detectionResult
+ */
 export const detectFace = async (imgElement) => {
     try {
         if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
@@ -16,6 +21,12 @@ export const detectFace = async (imgElement) => {
     }
 };
 
+/**
+ * Bandingkan hasil deteksi wajah dengan token descriptor.
+ * @param {Object} detectionResult
+ * @param {Float32Array} tokenDescriptor
+ * @returns {Promise<Float32Array>} descriptorResult
+ */
 export const compareFaces = async (detectionResult, tokenDescriptor) => {
     try {
         if (!detectionResult?.descriptor) {
@@ -32,9 +43,4 @@ export const compareFaces = async (detectionResult, tokenDescriptor) => {
     }
 };
 
-// Tetap ekspor sebagai hook untuk opsi lain
-const useFaceRecognition = () => {
-    return { detectFace, compareFaces };
-};
-
-export default useFaceRecognition;
+// Tidak perlu custom hook karena ini murni fungsi utility
