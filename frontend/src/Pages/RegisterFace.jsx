@@ -23,6 +23,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
             await startVideo();
         };
         init();
+        return () => {
+            stopVideo();
+        };
     }, []);
 
     // Fungsi untuk mendeteksi wajah dan mencocokkan data

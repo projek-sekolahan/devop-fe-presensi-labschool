@@ -1,8 +1,4 @@
-import {
-    loadFaceModels,
-    detectSingleFace,
-    validateFaceDetection,
-} from "./faceUtils";
+import { detectSingleFace, validateFaceDetection } from "./faceUtils";
 
 const useFaceRecognition = () => {
     const detectFace = async (imgElement) => {
@@ -20,17 +16,12 @@ const useFaceRecognition = () => {
         try {
             const isFaceMatched = await validateFaceDetection(detectionResult,tokenDescriptor);
             if (!isFaceMatched) throw new Error('Face match failed.');
-            return detection.descriptor;
+            return detectionResult.descriptor;
         } catch (err) {
             console.error('Face match failed.:', err);
             throw err;
         }
     };
-
-    /* const compareFaces = (descriptor1, descriptor2) => {
-        const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
-        return distance < 0.6; // Threshold bisa disesuaikan
-    }; */
 
     return { detectFace, compareFaces };
 };
