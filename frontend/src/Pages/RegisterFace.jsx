@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
+import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace } from "../utils/useFaceRecognition";
 import apiXML from "../utils/apiXML";
@@ -13,6 +13,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
     const [imgSrc, setImgSrc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } = useCamera();
 
     useEffect(() => {
         const init = async () => {
@@ -109,7 +110,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
                     Ambil Gambar Wajah Untuk Verifikasi
                 </p>
             </div>
-
             {/* Video Feed with Frame Overlay */}
             <div className="relative w-full h-[400px] flex justify-center items-center">
                 <video
@@ -121,11 +121,9 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 {/* Frame Overlay */}
                 <div className="relative z-10 face-detector"></div>
             </div>
-
             {/* Canvas and Captured Image (Hidden) */}
             <canvas ref={canvasRef} className="absolute z-[9] hidden"></canvas>
             <img ref={imgRef} className="absolute z-10 hidden" />
-
             {/* Controls Section */}
             <div
                 className={`capture-form-container ${
@@ -138,7 +136,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 >
                     Ambil Gambar
                 </button>
-
                 {/* Modal */}
                 <DetailModal
                     showModal={showModal}

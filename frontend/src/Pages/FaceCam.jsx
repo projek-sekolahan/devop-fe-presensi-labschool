@@ -11,7 +11,7 @@ import {
 import apiXML from "../utils/apiXML";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
+import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace, compareFaces} from "../utils/useFaceRecognition";
 import Layout from "../Components/Layout";
@@ -23,6 +23,7 @@ export default function FaceCam() {
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } = useCamera();
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
@@ -203,7 +204,6 @@ export default function FaceCam() {
                         ></canvas>
                         <img ref={imgRef} className="absolute z-10 hidden" />
                     </div>
-
                     {/* Tombol Konfirmasi */}
                     <div className="btn-facecam">
                         <button
