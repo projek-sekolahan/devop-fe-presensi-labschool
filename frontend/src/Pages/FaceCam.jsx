@@ -17,6 +17,7 @@ import {
     validateFaceDetection,
 } from "../utils/faceUtils";
 import Layout from "../Components/Layout";
+import DetailModal from "../Components/DetailModal";
 
 export default function FaceCam() {
     const videoRef = useRef();
@@ -294,43 +295,38 @@ export default function FaceCam() {
                     </div>
                 </div>
             </Layout>
-            <dialog
-                id="my_modal_1"
-                className="modal text-black shadow-lg transition transform z-0"
+            
+<DetailModal
+    showModal={showModal}
+    setShowModal={setShowModal}
+    headerTitle="Hasil Potret"
+    loading={isLoading}
+    footerButtons={
+        <div className="flex gap-4">
+            <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400" onClick={() => setShowModal(false)}>
+                Cancel
+            </button>
+            <button
+                className="py-2 px-6 btn-submit"
+                onClick={detectFace}
+                disabled={isLoading}
             >
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">Hasil Potret</h3>
-                    <p className="text-semibold mt-2 text-gray-600">
-                        Cek Hasil Gambar
-                    </p>
-                    <img
-                        ref={imgRef}
-                        className="w-full rounded-lg shadow-md mt-4"
-                    />
-                    <div className="modal-action flex justify-center mt-4 gap-4">
-                        <form method="dialog" className="flex gap-4">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400">
-                                Cancel
-                            </button>
-                            <button
-                                className="py-2 px-6 btn-submit"
-                                onClick={detectFace}
-                                disabled={isLoading} // Nonaktifkan tombol jika sedang loading
-                            >
-                                {isLoading ? (
-                                    <div className="flex justify-center items-center gap-2">
-                                        <span>Loading...</span>
-                                        <span className="loading loading-spinner text-black"></span>
-                                    </div>
-                                ) : (
-                                    "Proses"
-                                )}
-                            </button>
-                        </form>
+                {isLoading ? (
+                    <div className="flex justify-center items-center gap-2">
+                        <span>Loading...</span>
+                        <span className="loading loading-spinner text-black"></span>
                     </div>
-                </div>
-            </dialog>
+                ) : (
+                    "Proses"
+                )}
+            </button>
+        </div>
+    }
+>
+    <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
+    <img ref={imgRef} className="w-full rounded-lg shadow-md mt-4" />
+</DetailModal>
+
         </div>
     );
 }
