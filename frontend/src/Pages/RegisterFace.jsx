@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
-import { detectSingleFace } from "../utils/useFaceRecognition";
+import { detectFace } from "../utils/useFaceRecognition";
 import apiXML from "../utils/apiXML";
 import { alertMessage, loading, getFormData } from "../utils/utils";
 import DetailModal from "../Components/DetailModal";
@@ -34,7 +34,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
         setShowModal(false);
         loading("Loading", "Starting face registration...");
         try {
-            const faceData = await detectSingleFace(imgRef.current);
+            const faceData = await detectFace(imgRef.current);
             if (!faceData) {
                 throw new Error("No face detected or descriptor is undefined.");
             }

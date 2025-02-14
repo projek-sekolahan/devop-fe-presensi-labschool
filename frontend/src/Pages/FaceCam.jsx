@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
-import { detectSingleFace, compareFaces} from "../utils/useFaceRecognition";
+import { detectFace, compareFaces} from "../utils/useFaceRecognition";
 import Layout from "../Components/Layout";
 import DetailModal from "../Components/DetailModal";
 
@@ -82,7 +82,7 @@ export default function FaceCam() {
                 userData.facecam_id.split(", ").map(Number)
             );
             // Deteksi wajah dari gambar
-            const detectionResult = await detectSingleFace(imgRef.current);
+            const detectionResult = await detectFace(imgRef.current);
             if (!detectionResult) {
                 throw new Error("No face detected or descriptor is undefined.");
             }
