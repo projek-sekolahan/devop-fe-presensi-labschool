@@ -137,7 +137,7 @@ export default function FaceCam() {
         }
         values.push(
             faceDescriptor.join(", "),
-            `["${imageResult}"]`,
+            `["${imgSrc}"]`,
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf")
         );
