@@ -56,7 +56,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             let keys = ["param", "img", "devop-sso", "csrf_token"];
             let values = [
                 Array.from(faceData.descriptor).join(", "),
-                `["${image_data_url}"]`,
+                `["${imageResult}"]`,
                 localStorage.getItem("regist_token"),
                 Cookies.get("csrf"),
             ];
