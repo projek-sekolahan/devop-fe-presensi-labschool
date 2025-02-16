@@ -43,7 +43,7 @@ export default class apiXML {
     /**
      * Generic POST request with optional timeout and authorization.
      */
-    static async post(endpoint, formData, key = null, timeout = 30000) {
+    static async post(endpoint, formData, key = null, timeout = 60000) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
     
