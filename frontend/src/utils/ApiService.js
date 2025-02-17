@@ -56,40 +56,11 @@ class ApiService {
     }
 
     static async processApiRequest(endpoint, formData) {
-        try { console.log(typeof formData);
-            let response;
-            const params = new URLSearchParams(formData);
-            let AUTH_KEY = params.get("AUTH_KEY");
-            console.log(params.get("AUTH_KEY"));
-            // Mengecek apakah AUTH_KEY ada di dalam formData
-            if (!AUTH_KEY) {
-                console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
-                // response = await this.postInput(endpoint, formData);
-            } else {
-                console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
-                /* if (endpoint.startsWith("auth")) {
-                    response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, formData);
-                } else if (endpoint.startsWith("users")) {
-                    response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, formData);
-                } else if (endpoint.startsWith("presensi")) {
-                    response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, formData);
-                } else if (endpoint.startsWith("notifications")) {
-                    response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, formData);
-                } else {
-                    response = await this.post(`/api/client/${endpoint}`, formData, AUTH_KEY);
-                } */
-                
-            }
-            // console.log(JSON.parse(response));
-            /* const response = await this.post(`/api/client/${endpoint}`, formData);
-            if (!response) throw new Error("No response from API");
-            const result = JSON.parse(response);
-            Cookies.set("csrf", result.csrfHash);
-            return result; */
-        } catch (error) {
-            console.error("API request failed:", error);
-            alertMessage("Error", error.message || "Gagal menghubungi server", "error");
-        }
+        console.log(typeof formData);
+        const params = new URLSearchParams(formData);
+        let AUTH_KEY = params.get("AUTH_KEY");
+        console.log(AUTH_KEY);
+        
     }
 
     static async postInput(url, formData) {
