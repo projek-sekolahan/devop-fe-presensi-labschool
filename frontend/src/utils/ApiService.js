@@ -56,7 +56,7 @@ class ApiService {
     }
 
     static async processApiRequest(endpoint, formData) {
-        try {
+        try { console.log(typeof formData);
             let response;
             let AUTH_KEY = formData.get("AUTH_KEY");
             // Mengecek apakah AUTH_KEY ada di dalam formData
