@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace } from "../utils/useFaceRecognition";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import { alertMessage, loading, getFormData } from "../utils/utils";
 import DetailModal from "../Components/DetailModal";
 
@@ -60,7 +60,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
                 localStorage.getItem("regist_token"),
                 Cookies.get("csrf"),
             ];
-            const response = await apiXML.postInput(
+            const response = await ApiService.postInput(
                 "facecam",
                 getFormData(keys, values)
             );

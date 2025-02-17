@@ -1,11 +1,11 @@
 // sessionService.js
 import Cookies from "js-cookie";
-import apiXML from "../utils/apiXML.js";
+import ApiService from "../utils/ApiService.js";
 import { handleSessionExpired } from "../utils/utils";
 
 export const checkSession = async (keys,formData) => {
   try {
-    const response = await apiXML.authPost("sesstime", keys, formData);
+    const response = await ApiService.authPost("sesstime", keys, formData);
     const parsedResponse = JSON.parse(response);
     if (parsedResponse?.data?.statusCode === 200) {
       Cookies.set("csrf", parsedResponse.csrfHash);

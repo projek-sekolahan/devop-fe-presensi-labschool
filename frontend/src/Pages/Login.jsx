@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
-import apiXML from "../utils/apiXML.js";
+import ApiService from "../utils/ApiService.js";
 import {
   getHash,
   getKey,
@@ -25,7 +25,7 @@ const CSRF_KEY = "csrf";
 const processLogin = async (formData, tokenKey) => {
   try {
     loading("Loading", "Logging in...");
-    const response = await apiXML.authPost("login", tokenKey[0], formData);
+    const response = await ApiService.authPost("login", tokenKey[0], formData);
     const loginResponse = JSON.parse(response);
 
     // Save tokens in secure storage
@@ -49,7 +49,7 @@ export default function Login({ isOpen, onToggle }) {
     });
 
     // Mendapatkan CSRF Token
-    apiXML.getCsrf();
+    ApiService.getCsrf();
     // Handle form submission
     const handleLogin = async (e) => {
         e.preventDefault();

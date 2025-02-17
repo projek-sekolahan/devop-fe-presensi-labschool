@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { Card, Button } from "flowbite-react";
 import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/utils";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import DetailModal from "../Components/DetailModal";
 
 const STATUS_COLORS = {
@@ -50,7 +50,7 @@ export default function CardRiwayat({ index, history, biodata }) {
             Cookies.get("csrf"),
         ];
 
-        apiXML
+        ApiService
             .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
             .then((res) => {
                 const parsedRes = JSON.parse(res);

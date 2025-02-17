@@ -10,7 +10,7 @@ import {
 	handleSessionError,
 	addDefaultKeys,
 } from "../utils/utils";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import Cookies from "js-cookie";
 import Layout from "../Components/Layout";
 
@@ -74,7 +74,7 @@ export default function Izin() {
 			values = [...values, `["${imageUrl}"]`];
 		}
 		loading("Loading", "Data sedang diproses...");
-		apiXML
+		ApiService
 			.presensiPost(
 				"process",
 				localStorage.getItem("AUTH_KEY"),

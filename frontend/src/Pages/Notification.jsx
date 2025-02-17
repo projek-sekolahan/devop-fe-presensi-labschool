@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
-import apiXML from "../utils/apiXML.js";
+import ApiService from "../utils/ApiService.js";
 import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
 import Layout from "../Components/Layout";
 
@@ -76,7 +76,7 @@ export default function Notification() {
     ];
 
     try {
-      const response = await apiXML.notificationsPost(
+      const response = await ApiService.notificationsPost(
         "detail",
         localStorage.getItem("AUTH_KEY"),
         getFormData(combinedKeys, values)

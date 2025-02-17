@@ -7,7 +7,7 @@ import {
 	handleSessionError,
 	addDefaultKeys,
 } from "../utils/utils";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
@@ -56,7 +56,7 @@ export default function SetPassword({ isOpen, onToggle }) {
 			localStorage.getItem("regist_token"),
 			Cookies.get("csrf"),
 		];
-		apiXML
+		ApiService
 			.postInput("setPassword", getFormData(combinedKeys, values))
 			.then((res) => {
 				setDisabled(false);

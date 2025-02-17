@@ -8,7 +8,7 @@ import {
 	ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import Cookies from "js-cookie";
 import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
 import Swal from "sweetalert2";
@@ -41,7 +41,7 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 						localStorage.getItem("devop-sso"),
 						Cookies.get("csrf"),
 					];
-					apiXML
+					ApiService
 						.authPost(
 							"logout",
 							localStorage.getItem("AUTH_KEY"),

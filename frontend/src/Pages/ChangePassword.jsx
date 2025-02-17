@@ -1,12 +1,6 @@
-import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
-import apiXML from "../utils/apiXML";
-import {
-    getFormData,
-    alertMessage,
-    loading,
-    handleSessionError,
-} from "../utils/utils";
+import ApiService from "../utils/ApiService";
+import { getFormData, alertMessage, loading, handleSessionError } from "../utils/utils";
 import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
@@ -17,7 +11,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
     const [load, setLoad] = useState(false);
     const [errors, setErrors] = useState({email: ""});
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         // Validate form fields
@@ -38,22 +32,14 @@ export default function ChangePassword({ isOpen, onToggle }) {
         const values = [emailRef.current.value.trim(), Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
 
-        apiXML
-            .postInput("recover", getFormData(key, values))
-            .then((res) => {
-                res = JSON.parse(res);
-                Cookies.set("csrf", res.csrfHash);
-                setLoad(false);
-                alertMessage(
-                    res.data.title,
-                    res.data.message,
-                    res.data.info,
-                    () => onToggle(res.data.location)
-                );
-            })
-            .catch((err) => {
-                handleSessionError(err, "/recover");
-            });
+        try {
+            const res = JSON.parse(await ApiService.postInput("recover", getFormData(key, values)));
+            Cookies.set("csrf", res.csrfHash);
+            setLoad(false);
+            alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+        } catch (err) {
+            handleSessionError(err, "/recover");
+        }
     };
 
     return (
@@ -64,7 +50,6 @@ export default function ChangePassword({ isOpen, onToggle }) {
                 alt="reset"
                 className={`bg-image ${isOpen ? "open" : ""}`}
             />
-
             {/* Reset Password Form */}
             <div className={`reset-form-container ${isOpen ? "open" : "closed"}`}>
                 <h2 className="text-title text-4xl">Ganti Password</h2>
@@ -82,7 +67,6 @@ export default function ChangePassword({ isOpen, onToggle }) {
                         autoComplete: "Email",
                         error: errors.email,
                     })}
-
                     {/* Submit Button */}
                     <button
                         type="submit"
@@ -101,16 +85,9 @@ export default function ChangePassword({ isOpen, onToggle }) {
                         )}
                     </button>
                 </form>
-
                 {/* Separator with Clickable Text */}
                 <div className="flex items-center gap-2 w-full mt-4">
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
-                    {/* <Link
-                        to="#" onClick={() => onToggle("register")}
-                        className="text-link text-sm font-light text-white underline hover:underline"
-                    >
-                        Belum Punya Akun?
-                    </Link> */}
                     <div className="flex-grow border-t-[0.25px] border-white"></div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ import {
     addDefaultKeys,
     parseJwt,
 } from "../utils/utils";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import useCamera from "../utils/useCamera";
@@ -141,7 +141,7 @@ export default function FaceCam() {
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf")
         );
-        apiXML
+        ApiService
             .presensiPost(
                 "process",
                 localStorage.getItem("AUTH_KEY"),

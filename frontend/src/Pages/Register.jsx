@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import Cookies from "js-cookie";
-import apiXML from "../utils/apiXML.js";
+import ApiService from "../utils/ApiService.js";
 import {
   getFormData,
   alertMessage,
@@ -33,7 +33,7 @@ export default function Register({ isOpen, onToggle }) {
   // Helper function for registration process
   const processRegister = async (formData) => {
     try {
-      const response = await apiXML.postInput("register", formData);
+      const response = await ApiService.postInput("register", formData);
       const res = JSON.parse(response);
 
       // Save CSRF token

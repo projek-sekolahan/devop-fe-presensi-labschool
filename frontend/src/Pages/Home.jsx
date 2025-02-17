@@ -5,7 +5,7 @@ import {
   handleSessionExpired,
   addDefaultKeys,
 } from "../utils/utils";
-import apiXML from "../utils/apiXML.js";
+import ApiService from "../utils/ApiService.js";
 import { Link } from "react-router-dom";
 import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
@@ -43,7 +43,7 @@ const Home = ({ intervalId }) => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-      const response = await apiXML.usersPost(
+      const response = await ApiService.usersPost(
         "profile",
         values[0],
         getFormData(addDefaultKeys(AUTH_KEYS), values)
@@ -74,7 +74,7 @@ const Home = ({ intervalId }) => {
   // Register token
   const registerToken = () => {
     const values = getCombinedValues(TOKEN_KEYS);
-    apiXML
+    ApiService
       .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
       .then((response) => {
         const result = JSON.parse(response);

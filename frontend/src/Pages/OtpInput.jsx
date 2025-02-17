@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import {
 	getFormData,
 	alertMessage,
@@ -25,7 +25,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("csrf")];
 		loading("Loading", "Processing OTP Data...");
-		apiXML
+		ApiService
 			.postInput("verify", getFormData(keys, values))
 			.then((res) => {
 				res = JSON.parse(res);
@@ -87,7 +87,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 		const key = ["email", "csrf_token"];
 		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
 		loading("Loading", "Processing Send OTP Data...");
-		apiXML
+		ApiService
 			.postInput("sendOTP", getFormData(key, values))
 			.then((res) => {
 				res = JSON.parse(res);

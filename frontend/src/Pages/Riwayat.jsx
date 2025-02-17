@@ -4,7 +4,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import Layout from "../Components/Layout";
 import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
-import apiXML from "../utils/apiXML";
+import ApiService from "../utils/ApiService";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 
@@ -34,7 +34,7 @@ export default function Riwayat() {
         const values = getValuesForKeys(keys, category);
 
         try {
-            const res = await apiXML.presensiPost("reports", authKey, getFormData(keys, values));
+            const res = await ApiService.presensiPost("reports", authKey, getFormData(keys, values));
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
             const parsedData = parseJwt(parsedRes.data.token).data || [];

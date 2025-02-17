@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { ExclamationTriangleIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import Layout from '../Components/Layout';
 import { getFormData, handleSessionError, formatDate } from '../utils/utils';
-import apiXML from '../utils/apiXML';
+import ApiService from '../utils/ApiService';
 import Cookies from 'js-cookie';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -110,7 +110,7 @@ export default function Kehadiran() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  apiXML.getCsrf();
+  ApiService.getCsrf();
 
   useEffect(() => {
     if (id === undefined) return;
@@ -129,7 +129,7 @@ export default function Kehadiran() {
     const values = [Cookies.get('csrf'), id];
 
     try {
-      const res = await apiXML.postInput('reports', getFormData(keys, values));
+      const res = await ApiService.postInput('reports', getFormData(keys, values));
       const parsedData = JSON.parse(res);
       Cookies.set('csrf', parsedData.csrfHash);
 
