@@ -55,12 +55,12 @@ class ApiService {
         });
     }
 
-    static async processApiRequest(endpoint, formData) {
-        console.log(typeof formData);
-        const params = new URLSearchParams(formData);
+    static async processApiRequest(endpoint, data) {
+        console.log(typeof data);
+        const params = new URLSearchParams(data);
         let AUTH_KEY = params.get("AUTH_KEY");
         console.log(AUTH_KEY);
-        
+        return AUTH_KEY;
     }
 
     static async postInput(url, formData) {

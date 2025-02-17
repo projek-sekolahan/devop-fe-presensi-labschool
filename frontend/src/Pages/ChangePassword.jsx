@@ -36,7 +36,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
         const params = new URLSearchParams(getFormData(keys, values));
         let AUTH_KEY = params.get("AUTH_KEY");
         console.log(AUTH_KEY);
-        /* try {
+        try {
             const res = await ApiService.processApiRequest("recover", getFormData(keys, values));
             console.log(res); return false;
             Cookies.set("csrf", res.csrfHash);
@@ -44,7 +44,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
             alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
         } catch (err) {
             handleSessionError(err, "/recover");
-        } */
+        }
     };
 
     return (
