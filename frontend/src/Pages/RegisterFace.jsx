@@ -26,7 +26,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
         init();
         return () => stopVideo();
     }, []);
-
     const detectAndRegisterFace = async () => {
         setIsLoading(true);
         setShowModal(false);
@@ -44,7 +43,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
             setIsLoading(false);
         }
     };
-
     const registerNewFace = async (faceData) => {
         const keys = ["param", "img", "devop-sso", "csrf_token"];
         const values = [
@@ -53,7 +51,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             localStorage.getItem("regist_token"),
             Cookies.get("csrf"),
         ];
-        const res = await processApiRequest("facecam", keys, values, () => onToggle("setpassword"));
+        const res = await ApiService.processApiRequest("facecam", getFormData(keys, values));
         if (res.status) {
             setIsLoading(false);
             alertMessage(
@@ -70,7 +68,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
             );
         }
     };
-
     const clickHandler = async () => {
         setShowModal(true);
         const imageResult = await capturePhoto();
@@ -81,20 +78,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
         setImgSrc(imageResult);
         imgRef.current.src = imageResult;
     };
-
-    const processApiRequest = async (endpoint, keys, values) => {
-		try {
-			setLoad(false);
-			loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
-			const res = JSON.parse(await ApiService.postInput(endpoint, getFormData(keys, values)));
-			Cookies.set("csrf", res.csrfHash);
-			return res;
-		} catch (err) {
-			handleSessionError(err, "/facereg");
-			return null;
-		}
-	}
-
     return (
         <div className="capture-container">
             <div className="text-center mt-6 mb-6">
