@@ -5,7 +5,7 @@ const API_URL = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 const createRequestBody = (formData) => formData.toString();
 
-const fetchWithTimeout = async (url, options = {}, timeout = 60000) => {
+const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     
