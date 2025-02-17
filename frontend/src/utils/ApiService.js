@@ -61,26 +61,26 @@ class ApiService {
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
             
-            // Mengecek apakah AUTH_KEY ada di dalam formData
+            // Mengecek apakah AUTH_KEY ada
             if (AUTH_KEY == null || AUTH_KEY == "null") {
                 console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
-                response = await this.postInput(endpoint, formData);
+                response = await this.postInput(endpoint, data);
             } else {
                 console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
                 if (endpoint.startsWith("auth")) {
-                    response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, formData);
+                    response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, data);
                 } else if (endpoint.startsWith("users")) {
-                    response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, formData);
+                    response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, data);
                 } else if (endpoint.startsWith("presensi")) {
-                    response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, formData);
+                    response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, data);
                 } else if (endpoint.startsWith("notifications")) {
-                    response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, formData);
+                    response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, data);
                 } else {
-                    response = await this.post(`/api/client/${endpoint}`, formData, AUTH_KEY);
+                    response = await this.post(`/api/client/${endpoint}`, data, AUTH_KEY);
                 }
                 
             }
-            // const response = await this.post(`/api/client/${endpoint}`, formData);
+            
             if (!response) throw new Error("No response from API");
             const result = JSON.parse(response);
             Cookies.set("csrf", result.csrfHash);
@@ -91,24 +91,24 @@ class ApiService {
         }
     }
 
-    static async postInput(url, formData) {
-        return this.post(`/input/${url}`, formData);
+    static async postInput(url, data) {
+        return this.post(`/input/${url}`, data);
     }
 
-    static async authPost(url, key, formData) {
-        return this.post(`/api/client/auth/${url}`, formData, key);
+    static async authPost(url, key, data) {
+        return this.post(`/api/client/auth/${url}`, data, key);
     }
 
-    static async usersPost(url, key, formData) {
-        return this.post(`/api/client/users/${url}`, formData, key);
+    static async usersPost(url, key, data) {
+        return this.post(`/api/client/users/${url}`, data, key);
     }
 
-    static async presensiPost(url, key, formData) {
-        return this.post(`/api/client/presensi/${url}`, formData, key);
+    static async presensiPost(url, key, data) {
+        return this.post(`/api/client/presensi/${url}`, data, key);
     }
 
-    static async notificationsPost(url, key, formData) {
-        return this.post(`/api/client/notifications/${url}`, formData, key);
+    static async notificationsPost(url, key, data) {
+        return this.post(`/api/client/notifications/${url}`, data, key);
     }
 }
 
