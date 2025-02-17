@@ -56,11 +56,11 @@ class ApiService {
     }
 
     static async processApiRequest(endpoint, data) {
-        try { console.log(typeof data);
+        try {
             let response;
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
-            console.log(params.get("AUTH_KEY"));
+            
             // Mengecek apakah AUTH_KEY ada di dalam formData
             if (AUTH_KEY == null || AUTH_KEY == "null") {
                 console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
