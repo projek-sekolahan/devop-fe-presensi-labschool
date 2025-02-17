@@ -62,10 +62,10 @@ class ApiService {
             // Mengecek apakah AUTH_KEY ada di dalam formData
             if (!AUTH_KEY) {
                 console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
-                response = await this.postInput(endpoint, formData);
+                // response = await this.postInput(endpoint, formData);
             } else {
                 console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
-                if (endpoint.startsWith("auth")) {
+                /* if (endpoint.startsWith("auth")) {
                     response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, formData);
                 } else if (endpoint.startsWith("users")) {
                     response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, formData);
@@ -75,10 +75,10 @@ class ApiService {
                     response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, formData);
                 } else {
                     response = await this.post(`/api/client/${endpoint}`, formData, AUTH_KEY);
-                }
+                } */
                 
             }
-            console.log(JSON.parse(response));
+            // console.log(JSON.parse(response));
             /* const response = await this.post(`/api/client/${endpoint}`, formData);
             if (!response) throw new Error("No response from API");
             const result = JSON.parse(response);
