@@ -33,7 +33,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
         localStorage.setItem("email", emailRef.current.value);
 
         try {
-            const res = await ApiService.processApiRequest("recover", keys, values, () => onToggle(res.data.location));
+            const res = await ApiService.processApiRequest("recover", getFormData(keys, values), () => onToggle(res.data.location));
             console.log(res); return false;
             Cookies.set("csrf", res.csrfHash);
             setLoad(false);

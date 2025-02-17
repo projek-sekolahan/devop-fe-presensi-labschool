@@ -8,7 +8,6 @@ const createRequestBody = (formData) => formData.toString();
 const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
-    
     try {
         const response = await fetch(url, { ...options, signal: controller.signal });
         clearTimeout(timeoutId);
@@ -56,20 +55,18 @@ class ApiService {
         });
     }
 
-    static async processApiRequest(endpoint, keys, values, onSuccess) {
-        const formData = new URLSearchParams();
-        keys.forEach((key, index) => formData.append(key, values[index]));
-
+    static async processApiRequest(endpoint, formData, onSuccess) {
         try {
             const response = await this.post(`/api/client/${endpoint}`, formData);
             if (!response) throw new Error("No response from API");
-
             const result = JSON.parse(response);
-            if (result.status) {
+            Cookies.set("csrf", result.csrfHash);
+            return result;
+            /* if (result.status) {
                 onSuccess?.();
             } else {
                 alertMessage("Error", result.msg || "Proses gagal", "error");
-            }
+            } */
         } catch (error) {
             console.error("API request failed:", error);
             alertMessage("Error", error.message || "Gagal menghubungi server", "error");
