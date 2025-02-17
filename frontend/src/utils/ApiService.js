@@ -60,7 +60,6 @@ class ApiService {
             let response;
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
-            
             // Mengecek apakah AUTH_KEY ada
             if (AUTH_KEY == null || AUTH_KEY == "null") {
                 console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
@@ -78,9 +77,7 @@ class ApiService {
                 } else {
                     response = await this.post(`/api/client/${endpoint}`, data, AUTH_KEY);
                 }
-                
             }
-            
             if (!response) throw new Error("No response from API");
             const result = JSON.parse(response);
             Cookies.set("csrf", result.csrfHash);

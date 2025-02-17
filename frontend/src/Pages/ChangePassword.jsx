@@ -10,32 +10,23 @@ export default function ChangePassword({ isOpen, onToggle }) {
     const emailRef = useRef();
     const [load, setLoad] = useState(false);
     const [errors, setErrors] = useState({email: ""});
-
     const submitHandler = async (e) => {
         e.preventDefault();
-
         // Validate form fields
         const validationErrors = validateFormFields({email: { value: emailRef.current.value.trim(), type: "email" }});
-
         // Set errors if any
         setErrors({email: validationErrors.email || ""});
-
         // If there are validation errors, stop form submission
         if (Object.values(validationErrors).some((error) => error)) {
             return;
         }
-        
         loading("Loading", "Verifying Email...");
         setLoad(true);
-
         const keys = ["username", "csrf_token"];
         const values = [emailRef.current.value.trim(), Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
-
         try {
             const res = await ApiService.processApiRequest("recover", getFormData(keys, values));
-            console.log(res); return false;
-            Cookies.set("csrf", res.csrfHash);
             setLoad(false);
             alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
         } catch (err) {
