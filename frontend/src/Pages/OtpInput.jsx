@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ApiService from "../utils/ApiService";
-import {
-	getFormData,
-	alertMessage,
-	loading,
-	handleSessionError,
-} from "../utils/utils";
+import { getFormData, alertMessage, loading, handleSessionError } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function OtpInput({ isOpen, onToggle }) {
@@ -19,37 +14,32 @@ export default function OtpInput({ isOpen, onToggle }) {
 			inputRefs.current[0].focus();
 		}
 	}, []);
-
-	const onOtpSubmit = () => {
+	const processApiRequest = async (endpoint, keys, values) => {
+		try {
+			setLoad(false);
+			loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
+			const res = JSON.parse(await ApiService.postInput(endpoint, getFormData(keys, values)));
+			Cookies.set("csrf", res.csrfHash);
+			return res;
+		} catch (err) {
+			handleSessionError(err, "/verify");
+			return null;
+		}
+	}
+	const onOtpSubmit = async () => {
 		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("csrf")];
-		loading("Loading", "Processing OTP Data...");
-		ApiService
-			.postInput("verify", getFormData(keys, values))
-			.then((res) => {
-				res = JSON.parse(res);
-				setLoad(false);
+		const res = await processApiRequest("verify", keys, values);
+		if (res) {
+			if (res.data.info === "error") {
+				alertMessage(res.data.title, res.data.message, res.data.info);
+			} else {
 				localStorage.setItem("regist_token", res.data.data.token);
-				Cookies.set("csrf", res.csrfHash);
-				res.data.info == "error"
-					? alertMessage(
-							res.data.title,
-							res.data.message,
-							res.data.info,
-						)
-					: alertMessage(
-							res.data.title,
-							res.data.message,
-							res.data.info,
-							() => onToggle("facereg")
-						);
-			})
-			.catch((err) => {
-				handleSessionError(err, "/verify");
-			});
+				alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("facereg"));
+			}
+		}
 	};
-
 	const handleChange = (index, e) => {
 		const value = e.target.value;
 		if (isNaN(value)) return;
@@ -83,25 +73,14 @@ export default function OtpInput({ isOpen, onToggle }) {
 			inputRefs.current[index - 1].focus();
 		}
 	};
-	const sendOtpAgain = () => {
-		const key = ["email", "csrf_token"];
+	const sendOtpAgain = async () => {
+		setLoad(true);
+		const keys = ["email", "csrf_token"];
 		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
-		loading("Loading", "Processing Send OTP Data...");
-		ApiService
-			.postInput("sendOTP", getFormData(key, values))
-			.then((res) => {
-				res = JSON.parse(res);
-				Cookies.set("csrf", res.csrfHash);
-				alertMessage(
-					res.data.title,
-					res.data.message,
-					res.data.info,
-					() => onToggle(res.data.location)
-				);
-			})
-			.catch((err) => {
-				handleSessionError(err, "/verify");
-			});
+		const res = await processApiRequest("sendOTP", keys, values);
+		if (res) {
+			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+		}
 	};
 
 	return (

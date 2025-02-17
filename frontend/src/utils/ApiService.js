@@ -55,7 +55,27 @@ class ApiService {
             body: createRequestBody(formData)
         });
     }
-    
+
+    static async processApiRequest(endpoint, keys, values, onSuccess) {
+        const formData = new URLSearchParams();
+        keys.forEach((key, index) => formData.append(key, values[index]));
+
+        try {
+            const response = await this.post(`/api/client/${endpoint}`, formData);
+            if (!response) throw new Error("No response from API");
+
+            const result = JSON.parse(response);
+            if (result.status) {
+                onSuccess?.();
+            } else {
+                alertMessage("Error", result.msg || "Proses gagal", "error");
+            }
+        } catch (error) {
+            console.error("API request failed:", error);
+            alertMessage("Error", error.message || "Gagal menghubungi server", "error");
+        }
+    }
+
     static async postInput(url, formData) {
         return this.post(`/input/${url}`, formData);
     }

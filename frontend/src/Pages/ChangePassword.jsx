@@ -28,12 +28,13 @@ export default function ChangePassword({ isOpen, onToggle }) {
         loading("Loading", "Verifying Email...");
         setLoad(true);
 
-        const key = ["username", "csrf_token"];
+        const keys = ["username", "csrf_token"];
         const values = [emailRef.current.value.trim(), Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
 
         try {
-            const res = JSON.parse(await ApiService.postInput("recover", getFormData(key, values)));
+            const res = await ApiService.processApiRequest("recover", keys, values, () => onToggle(res.data.location));
+            console.log(res); return false;
             Cookies.set("csrf", res.csrfHash);
             setLoad(false);
             alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
