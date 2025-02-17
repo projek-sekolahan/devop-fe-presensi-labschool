@@ -14,23 +14,12 @@ export default function OtpInput({ isOpen, onToggle }) {
 			inputRefs.current[0].focus();
 		}
 	}, []);
-	const processApiRequest = async (endpoint, keys, values) => {
-		try {
-			setLoad(false);
-			loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
-			const res = JSON.parse(await ApiService.postInput(endpoint, getFormData(keys, values)));
-			Cookies.set("csrf", res.csrfHash);
-			return res;
-		} catch (err) {
-			handleSessionError(err, "/verify");
-			return null;
-		}
-	}
 	const onOtpSubmit = async () => {
 		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("csrf")];
-		const res = await processApiRequest("verify", keys, values);
+		const res = await ApiService.processApiRequest("verify", getFormData(keys, values));
+        setLoad(false);
 		if (res) {
 			if (res.data.info === "error") {
 				alertMessage(res.data.title, res.data.message, res.data.info);
@@ -77,7 +66,8 @@ export default function OtpInput({ isOpen, onToggle }) {
 		setLoad(true);
 		const keys = ["email", "csrf_token"];
 		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
-		const res = await processApiRequest("sendOTP", keys, values);
+		const res = await ApiService.processApiRequest("sendOTP", getFormData(keys, values));
+        setLoad(false);
 		if (res) {
 			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
 		}

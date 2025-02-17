@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { alertMessage } from "./utils";
+import { alertMessage, loading } from "./utils";
 
 const API_URL = "https://devop-sso.smalabschoolunesa1.sch.id";
 
@@ -60,7 +60,7 @@ class ApiService {
             let response;
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
-            // Mengecek apakah AUTH_KEY ada
+            loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
             if (AUTH_KEY == null || AUTH_KEY == "null") {
                 console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
                 response = await this.postInput(endpoint, data);
