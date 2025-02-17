@@ -32,10 +32,10 @@ export default function ChangePassword({ isOpen, onToggle }) {
         const values = [emailRef.current.value.trim(), Cookies.get("csrf")];
         localStorage.setItem("email", emailRef.current.value);
 
-        console.log(typeof getFormData(keys, values));
+        // console.log(typeof getFormData(keys, values));
         const params = new URLSearchParams(getFormData(keys, values));
         let AUTH_KEY = params.get("AUTH_KEY");
-        console.log(AUTH_KEY);
+        // console.log(AUTH_KEY);
         try {
             const res = await ApiService.processApiRequest("recover", getFormData(keys, values));
             console.log(res); return false;
