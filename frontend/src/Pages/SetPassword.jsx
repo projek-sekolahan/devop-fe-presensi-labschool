@@ -1,12 +1,5 @@
 import { useRef, useState } from "react";
-import {
-	getFormData,
-	getHash,
-	alertMessage,
-	loading,
-	handleSessionError,
-	addDefaultKeys,
-} from "../utils/utils";
+import { getFormData, getHash, alertMessage, loading, addDefaultKeys } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
@@ -32,7 +25,7 @@ export default function SetPassword({ isOpen, onToggle }) {
 		}
 	};
 
-	const submitHandler = (e) => {
+	const submitHandler = async (e) => {
 		e.preventDefault();
 		
 		// Validate form fields
@@ -48,7 +41,6 @@ export default function SetPassword({ isOpen, onToggle }) {
 		
 		loading("Loading", "Processing Set Password Data...");
 		setDisabled(true);
-
 		const key = ["password"];
 		const combinedKeys = addDefaultKeys(key);
 		const values = [
@@ -56,22 +48,11 @@ export default function SetPassword({ isOpen, onToggle }) {
 			localStorage.getItem("regist_token"),
 			Cookies.get("csrf"),
 		];
-		ApiService
-			.postInput("setPassword", getFormData(combinedKeys, values))
-			.then((res) => {
-				setDisabled(false);
-				res = JSON.parse(res);
-				Cookies.set("csrf", res.csrfHash);
-				alertMessage(
-					res.data.title,
-					res.data.message,
-					res.data.info,
-					() => onToggle(res.data.location)
-				);
-			})
-			.catch((err) => {
-				handleSessionError(err, "/setpassword");
-			});
+		const res = await ApiService.processApiRequest("setPassword", getFormData(combinedKeys, values));
+		setDisabled(false);
+		if (res) {
+			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+		}
 	};
 
 	return (

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ApiService from "../utils/ApiService";
-import { getFormData, alertMessage, loading, handleSessionError } from "../utils/utils";
+import { getFormData, alertMessage } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function OtpInput({ isOpen, onToggle }) {
@@ -14,6 +14,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 			inputRefs.current[0].focus();
 		}
 	}, []);
+
 	const onOtpSubmit = async () => {
 		setLoad(true);
 		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
@@ -29,22 +30,20 @@ export default function OtpInput({ isOpen, onToggle }) {
 			}
 		}
 	};
+
 	const handleChange = (index, e) => {
 		const value = e.target.value;
 		if (isNaN(value)) return;
-
 		const newOtp = [...otp];
-
 		newOtp[index] = value.substring(value.length - 1);
 		setOtp(newOtp);
-
 		if (value && index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
 		}
 	};
+
 	const handleClick = (index) => {
 		inputRefs.current[index].setSelectionRange(1, 1);
-
 		for (let i = 0; i < 4; i++) {
 			if (inputRefs.current[i].value === "") {
 				inputRefs.current[i].focus();
@@ -52,6 +51,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 			}
 		}
 	};
+
 	const handleKeyDown = (index, e) => {
 		if (
 			e.key === "Backspace" &&
@@ -62,6 +62,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 			inputRefs.current[index - 1].focus();
 		}
 	};
+
 	const sendOtpAgain = async () => {
 		setLoad(true);
 		const keys = ["email", "csrf_token"];
@@ -81,7 +82,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 				alt="labschool-unesa-logo"
 				className={`bg-image ${isOpen ? "open" : ""}`}
 			/>
-
 			{/* Verification Form Container */}
 			<div className={`verification-form-container ${isOpen ? "open" : "closed"}`}>
 				<h2 className="text-title text-xl">Email Verification</h2>
@@ -103,7 +103,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 							/>
 						))}
 					</div>
-
 					{/* Resend OTP Text */}
 					<p className="text-center font-light text-xs">
 						Tidak Menerima Kode OTP?{' '}
@@ -114,7 +113,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 							Klik Disini
 						</span>
 					</p>
-
 					{/* Submit Button */}
 					<button
 						type="button"
