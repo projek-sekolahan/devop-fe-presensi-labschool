@@ -57,7 +57,8 @@ class ApiService {
 
     static async processApiRequest(endpoint, data, AUTH_KEY) {
         try {
-            let response; console.log(data,AUTH_KEY); return false;
+            console.log({ endpoint, data, AUTH_KEY }); return false;
+            /* let response;
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
             loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
@@ -81,7 +82,7 @@ class ApiService {
             if (!response) throw new Error("No response from API");
             const result = JSON.parse(response);
             Cookies.set("csrf", result.csrfHash);
-            return result;
+            return result; */
         } catch (error) {
             console.error("API request failed:", error);
             alertMessage("Error", error.message || "Gagal menghubungi server", "error");
