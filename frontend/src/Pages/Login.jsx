@@ -3,15 +3,7 @@ import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import ApiService from "../utils/ApiService.js";
-import {
-  getHash,
-  getKey,
-  getFormData,
-  alertMessage,
-  loading,
-  addDefaultKeys,
-  handleSessionError,
-} from "../utils/utils.js";
+import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, handleSessionError } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
@@ -19,24 +11,6 @@ import ToggleButton from "../Components/ToggleButton";
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
 const TOKEN_KEYS = ["AUTH_KEY", "devop-sso"];
-const CSRF_KEY = "csrf";
-
-// Helper function for login processing
-const processLogin = async (formData, tokenKey) => {
-  try {
-    loading("Loading", "Logging in...");
-    const response = await ApiService.authPost("login", tokenKey[0], formData);
-    const loginResponse = JSON.parse(response);
-
-    // Save tokens in secure storage
-    localStorage.setItem("login_token", loginResponse.data.token);
-    Cookies.set(CSRF_KEY, loginResponse.csrfHash);
-
-    return loginResponse.data;
-  } catch (error) {
-    handleSessionError(error, "/login");
-  }
-};
 
 export default function Login({ isOpen, onToggle }) {
     // Refs for input elements
@@ -78,8 +52,7 @@ export default function Login({ isOpen, onToggle }) {
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
-        
-        const values = [emailValue, hash, tokenKey[1], Cookies.get(CSRF_KEY)];
+        const values = [emailValue, hash, tokenKey[1], Cookies.get("csrf")];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
 
         // Save temporary keys in localStorage
@@ -87,7 +60,10 @@ export default function Login({ isOpen, onToggle }) {
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
 
         try {
-        const loginResponse = await processLogin(formData, tokenKey);
+            loading("Loading", "Logging in...");
+            const loginResponse = await ApiService.processApiRequest("auth/login", formData);
+            // Save tokens in secure storage
+            localStorage.setItem("login_token", loginResponse.data.token);
             if (loginResponse.status==false) {
                 // error alert and redirect
                 alertMessage(
@@ -106,7 +82,7 @@ export default function Login({ isOpen, onToggle }) {
                 );
             }
         } catch (error) {
-        // Handle error during login
+            // Handle error during login
             handleSessionError(error, "/login");
         }
     };
