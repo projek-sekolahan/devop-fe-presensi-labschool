@@ -38,7 +38,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             await registerNewFace(faceData);
         } catch (err) {
             console.error("Error during face detection/registration:", err);
-            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("login"));
+            alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("facereg"));
         } finally {
             setIsLoading(false);
         }
@@ -64,7 +64,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             setIsLoading(false);
             console.error("Failed to register face.");
             alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
-                onToggle("login")
+                onToggle("facereg")
             );
         }
     };
