@@ -55,9 +55,9 @@ class ApiService {
         });
     }
 
-    static async processApiRequest(endpoint, data) {
+    static async processApiRequest(endpoint, data, AUTH_KEY) {
         try {
-            let response; console.log(data); return false;
+            let response; console.log(data,AUTH_KEY); return false;
             const params = new URLSearchParams(data);
             let AUTH_KEY = params.get("AUTH_KEY");
             loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);

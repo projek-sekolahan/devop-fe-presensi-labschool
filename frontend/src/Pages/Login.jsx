@@ -61,7 +61,7 @@ export default function Login({ isOpen, onToggle }) {
 
         try {
             loading("Loading", "Logging in...");
-            const loginResponse = await ApiService.processApiRequest("auth/login", formData);
+            const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
             // Save tokens in secure storage
             localStorage.setItem("login_token", loginResponse.data.token);
             if (loginResponse.status==false) {
