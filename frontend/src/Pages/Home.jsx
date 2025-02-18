@@ -43,16 +43,10 @@ const Home = ({ intervalId }) => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-      const response = await ApiService.usersPost(
-        "profile",
-        values[0],
-        getFormData(addDefaultKeys(AUTH_KEYS), values)
-      );
-      const res = JSON.parse(response);
-      if (res?.data) {
-        localStorage.setItem("token", res.data.token);
-        Cookies.set("csrf", res.csrfHash);
-        const user = parseJwt(res.data.token);
+      const response = await ApiService.processApiRequest("users/profile", getFormData(addDefaultKeys(AUTH_KEYS), values), values[0]);
+      if (response?.data) {
+        localStorage.setItem("token", response.data.token);
+        const user = parseJwt(response.data.token);
         localStorage.setItem("group_id", user.group_id);
         setUserData(user);
         if (Cookies.get("token_registered")==false || Cookies.get("token_registered")=="false") {
@@ -72,22 +66,13 @@ const Home = ({ intervalId }) => {
   }, []);
 
   // Register token
-  const registerToken = () => {
+  const registerToken = async () => {
     const values = getCombinedValues(TOKEN_KEYS);
-    ApiService
-      .notificationsPost("registerToken", values[0], getFormData(addDefaultKeys(TOKEN_KEYS), values))
-      .then((response) => {
-        const result = JSON.parse(response);
-        Cookies.set("csrf", result.csrfHash);
-        Cookies.set("token_registered", "true");
-        Cookies.set("cookiesAccepted", "true");
-      })
-      .catch((error) => { console.log(error);
-        /* handleSessionExpired({
-          title: "Register Token",
-          message: error?.message || "Gagal mendaftarkan token ke server",
-        }); */
-      });
+    const response = await ApiService.processApiRequest("notifications/registerToken", getFormData(addDefaultKeys(TOKEN_KEYS), values), values[0]);
+    if (response) {
+      Cookies.set("token_registered", "true");
+      Cookies.set("cookiesAccepted", "true");
+    }
   };
 
   // useEffect untuk mengambil data pengguna
