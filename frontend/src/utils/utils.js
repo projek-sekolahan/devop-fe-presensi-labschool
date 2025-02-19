@@ -55,16 +55,10 @@ export const getStoredValue = (key) => {
     let value = null;
     if (key === "csrf_token") {
         value = Cookies.get("csrf");
-        if (!value) {
-            console.warn("⚠️ CSRF Token tidak ditemukan di Cookies!");
-        }
     } else {
         value = localStorage.getItem(key) ?? null;
     }
-    console.log(`getStoredValue("${key}") =`, value); // Debugging
     return value;
-    /* if (key === "csrf_token") return Cookies.get("csrf") || null;
-    return localStorage.getItem(key) ?? null; */
 };
 
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
@@ -74,7 +68,6 @@ export const getCombinedValues = (keys) => {
         acc[key] = getStoredValue(key);
         return acc;
     }, {});
-
     return combinedKeys.map((key) => valuesObj[key]); // Mengembalikan array nilai saja
 };
 

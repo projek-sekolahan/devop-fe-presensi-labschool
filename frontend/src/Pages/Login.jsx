@@ -32,7 +32,6 @@ export default function Login({ isOpen, onToggle }) {
             password: { value: passwordRef.current.value.trim(), type: "password" },
             email: { value: emailRef.current.value.trim(), type: "email" },
         };
-
         // Validate form fields
         const validationErrors = validateFormFields(fields);
 
@@ -56,24 +55,11 @@ export default function Login({ isOpen, onToggle }) {
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
         // Data user yang di-input
         const userValues = [emailValue, hash, tokenKey[1]];
-
         // Data dari storage
         const storedValues = getCombinedValues([]); // Ambil data dari storage
-
         // Gabungkan semua nilai
         const values = [...userValues, ...storedValues];
-
-        console.log("🔹 userValues:", userValues);
-        console.log("🔹 storedValues:", storedValues);
-        console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
-        console.log("🔹 Final values:", values);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        console.log("🔹 Final formData:", formData);
-        return false;
-        // Save temporary keys in localStorage
-        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
-
         try {
             loading("Loading", "Logging in...");
             const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
@@ -110,7 +96,6 @@ export default function Login({ isOpen, onToggle }) {
         alt="labschool-unesa-logo"
         className={`bg-image ${isOpen ? "open" : ""}`}
     />
-
     {/* Login Form */}
     <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
         <h2 className="text-title text-4xl">Yuk Login!</h2>
@@ -126,7 +111,6 @@ export default function Login({ isOpen, onToggle }) {
                 autoComplete: "username",
                 error: errors.email,
             })}
-
             {/* Password Input */}
             {renderInputGroup({
                 id: "password",
@@ -140,14 +124,10 @@ export default function Login({ isOpen, onToggle }) {
             })}
             {/* Forgot Password and Register Link */}
             <div className="flex justify-between items-center text-sm">
-                {/* <Link to="#" onClick={() => onToggle("register")} className="text-link">
-                    Belum Punya Akun?
-                </Link> */}
                 <Link to="#" onClick={() => onToggle("recover")} className="text-link ml-auto">
                     Lupa password?
                 </Link>
             </div>
-
             {/* Submit Button */}
             <button
                 type="submit"
