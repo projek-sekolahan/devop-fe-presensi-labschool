@@ -1,16 +1,7 @@
-import {
-	UserCircleIcon,
-	Cog6ToothIcon,
-	QuestionMarkCircleIcon,
-	ChevronRightIcon,
-	XMarkIcon,
-	PowerIcon,
-	ArrowRightIcon,
-} from "@heroicons/react/24/outline";
+import { UserCircleIcon, Cog6ToothIcon, QuestionMarkCircleIcon, ChevronRightIcon, XMarkIcon, PowerIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import ApiService from "../utils/ApiService";
-import Cookies from "js-cookie";
-import { getFormData, alertMessage, addDefaultKeys, loading } from "../utils/utils";
+import { getFormData, alertMessage, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import Swal from "sweetalert2";
 export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) {
 	let isLogout = false;
@@ -30,35 +21,17 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 				allowEscapeKey: false,
 			}).then((result) => {
 				if (result.isConfirmed) {
-					loading("Loading", "Logging out...");
-					// Clear interval
 					clearInterval(intervalId);
-					const key = ["AUTH_KEY", "token"];
-					const combinedKeys = addDefaultKeys(key);
-					const values = [
-						localStorage.getItem("AUTH_KEY"),
-						localStorage.getItem("login_token"),
-						localStorage.getItem("devop-sso"),
-						Cookies.get("csrf"),
-					];
-					ApiService
-						.authPost(
-							"logout",
-							localStorage.getItem("AUTH_KEY"),
-							getFormData(combinedKeys, values),
-						)
-						.then((res) => {
-							localStorage.clear();
-							res = JSON.parse(res);
-							alertMessage(
-								"Logout Succesfully",
-								"You has been loged out!",
-								"success",
-								() => {
-									window.location.replace("/login");
-								},
-							);
-						});
+					const keys = ["AUTH_KEY", "token"];
+					const values = getCombinedValues(keys);
+					const response = ApiService.processApiRequest("auth/logout", getFormData(addDefaultKeys(keys), values), localStorage.getItem("AUTH_KEY"), true);
+					if (response?.data) {
+						localStorage.clear();
+						alertMessage(
+							"Logout Succesfully", "You has been loged out!", "success",
+							() => { window.location.replace("/login") },
+						);
+					}
 				} else {
 					isLogout = false;
 				}
@@ -74,10 +47,7 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 			<div className="w-full h-full">
 				<div className="size-full">
 					<div id="bio">
-						<img
-							src={userData?.img_location || "/default-profile.png"}
-							alt="photo_profile"
-						/>
+						<img src={userData?.img_location || "/default-profile.png"} alt="photo_profile"/>
 						<div className="user-info">
 							<h4>Halo!</h4>
 							<p>{userData?.nama_lengkap}</p>
