@@ -55,10 +55,10 @@ class ApiService {
         });
     }
 
-    static async processApiRequest(endpoint, data, authKey, loading) {
+    static async processApiRequest(endpoint, data, authKey, load) {
         try {
             let response;
-            if (loading) {
+            if (load) {
                 loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
             }
             if (!authKey || authKey === "null") {
