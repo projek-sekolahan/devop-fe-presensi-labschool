@@ -51,14 +51,21 @@ export default function Login({ isOpen, onToggle }) {
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
         // Save temporary keys in localStorage
-        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
+        /* localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]); */
         // Data user yang di-input
         const userValues = [emailValue, hash, tokenKey[1]];
-        // Data dari storage
-        const storedValues = getCombinedValues([]); // Ambil data dari storage
-        // Gabungkan semua nilai
-        const values = [...userValues, ...storedValues].slice(0, addDefaultKeys(FORM_KEYS).length);
+const storedValues = getCombinedValues(["devop-sso", "csrf_token"]);
+
+console.log("🔹 storedValues setelah getCombinedValues:", storedValues);
+
+// Pastikan csrf_token memiliki nilai yang benar
+const values = [...userValues, ...storedValues].map((val, i) =>
+    val ?? (addDefaultKeys(FORM_KEYS)[i] === "csrf_token" ? "MISSING_CSRF" : "null")
+);
+
+console.log("🔹 Final values:", values);
+
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         loading("Loading", "Logging in...");
 console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
