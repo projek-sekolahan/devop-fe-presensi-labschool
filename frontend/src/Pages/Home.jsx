@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  parseJwt,
-  getFormData,
-  handleSessionExpired,
-  addDefaultKeys,
-} from "../utils/utils";
+import { parseJwt, getFormData, handleSessionExpired, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService.js";
 import { Link } from "react-router-dom";
 import { FaBars, FaBell, FaPersonCircleCheck, FaCalendarCheck } from "react-icons/fa6";
@@ -20,7 +15,7 @@ const AUTH_KEYS = ["AUTH_KEY", "token"];
 const TOKEN_KEYS = ["AUTH_KEY", "token_fcm", "token"];
 
 // Helper function to get combined values from localStorage and Cookies
-const getCombinedValues = (keys) => {
+/* const getCombinedValues = (keys) => {
   const combinedKeys = addDefaultKeys(keys);
   return combinedKeys.map((key) => {
     let value = localStorage.getItem(key);
@@ -28,7 +23,7 @@ const getCombinedValues = (keys) => {
     if (key === "token") value = localStorage.getItem("login_token");
     return value;
   });
-};
+}; */
 
 const Home = ({ intervalId }) => {
   const [showMenu, setShowMenu] = useState(false); // Untuk SideMenu

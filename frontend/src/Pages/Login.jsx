@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import Cookies from "js-cookie";
 import ApiService from "../utils/ApiService.js";
-import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, handleSessionError } from "../utils/utils.js";
+import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, handleSessionError, getCombinedValues } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
@@ -52,7 +52,7 @@ export default function Login({ isOpen, onToggle }) {
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
-        const values = [emailValue, hash, tokenKey[1], Cookies.get("csrf")];
+        const values = getCombinedValues([emailValue, hash, tokenKey[1]]);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
 
         // Save temporary keys in localStorage

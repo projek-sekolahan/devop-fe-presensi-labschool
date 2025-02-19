@@ -24,7 +24,6 @@ export const getFaceUrl = (source, x, y, size) => {
     canvas.width = size;
     canvas.height = size;
     const context = canvas.getContext("2d");
-
     context?.drawImage(source, x, y, size, size, 0, 0, size, size);
     const url = canvas.toDataURL("image/jpeg");
     return url;
@@ -34,21 +33,36 @@ export const getFaceUrl = (source, x, y, size) => {
 export const getImageUrl = (fileInput, callback) => {
     // Membuat objek FileReader
     const reader = new FileReader();
-
     // Event handler yang akan dipanggil setelah pembacaan file selesai
     reader.onload = function (event) {
         // Mengembalikan URL gambar dari data yang dibaca
         callback(event.target.result);
     };
-
     // Membaca file gambar sebagai URL data
     reader.readAsDataURL(fileInput);
 };
 
+// Default keys yang selalu digunakan
 export const defaultKeys = ["devop-sso", "csrf_token"];
 
+// Fungsi untuk menambahkan default keys ke dalam daftar keys yang diberikan
 export const addDefaultKeys = (keys) => {
     return [...keys, ...defaultKeys];
+};
+
+// Fungsi untuk mengambil nilai dari localStorage atau Cookies dengan fallback
+export const getStoredValue = (key) => {
+    let value = localStorage.getItem(key);
+    if (key === "csrf_token" && !value) {
+        value = Cookies.get("csrf");
+    }
+    return value;
+};
+
+// Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
+export const getCombinedValues = (keys) => {
+    const combinedKeys = addDefaultKeys(keys);
+    return combinedKeys.map(getStoredValue);
 };
 
 export const createFormData = (keys, values) => {
@@ -142,7 +156,6 @@ export const loading = (title, text) => {
 
 export const formatDate = (inputDate) => {
     const date = new Date(inputDate);
-
     // Array nama hari dalam Bahasa Indonesia
     const days = [
         "Minggu",
@@ -153,7 +166,6 @@ export const formatDate = (inputDate) => {
         "Jumat",
         "Sabtu",
     ];
-
     // Array nama bulan dalam Bahasa Indonesia
     const months = [
         "Januari",
@@ -169,13 +181,11 @@ export const formatDate = (inputDate) => {
         "November",
         "Desember",
     ];
-
     // Mendapatkan hari, tanggal, bulan, dan tahun
     const day = days[date.getDay()];
     const dayOfMonth = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-
     // Mengembalikan tanggal dalam format yang diinginkan
     return `${day}, ${dayOfMonth} ${month} ${year}`;
 };
@@ -191,7 +201,6 @@ export const useClock = (timeRef, dateRef, dayRef) => {
         "Jumat",
         "Sabtu",
     ];
-
     useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date();
@@ -201,14 +210,12 @@ export const useClock = (timeRef, dateRef, dayRef) => {
                 .join(":");
             const currentDate = now.toLocaleDateString("en-GB");
             const currentDay = days[now.getDay()];
-
             if (timeRef.current && dateRef.current && dayRef.current) {
                 timeRef.current.innerText = `${currentTime} WIB`;
                 dateRef.current.innerText = `${currentDate}`;
                 dayRef.current.innerText = `${currentDay},`;
             }
         }, 1000);
-
         return () => clearInterval(interval);
     }, [timeRef, dateRef, dayRef]);
 };
@@ -217,7 +224,6 @@ function clearCookies() {
     localStorage.clear();
     // Ambil semua cookies yang ada
     var allCookies = Cookies.get();
-
     // Iterasi setiap cookie
     Object.keys(allCookies).forEach(function (cookieName) {
         var cookieValue = Cookies.get(cookieName);
