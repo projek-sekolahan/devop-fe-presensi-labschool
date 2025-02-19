@@ -55,31 +55,41 @@ class ApiService {
         });
     }
 
-    static async processApiRequest(endpoint, data, AUTH_KEY) {
-        let response;
-        loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
-        if (AUTH_KEY == null || AUTH_KEY == "null") {
-            console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
-            response = await this.postInput(endpoint, data);
-        } else {
-            console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
-            if (endpoint.startsWith("auth")) {
-                response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, data);
-            } else if (endpoint.startsWith("users")) {
-                response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, data);
-            } else if (endpoint.startsWith("presensi")) {
-                response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, data);
-            } else if (endpoint.startsWith("notifications")) {
-                response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, data);
-            } else {
-                response = await this.post(`/api/client/${endpoint}`, data, AUTH_KEY);
+    static async processApiRequest(endpoint, data, authKey, loading) {
+        try {
+            let response;
+            if (loading) {
+                loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
             }
+            if (!authKey || authKey === "null") {
+                console.warn("authKey tidak ditemukan, mengirim request ke postInput...");
+                response = await this.postInput(endpoint, data);
+            } else {
+                console.warn("authKey ditemukan, mengirim request ke API utama...");
+                const endpointMap = {
+                    auth: this.authPost,
+                    users: this.usersPost,
+                    presensi: this.presensiPost,
+                    notifications: this.notificationsPost,
+                };
+                const [prefix, ...rest] = endpoint.split("/");
+                const handler = endpointMap[prefix];
+                if (handler) {
+                    response = await handler.call(this, rest.join("/"), authKey, data);
+                } else {
+                    response = await this.post(`/api/client/${endpoint}`, data, authKey);
+                }
+            }
+            if (!response) {
+                console.error(`Tidak ada respon dari API untuk endpoint: ${endpoint}`);
+            }
+            const result = JSON.parse(response);
+            Cookies.set("csrf", result?.csrfHash);
+            return result;
+        } catch (error) {
+            console.error(`processApiRequest Error pada endpoint: ${endpoint}`, error);
         }
-        if (!response) throw new Error("No response from API");
-        const result = JSON.parse(response);
-        Cookies.set("csrf", result.csrfHash);
-        return result;
-    }
+    }    
 
     static async postInput(url, data) {
         return this.post(`/input/${url}`, data);

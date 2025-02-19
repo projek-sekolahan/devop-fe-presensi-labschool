@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import ApiService from "../utils/ApiService.js";
-import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, getCombinedValues } from "../utils/utils.js";
+import { getHash, getKey, getFormData, alertMessage, addDefaultKeys, getCombinedValues } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -56,8 +57,7 @@ export default function Login({ isOpen, onToggle }) {
         const storedValues = getCombinedValues([]);
         const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        loading("Loading", "Logging in...");
-        const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
+        const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0], loading=true);
         localStorage.setItem("login_token", loginResponse.data.token);
         if (loginResponse.status==false) {
             // error alert and redirect
