@@ -58,7 +58,7 @@ export default function Login({ isOpen, onToggle }) {
         // Data dari storage
         const storedValues = getCombinedValues([]); // Ambil data dari storage
         // Gabungkan semua nilai
-        const values = [...userValues, ...storedValues];
+        const values = [...userValues, ...storedValues].slice(0, addDefaultKeys(FORM_KEYS).length);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         loading("Loading", "Logging in...");
 console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
