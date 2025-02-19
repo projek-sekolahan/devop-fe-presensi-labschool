@@ -64,8 +64,6 @@ const values = [...userValues, ...storedValues].map((val, i) =>
     val ?? (addDefaultKeys(FORM_KEYS)[i] === "csrf_token" ? "MISSING_CSRF" : "null")
 );
 
-console.log("🔹 Final values:", values);
-
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         loading("Loading", "Logging in...");
 console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
