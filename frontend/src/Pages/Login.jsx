@@ -51,9 +51,17 @@ export default function Login({ isOpen, onToggle }) {
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
-        const values = getCombinedValues([emailValue, hash, tokenKey[1]]);
+        // Data user yang di-input
+        const userValues = [emailValue, hash, tokenKey[1]];
+
+        // Data dari storage
+        const storedValues = getCombinedValues([]); // Ambil data dari storage
+
+        // Gabungkan semua nilai
+        const values = [...userValues, ...storedValues];
+
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        console.log(formData); return false;
+        console.log(formData);
         // Save temporary keys in localStorage
         localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);

@@ -59,10 +59,12 @@ export const getStoredValue = (key) => {
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
 export const getCombinedValues = (keys) => {
     const combinedKeys = addDefaultKeys(keys);
-    return combinedKeys.reduce((acc, key) => {
+    const valuesObj = combinedKeys.reduce((acc, key) => {
         acc[key] = getStoredValue(key);
         return acc;
     }, {});
+
+    return Object.values(valuesObj); // Mengembalikan array nilai saja
 };
 
 export const createFormData = (keys, values) => {
@@ -75,12 +77,10 @@ export const createFormData = (keys, values) => {
 
 export const getFormData = (keys, values) => {
     return keys
-        .map(
-            (key, index) =>
-                `${encodeURIComponent(key)}=${encodeURIComponent(
-                    values[index]
-                )}`
-        )
+        .map((key, index) => {
+            const value = values[index] ?? "null"; // Set default "null" jika undefined
+            return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        })
         .join("&");
 };
 
