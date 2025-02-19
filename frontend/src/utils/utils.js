@@ -52,17 +52,17 @@ export const addDefaultKeys = (keys) => {
 
 // Fungsi untuk mengambil nilai dari localStorage atau Cookies dengan fallback
 export const getStoredValue = (key) => {
-    let value = localStorage.getItem(key);
-    if (key === "csrf_token" && !value) {
-        value = Cookies.get("csrf");
-    }
-    return value;
+    if (key === "csrf_token") return Cookies.get("csrf") || null;
+    return localStorage.getItem(key) ?? null;
 };
 
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
 export const getCombinedValues = (keys) => {
     const combinedKeys = addDefaultKeys(keys);
-    return combinedKeys.map(getStoredValue);
+    return combinedKeys.reduce((acc, key) => {
+        acc[key] = getStoredValue(key);
+        return acc;
+    }, {});
 };
 
 export const createFormData = (keys, values) => {
