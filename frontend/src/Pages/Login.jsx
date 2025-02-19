@@ -14,7 +14,6 @@ const TOKEN_KEYS = ["AUTH_KEY", "devop-sso"];
 export default function Login({ isOpen, onToggle }) {
     // Refs for input elements
     const emailRef = useRef(null);
-    const loading = useRef(null);
     const passwordRef = useRef(null);
     const submitBtnRef = useRef(null);
     const [errors, setErrors] = useState({
@@ -27,7 +26,6 @@ export default function Login({ isOpen, onToggle }) {
     // Handle form submission
     const handleLogin = async (e) => {
         e.preventDefault();
-
         // Define fields for validation
         const fields = {
             password: { value: passwordRef.current.value.trim(), type: "password" },
@@ -35,18 +33,15 @@ export default function Login({ isOpen, onToggle }) {
         };
         // Validate form fields
         const validationErrors = validateFormFields(fields);
-
         // Set errors if any
         setErrors({
             password: validationErrors.password || "",
             email: validationErrors.email || "",
         });
-        
         // If there are validation errors, stop form submission
         if (Object.values(validationErrors).some((error) => error)) {
             return;
         }
-
         const emailValue = emailRef.current.value.trim();
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
