@@ -51,6 +51,9 @@ export default function Login({ isOpen, onToggle }) {
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
+        // Save temporary keys in localStorage
+        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
         // Data user yang di-input
         const userValues = [emailValue, hash, tokenKey[1]];
 
@@ -62,7 +65,8 @@ export default function Login({ isOpen, onToggle }) {
 
         console.log("🔹 userValues:", userValues);
         console.log("🔹 storedValues:", storedValues);
-        console.log("🔹 Combined values:", values);
+        console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
+        console.log("🔹 Final values:", values);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         console.log("🔹 Final formData:", formData);
         return false;
