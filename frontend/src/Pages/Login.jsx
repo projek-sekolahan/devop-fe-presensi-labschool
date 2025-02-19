@@ -84,7 +84,7 @@ export default function Login({ isOpen, onToggle }) {
             }
         } catch (error) {
             // Handle error during login
-            handleSessionError(error, "/login");
+            //handleSessionError(error, "/login");
         }
     };
 
