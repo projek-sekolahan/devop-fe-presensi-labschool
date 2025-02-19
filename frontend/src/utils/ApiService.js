@@ -82,7 +82,7 @@ class ApiService {
             return result;
         } catch (error) {
             console.error("API request failed:", error);
-            alertMessage("Error", error.message || "Gagal menghubungi server", "error");
+            // alertMessage("Error", error.message || "Gagal menghubungi server", "error");
         }
     }
 

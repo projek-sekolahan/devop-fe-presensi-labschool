@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import ApiService from "../utils/ApiService.js";
-import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, handleSessionError, getCombinedValues } from "../utils/utils.js";
+import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, getCombinedValues } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
@@ -60,31 +60,26 @@ export default function Login({ isOpen, onToggle }) {
         // Gabungkan semua nilai
         const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        try {
-            loading("Loading", "Logging in...");
-            const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
-            // Save tokens in secure storage
-            localStorage.setItem("login_token", loginResponse.data.token);
-            if (loginResponse.status==false) {
-                // error alert and redirect
-                alertMessage(
-                    loginResponse.title,
-                    loginResponse.message,
-                    "error",
-                    () => window.location.replace("/login")
-                );
-            } else {
-                // Success alert and redirect
-                alertMessage(
-                    "Berhasil",
-                    loginResponse.message,
-                    "success",
-                    () => window.location.replace("/home")
-                );
-            }
-        } catch (error) {
-            // Handle error during login
-            //handleSessionError(error, "/login");
+        loading("Loading", "Logging in...");
+        const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
+        // Save tokens in secure storage
+        localStorage.setItem("login_token", loginResponse.data.token);
+        if (loginResponse.status==false) {
+            // error alert and redirect
+            alertMessage(
+                loginResponse.title,
+                loginResponse.message,
+                "error",
+                () => window.location.replace("/login")
+            );
+        } else {
+            // Success alert and redirect
+            alertMessage(
+                "Berhasil",
+                loginResponse.message,
+                "success",
+                () => window.location.replace("/home")
+            );
         }
     };
 
