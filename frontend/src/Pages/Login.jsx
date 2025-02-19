@@ -55,7 +55,7 @@ export default function Login({ isOpen, onToggle }) {
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
         // Data user yang di-input
         const userValues = [emailValue, hash];
-const storedValues = getCombinedValues(["devop-sso", "csrf_token"]);
+const storedValues = getCombinedValues([]);
 
 console.log("🔹 storedValues setelah getCombinedValues:", storedValues);
 
