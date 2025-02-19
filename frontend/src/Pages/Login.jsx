@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import PasswordShow from "../Components/PasswordShow";
-import Cookies from "js-cookie";
 import ApiService from "../utils/ApiService.js";
 import { getHash, getKey, getFormData, alertMessage, loading, addDefaultKeys, handleSessionError, getCombinedValues } from "../utils/utils.js";
 import { validateFormFields } from "../utils/validation";
@@ -54,7 +53,7 @@ export default function Login({ isOpen, onToggle }) {
         const tokenKey = getKey(emailValue, hash);
         const values = getCombinedValues([emailValue, hash, tokenKey[1]]);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-
+        console.log(formData); return false;
         // Save temporary keys in localStorage
         localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
