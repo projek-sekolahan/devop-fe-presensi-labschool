@@ -50,25 +50,14 @@ export default function Login({ isOpen, onToggle }) {
         const passwordValue = passwordRef.current.value.trim();
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
-        // Save temporary keys in localStorage
         localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
-        // Data user yang di-input
         const userValues = [emailValue, hash];
-const storedValues = getCombinedValues([]);
-
-console.log("🔹 storedValues setelah getCombinedValues:", storedValues);
-
-// Pastikan csrf_token memiliki nilai yang benar
-const values = [...userValues, ...storedValues];
-
+        const storedValues = getCombinedValues([]);
+        const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         loading("Loading", "Logging in...");
-console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
-console.log("🔹 Final values:", values);
-console.log("🔹 Final formData:", formData); return false;
         const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
-        // Save tokens in secure storage
         localStorage.setItem("login_token", loginResponse.data.token);
         if (loginResponse.status==false) {
             // error alert and redirect
