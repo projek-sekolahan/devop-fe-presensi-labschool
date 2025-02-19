@@ -61,6 +61,9 @@ export default function Login({ isOpen, onToggle }) {
         const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
         loading("Loading", "Logging in...");
+console.log("🔹 Final keys:", addDefaultKeys(FORM_KEYS));
+console.log("🔹 Final values:", values);
+console.log("🔹 Final formData:", formData); return false;
         const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0]);
         // Save tokens in secure storage
         localStorage.setItem("login_token", loginResponse.data.token);

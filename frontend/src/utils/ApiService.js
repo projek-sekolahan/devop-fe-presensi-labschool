@@ -56,34 +56,29 @@ class ApiService {
     }
 
     static async processApiRequest(endpoint, data, AUTH_KEY) {
-        try {
-            let response;
-            loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
-            if (AUTH_KEY == null || AUTH_KEY == "null") {
-                console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
-                response = await this.postInput(endpoint, data);
+        let response;
+        loading("Loading", `Processing ${endpoint.replace(/\//g, ' ')} Data...`);
+        if (AUTH_KEY == null || AUTH_KEY == "null") {
+            console.warn("AUTH_KEY tidak ditemukan, mengirim request ke postInput...");
+            response = await this.postInput(endpoint, data);
+        } else {
+            console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
+            if (endpoint.startsWith("auth")) {
+                response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, data);
+            } else if (endpoint.startsWith("users")) {
+                response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, data);
+            } else if (endpoint.startsWith("presensi")) {
+                response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, data);
+            } else if (endpoint.startsWith("notifications")) {
+                response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, data);
             } else {
-                console.warn("AUTH_KEY ditemukan, mengirim request ke API utama...");
-                if (endpoint.startsWith("auth")) {
-                    response = await this.authPost(endpoint.replace("auth/", ""), AUTH_KEY, data);
-                } else if (endpoint.startsWith("users")) {
-                    response = await this.usersPost(endpoint.replace("users/", ""), AUTH_KEY, data);
-                } else if (endpoint.startsWith("presensi")) {
-                    response = await this.presensiPost(endpoint.replace("presensi/", ""), AUTH_KEY, data);
-                } else if (endpoint.startsWith("notifications")) {
-                    response = await this.notificationsPost(endpoint.replace("notifications/", ""), AUTH_KEY, data);
-                } else {
-                    response = await this.post(`/api/client/${endpoint}`, data, AUTH_KEY);
-                }
+                response = await this.post(`/api/client/${endpoint}`, data, AUTH_KEY);
             }
-            if (!response) throw new Error("No response from API");
-            const result = JSON.parse(response);
-            Cookies.set("csrf", result.csrfHash);
-            return result;
-        } catch (error) {
-            console.error("API request failed:", error);
-            // alertMessage("Error", error.message || "Gagal menghubungi server", "error");
         }
+        if (!response) throw new Error("No response from API");
+        const result = JSON.parse(response);
+        Cookies.set("csrf", result.csrfHash);
+        return result;
     }
 
     static async postInput(url, data) {
