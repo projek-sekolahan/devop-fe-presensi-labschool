@@ -51,15 +51,10 @@ export const addDefaultKeys = (keys) => {
 };
 
 // Fungsi untuk mengambil nilai dari localStorage atau Cookies dengan fallback
-export const getStoredValue = (key) => {
-    let value = null;
-    if (key === "csrf_token") {
-        value = Cookies.get("csrf");
-    } else {
-        value = localStorage.getItem(key) ?? null;
-    }
-    return value;
-};
+export const getStoredValue = (key) => ({
+    csrf_token: Cookies.get("csrf"),
+    token: localStorage.getItem("login_token"),
+}[key] ?? localStorage.getItem(key) ?? null);
 
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
 export const getCombinedValues = (keys) => {
