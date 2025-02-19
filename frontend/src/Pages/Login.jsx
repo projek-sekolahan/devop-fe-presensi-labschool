@@ -51,8 +51,8 @@ export default function Login({ isOpen, onToggle }) {
         const hash = getHash(passwordValue);
         const tokenKey = getKey(emailValue, hash);
         // Save temporary keys in localStorage
-        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
+        /* localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]); */
         // Data user yang di-input
         const userValues = [emailValue, hash, tokenKey[1]];
         // Data dari storage
