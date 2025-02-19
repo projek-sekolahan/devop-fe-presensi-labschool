@@ -61,7 +61,7 @@ export default function Login({ isOpen, onToggle }) {
         const values = [...userValues, ...storedValues];
 
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        console.log(formData);
+        console.log(formData); return false;
         // Save temporary keys in localStorage
         localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
