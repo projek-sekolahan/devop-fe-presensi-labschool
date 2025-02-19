@@ -75,7 +75,7 @@ export const getCombinedValues = (keys) => {
         return acc;
     }, {});
 
-    return Object.values(valuesObj); // Mengembalikan array nilai saja
+    return combinedKeys.map((key) => valuesObj[key]); // Mengembalikan array nilai saja
 };
 
 export const createFormData = (keys, values) => {

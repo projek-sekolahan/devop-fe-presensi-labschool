@@ -60,8 +60,12 @@ export default function Login({ isOpen, onToggle }) {
         // Gabungkan semua nilai
         const values = [...userValues, ...storedValues];
 
+        console.log("🔹 userValues:", userValues);
+        console.log("🔹 storedValues:", storedValues);
+        console.log("🔹 Combined values:", values);
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        console.log(formData); return false;
+        console.log("🔹 Final formData:", formData);
+        return false;
         // Save temporary keys in localStorage
         localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
         localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
