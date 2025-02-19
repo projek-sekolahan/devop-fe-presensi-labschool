@@ -6,7 +6,6 @@ import { getHash, getKey, getFormData, alertMessage, addDefaultKeys, getCombined
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
-import { FaArrowTrendUp } from "react-icons/fa6";
 
 // Constants for form fields and keys
 const FORM_KEYS = ["username", "password"];
@@ -15,6 +14,7 @@ const TOKEN_KEYS = ["AUTH_KEY", "devop-sso"];
 export default function Login({ isOpen, onToggle }) {
     // Refs for input elements
     const emailRef = useRef(null);
+    const loading = useRef(null);
     const passwordRef = useRef(null);
     const submitBtnRef = useRef(null);
     const [errors, setErrors] = useState({
@@ -57,7 +57,7 @@ export default function Login({ isOpen, onToggle }) {
         const storedValues = getCombinedValues([]);
         const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
-        const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0], loading=true);
+        const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0], true);
         localStorage.setItem("login_token", loginResponse.data.token);
         if (loginResponse.status==false) {
             // error alert and redirect

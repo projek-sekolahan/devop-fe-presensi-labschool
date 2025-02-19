@@ -27,7 +27,7 @@ const Home = ({ intervalId }) => {
     try {
       setLoading(true);
       const values = getCombinedValues(AUTH_KEYS);
-      const response = await ApiService.processApiRequest("users/profile", getFormData(addDefaultKeys(AUTH_KEYS), values), values[0], loading=false);
+      const response = await ApiService.processApiRequest("users/profile", getFormData(addDefaultKeys(AUTH_KEYS), values), values[0], false);
       if (response?.data) {
         localStorage.setItem("token", response.data.token);
         const user = parseJwt(response.data.token);
@@ -52,7 +52,7 @@ const Home = ({ intervalId }) => {
   // Register token
   const registerToken = async () => {
     const values = getCombinedValues(TOKEN_KEYS);
-    const response = await ApiService.processApiRequest("notifications/registerToken", getFormData(addDefaultKeys(TOKEN_KEYS), values), values[0], loading=false);
+    const response = await ApiService.processApiRequest("notifications/registerToken", getFormData(addDefaultKeys(TOKEN_KEYS), values), values[0], false);
     if (response) {
       Cookies.set("token_registered", "true");
       Cookies.set("cookiesAccepted", "true");
