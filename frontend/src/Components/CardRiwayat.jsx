@@ -50,14 +50,14 @@ export default function CardRiwayat({ index, history, biodata }) {
             Cookies.get("csrf"),
         ]; */
         const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
-        const storedValues = getCombinedValues([]);
+        const storedValues = getCombinedValues(keys);
         const values = [...formValues, ...storedValues];
-        const formData = getFormData(addDefaultKeys(keys), values);
         // const values = getCombinedValues(keys);
+        const formData = getFormData(keys, values);
         const response = ApiService.processApiRequest("presensi/detail_presensi", formData, localStorage.getItem("AUTH_KEY"), false);
-        console.log("✅ Final keys:", addDefaultKeys(keys));
+        console.log("✅ Final keys:", keys);
         console.log("✅ Final values:", values);
-        console.log("✅ Final formData:", getFormData(addDefaultKeys(keys), values));
+        console.log("✅ Final formData:", formData);
         console.log("✅ Final response:", response);
         return false;
         /* ApiService
