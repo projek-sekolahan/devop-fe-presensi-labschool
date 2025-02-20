@@ -3,7 +3,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { Card, Button } from "flowbite-react";
-import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage } from "../utils/utils";
+import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import DetailModal from "../Components/DetailModal";
 
@@ -42,15 +42,25 @@ export default function CardRiwayat({ index, history, biodata }) {
     
     const fetchDetailPresensi = () => {
         const keys = addDefaultKeys(["AUTH_KEY", "token", "param"]);
-        const values = [
+        /* const values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
             `${biodata.user_id},${history["Tanggal Presensi"]}`,
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf"),
-        ];
-
-        ApiService
+        ]; */
+        const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
+        const storedValues = getCombinedValues(keys);
+        const values = [...formValues, ...storedValues];
+        const formData = getFormData(addDefaultKeys(keys), values);
+        // const values = getCombinedValues(keys);
+        const response = ApiService.processApiRequest("presensi/detail_presensi", formData, localStorage.getItem("AUTH_KEY"), false);
+        console.log("✅ Final keys:", addDefaultKeys(keys));
+        console.log("✅ Final values:", values);
+        console.log("✅ Final formData:", getFormData(addDefaultKeys(keys), values));
+        console.log("✅ Final response:", response);
+        return false;
+        /* ApiService
             .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
             .then((res) => {
                 const parsedRes = JSON.parse(res);
@@ -65,7 +75,7 @@ export default function CardRiwayat({ index, history, biodata }) {
                 setLoading(false);
                 setPulsing(false);
                 alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
-            });
+            }); */
     };
 
     const clickHandler = () => {
