@@ -24,16 +24,8 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 					clearInterval(intervalId);
 					const keys = ["AUTH_KEY", "token"];
 					const values = getCombinedValues(keys);
-
-					console.log("✅ Final keys:", addDefaultKeys(keys));
-					console.log("✅ Final values:", values);
-					console.log("✅ Final formData:", getFormData(addDefaultKeys(keys), values));
-
 					const response = ApiService.processApiRequest("auth/logout", getFormData(addDefaultKeys(keys), values), localStorage.getItem("AUTH_KEY"), true);
-
-					console.log("✅ Final response:", response.data);
-					return false;
-					if (response?.data) {
+					if (response) {
 						localStorage.clear();
 						alertMessage(
 							"Logout Succesfully", "You has been loged out!", "success",
