@@ -42,25 +42,25 @@ export default function CardRiwayat({ index, history, biodata }) {
     
     const fetchDetailPresensi = () => {
         const keys = addDefaultKeys(["param", "AUTH_KEY", "token"]);
-        /* const values = [
-            localStorage.getItem("AUTH_KEY"),
-            localStorage.getItem("login_token"),
-            `${biodata.user_id},${history["Tanggal Presensi"]}`,
-            localStorage.getItem("devop-sso"),
-            Cookies.get("csrf"),
-        ]; */
         const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
         const storedValues = getCombinedValues(keys.slice(1, 3));
         const values = [...formValues, ...storedValues];
-        // const values = getCombinedValues(keys);
         const formData = getFormData(keys, values);
         const response = ApiService.processApiRequest("presensi/detail_presensi", formData, localStorage.getItem("AUTH_KEY"), false);
         console.log("✅ selected Keys:", keys.slice(1, 3));
         console.log("✅ Final keys:", keys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response);
-        return false;
+        console.log("✅ Final response:", response.data);
+        if (response?.data) {
+            setDatas(parseJwt(response.data.token).result);
+            setLoading(false);
+            setTimeout(() => setPulsing(false), 600);
+        } else {
+            setLoading(false);
+            setPulsing(false);
+            alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
+        }
         /* ApiService
             .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
             .then((res) => {
