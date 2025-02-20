@@ -51,32 +51,12 @@ export default function CardRiwayat({ index, history, biodata }) {
         console.log("✅ Final keys:", keys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response.data);
-        if (response?.data) {
+        console.log("✅ Final response:", response);
+        if (response) {
             setDatas(parseJwt(response.data.token).result);
-            setLoading(false);
-            setTimeout(() => setPulsing(false), 600);
-        } else {
-            setLoading(false);
-            setPulsing(false);
-            alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
-        }
-        /* ApiService
-            .presensiPost("detail_presensi", localStorage.getItem("AUTH_KEY"), getFormData(keys, values))
-            .then((res) => {
-                const parsedRes = JSON.parse(res);
-                Cookies.set("csrf", parsedRes.csrfHash);
-                setDatas(parseJwt(parsedRes.data.token).result);
-                setLoading(false);
-                setTimeout(() => setPulsing(false), 600);
-            })
-            .catch((e) => {
-                const res = JSON.parse(e.responseText);
-                Cookies.set("csrf", res.csrfHash);
-                setLoading(false);
-                setPulsing(false);
-                alertMessage(res.data.title, res.data.message, res.data.info, () => Swal.close());
-            }); */
+        } 
+        setLoading(false);
+        setTimeout(() => setPulsing(false), 600);
     };
 
     const clickHandler = () => {
