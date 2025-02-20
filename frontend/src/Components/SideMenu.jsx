@@ -31,7 +31,7 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 
 					const response = ApiService.processApiRequest("auth/logout", getFormData(addDefaultKeys(keys), values), localStorage.getItem("AUTH_KEY"), true);
 
-					console.log("✅ Final response:", response);
+					console.log("✅ Final response:", response?.data);
 					return false;
 					if (response?.data) {
 						localStorage.clear();
