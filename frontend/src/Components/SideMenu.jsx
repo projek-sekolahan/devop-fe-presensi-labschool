@@ -19,13 +19,13 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 				allowOutsideClick: false,
 				showConfirmButton: true,
 				allowEscapeKey: false,
-			}).then((result) => {
+			}).then( async (result) => {
 				if (result.isConfirmed) {
 					clearInterval(intervalId);
 					const keys = ["AUTH_KEY", "token"];
 					const values = getCombinedValues(keys);
-					const response = ApiService.processApiRequest("auth/logout", getFormData(addDefaultKeys(keys), values), localStorage.getItem("AUTH_KEY"), false);
-					if (response) {
+					const response = await ApiService.processApiRequest("auth/logout", getFormData(addDefaultKeys(keys), values), localStorage.getItem("AUTH_KEY"), false);
+					if (response?.data) {
 						localStorage.clear();
 						alertMessage(
 							"Logout Succesfully", "You has been loged out!", "success",

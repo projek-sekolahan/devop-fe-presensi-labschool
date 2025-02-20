@@ -40,19 +40,19 @@ export default function CardRiwayat({ index, history, biodata }) {
 
     const statusLabel = getStatusLabel();
     
-    const fetchDetailPresensi = () => {
+    const fetchDetailPresensi = async () => {
         const keys = addDefaultKeys(["param", "AUTH_KEY", "token"]);
         const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
         const storedValues = getCombinedValues(keys.slice(1, 3));
         const values = [...formValues, ...storedValues];
         const formData = getFormData(keys, values);
-        const response = ApiService.processApiRequest("presensi/detail_presensi", formData, localStorage.getItem("AUTH_KEY"), false);
+        const response = await ApiService.processApiRequest("presensi/detail_presensi", formData, localStorage.getItem("AUTH_KEY"), false);
         console.log("✅ selected Keys:", keys.slice(1, 3));
         console.log("✅ Final keys:", keys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response);
-        if (response) {
+        console.log("✅ Final response:", response?.data);
+        if (response?.data) {
             setDatas(parseJwt(response.data.token).result);
         } 
         setLoading(false);
