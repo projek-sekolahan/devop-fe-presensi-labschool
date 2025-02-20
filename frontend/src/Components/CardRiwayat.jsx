@@ -50,7 +50,7 @@ export default function CardRiwayat({ index, history, biodata }) {
             Cookies.get("csrf"),
         ]; */
         const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
-        const storedValues = getCombinedValues(keys);
+        const storedValues = getCombinedValues([]);
         const values = [...formValues, ...storedValues];
         // const values = getCombinedValues(keys);
         const formData = getFormData(keys, values);
