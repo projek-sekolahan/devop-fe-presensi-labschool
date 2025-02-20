@@ -29,7 +29,7 @@ export default function SideMenu({ showMenu, userData, closeMenu, intervalId }) 
 						localStorage.clear();
 						alertMessage(
 							"Logout Succesfully", "You has been loged out!", "success",
-							() => { window.location.replace("/login") },
+							() => window.location.replace("/login")
 						);
 					}
 				} else {
