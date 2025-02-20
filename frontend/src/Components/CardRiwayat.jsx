@@ -41,7 +41,7 @@ export default function CardRiwayat({ index, history, biodata }) {
     const statusLabel = getStatusLabel();
     
     const fetchDetailPresensi = () => {
-        const keys = addDefaultKeys(["AUTH_KEY", "token", "param"]);
+        const keys = addDefaultKeys(["param", "AUTH_KEY", "token"]);
         /* const values = [
             localStorage.getItem("AUTH_KEY"),
             localStorage.getItem("login_token"),
@@ -50,7 +50,7 @@ export default function CardRiwayat({ index, history, biodata }) {
             Cookies.get("csrf"),
         ]; */
         const formValues = [`${biodata.user_id},${history["Tanggal Presensi"]}`];
-        const storedValues = getCombinedValues(keys);
+        const storedValues = getCombinedValues([]);
         const values = [...formValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(keys), values);
         // const values = getCombinedValues(keys);
