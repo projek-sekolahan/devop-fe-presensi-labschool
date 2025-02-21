@@ -1,14 +1,9 @@
-// sessionService.js
-import Cookies from "js-cookie";
 import ApiService from "../utils/ApiService.js";
 import { handleSessionExpired } from "../utils/utils";
 
 export const checkSession = async (keys,formData) => {
   
   const response = await ApiService.processApiRequest("auth/sesstime", formData, keys, false);
-  console.log("✅ selected Keys:", keys.slice(1, 3));
-  console.log("✅ Final keys:", keys);
-  console.log("✅ Final values:", values);
   console.log("✅ Final formData:", formData);
   console.log("✅ Final response:", response?.data);
 
