@@ -43,7 +43,6 @@ class ApiService {
                 {
                     method: "GET",
                     credentials: "include",
-                    mode: "cors", // Tambahkan ini
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -82,14 +81,8 @@ class ApiService {
                 );
             }
             if (!authKey || authKey === "null") {
-                console.warn(
-                    "authKey tidak ditemukan, mengirim request ke postInput..."
-                );
                 response = await this.postInput(endpoint, data);
             } else {
-                console.warn(
-                    "authKey ditemukan, mengirim request ke API utama..."
-                );
                 const endpointMap = {
                     auth: this.authPost,
                     users: this.usersPost,
