@@ -15,18 +15,17 @@ const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
             signal: controller.signal,
         });
 
-        clearTimeout(timeoutId); // Timeout hanya dihapus jika request berhasil
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
             throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
         }
 
         const responseText = await response.text();
-        console.log("Raw Response:", responseText); // Debugging
-
+        
         return responseText;
     } catch (error) {
-        clearTimeout(timeoutId); // Pastikan timeout tetap dihapus jika terjadi error
+        clearTimeout(timeoutId);
 
         if (error.name === "AbortError") {
             console.warn("Request aborted due to timeout");
@@ -36,11 +35,10 @@ const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
             error.name === "AbortError"
                 ? "Request Timeout: Server took too long to respond."
                 : `Error: ${error.message}`;
-
         alertMessage("error", errorMessage, "error", () => window.location.replace("/login"));
         console.error("Fetch failed:", error);
 
-        return null; // Pastikan fungsi mengembalikan nilai, tidak undefined
+        return null;
     }
 };
 
@@ -57,14 +55,10 @@ class ApiService {
                     },
                 }
             );
-    
-            console.log("Raw Response:", responseText);
-    
+
             if (!responseText) throw new Error("Empty response from CSRF API");
-    
             const res = JSON.parse(responseText);
             if (!res.status || !res.csrfHash) throw new Error("Invalid CSRF response");
-    
             Cookies.set("csrf", res.csrfHash);
         } catch (error) {
             console.error("Failed to fetch CSRF token:", error);
@@ -113,8 +107,6 @@ class ApiService {
                 console.error(`Tidak ada respon dari API untuk endpoint: ${endpoint}`);
                 return null;
             }
-    
-            console.log("Raw API Response:", response);
     
             let result;
             try {
