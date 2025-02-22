@@ -8,38 +8,46 @@ const createRequestBody = (formData) => formData.toString();
 const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
+
     try {
         const response = await fetch(url, {
             ...options,
             signal: controller.signal,
         });
-        clearTimeout(timeoutId);
-        console.log(response); // return false;
-        if (!response.ok)
-            throw new Error(
-                `HTTP Error: ${response.status} - ${response.statusText}`
-            );
-        return await response.text();
+
+        clearTimeout(timeoutId); // Timeout hanya dihapus jika request berhasil
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const responseText = await response.text();
+        console.log("Raw Response:", responseText); // Debugging
+
+        return responseText;
     } catch (error) {
-        clearTimeout(timeoutId);
+        clearTimeout(timeoutId); // Pastikan timeout tetap dihapus jika terjadi error
+
         if (error.name === "AbortError") {
             console.warn("Request aborted due to timeout");
         }
+
         const errorMessage =
             error.name === "AbortError"
                 ? "Request Timeout: Server took too long to respond."
                 : `Error: ${error.message}`;
-        alertMessage("error", errorMessage, "error", () =>
-            window.location.replace("/login")
-        );
+
+        alertMessage("error", errorMessage, "error", () => window.location.replace("/login"));
         console.error("Fetch failed:", error);
+
+        return null; // Pastikan fungsi mengembalikan nilai, tidak undefined
     }
 };
 
 class ApiService {
     static async getCsrf() {
         try {
-            const response = await fetchWithTimeout(
+            const responseText = await fetchWithTimeout(
                 `${API_URL}/view/tokenGetCsrf`,
                 {
                     method: "GET",
@@ -49,15 +57,19 @@ class ApiService {
                     },
                 }
             );
-            console.log(response); // return false;
-            if (!response.ok) throw new Error("Failed to fetch CSRF token");
-
-            const res = await response.json();
+    
+            console.log("Raw Response:", responseText);
+    
+            if (!responseText) throw new Error("Empty response from CSRF API");
+    
+            const res = JSON.parse(responseText);
+            if (!res.status || !res.csrfHash) throw new Error("Invalid CSRF response");
+    
             Cookies.set("csrf", res.csrfHash);
         } catch (error) {
             console.error("Failed to fetch CSRF token:", error);
         }
-    }
+    }    
 
     static async post(endpoint, formData, key = null) {
         const headers = {
@@ -76,11 +88,9 @@ class ApiService {
         try {
             let response;
             if (load) {
-                loading(
-                    "Loading",
-                    `Processing ${endpoint.replace(/\//g, " ")} Data...`
-                );
+                loading("Loading", `Processing ${endpoint.replace(/\//g, " ")} Data...`);
             }
+    
             if (!authKey || authKey === "null") {
                 response = await this.postInput(endpoint, data);
             } else {
@@ -93,35 +103,36 @@ class ApiService {
                 const [prefix, ...rest] = endpoint.split("/");
                 const handler = endpointMap[prefix];
                 if (handler) {
-                    response = await handler.call(
-                        this,
-                        rest.join("/"),
-                        authKey,
-                        data
-                    );
+                    response = await handler.call(this, rest.join("/"), authKey, data);
                 } else {
-                    response = await this.post(
-                        `/api/client/${endpoint}`,
-                        data,
-                        authKey
-                    );
+                    response = await this.post(`/api/client/${endpoint}`, data, authKey);
                 }
             }
+    
             if (!response) {
-                console.error(
-                    `Tidak ada respon dari API untuk endpoint: ${endpoint}`
-                );
+                console.error(`Tidak ada respon dari API untuk endpoint: ${endpoint}`);
+                return null;
             }
-            const result = JSON.parse(response);
-            Cookies.set("csrf", result?.csrfHash);
+    
+            console.log("Raw API Response:", response);
+    
+            let result;
+            try {
+                result = JSON.parse(response);
+            } catch (jsonError) {
+                console.error("Gagal parsing JSON:", jsonError);
+                return null;
+            }
+    
+            if (result?.csrfHash) {
+                Cookies.set("csrf", result.csrfHash);
+            }
+    
             return result;
         } catch (error) {
-            console.error(
-                `processApiRequest Error pada endpoint: ${endpoint}`,
-                error
-            );
+            console.error(`processApiRequest Error pada endpoint: ${endpoint}`, error);
         }
-    }
+    }    
 
     static async postInput(url, data) {
         return this.post(`/input/${url}`, data);
