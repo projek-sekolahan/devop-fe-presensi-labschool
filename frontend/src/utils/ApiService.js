@@ -14,6 +14,7 @@ const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
             signal: controller.signal,
         });
         clearTimeout(timeoutId);
+        console.log(response); return false;
         if (!response.ok)
             throw new Error(
                 `HTTP Error: ${response.status} - ${response.statusText}`
@@ -48,7 +49,7 @@ class ApiService {
                     },
                 }
             );
-
+            console.log(response); return false;
             if (!response.ok) throw new Error("Failed to fetch CSRF token");
 
             const res = await response.json();
