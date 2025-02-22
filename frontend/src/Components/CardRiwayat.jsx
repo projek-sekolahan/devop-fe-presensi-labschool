@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 import { Card, Button } from "flowbite-react";
 import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";

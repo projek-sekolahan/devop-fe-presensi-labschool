@@ -1,15 +1,7 @@
 import { Textarea } from "flowbite-react";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import {
-	getImageUrl,
-	getFormData,
-	loading,
-	alertMessage,
-	parseJwt,
-	handleSessionError,
-	addDefaultKeys,
-} from "../utils/utils";
+import { getImageUrl, getFormData, loading, alertMessage, parseJwt, handleSessionError, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import Cookies from "js-cookie";
 import Layout from "../Components/Layout";
@@ -25,10 +17,10 @@ export default function Izin() {
 		window.location.replace("/home");
 	}
 
-	const submitHandler = (e) => {
+	const submitHandler = async (e) => {
 		e.preventDefault();
 
-		let keys = ["AUTH_KEY", "token"];
+		/* let keys = ["AUTH_KEY", "token"];
 		const combinedKeys = addDefaultKeys(keys);
 		let values = [
 			localStorage.getItem("AUTH_KEY"),
@@ -72,8 +64,44 @@ export default function Izin() {
 			updatedCombinedKeys = [...updatedCombinedKeys, "foto_surat"];
 
 			values = [...values, `["${imageUrl}"]`];
+		} */
+
+		const keys = addDefaultKeys(["AUTH_KEY", "token"]);
+		const formValues = [];
+		const storedValues = getCombinedValues(keys.slice(0, 2));
+		let updatedCombinedKeys = [...keys];
+		
+		if (localStorage.getItem("group_id") == "4" || state.ket[0] === "non-dinas") {
+			updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
+			formValues.push("non-dinas", state.ket[state.ket.length - 1], keteranganRef.current.value);
+		} else {
+			updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
+			formValues.push("non-dinas", ...state.ket, keteranganRef.current.value);
 		}
-		loading("Loading", "Data sedang diproses...");
+		
+		if (imageUrl) {
+			updatedCombinedKeys.push("foto_surat");
+			formValues.push(`["${imageUrl}"]`);
+		}
+		
+		const values = [...storedValues, ...formValues];
+		const formData = getFormData(updatedCombinedKeys, values);
+		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
+		
+		console.log("✅ selected Keys:", keys.slice(0, 2));
+        console.log("✅ Final keys:", keys);
+        console.log("✅ Final values:", values);
+        console.log("✅ Final formData:", formData);
+        console.log("✅ Final response:", response?.data);
+		return false;
+        if (response?.data) {
+            const hasil = parseJwt(response.data);
+				alertMessage(hasil.title, hasil.message, hasil.info, () =>
+					window.location.replace("/home"),
+				);
+        }
+
+		/* loading("Loading", "Data sedang diproses...");
 		ApiService
 			.presensiPost(
 				"process",
@@ -90,7 +118,7 @@ export default function Izin() {
 			})
 			.catch((err) => {
 				handleSessionError(err, "/login");
-			});
+			}); */
 	};
 	return (
 		<div className="presensi-container">
