@@ -87,15 +87,11 @@ export default function Izin() {
 		const values = [...storedValues, ...formValues];
 		const formData = getFormData(updatedCombinedKeys, values);
 		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
-		
-		console.log("✅ selected Keys:", keys.slice(0, 2));
-        console.log("✅ Final keys:", keys);
-        console.log("✅ Final values:", values);
-        console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response?.data);
-		return false;
+
         if (response?.data) {
-            const hasil = parseJwt(response.data);
+            const hasil = parseJwt(response.data.token);
+			console.log("✅ Final parse JWT:", hasil);
+				return false;
 				alertMessage(hasil.title, hasil.message, hasil.info, () =>
 					window.location.replace("/home"),
 				);
