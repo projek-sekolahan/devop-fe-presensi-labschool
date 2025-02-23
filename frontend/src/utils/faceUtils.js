@@ -21,7 +21,7 @@ export const detectSingleFace = async (imgElement) => {
         return null;
     }
     const options = new faceapi.TinyFaceDetectorOptions({
-        inputSize: 320, // Resolusi lebih kecil untuk kecepatan
+        inputSize: 480, // Resolusi lebih kecil untuk kecepatan
         scoreThreshold: 0.5, // Sensitivitas deteksi
     });
     try {
