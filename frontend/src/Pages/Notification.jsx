@@ -71,7 +71,7 @@ export default function Notification() {
     const response = await ApiService.processApiRequest("notifications/detail", getFormData(combinedKeys, values), localStorage.getItem("AUTH_KEY"), false);
     if (response?.data) {
       setLoading(false);
-      const decodedData = parseJwt(response.data.token) || []; console.log(decodedData);
+      const decodedData = parseJwt(response.data.token) || [];
       const allData = Object.values(
         Object.fromEntries(
           Object.entries(decodedData).filter(

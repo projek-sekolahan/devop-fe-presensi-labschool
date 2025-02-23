@@ -25,7 +25,7 @@ export default function ProtectedRoute({ component: Component, isAuthenticated }
     // Buat interval untuk validasi sesi periodik
     const id = setInterval(() => {
       validateSession();
-    }, 1800000); // 30 menit
+    }, 3600000); // 60 menit
     setIntervalId(id); // Simpan intervalId
     // Cleanup interval saat komponen dilepas
     return () => clearInterval(id);
