@@ -6,7 +6,7 @@ export const checkSession = async (keys,formData) => {
   if (response?.data?.statusCode === 200) {
     return true;
   } else {
-    handleSessionExpired(parsedResponse?.data || { title: "Session Expired", message: "Sesi Anda telah berakhir." });
+    handleSessionExpired(response?.data || { title: "Session Expired", message: "Sesi Anda telah berakhir." });
     return false;
   }
 };
