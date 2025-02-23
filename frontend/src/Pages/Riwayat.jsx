@@ -30,14 +30,14 @@ export default function Riwayat() {
 
     const fetchHistory = useCallback(async (category) => {
         setLoading(true);
-        const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
+        const keys = addDefaultKeys(["table", "key", "AUTH_KEY", "token"]);
         // const values = getValuesForKeys(keys, category);
         const formValues = ["tab-presensi",getCategoryKey(category)];
-		const storedValues = getCombinedValues(keys.slice(0, 2));
+		const storedValues = getCombinedValues(keys.slice(2, 3));
         const values = [...storedValues, ...formValues];
         const formData = getFormData(keys, values);
 		const response = await ApiService.processApiRequest("presensi/reports", formData, localStorage.getItem("AUTH_KEY"), true);
-        console.log("✅ selected Keys:", keys.slice(0, 2));
+        console.log("✅ selected Keys:", keys.slice(2, 3));
         console.log("✅ Final keys:", keys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
