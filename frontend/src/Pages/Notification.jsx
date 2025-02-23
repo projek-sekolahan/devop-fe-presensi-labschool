@@ -1,10 +1,9 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 import ApiService from "../utils/ApiService.js";
-import { getFormData, parseJwt, addDefaultKeys } from "../utils/utils";
+import { getFormData, parseJwt, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import Layout from "../Components/Layout";
 
 function NotificationCard({ notifications }) {
@@ -68,14 +67,16 @@ export default function Notification() {
 
     const keys = ["AUTH_KEY", "token"];
     const combinedKeys = addDefaultKeys(keys);
-    const values = [
-      localStorage.getItem("AUTH_KEY"),
-      localStorage.getItem("login_token"),
-      localStorage.getItem("devop-sso"),
-      Cookies.get("csrf"),
-    ];
 
-    try {
+    const values = getCombinedValues(keys);
+    const response = await ApiService.processApiRequest("notifications/detail", getFormData(combinedKeys, values), localStorage.getItem("AUTH_KEY"), true);
+    console.log("✅ selected Keys:", keys);
+    console.log("✅ Final keys:", keys);
+    console.log("✅ Final values:", values);
+    console.log("✅ Final formData:", formData);
+    console.log("✅ Final response:", response?.data);
+    return false;    
+    /* try {
       const response = await ApiService.notificationsPost(
         "detail",
         localStorage.getItem("AUTH_KEY"),
@@ -115,7 +116,7 @@ export default function Notification() {
       setHasMore(false);
     } finally {
       setLoading(false);
-    }
+    } */
   };
 
   useEffect(() => {

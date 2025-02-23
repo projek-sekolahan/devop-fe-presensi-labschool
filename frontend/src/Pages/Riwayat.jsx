@@ -3,9 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import Layout from "../Components/Layout";
-import { parseJwt, getFormData, handleSessionError, addDefaultKeys, getCombinedValues } from "../utils/utils";
+import { parseJwt, getFormData, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
-import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
 
 export default function Riwayat() {
@@ -31,46 +30,20 @@ export default function Riwayat() {
     const fetchHistory = useCallback(async (category) => {
         setLoading(true);
         const keys = addDefaultKeys(["table", "key", "AUTH_KEY", "token"]);
-        // const values = getValuesForKeys(keys, category);
         const formValues = ["tab-presensi",getCategoryKey(category)];
 		const storedValues = getCombinedValues(keys.slice(2, 4));
         const values = [ ...formValues, ...storedValues ];
         const formData = getFormData(keys, values);
 		const response = await ApiService.processApiRequest("presensi/reports", formData, localStorage.getItem("AUTH_KEY"), true);
-        console.log("✅ selected Keys:", keys.slice(2, 4));
-        console.log("✅ Final keys:", keys);
-        console.log("✅ Final values:", values);
-        console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response?.data);
-        return false;
-        /* try {
-            const res = await ApiService.presensiPost("reports", authKey, getFormData(keys, values));
-            const parsedRes = JSON.parse(res);
-            Cookies.set("csrf", parsedRes.csrfHash);
-            const parsedData = parseJwt(parsedRes.data.token).data || [];
-
+        if (response?.data) {
+            setLoading(false);
+            const parsedData = parseJwt(response.data.token).data || [];
             setHistoryData(prevData => ({
                 ...prevData,
                 [category]: parsedData
             }));
-        } catch (err) {
-            handleError(err, category);
-        } finally {
-            setLoading(false);
-        } */
+        }
     }, [authKey, loginToken]);
-
-    const getValuesForKeys = (keys, category) => {
-        return keys.map((key) => {
-            switch (key) {
-                case "csrf_token": return Cookies.get("csrf");
-                case "token": return loginToken;
-                case "table": return "tab-presensi";
-                case "key": return getCategoryKey(category);
-                default: return localStorage.getItem(key);
-            }
-        });
-    };
 
     const getCategoryKey = (category) => {
         switch (category) {
@@ -78,23 +51,6 @@ export default function Riwayat() {
             case "7 Hari": return "7 DAY";
             case "14 Hari": return "14 DAY";
             default: return "30 DAY";
-        }
-    };
-
-    const handleError = (err, category) => {
-        console.error(`Error fetching history for ${category}:`, err);
-        const parsedErr = err.responseText ? JSON.parse(err.responseText) : err;
-        Cookies.set("csrf", parsedErr.csrfHash);
-
-        setHistoryData(prevData => ({
-            ...prevData,
-            [category]: []
-        }));
-
-        if (parsedErr.status === 500) {
-            setHistoryData(prevData => ({ ...prevData, [category]: [] }));
-        } else {
-            handleSessionError(parsedErr, "/login");
         }
     };
 
