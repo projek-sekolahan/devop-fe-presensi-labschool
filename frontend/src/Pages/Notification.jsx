@@ -67,31 +67,11 @@ export default function Notification() {
 
     const keys = ["AUTH_KEY", "token"];
     const combinedKeys = addDefaultKeys(keys);
-
     const values = getCombinedValues(keys);
-    const response = await ApiService.processApiRequest("notifications/detail", getFormData(combinedKeys, values), localStorage.getItem("AUTH_KEY"), true);
-    console.log("✅ selected Keys:", keys);
-    console.log("✅ Final keys:", keys);
-    console.log("✅ Final values:", values);
-    console.log("✅ Final formData:", formData);
-    console.log("✅ Final response:", response?.data);
-    return false;    
-    /* try {
-      const response = await ApiService.notificationsPost(
-        "detail",
-        localStorage.getItem("AUTH_KEY"),
-        getFormData(combinedKeys, values)
-      );
-      const parsedResponse = JSON.parse(response);
-      Cookies.set("csrf", parsedResponse.csrfHash);
-
-      if (!parsedResponse?.data) {
-        console.warn("Invalid response:", parsedResponse);
-        setHasMore(false);
-        return;
-      }
-
-      const decodedData = parseJwt(parsedResponse.data.token);
+    const response = await ApiService.processApiRequest("notifications/detail", getFormData(combinedKeys, values), localStorage.getItem("AUTH_KEY"), false);
+    if (response?.data) {
+      setLoading(false);
+      const decodedData = parseJwt(response.data.token) || [];
       const allData = Object.values(
         Object.fromEntries(
           Object.entries(decodedData).filter(
@@ -99,24 +79,16 @@ export default function Notification() {
           )
         )
       ).flat();
-
       if (!Array.isArray(allData) || allData.length === 0) {
-        console.warn("No valid notifications found:", allData);
         setHasMore(false);
         return;
       }
-
       const newNotifications = allData.slice((page - 1) * 10, page * 10);
       setAllNotifications((prev) => [...prev, ...allData]);
       setCategories(["Semua", ...new Set(decodedData.category)]);
       setHasMore(newNotifications.length === 10);
       setPage((prev) => prev + 1);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    } */
+    }
   };
 
   useEffect(() => {
