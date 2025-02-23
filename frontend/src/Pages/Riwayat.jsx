@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import CardRiwayat from "../Components/CardRiwayat";
 import Layout from "../Components/Layout";
-import { parseJwt, getFormData, handleSessionError, addDefaultKeys } from "../utils/utils";
+import { parseJwt, getFormData, handleSessionError, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import Cookies from "js-cookie";
 import { Tabs } from "flowbite-react";
@@ -31,9 +31,19 @@ export default function Riwayat() {
     const fetchHistory = useCallback(async (category) => {
         setLoading(true);
         const keys = addDefaultKeys(["AUTH_KEY", "token", "table", "key"]);
-        const values = getValuesForKeys(keys, category);
-
-        try {
+        // const values = getValuesForKeys(keys, category);
+        const formValues = ["tab-presensi",getCategoryKey(category)];
+		const storedValues = getCombinedValues(keys.slice(0, 2));
+        const values = [...storedValues, ...formValues];
+        const formData = getFormData(updatedCombinedKeys, values);
+		const response = await ApiService.processApiRequest("presensi/reports", formData, localStorage.getItem("AUTH_KEY"), true);
+        console.log("✅ selected Keys:", keys.slice(0, 2));
+        console.log("✅ Final keys:", keys);
+        console.log("✅ Final values:", values);
+        console.log("✅ Final formData:", formData);
+        console.log("✅ Final response:", response?.data);
+        return false;
+        /* try {
             const res = await ApiService.presensiPost("reports", authKey, getFormData(keys, values));
             const parsedRes = JSON.parse(res);
             Cookies.set("csrf", parsedRes.csrfHash);
@@ -47,7 +57,7 @@ export default function Riwayat() {
             handleError(err, category);
         } finally {
             setLoading(false);
-        }
+        } */
     }, [authKey, loginToken]);
 
     const getValuesForKeys = (keys, category) => {
