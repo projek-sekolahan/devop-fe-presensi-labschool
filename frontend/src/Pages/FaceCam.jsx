@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
-import { detectFace, compareFaces} from "../utils/useFaceRecognition";
+import { detectFace, compareFaces } from "../utils/useFaceRecognition";
 import Layout from "../Components/Layout";
 import DetailModal from "../Components/DetailModal";
 
@@ -23,7 +23,8 @@ export default function FaceCam() {
     const { state } = useLocation();
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } = useCamera();
+    const { videoRef, canvasRef, startVideo, stopVideo, capturePhoto } =
+        useCamera();
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
@@ -88,7 +89,10 @@ export default function FaceCam() {
                 throw new Error("No face detected or descriptor is undefined.");
             }
             // Validasi dengan data token
-            const isFaceMatched = await compareFaces(detectionResult,tokenDescriptor);
+            const isFaceMatched = await compareFaces(
+                detectionResult,
+                tokenDescriptor
+            );
             if (isFaceMatched) {
                 submitPresence(detectionResult.descriptor);
             } else {
@@ -141,12 +145,11 @@ export default function FaceCam() {
             localStorage.getItem("devop-sso"),
             Cookies.get("csrf")
         );
-        ApiService
-            .presensiPost(
-                "process",
-                localStorage.getItem("AUTH_KEY"),
-                getFormData(combinedKeys, values)
-            )
+        ApiService.presensiPost(
+            "process",
+            localStorage.getItem("AUTH_KEY"),
+            getFormData(combinedKeys, values)
+        )
             .then((res) => {
                 Swal.close();
                 setIsLoading(false);
@@ -230,7 +233,10 @@ export default function FaceCam() {
                 loading={isLoading}
                 footerButtons={
                     <div className="flex gap-4">
-                        <button className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400" onClick={() => setShowModal(false)}>
+                        <button
+                            className="py-2 px-4 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
+                            onClick={() => setShowModal(false)}
+                        >
                             Cancel
                         </button>
                         <button
@@ -252,8 +258,16 @@ export default function FaceCam() {
                     </div>
                 }
             >
-                <p className="text-semibold mt-2 text-gray-600">Cek Hasil Gambar</p>
-                {imgSrc && <img src={imgSrc} alt="Captured" className="w-full rounded-lg shadow-md mt-4"/>}
+                <p className="text-semibold mt-2 text-gray-600">
+                    Cek Hasil Gambar
+                </p>
+                {imgSrc && (
+                    <img
+                        src={imgSrc}
+                        alt="Captured"
+                        className="w-full rounded-lg shadow-md mt-4"
+                    />
+                )}
             </DetailModal>
         </div>
     );

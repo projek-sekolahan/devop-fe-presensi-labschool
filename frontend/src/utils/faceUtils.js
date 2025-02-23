@@ -40,10 +40,18 @@ export const detectSingleFace = async (imgElement) => {
     }
 };
 
-export const validateFaceDetection = (faceData, tokenDescriptor, facecamCache = new Map(), threshold = 0.6) => {
+export const validateFaceDetection = (
+    faceData,
+    tokenDescriptor,
+    facecamCache = new Map(),
+    threshold = 0.5
+) => {
     // Validasi dengan token
     if (tokenDescriptor) {
-        const distanceWithToken = faceapi.euclideanDistance(tokenDescriptor, faceData.descriptor);
+        const distanceWithToken = faceapi.euclideanDistance(
+            tokenDescriptor,
+            faceData.descriptor
+        );
         if (distanceWithToken <= threshold) {
             return true;
         }
@@ -51,7 +59,9 @@ export const validateFaceDetection = (faceData, tokenDescriptor, facecamCache = 
     // Validasi dengan cache
     if (facecamCache && facecamCache.size > 0) {
         const isMatched = Array.from(facecamCache.values()).some(
-            (descriptor) => faceapi.euclideanDistance(descriptor, faceData.descriptor) <= threshold
+            (descriptor) =>
+                faceapi.euclideanDistance(descriptor, faceData.descriptor) <=
+                threshold
         );
         if (isMatched) {
             return true;
