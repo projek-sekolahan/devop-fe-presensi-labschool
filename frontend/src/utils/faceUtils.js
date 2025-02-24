@@ -20,20 +20,32 @@ export const detectSingleFace = async (imgElement) => {
         console.error("Image element is empty or invalid.");
         return null;
     }
+
+    console.log("Checking if image is loaded...");
+    if (!imgElement.complete) {
+        console.warn("Image is not fully loaded yet.");
+        await new Promise((resolve) => (imgElement.onload = resolve));
+    }
+
+    console.log("Image successfully loaded:", imgElement.src);
+    
     const options = new faceapi.TinyFaceDetectorOptions({
-        inputSize: 480, // Resolusi lebih kecil untuk kecepatan
-        scoreThreshold: 0.5, // Sensitivitas deteksi
+        inputSize: 640,
+        scoreThreshold: 0.3,
     });
+
     try {
-        console.log("face utils", imgElement, options);
-        const detection = await faceapi
-            .detectSingleFace(imgElement, options)
+        console.log("Detecting face...");
+        const detection = await faceapi.detectSingleFace(imgElement, options)
             .withFaceLandmarks()
             .withFaceDescriptor();
+
+        console.log("Detection result:", detection);
         if (!detection) {
             console.warn("No face detected.");
             return null;
         }
+
         return detection;
     } catch (error) {
         console.error("Error during face detection:", error);
