@@ -64,22 +64,29 @@ export const validateFaceDetection = (
     console.log("Instance of Float32Array:", faceData instanceof Float32Array);
     console.log("Has descriptor property:", faceData?.descriptor ? "Yes" : "No");
 
-    // Pastikan deteksi wajah memiliki skor yang cukup
-    if (!faceData?.detection || faceData.detection._score < 0.5) {
-        console.warn("Face detection confidence too low or missing:", faceData?.detection?._score);
+    // Pastikan faceData valid
+    if (!faceData) {
+        console.warn("faceData is missing or null.");
         return false;
     }
 
-    // Ambil descriptor, baik dari objek atau langsung dari Float32Array
-    let descriptor = faceData instanceof Float32Array ? faceData : faceData?.descriptor;
+    // Cek apakah faceData punya deteksi wajah yang valid
+    if (faceData?.detection && typeof faceData.detection._score === "number") {
+        if (faceData.detection._score < 0.5) {
+            console.warn("Face detection confidence too low:", faceData.detection._score);
+            return false;
+        }
+    } else {
+        console.warn("Face detection confidence is missing or invalid:", faceData?.detection?._score);
+        return false;
+    }
 
-    console.log("Extracted descriptor:", descriptor);
-    console.log("Descriptor type:", typeof descriptor);
-    console.log("Descriptor instance of Float32Array:", descriptor instanceof Float32Array);
-    console.log("Descriptor length:", descriptor?.length);
+    // Ambil descriptor: bisa dari Float32Array langsung atau dari properti faceData
+    const descriptor =
+        faceData instanceof Float32Array ? faceData : faceData?.descriptor;
 
     if (!(descriptor instanceof Float32Array) || descriptor.length !== 128) {
-        console.warn("Invalid faceData: descriptor is missing or incorrect. Length:", descriptor?.length);
+        console.warn("Invalid descriptor: Expected Float32Array with length 128 but got", descriptor);
         return false;
     }
 
@@ -97,17 +104,16 @@ export const validateFaceDetection = (
             return true;
         }
     } else {
-        console.warn("Invalid tokenDescriptor: It must be an array of length 128. Length:", tokenDescriptor?.length);
+        console.warn("Invalid tokenDescriptor: It must be an array of length 128.");
     }
 
-    // Bandingkan dengan cache
+    // Validasi cache
     if (!(facecamCache instanceof Map) || facecamCache.size === 0) {
         console.warn("Facecam cache is empty or invalid.");
         return false;
     }
 
-    console.log("Facecam cache size:", facecamCache.size);
-    console.log("Facecam cache values:", Array.from(facecamCache.values()));
+    console.log("Checking face match with cache...");
 
     const isMatched = Array.from(facecamCache.values()).some(
         (cachedDescriptor) =>
