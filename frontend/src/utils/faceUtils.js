@@ -25,6 +25,7 @@ export const detectSingleFace = async (imgElement) => {
         scoreThreshold: 0.5, // Sensitivitas deteksi
     });
     try {
+        console.log(imgElement, options);
         const detection = await faceapi
             .detectSingleFace(imgElement, options)
             .withFaceLandmarks()

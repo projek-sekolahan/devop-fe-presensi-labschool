@@ -85,13 +85,15 @@ export default function FaceCam() {
                 userData.facecam_id.split(", ").map(Number)
             );
             console.log(tokenDescriptor);
+            console.log(imgRef.current);
             // Deteksi wajah dari gambar
             const detectionResult = await detectFace(imgRef.current);
             if (!detectionResult) {
                 throw new Error("No face detected or descriptor is undefined.");
             }
             // Validasi dengan data token
-            console.log("detectionResult",tokenDescriptor);
+            console.log("detectionResult",detectionResult);
+            console.log("tokenDescriptor",tokenDescriptor);
             const isFaceMatched = await compareFaces(
                 detectionResult,
                 tokenDescriptor
