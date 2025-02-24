@@ -84,8 +84,8 @@ export default function FaceCam() {
             const tokenDescriptor = new Float32Array(
                 userData.facecam_id.split(", ").map(Number)
             );
-            console.log(tokenDescriptor);
-            console.log(imgRef.current);
+            // console.log(tokenDescriptor);
+            // console.log(imgRef.current);
             // Deteksi wajah dari gambar
             const detectionResult = await detectFace(imgRef.current);
             if (!detectionResult) {

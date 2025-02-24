@@ -6,19 +6,14 @@ import { detectSingleFace, validateFaceDetection } from "./faceUtils";
  * @returns {Promise<Object>} detectionResult
  */
 export const detectFace = async (imgElement) => {
-    try {
-        if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
-            throw new Error("Invalid image element.");
-        }
-        const detection = await detectSingleFace(imgElement);
-        if (!detection || typeof detection.descriptor === "undefined") {
-            throw new Error("Face not detected.");
-        }
-        return detection;
-    } catch (err) {
-        console.error("Face detection failed:", err);
-        throw err;
+    if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
+        throw new Error("Invalid image element.");
     }
+    const detection = await detectSingleFace(imgElement);
+    if (!detection || typeof detection.descriptor === "undefined") {
+        throw new Error("Face not detected.");
+    }
+    return detection;
 };
 
 /**
