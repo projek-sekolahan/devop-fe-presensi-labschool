@@ -57,7 +57,7 @@ export const validateFaceDetection = (
     faceData,
     tokenDescriptor,
     facecamCache = new Map(),
-    threshold = 0.5
+    threshold = 0.3
 ) => {
     // Cek apakah faceData valid
     if (!faceData || !faceData.descriptor) {
