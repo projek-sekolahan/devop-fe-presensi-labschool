@@ -48,6 +48,7 @@ export const validateFaceDetection = (
     threshold = 0.5
 ) => {
     // Validasi dengan token
+    console.log(tokenDescriptor,faceData.descriptor)
     if (tokenDescriptor) {
         const distanceWithToken = faceapi.euclideanDistance(
             tokenDescriptor,

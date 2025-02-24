@@ -32,6 +32,7 @@ export const compareFaces = async (detectionResult, tokenDescriptor) => {
         if (!detectionResult?.descriptor) {
             throw new Error("Invalid detection result.");
         }
+        console.log(detectionResult.descriptor, tokenDescriptor);
         const isFaceMatched = await validateFaceDetection(detectionResult.descriptor, tokenDescriptor);
         if (typeof isFaceMatched !== "boolean" || !isFaceMatched) {
             throw new Error("Face match failed.");
