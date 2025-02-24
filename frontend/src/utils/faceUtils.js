@@ -40,13 +40,16 @@ export const detectSingleFace = async (imgElement) => {
             .withFaceLandmarks()
             .withFaceDescriptor();
 
-        if (!detection) {
+        if (!detection || !detection.descriptor) {
             console.warn("No face detected.");
             return null;
         }
 
         console.log("Face detected:", detection);
-        return detection;
+        return {
+            descriptor: new Float32Array(detection.descriptor), // Pastikan ini dikembalikan
+            detection
+        };
     } catch (error) {
         console.error("Error during face detection:", error);
         return null;
@@ -62,26 +65,13 @@ export const validateFaceDetection = (
     console.log("Raw faceData received:", faceData);
     console.log("Type of faceData:", typeof faceData);
     console.log("Instance of Float32Array:", faceData instanceof Float32Array);
-    console.log("Has descriptor property:", faceData?.descriptor ? "Yes" : "No");
 
-    // Pastikan faceData valid
     if (!faceData) {
         console.warn("faceData is missing or null.");
         return false;
     }
 
-    // Cek apakah faceData punya deteksi wajah yang valid
-    if (faceData?.detection && typeof faceData.detection._score === "number") {
-        if (faceData.detection._score < 0.5) {
-            console.warn("Face detection confidence too low:", faceData.detection._score);
-            return false;
-        }
-    } else {
-        console.warn("Face detection confidence is missing or invalid:", faceData?.detection?._score);
-        return false;
-    }
-
-    // Ambil descriptor: bisa dari Float32Array langsung atau dari properti faceData
+    // Ambil descriptor dengan fallback ke faceData langsung jika bukan objek
     const descriptor =
         faceData instanceof Float32Array ? faceData : faceData?.descriptor;
 
@@ -93,7 +83,7 @@ export const validateFaceDetection = (
     console.log("Valid descriptor found. Proceeding to validation...");
 
     // Bandingkan dengan token descriptor
-    if (Array.isArray(tokenDescriptor) && tokenDescriptor.length === 128) {
+    if (tokenDescriptor instanceof Float32Array && tokenDescriptor.length === 128) {
         const distanceWithToken = faceapi.euclideanDistance(
             Array.from(tokenDescriptor), 
             Array.from(descriptor)
@@ -104,7 +94,7 @@ export const validateFaceDetection = (
             return true;
         }
     } else {
-        console.warn("Invalid tokenDescriptor: It must be an array of length 128.");
+        console.warn("Invalid tokenDescriptor: It must be a Float32Array of length 128.");
     }
 
     // Validasi cache
@@ -117,7 +107,7 @@ export const validateFaceDetection = (
 
     const isMatched = Array.from(facecamCache.values()).some(
         (cachedDescriptor) =>
-            Array.isArray(cachedDescriptor) &&
+            cachedDescriptor instanceof Float32Array &&
             cachedDescriptor.length === 128 &&
             faceapi.euclideanDistance(Array.from(cachedDescriptor), Array.from(descriptor)) <= threshold
     );
