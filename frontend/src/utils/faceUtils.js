@@ -59,17 +59,30 @@ export const validateFaceDetection = (
     facecamCache = new Map(),
     threshold = 0.4
 ) => {
-    if (!faceData || !faceData.descriptor || faceData.descriptor.length !== 128) {
-        console.warn("Invalid faceData: descriptor is missing or incorrect.");
+    console.log("Raw faceData received:", faceData);
+
+    if (!faceData || !faceData.descriptor) {
+        console.warn("Invalid faceData: descriptor is missing.");
         return false;
     }
 
-    console.log("Validating face...");
-    
+    if (!Array.isArray(faceData.descriptor) && !(faceData.descriptor instanceof Float32Array)) {
+        console.warn("Invalid faceData: descriptor is not an array or Float32Array.");
+        return false;
+    }
+
+    if (faceData.descriptor.length !== 128) {
+        console.warn("Invalid faceData: descriptor length is incorrect:", faceData.descriptor.length);
+        return false;
+    }
+
+    console.log("Valid descriptor found. Proceeding to validation...");
+
+    // Validasi dengan token
     if (Array.isArray(tokenDescriptor) && tokenDescriptor.length === 128) {
         const distanceWithToken = faceapi.euclideanDistance(
             tokenDescriptor,
-            faceData.descriptor
+            Array.from(faceData.descriptor) // Pastikan format sesuai
         );
         console.log("Distance with token:", distanceWithToken);
         if (distanceWithToken <= threshold) {
@@ -80,6 +93,7 @@ export const validateFaceDetection = (
         console.warn("Invalid tokenDescriptor: It must be an array of length 128.");
     }
 
+    // Validasi dengan cache
     if (!(facecamCache instanceof Map) || facecamCache.size === 0) {
         console.warn("Facecam cache is empty or invalid.");
         return false;
@@ -89,7 +103,7 @@ export const validateFaceDetection = (
         (descriptor) =>
             Array.isArray(descriptor) &&
             descriptor.length === 128 &&
-            faceapi.euclideanDistance(descriptor, faceData.descriptor) <= threshold
+            faceapi.euclideanDistance(Array.from(descriptor), Array.from(faceData.descriptor)) <= threshold
     );
 
     if (isMatched) {
