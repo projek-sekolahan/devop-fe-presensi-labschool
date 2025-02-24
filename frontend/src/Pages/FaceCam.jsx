@@ -96,7 +96,7 @@ export default function FaceCam() {
             // Validasi dengan data token
             console.log("Detection result:", detectionResult);
             console.log("Token descriptor:", tokenDescriptor);
-            return false;
+            
             const isFaceMatched = await compareFaces(
                 detectionResult.descriptor, // Hanya kirim descriptor
                 tokenDescriptor
