@@ -54,7 +54,7 @@ export default function FaceCam() {
                     "Failed to initialize FaceCam",
                     "error",
                     () => {
-                        window.location.replace("/home");
+                        window.location.replace("/facecam");
                     }
                 );
             }
@@ -80,15 +80,18 @@ export default function FaceCam() {
             if (!userData || !userData.facecam_id) {
                 throw new Error("Invalid or missing face descriptor in token.");
             }
+            console.log(userData);
             const tokenDescriptor = new Float32Array(
                 userData.facecam_id.split(", ").map(Number)
             );
+            console.log(tokenDescriptor);
             // Deteksi wajah dari gambar
             const detectionResult = await detectFace(imgRef.current);
             if (!detectionResult) {
                 throw new Error("No face detected or descriptor is undefined.");
             }
             // Validasi dengan data token
+            console.log("detectionResult",tokenDescriptor);
             const isFaceMatched = await compareFaces(
                 detectionResult,
                 tokenDescriptor
@@ -105,7 +108,7 @@ export default function FaceCam() {
                 "Harap Ulangi Proses.",
                 "error",
                 () => {
-                    window.location.replace("/home");
+                    window.location.replace("/facecam");
                 }
             );
         } finally {
@@ -160,7 +163,7 @@ export default function FaceCam() {
                     parsedToken.message,
                     parsedToken.info,
                     () => {
-                        window.location.replace("/home");
+                        window.location.replace("/facecam");
                     }
                 );
             })
