@@ -57,26 +57,35 @@ export const validateFaceDetection = (
     faceData,
     tokenDescriptor,
     facecamCache = new Map(),
-    threshold = 0.35
+    threshold = 0.4
 ) => {
     console.log("Raw faceData received:", faceData);
+    console.log("Type of faceData:", typeof faceData);
+    console.log("Instance of Float32Array:", faceData instanceof Float32Array);
+    console.log("Has descriptor property:", faceData?.descriptor ? "Yes" : "No");
 
-    // Cek apakah faceData sudah berupa descriptor atau masih dalam objek
+    // Pastikan deteksi wajah memiliki score yang cukup
+    if (faceData?.detection?._score < 0.5) {
+        console.warn("Face detection confidence too low:", faceData.detection._score);
+        return false;
+    }
+
+    // Ambil descriptor, baik dari objek atau langsung dari Float32Array
     const descriptor = 
         faceData instanceof Float32Array ? faceData : faceData?.descriptor;
 
-    if (!descriptor || descriptor.length !== 128) {
+    if (!descriptor || !(descriptor instanceof Float32Array) || descriptor.length !== 128) {
         console.warn("Invalid faceData: descriptor is missing or incorrect.");
         return false;
     }
 
     console.log("Valid descriptor found. Proceeding to validation...");
 
-    // Validasi dengan token descriptor
+    // Bandingkan dengan token descriptor
     if (Array.isArray(tokenDescriptor) && tokenDescriptor.length === 128) {
         const distanceWithToken = faceapi.euclideanDistance(
             Array.from(tokenDescriptor), 
-            Array.from(descriptor) // Convert ke array
+            Array.from(descriptor)
         );
         console.log("Distance with token:", distanceWithToken);
         if (distanceWithToken <= threshold) {
@@ -87,7 +96,7 @@ export const validateFaceDetection = (
         console.warn("Invalid tokenDescriptor: It must be an array of length 128.");
     }
 
-    // Validasi dengan cache
+    // Bandingkan dengan cache
     if (!(facecamCache instanceof Map) || facecamCache.size === 0) {
         console.warn("Facecam cache is empty or invalid.");
         return false;
