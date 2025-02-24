@@ -4,7 +4,7 @@ export const detectFace = async (imgElement) => {
     if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
         throw new Error("Invalid image element.");
     }
-    const detection = await detectSingleFace(imgElement);
+    const detection = await detectSingleFace(imgElement); console.log("face recognis" , detection); return false;
     if (!detection || typeof detection.descriptor === "undefined") {
         throw new Error("Face not detected.");
     }
