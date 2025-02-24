@@ -64,18 +64,22 @@ export const validateFaceDetection = (
     console.log("Instance of Float32Array:", faceData instanceof Float32Array);
     console.log("Has descriptor property:", faceData?.descriptor ? "Yes" : "No");
 
-    // Pastikan deteksi wajah memiliki score yang cukup
-    if (faceData?.detection?._score < 0.5) {
-        console.warn("Face detection confidence too low:", faceData.detection._score);
+    // Pastikan deteksi wajah memiliki skor yang cukup
+    if (!faceData?.detection || faceData.detection._score < 0.5) {
+        console.warn("Face detection confidence too low or missing:", faceData?.detection?._score);
         return false;
     }
 
     // Ambil descriptor, baik dari objek atau langsung dari Float32Array
-    const descriptor = 
-        faceData instanceof Float32Array ? faceData : faceData?.descriptor;
+    let descriptor = faceData instanceof Float32Array ? faceData : faceData?.descriptor;
 
-    if (!descriptor || !(descriptor instanceof Float32Array) || descriptor.length !== 128) {
-        console.warn("Invalid faceData: descriptor is missing or incorrect.");
+    console.log("Extracted descriptor:", descriptor);
+    console.log("Descriptor type:", typeof descriptor);
+    console.log("Descriptor instance of Float32Array:", descriptor instanceof Float32Array);
+    console.log("Descriptor length:", descriptor?.length);
+
+    if (!(descriptor instanceof Float32Array) || descriptor.length !== 128) {
+        console.warn("Invalid faceData: descriptor is missing or incorrect. Length:", descriptor?.length);
         return false;
     }
 
@@ -93,7 +97,7 @@ export const validateFaceDetection = (
             return true;
         }
     } else {
-        console.warn("Invalid tokenDescriptor: It must be an array of length 128.");
+        console.warn("Invalid tokenDescriptor: It must be an array of length 128. Length:", tokenDescriptor?.length);
     }
 
     // Bandingkan dengan cache
@@ -101,6 +105,9 @@ export const validateFaceDetection = (
         console.warn("Facecam cache is empty or invalid.");
         return false;
     }
+
+    console.log("Facecam cache size:", facecamCache.size);
+    console.log("Facecam cache values:", Array.from(facecamCache.values()));
 
     const isMatched = Array.from(facecamCache.values()).some(
         (cachedDescriptor) =>
