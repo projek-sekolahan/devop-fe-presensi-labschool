@@ -59,29 +59,46 @@ export const validateFaceDetection = (
     facecamCache = new Map(),
     threshold = 0.5
 ) => {
+    // Cek apakah faceData valid
+    if (!faceData || !faceData.descriptor) {
+        console.warn("Invalid faceData: descriptor is missing.");
+        return false;
+    }
+
+    console.log("Validating face with tokenDescriptor:", tokenDescriptor);
+    console.log("Face descriptor:", faceData.descriptor);
+
     // Validasi dengan token
-    console.log(tokenDescriptor,faceData.descriptor)
-    if (tokenDescriptor) {
+    if (tokenDescriptor && Array.isArray(tokenDescriptor)) {
         const distanceWithToken = faceapi.euclideanDistance(
             tokenDescriptor,
             faceData.descriptor
         );
+        console.log("Distance with token:", distanceWithToken);
         if (distanceWithToken <= threshold) {
+            console.log("Face match with token.");
             return true;
         }
+    } else {
+        console.warn("Invalid tokenDescriptor: It must be an array.");
     }
+
     // Validasi dengan cache
-    if (facecamCache && facecamCache.size > 0) {
+    if (facecamCache instanceof Map && facecamCache.size > 0) {
         const isMatched = Array.from(facecamCache.values()).some(
             (descriptor) =>
-                faceapi.euclideanDistance(descriptor, faceData.descriptor) <=
-                threshold
+                Array.isArray(descriptor) &&
+                faceapi.euclideanDistance(descriptor, faceData.descriptor) <= threshold
         );
         if (isMatched) {
+            console.log("Face match with cache.");
             return true;
         }
+    } else {
+        console.warn("Facecam cache is empty or invalid.");
     }
 
     console.warn("Face did not match token or cache.");
     return false;
 };
+

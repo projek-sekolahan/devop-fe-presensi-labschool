@@ -92,8 +92,8 @@ export default function FaceCam() {
                 throw new Error("No face detected or descriptor is undefined.");
             }
             // Validasi dengan data token
-            console.log("detectionResult",detectionResult);
-            console.log("tokenDescriptor",tokenDescriptor);
+            // console.log("detectionResult",detectionResult);
+            // console.log("tokenDescriptor",tokenDescriptor);
             const isFaceMatched = await compareFaces(
                 detectionResult,
                 tokenDescriptor

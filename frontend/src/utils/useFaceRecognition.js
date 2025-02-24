@@ -23,20 +23,13 @@ export const detectFace = async (imgElement) => {
  * @returns {Promise<Float32Array>} descriptorResult
  */
 export const compareFaces = async (detectionResult, tokenDescriptor) => {
-    try {
-        if (!detectionResult?.descriptor) {
-            throw new Error("Invalid detection result.");
-        }
-        console.log(detectionResult.descriptor, tokenDescriptor);
-        const isFaceMatched = await validateFaceDetection(detectionResult.descriptor, tokenDescriptor);
-        if (typeof isFaceMatched !== "boolean" || !isFaceMatched) {
-            throw new Error("Face match failed.");
-        }
-        return detectionResult.descriptor;
-    } catch (err) {
-        console.error("Face match failed:", err);
-        throw err;
+    if (!detectionResult?.descriptor) {
+        throw new Error("Invalid detection result.");
     }
+    const isFaceMatched = await validateFaceDetection(detectionResult.descriptor, tokenDescriptor);
+    if (typeof isFaceMatched !== "boolean" || !isFaceMatched) {
+        throw new Error("Face match failed.");
+    }
+    return detectionResult.descriptor;
 };
-
 // Tidak perlu custom hook karena ini murni fungsi utility
