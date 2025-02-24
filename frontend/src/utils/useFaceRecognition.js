@@ -1,10 +1,5 @@
 import { detectSingleFace, validateFaceDetection } from "./faceUtils";
 
-/**
- * Deteksi wajah dari elemen gambar.
- * @param {HTMLImageElement} imgElement
- * @returns {Promise<Object>} detectionResult
- */
 export const detectFace = async (imgElement) => {
     if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
         throw new Error("Invalid image element.");
@@ -16,12 +11,6 @@ export const detectFace = async (imgElement) => {
     return detection;
 };
 
-/**
- * Bandingkan hasil deteksi wajah dengan token descriptor.
- * @param {Object} detectionResult
- * @param {Float32Array} tokenDescriptor
- * @returns {Promise<Float32Array>} descriptorResult
- */
 export const compareFaces = async (detectionResult, tokenDescriptor) => {
     if (!detectionResult?.descriptor) {
         throw new Error("Invalid detection result.");

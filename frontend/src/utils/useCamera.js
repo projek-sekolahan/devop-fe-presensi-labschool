@@ -25,7 +25,7 @@ const useCamera = () => {
     const stopVideo = useCallback(() => {
         try {
             const stream = videoRef.current?.srcObject;
-            if (!stream) return; // Hindari error jika tidak ada stream
+            if (!stream) return;
             stream?.getTracks().forEach((track) => track.stop());
         } catch (err) {
             console.error("Camera error:", err);
@@ -50,7 +50,7 @@ const useCamera = () => {
                 canvasRef.current.height = cropSize;
 
                 context.save();
-                context.scale(-1, 1); // Mirror effect
+                context.scale(-1, 1);
                 context.translate(-cropSize, 0);
                 context.drawImage(
                     video,
@@ -74,7 +74,6 @@ const useCamera = () => {
             throw err;
         }
     }, []);
-
     return { videoRef, canvasRef, startVideo, stopVideo, capturePhoto };
 };
 
