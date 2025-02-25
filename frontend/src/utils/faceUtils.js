@@ -72,15 +72,23 @@ export const detectSingleFace = async (imgElement) => {
         await new Promise((resolve) => (imgElement.onload = resolve));
     }
 
+    console.log("Model tinyFaceDetector:", faceapi.nets.tinyFaceDetector.isLoaded);
+    console.log("Model faceLandmark68Net:", faceapi.nets.faceLandmark68Net.isLoaded);
+    console.log("Model faceRecognitionNet:", faceapi.nets.faceRecognitionNet.isLoaded);
+
+    console.log("imgElement:", imgElement);
+    console.log("imgElement.src:", imgElement.src);
+    console.log("imgElement.width:", imgElement.width, "imgElement.height:", imgElement.height);
+
     const options = new faceapi.TinyFaceDetectorOptions({
-        inputSize: 640,
-        scoreThreshold: 0.6,
+        inputSize: 320,
+        scoreThreshold: 0.5,
     });
 
     try {
         console.log("Mulai deteksi wajah...");
-        const detection = await faceapi.detectSingleFace(imgElement, options);
-        console.log("Deteksi awal:", detection);
+        const detection = await faceapi.detectAllFaces(imgElement, options);
+        console.log("Deteksi awal semua:", detection);
 
         if (!detection) {
             console.warn("Tidak ada wajah yang terdeteksi.");
