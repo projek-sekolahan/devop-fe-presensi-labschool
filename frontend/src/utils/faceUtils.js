@@ -19,7 +19,7 @@ export const loadFaceModels = async () => {
     }
 };
 
-export const detectSingleFace = async (imgElement) => {
+/* export const detectSingleFace = async (imgElement) => {
     if (!imgElement?.src) {
         console.error("Invalid image element.");
         return null;
@@ -59,9 +59,9 @@ export const detectSingleFace = async (imgElement) => {
 
     console.warn("Max attempts reached. No face detected.");
     return null;
-};
+}; */
 
-/* export const detectSingleFace = async (imgElement) => {
+export const detectSingleFace = async (imgElement) => {
     if (!imgElement?.src) {
         console.error("Invalid image element.");
         return null;
@@ -92,7 +92,7 @@ export const detectSingleFace = async (imgElement) => {
         console.error("Face detection error:", error);
         return null;
     }
-}; */
+};
 
 export const validateFaceDetection = (faceData, tokenDescriptor, threshold = DEFAULT_THRESHOLD) => {
     if (!faceData) {
