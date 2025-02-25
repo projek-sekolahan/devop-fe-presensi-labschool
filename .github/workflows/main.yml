@@ -45,7 +45,7 @@ jobs:
               run: npm run build
               if: ${{ env.changed == 'true' }}
 
-            - name: Deploy via rsync
+            - name: Deploy via rsync (Optimized)
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
               run: |
@@ -53,5 +53,8 @@ jobs:
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
                   ssh-keyscan -p 45022 23.106.52.199 >> ~/.ssh/known_hosts
-                  rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" -avz --delete --timeout=300 --partial --progress ./frontend smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                  
+                  rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
+                        -avz --update --ignore-existing --whole-file --compress-level=9 \
+                        --timeout=120 --info=progress2 ./frontend smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
               if: ${{ env.changed == 'true' }}
