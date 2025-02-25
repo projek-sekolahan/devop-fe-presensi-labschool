@@ -129,6 +129,8 @@ export default function Kehadiran() {
     const values = [...storedValues, ...formValues];
     const formData = getFormData(addDefaultKeys(keys), values);    
     const res = await ApiService.processApiRequest("reports", getFormData(formData), null, false);
+    console.log(res); return false;
+    if (res?.data) {
       if (Array.isArray(res.data.data.result)) {
         if (JSON.stringify(historyData) !== JSON.stringify(res.data.data)) {
           setHistoryData(res.data.data);
@@ -138,6 +140,7 @@ export default function Kehadiran() {
         setHistoryData([]);
       }
       setLoading(false);
+    }
   }, [id]);
 
   useEffect(() => {
