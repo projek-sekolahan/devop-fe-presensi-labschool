@@ -127,8 +127,13 @@ export default function Kehadiran() {
     const formValues = [id];
     const storedValues = getCombinedValues([]);
     const values = [...storedValues, ...formValues];
-    const formData = getFormData(addDefaultKeys(keys), values);    
-    const res = await ApiService.processApiRequest("reports", getFormData(formData), null, false);
+    const formData = getFormData(addDefaultKeys(keys), values);
+    console.log("keys", keys);
+    console.log("formValues", formValues);
+    console.log("storedValues", storedValues);
+    console.log("values", values);
+    console.log("formData", formData);
+    const res = await ApiService.processApiRequest("reports", formData, null, false);
     console.log(res); return false;
     if (res?.data) {
       if (Array.isArray(res.data.data.result)) {
