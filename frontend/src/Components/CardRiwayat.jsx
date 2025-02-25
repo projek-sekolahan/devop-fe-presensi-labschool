@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Card, Button } from "flowbite-react";
-import { formatDate, parseJwt, getFormData, addDefaultKeys, alertMessage, getCombinedValues } from "../utils/utils";
+import { formatDate, parseJwt, getFormData, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import DetailModal from "../Components/DetailModal";
 
