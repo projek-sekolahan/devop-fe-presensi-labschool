@@ -53,5 +53,5 @@ jobs:
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
                   ssh-keyscan -p 45022 23.106.52.199 >> ~/.ssh/known_hosts
-                  rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" -avz --delete --timeout=300 --partial --progress ./frontend/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                  rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" -avz --delete --timeout=300 --partial --progress ./frontend smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
               if: ${{ env.changed == 'true' }}
