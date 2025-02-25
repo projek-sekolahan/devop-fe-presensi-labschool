@@ -31,8 +31,8 @@ export const detectSingleFace = async (imgElement) => {
     console.log("Detecting face in image:", imgElement.src);
 
     const options = new faceapi.TinyFaceDetectorOptions({
-        inputSize: 512,
-        scoreThreshold: 0.4,
+        inputSize: 640,
+        scoreThreshold: 0.6,
     });
 
     let maxTries = 10; // Set max retries
@@ -73,7 +73,7 @@ export const validateFaceDetection = (
     faceData,
     tokenDescriptor,
     facecamCache = new Map(),
-    threshold = 0.4
+    threshold = 0.6
 ) => {
     console.log("Raw faceData received:", faceData);
     console.log("Type of faceData:", typeof faceData);
@@ -84,7 +84,6 @@ export const validateFaceDetection = (
         return false;
     }
 
-    // Ambil descriptor dengan fallback ke faceData langsung jika bukan objek
     const descriptor =
         faceData instanceof Float32Array ? faceData : faceData?.descriptor;
 
@@ -98,7 +97,6 @@ export const validateFaceDetection = (
 
     console.log("Valid descriptor found. Proceeding to validation...");
 
-    // Bandingkan dengan token descriptor
     if (
         tokenDescriptor instanceof Float32Array &&
         tokenDescriptor.length === 128
@@ -118,13 +116,18 @@ export const validateFaceDetection = (
         );
     }
 
-    // Validasi cache
-    if (!(facecamCache instanceof Map) || facecamCache.size === 0) {
-        console.warn("Facecam cache is empty or invalid.");
+    if (!(facecamCache instanceof Map)) {
+        console.warn("facecamCache is not a valid Map. Initializing empty cache.");
+        facecamCache = new Map();
+    }
+
+    if (facecamCache.size === 0) {
+        console.warn("Facecam cache is empty.");
         return false;
     }
 
     console.log("Checking face match with cache...");
+    console.log("Facecam cache content:", Array.from(facecamCache.entries()));
 
     const isMatched = Array.from(facecamCache.values()).some(
         (cachedDescriptor) =>
