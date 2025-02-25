@@ -105,25 +105,23 @@ export default function FaceCam() {
 
     const submitPresence = async (faceDescriptor) => {
 
-        const keys = addDefaultKeys(["AUTH_KEY", "token", "status_dinas", "status_kehadiran", "geolocation", "facecam_id", "foto_presensi"]);
+        const keys = addDefaultKeys(["AUTH_KEY", "token"]);
 		const formValues = [];
-		const storedValues = getCombinedValues(keys.slice(0, 2));
-		// let updatedCombinedKeys = [...keys];
-		
+		const storedValues = getCombinedValues(keys);
+		let updatedCombinedKeys = [...keys];
+		updatedCombinedKeys.push("status_dinas", "status_kehadiran", "geolocation", "facecam_id", "foto_presensi");
 		if (localStorage.getItem("group_id") == "4") {
-			// updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
 			formValues.push("non-dinas", ...state);
 		} else {
-			// updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
 			formValues.push(...state);
 		}
 		formValues.push(faceDescriptor.join(", "),`["${imgSrc}"]`);
 		
 		const values = [...storedValues, ...formValues];
-		const formData = getFormData(keys, values);
+		const formData = getFormData(updatedCombinedKeys, values);
 		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
-        console.log("✅ selected Keys:", keys.slice(0, 2));
-        console.log("✅ Final keys:", keys);
+        console.log("✅ selected Keys:", keys);
+        console.log("✅ Final keys:", updatedCombinedKeys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
         console.log("✅ Final response:", response?.data);

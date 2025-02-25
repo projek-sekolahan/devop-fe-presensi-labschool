@@ -1,10 +1,8 @@
 import * as faceapi from "face-api.js";
 
 const MODEL_URL = "/frontend/models";
-/* const MAX_RETRIES = 10;
-const RETRY_DELAY = 1000; */
 const FACE_DESCRIPTOR_LENGTH = 128;
-const DEFAULT_THRESHOLD = 0.6;
+const DEFAULT_THRESHOLD = 0.5;
 
 export const loadFaceModels = async () => {
     try {
@@ -18,48 +16,6 @@ export const loadFaceModels = async () => {
         throw new Error("Model loading error");
     }
 };
-
-/* export const detectSingleFace = async (imgElement) => {
-    if (!imgElement?.src) {
-        console.error("Invalid image element.");
-        return null;
-    }
-
-    if (!imgElement.complete) {
-        console.warn("Image not fully loaded. Waiting...");
-        await new Promise((resolve) => (imgElement.onload = resolve));
-    }
-
-    const options = new faceapi.TinyFaceDetectorOptions({
-        inputSize: 640,
-        scoreThreshold: 0.6,
-    });
-
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-            const detection = await faceapi
-                .detectSingleFace(imgElement, options)
-                .withFaceLandmarks()
-                .withFaceDescriptor();
-
-            if (detection?.descriptor) {
-                return {
-                    descriptor: new Float32Array(detection.descriptor),
-                    detection,
-                };
-            }
-
-            console.warn(`No face detected. Attempt ${attempt} of ${MAX_RETRIES}`);
-        } catch (error) {
-            console.error("Face detection error:", error);
-            return null;
-        }
-        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-    }
-
-    console.warn("Max attempts reached. No face detected.");
-    return null;
-}; */
 
 export const detectSingleFace = async (imgElement) => {
     if (!imgElement?.src) {
@@ -82,7 +38,7 @@ export const detectSingleFace = async (imgElement) => {
 
     const options = new faceapi.TinyFaceDetectorOptions({
         inputSize: 320,
-        scoreThreshold: 0.5,
+        scoreThreshold: DEFAULT_THRESHOLD,
     });
 
     try {

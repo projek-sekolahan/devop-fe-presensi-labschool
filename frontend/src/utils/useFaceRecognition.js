@@ -1,9 +1,10 @@
 import { detectSingleFace, validateFaceDetection } from "./faceUtils";
+
 export const detectFace = async (imgElement) => {
     if (!(imgElement instanceof HTMLImageElement)) {
         throw new Error("detectFace: Parameter harus berupa elemen gambar (HTMLImageElement).");
     }
-    const detection = await detectSingleFace(imgElement); console.log("face recognis", detection.descriptor);
+    const detection = await detectSingleFace(imgElement);
     if (!detection?.descriptor) {
         throw new Error("detectFace: Wajah tidak terdeteksi.");
     }
