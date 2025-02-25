@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ExclamationTriangleIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import Layout from '../Components/Layout';
-import { getFormData, handleSessionError, formatDate, getCombinedValues } from '../utils/utils';
+import { getFormData, handleSessionError, formatDate, addDefaultKeys, getCombinedValues } from '../utils/utils';
 import ApiService from '../utils/ApiService';
 import { useParams, useNavigate } from 'react-router-dom';
 
