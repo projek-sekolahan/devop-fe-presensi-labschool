@@ -1,148 +1,94 @@
 import * as faceapi from "face-api.js";
 
-const MODEL_URL = "/frontend/models"; // Sesuaikan jika perlu
+const MODEL_URL = "/frontend/models";
+const MAX_RETRIES = 10;
+const RETRY_DELAY = 1000;
+const FACE_DESCRIPTOR_LENGTH = 128;
+const DEFAULT_THRESHOLD = 0.6;
 
 export const loadFaceModels = async () => {
     try {
-        console.log("Loading face models...");
         await Promise.all([
             faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
             faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
             faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         ]);
-        console.log("Face models loaded successfully.");
     } catch (error) {
-        console.error("Error loading face models:", error);
-        throw new Error("Failed to load face models");
+        console.error("Failed to load face models:", error);
+        throw new Error("Model loading error");
     }
 };
 
 export const detectSingleFace = async (imgElement) => {
-    if (!imgElement || !imgElement.src) {
-        console.error("Image element is empty or invalid.");
+    if (!imgElement?.src) {
+        console.error("Invalid image element.");
         return null;
     }
 
     if (!imgElement.complete) {
-        console.warn("Image is not fully loaded. Waiting...");
+        console.warn("Image not fully loaded. Waiting...");
         await new Promise((resolve) => (imgElement.onload = resolve));
     }
-
-    console.log("Detecting face in image:", imgElement.src);
 
     const options = new faceapi.TinyFaceDetectorOptions({
         inputSize: 640,
         scoreThreshold: 0.6,
     });
 
-    let maxTries = 10; // Set max retries
-    let attempts = 0;
-
-    while (attempts < maxTries) {
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {
             const detection = await faceapi
                 .detectSingleFace(imgElement, options)
                 .withFaceLandmarks()
                 .withFaceDescriptor();
 
-            if (detection && detection.descriptor) {
-                console.log("Face detected:", detection);
+            if (detection?.descriptor) {
                 return {
                     descriptor: new Float32Array(detection.descriptor),
                     detection,
                 };
             }
 
-            console.warn(
-                `No face detected. Attempt ${attempts + 1} of ${maxTries}`
-            );
+            console.warn(`No face detected. Attempt ${attempt} of ${MAX_RETRIES}`);
         } catch (error) {
-            console.error("Error during face detection:", error);
+            console.error("Face detection error:", error);
             return null;
         }
-
-        attempts++;
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
     }
 
     console.warn("Max attempts reached. No face detected.");
     return null;
 };
 
-export const validateFaceDetection = (
-    faceData,
-    tokenDescriptor,
-    facecamCache = new Map(),
-    threshold = 0.6
-) => {
-    console.log("Raw faceData received:", faceData);
-    console.log("Type of faceData:", typeof faceData);
-    console.log("Instance of Float32Array:", faceData instanceof Float32Array);
-
+export const validateFaceDetection = (faceData, tokenDescriptor, threshold = DEFAULT_THRESHOLD) => {
     if (!faceData) {
-        console.warn("faceData is missing or null.");
+        console.warn("Missing face data.");
         return false;
     }
 
-    const descriptor =
-        faceData instanceof Float32Array ? faceData : faceData?.descriptor;
-
-    if (!(descriptor instanceof Float32Array) || descriptor.length !== 128) {
-        console.warn(
-            "Invalid descriptor: Expected Float32Array with length 128 but got",
-            descriptor
-        );
+    const descriptor = faceData instanceof Float32Array ? faceData : faceData?.descriptor;
+    if (!(descriptor instanceof Float32Array) || descriptor.length !== FACE_DESCRIPTOR_LENGTH) {
+        console.warn("Invalid descriptor format.");
         return false;
     }
 
-    console.log("Valid descriptor found. Proceeding to validation...");
-
-    if (
-        tokenDescriptor instanceof Float32Array &&
-        tokenDescriptor.length === 128
-    ) {
-        const distanceWithToken = faceapi.euclideanDistance(
-            Array.from(tokenDescriptor),
-            Array.from(descriptor)
-        );
-        console.log("Distance with token:", distanceWithToken);
-        if (distanceWithToken <= threshold) {
-            console.log("Face match with token.");
+    if (tokenDescriptor instanceof Float32Array && tokenDescriptor.length === FACE_DESCRIPTOR_LENGTH) {
+        if (faceapi.euclideanDistance([...tokenDescriptor], [...descriptor]) <= threshold) {
             return true;
         }
     } else {
-        console.warn(
-            "Invalid tokenDescriptor: It must be a Float32Array of length 128."
-        );
+        console.warn("Invalid token descriptor format.");
     }
-
-    if (!(facecamCache instanceof Map)) {
-        console.warn("facecamCache is not a valid Map. Initializing empty cache.");
-        facecamCache = new Map();
-    }
-
-    if (facecamCache.size === 0) {
-        console.warn("Facecam cache is empty.");
-        return false;
-    }
-
-    console.log("Checking face match with cache...");
-    console.log("Facecam cache content:", Array.from(facecamCache.entries()));
 
     const isMatched = Array.from(facecamCache.values()).some(
         (cachedDescriptor) =>
             cachedDescriptor instanceof Float32Array &&
-            cachedDescriptor.length === 128 &&
-            faceapi.euclideanDistance(
-                Array.from(cachedDescriptor),
-                Array.from(descriptor)
-            ) <= threshold
+            cachedDescriptor.length === FACE_DESCRIPTOR_LENGTH &&
+            faceapi.euclideanDistance([...cachedDescriptor], [...descriptor]) <= threshold
     );
 
-    if (isMatched) {
-        console.log("Face match with cache.");
-        return true;
-    }
+    if (isMatched) return true;
 
     console.warn("Face did not match token or cache.");
     return false;
