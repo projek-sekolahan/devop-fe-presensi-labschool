@@ -9,11 +9,6 @@ jobs:
     web-deploy:
         runs-on: ubuntu-latest
         steps:
-            - name: Set up secret file
-              env:
-                  ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-              run: echo "$ssh-key" >> secrets.txt
-
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
@@ -32,16 +27,7 @@ jobs:
               if: ${{ env.changed == 'false' }}
               run: echo "No changes in frontend, stopping pipeline..." && exit 0
 
-            - name: Cache Node Modules
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-              if: ${{ env.changed == 'true' }}
-
-            - name: Set up Node
+            - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: 20
@@ -54,28 +40,18 @@ jobs:
               run: npm ci
               if: ${{ env.changed == 'true' }}
 
-            - name: Cache Build
-              uses: actions/cache@v3
-              with:
-                  path: ./frontend/dist
-                  key: ${{ runner.os }}-build-${{ hashFiles('**/frontend/src/**/*', '**/frontend/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-build-
-              if: ${{ env.changed == 'true' }}
-
             - name: Build the frontend
               working-directory: ./frontend
               run: npm run build
               if: ${{ env.changed == 'true' }}
 
-            - name: Deploy
-              uses: SamKirkland/web-deploy@v1
-              with:
-                  target-server: 23.106.52.199
-                  remote-user: smalabsc
-                  private-ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  destination-path: ~/smartapps.smalabschoolunesa1.sch.id/
-                  source-path: ./frontend/dist
-                  ssh-port: 45022
-                  delete-remote: true
-                  only-changes: true
+            - name: Deploy via rsync
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -p 45022 23.106.52.199 >> ~/.ssh/known_hosts
+                  rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" -avz --progress ./frontend/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+              if: ${{ env.changed == 'true' }}
