@@ -56,5 +56,5 @@ jobs:
                   
                   rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
                         -az --delete --ignore-times --compress-level=3 --timeout=120 --info=progress2 \
-                        ./frontend/ smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                        ./frontend smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
               if: ${{ env.changed == 'true' }}
