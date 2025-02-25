@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getFormData, loading, alertMessage, handleSessionError, addDefaultKeys, parseJwt, getCombinedValues } from "../utils/utils";
+import { getFormData, loading, alertMessage, addDefaultKeys, parseJwt, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import Swal from "sweetalert2";
 import useCamera from "../utils/useCamera";
@@ -51,7 +51,6 @@ export default function FaceCam() {
                 );
             }
         };
-
         initialize();
         return () => {
             stopVideo();
@@ -104,7 +103,6 @@ export default function FaceCam() {
     };
 
     const submitPresence = async (faceDescriptor) => {
-
         const keys = addDefaultKeys(["AUTH_KEY", "token"]);
 		const formValues = [];
 		const storedValues = getCombinedValues(keys.slice(0, 2));
@@ -116,71 +114,17 @@ export default function FaceCam() {
 			formValues.push(...state);
 		}
 		formValues.push(faceDescriptor.join(", "),`["${imgSrc}"]`);
-		
 		const values = [...storedValues, ...formValues];
 		const formData = getFormData(updatedCombinedKeys, values);
-		// const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
-        console.log("✅ selected Keys:", keys);
-        console.log("✅ Final keys:", updatedCombinedKeys);
-        console.log("✅ Final values:", values);
-        console.log("✅ Final formData:", formData);
-        // console.log("✅ Final response:", response?.data);
-
-        /* const keys = [
-            "AUTH_KEY",
-            "token",
-            "status_dinas",
-            "status_kehadiran",
-            "geolocation",
-            "facecam_id",
-            "foto_presensi",
-        ];
-        const combinedKeys = addDefaultKeys(keys); */
-        // let values = [];
-        /* if (localStorage.getItem("group_id") === "4") {
-            values = [
-                localStorage.getItem("AUTH_KEY"),
-                localStorage.getItem("login_token"),
-                "non-dinas",
-                ...state,
-            ];
-        } else {
-            values = [
-                localStorage.getItem("AUTH_KEY"),
-                localStorage.getItem("login_token"),
-                ...state,
-            ];
+		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
+        if (response?.data) {
+            Swal.close();
+            setIsLoading(false);
+            const hasil = parseJwt(response.data.token);
+				alertMessage(hasil.title, hasil.message, hasil.info, () =>
+					window.location.replace("/home"),
+				);
         }
-        values.push(
-            faceDescriptor.join(", "),
-            `["${imgSrc}"]`,
-            localStorage.getItem("devop-sso"),
-            Cookies.get("csrf")
-        );
-        ApiService.presensiPost(
-            "process",
-            localStorage.getItem("AUTH_KEY"),
-            getFormData(combinedKeys, values)
-        )
-            .then((res) => {
-                Swal.close();
-                setIsLoading(false);
-                Cookies.set("csrf", JSON.parse(res).csrfHash);
-                const parsedToken = parseJwt(JSON.parse(res).data.token);
-                alertMessage(
-                    parsedToken.title,
-                    parsedToken.message,
-                    parsedToken.info,
-                    () => {
-                        window.location.replace("/facecam");
-                    }
-                );
-            })
-            .catch((err) => {
-                console.error("Presence submission error:", err);
-                setIsLoading(false);
-                handleSessionError(err, "/facecam");
-            }); */
     };
 
     const clickHandler = async () => {
