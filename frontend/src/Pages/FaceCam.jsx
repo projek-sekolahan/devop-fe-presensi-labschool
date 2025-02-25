@@ -126,9 +126,6 @@ export default function FaceCam() {
         console.log("✅ Final formData:", formData);
         // console.log("✅ Final response:", response?.data);
 
-
-
-
         /* const keys = [
             "AUTH_KEY",
             "token",
