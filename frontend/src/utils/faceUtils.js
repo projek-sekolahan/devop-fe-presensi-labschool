@@ -78,12 +78,21 @@ export const detectSingleFace = async (imgElement) => {
     });
 
     try {
-        const detection = await faceapi
-            .detectSingleFace(imgElement, options)
+        console.log("Mulai deteksi wajah...");
+        const detection = await faceapi.detectSingleFace(imgElement, options);
+        console.log("Deteksi awal:", detection);
+
+        if (!detection) {
+            console.warn("Tidak ada wajah yang terdeteksi.");
+            return null;
+        }
+
+        const fullDetection = await faceapi.detectSingleFace(imgElement, options)
             .withFaceLandmarks()
             .withFaceDescriptor();
-        console.log("face utils", detection);
-        return detection;
+        
+        console.log("Deteksi lengkap:", fullDetection);
+        return fullDetection;
 
     } catch (error) {
         console.error("Face detection error:", error);
