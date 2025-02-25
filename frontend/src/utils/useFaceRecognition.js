@@ -1,5 +1,4 @@
 import { detectSingleFace, validateFaceDetection } from "./faceUtils";
-
 export const detectFace = async (imgElement) => {
     if (!(imgElement instanceof HTMLImageElement)) {
         throw new Error("detectFace: Parameter harus berupa elemen gambar (HTMLImageElement).");
