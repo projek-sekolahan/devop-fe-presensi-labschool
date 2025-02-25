@@ -107,7 +107,7 @@ export default function FaceCam() {
 
         const keys = addDefaultKeys(["AUTH_KEY", "token"]);
 		const formValues = [];
-		const storedValues = getCombinedValues(keys);
+		const storedValues = getCombinedValues(keys.slice(0, 2));
 		let updatedCombinedKeys = [...keys];
 		updatedCombinedKeys.push("status_dinas", "status_kehadiran", "geolocation", "facecam_id", "foto_presensi");
 		if (localStorage.getItem("group_id") == "4") {
