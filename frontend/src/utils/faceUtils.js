@@ -1,8 +1,8 @@
 import * as faceapi from "face-api.js";
 
 const MODEL_URL = "/frontend/models";
-const MAX_RETRIES = 10;
-const RETRY_DELAY = 1000;
+/* const MAX_RETRIES = 10;
+const RETRY_DELAY = 1000; */
 const FACE_DESCRIPTOR_LENGTH = 128;
 const DEFAULT_THRESHOLD = 0.6;
 
@@ -82,7 +82,7 @@ export const detectSingleFace = async (imgElement) => {
             .detectSingleFace(imgElement, options)
             .withFaceLandmarks()
             .withFaceDescriptor();
-        console.log("face utils", detection.descriptor, detection);
+        console.log("face utils", detection);
         return detection?.descriptor ? { 
             descriptor: new Float32Array(detection.descriptor), 
             detection 
