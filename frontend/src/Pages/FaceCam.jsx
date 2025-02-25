@@ -119,12 +119,12 @@ export default function FaceCam() {
 		
 		const values = [...storedValues, ...formValues];
 		const formData = getFormData(updatedCombinedKeys, values);
-		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
+		// const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
         console.log("✅ selected Keys:", keys);
         console.log("✅ Final keys:", updatedCombinedKeys);
         console.log("✅ Final values:", values);
         console.log("✅ Final formData:", formData);
-        console.log("✅ Final response:", response?.data);
+        // console.log("✅ Final response:", response?.data);
 
 
 
