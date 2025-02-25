@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { getFormData, loading, alertMessage, handleSessionError, addDefaultKeys, parseJwt, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import Swal from "sweetalert2";
-import Cookies from "js-cookie";
 import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace, compareFaces } from "../utils/useFaceRecognition";

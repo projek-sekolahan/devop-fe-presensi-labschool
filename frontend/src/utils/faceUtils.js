@@ -19,7 +19,7 @@ export const loadFaceModels = async () => {
     }
 };
 
-export const detectSingleFace = async (imgElement) => {
+/* export const detectSingleFace = async (imgElement) => {
     if (!imgElement?.src) {
         console.error("Invalid image element.");
         return null;
@@ -59,6 +59,39 @@ export const detectSingleFace = async (imgElement) => {
 
     console.warn("Max attempts reached. No face detected.");
     return null;
+}; */
+
+export const detectSingleFace = async (imgElement) => {
+    if (!imgElement?.src) {
+        console.error("Invalid image element.");
+        return null;
+    }
+
+    if (!imgElement.complete) {
+        console.warn("Image not fully loaded. Waiting...");
+        await new Promise((resolve) => (imgElement.onload = resolve));
+    }
+
+    const options = new faceapi.TinyFaceDetectorOptions({
+        inputSize: 640,
+        scoreThreshold: 0.6,
+    });
+
+    try {
+        const detection = await faceapi
+            .detectSingleFace(imgElement, options)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+        return detection?.descriptor ? { 
+            descriptor: new Float32Array(detection.descriptor), 
+            detection 
+        } : null;
+
+    } catch (error) {
+        console.error("Face detection error:", error);
+        return null;
+    }
 };
 
 export const validateFaceDetection = (faceData, tokenDescriptor, threshold = DEFAULT_THRESHOLD) => {
