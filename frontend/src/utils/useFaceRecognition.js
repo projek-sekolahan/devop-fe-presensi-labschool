@@ -1,29 +1,45 @@
 import { detectSingleFace, validateFaceDetection } from "./faceUtils";
 
+/**
+ * Mendeteksi wajah dalam elemen gambar.
+ * @param {HTMLImageElement} imgElement - Elemen gambar yang akan diproses.
+ * @returns {Promise<Object>} - Hasil deteksi wajah.
+ * @throws {Error} - Jika elemen tidak valid atau wajah tidak terdeteksi.
+ */
 export const detectFace = async (imgElement) => {
-    if (!imgElement || !(imgElement instanceof HTMLImageElement)) {
-        throw new Error("Invalid image element.");
+    if (!(imgElement instanceof HTMLImageElement)) {
+        throw new Error("detectFace: Parameter harus berupa elemen gambar (HTMLImageElement).");
     }
+
     const detection = await detectSingleFace(imgElement);
-    console.log("face recognis", detection);
-    if (!detection || typeof detection.descriptor === "undefined") {
-        throw new Error("Face not detected.");
+    console.log("Face recognition result:", detection);
+
+    if (!detection?.descriptor) {
+        throw new Error("detectFace: Wajah tidak terdeteksi.");
     }
+
     return detection;
 };
 
+/**
+ * Membandingkan hasil deteksi wajah dengan token descriptor.
+ * @param {Object} detectionResult - Hasil deteksi wajah dari `detectFace`.
+ * @param {Object} tokenDescriptor - Data referensi wajah yang akan dibandingkan.
+ * @returns {Promise<Object>} - Hasil deteksi jika wajah cocok.
+ * @throws {Error} - Jika hasil deteksi tidak valid atau wajah tidak cocok.
+ */
 export const compareFaces = async (detectionResult, tokenDescriptor) => {
-    console.log("Detection Resul on Compare : ", detectionResult);
     if (!detectionResult) {
-        throw new Error("Invalid detection result.");
+        throw new Error("compareFaces: Hasil deteksi wajah tidak valid.");
     }
-    const isFaceMatched = await validateFaceDetection(
-        detectionResult,
-        tokenDescriptor
-    );
-    if (typeof isFaceMatched !== "boolean" || !isFaceMatched) {
-        throw new Error("Face match failed.");
+
+    console.log("Detection result in compareFaces:", detectionResult);
+
+    const isFaceMatched = await validateFaceDetection(detectionResult, tokenDescriptor);
+
+    if (!isFaceMatched) {
+        throw new Error("compareFaces: Wajah tidak cocok dengan referensi.");
     }
+
     return detectionResult;
 };
-// Tidak perlu custom hook karena ini murni fungsi utility

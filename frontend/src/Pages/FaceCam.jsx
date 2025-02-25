@@ -1,13 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import {
-    getFormData,
-    loading,
-    alertMessage,
-    handleSessionError,
-    addDefaultKeys,
-    parseJwt,
-} from "../utils/utils";
+import { getFormData, loading, alertMessage, handleSessionError, addDefaultKeys, parseJwt, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
@@ -67,63 +60,79 @@ export default function FaceCam() {
     }, []);
 
     const detectFacecam = async () => {
-        setIsLoading(true);
-        setShowModal(false);
-        loading("Loading", "Detecting face...");
         try {
+            setIsLoading(true);
+            setShowModal(false);
+            loading("Loading", "Detecting face...");
             // Validasi elemen gambar
             if (!imgRef.current) {
-                throw new Error("imgRef.current is not set or invalid.");
+                throw new Error("detectFacecam: imgRef.current is not set or invalid.");
             }
-    
             // Ambil descriptor dari token
-            const userData = parseJwt(localStorage.getItem("token"));
-            if (!userData || !userData.facecam_id) {
-                throw new Error("Invalid or missing face descriptor in token.");
+            const token = localStorage.getItem("token");
+            const userData = token ? parseJwt(token) : null;
+            const tokenDescriptor = userData?.facecam_id
+                ? new Float32Array(userData.facecam_id.split(", ").map(Number))
+                : null;
+            if (!tokenDescriptor) {
+                throw new Error("detectFacecam: Invalid or missing face descriptor in token.");
             }
-    
-            console.log(userData);
-            const tokenDescriptor = new Float32Array(
-                userData.facecam_id.split(", ").map(Number)
-            );
-    
             // Deteksi wajah dari gambar
             const detectionResult = await detectFace(imgRef.current);
-            if (!detectionResult || !detectionResult.descriptor) {
-                throw new Error("No face detected or descriptor is undefined.");
+            if (!detectionResult?.descriptor) {
+                throw new Error("detectFacecam: No face detected or descriptor is undefined.");
             }
-            console.log("facecam" , detectionResult); 
-            // Validasi dengan data token
-            console.log("Detection result:", detectionResult);
-            console.log("Token descriptor:", tokenDescriptor);
-            
-            const isFaceMatched = await compareFaces(
-                detectionResult.descriptor, // Hanya kirim descriptor
-                tokenDescriptor
-            );
-    
-            if (isFaceMatched) {
-                submitPresence(detectionResult.descriptor);
-            } else {
-                throw new Error("No face matched or descriptor is undefined.");
+            // Membandingkan wajah yang terdeteksi dengan token descriptor
+            const isFaceMatched = await compareFaces(detectionResult.descriptor, tokenDescriptor);
+            if (!isFaceMatched) {
+                console.error("detectFacecam: No face matched or descriptor is undefined.");
+                alertMessage(
+                    "Pencocokan Gagal",
+                    "Harap Ulangi Proses.",
+                    "error",
+                    () => window.location.replace("/facecam")
+                );
+                return;
             }
-        } catch (error) {
-            console.error("Face detection error:", error);
-            alertMessage(
-                "Pencocokan Gagal",
-                "Harap Ulangi Proses.",
-                "error",
-                () => {
-                    window.location.replace("/facecam");
-                }
-            );
-        } finally {
+            // Jika wajah cocok, lanjutkan proses presensi
             setIsLoading(false);
+            submitPresence(detectionResult.descriptor);
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error.message);
+            alertMessage("Error", error.message, "error");
         }
-    };    
+    };
 
-    const submitPresence = (faceDescriptor) => {
-        const keys = [
+    const submitPresence = async (faceDescriptor) => {
+
+        const keys = addDefaultKeys(["AUTH_KEY", "token", "status_dinas", "status_kehadiran", "geolocation", "facecam_id", "foto_presensi"]);
+		const formValues = [];
+		const storedValues = getCombinedValues(keys.slice(0, 2));
+		// let updatedCombinedKeys = [...keys];
+		
+		if (localStorage.getItem("group_id") == "4") {
+			// updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
+			formValues.push("non-dinas", ...state);
+		} else {
+			// updatedCombinedKeys.push("status_dinas", "status_kehadiran", "keterangan_kehadiran");
+			formValues.push(...state);
+		}
+		formValues.push(faceDescriptor.join(", "),`["${imgSrc}"]`);
+		
+		const values = [...storedValues, ...formValues];
+		const formData = getFormData(keys, values);
+		const response = await ApiService.processApiRequest("presensi/process", formData, localStorage.getItem("AUTH_KEY"), true);
+        console.log("✅ selected Keys:", keys.slice(0, 2));
+        console.log("✅ Final keys:", keys);
+        console.log("✅ Final values:", values);
+        console.log("✅ Final formData:", formData);
+        console.log("✅ Final response:", response?.data);
+
+
+
+
+        /* const keys = [
             "AUTH_KEY",
             "token",
             "status_dinas",
@@ -132,9 +141,9 @@ export default function FaceCam() {
             "facecam_id",
             "foto_presensi",
         ];
-        const combinedKeys = addDefaultKeys(keys);
-        let values = [];
-        if (localStorage.getItem("group_id") === "4") {
+        const combinedKeys = addDefaultKeys(keys); */
+        // let values = [];
+        /* if (localStorage.getItem("group_id") === "4") {
             values = [
                 localStorage.getItem("AUTH_KEY"),
                 localStorage.getItem("login_token"),
@@ -177,7 +186,7 @@ export default function FaceCam() {
                 console.error("Presence submission error:", err);
                 setIsLoading(false);
                 handleSessionError(err, "/facecam");
-            });
+            }); */
     };
 
     const clickHandler = async () => {
