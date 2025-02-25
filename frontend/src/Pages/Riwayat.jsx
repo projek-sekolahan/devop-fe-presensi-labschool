@@ -34,7 +34,7 @@ export default function Riwayat() {
 		const storedValues = getCombinedValues(keys.slice(2, 4));
         const values = [ ...formValues, ...storedValues ];
         const formData = getFormData(keys, values);
-		const response = await ApiService.processApiRequest("presensi/reports", formData, localStorage.getItem("AUTH_KEY"), false);
+		const response = await ApiService.processApiRequest("presensi/reports", formData, authKey, false);
         if (response?.data) {
             setLoading(false);
             const parsedData = parseJwt(response.data.token).data || [];

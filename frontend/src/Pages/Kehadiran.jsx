@@ -125,17 +125,22 @@ export default function Kehadiran() {
     if (!id) return;
 
     setLoading(true);
-    const keys = ['csrf_token', 'token'];
-    const values = [Cookies.get('csrf'), id];
-
+    // const keys = ['csrf_token', 'token'];
+    // const values = [Cookies.get('csrf'), id];
+    const keys = ["token"];
+    const formValues = [id];
+    const storedValues = getCombinedValues();
+    const values = [...storedValues, ...formValues];
+    const formData = getFormData(addDefaultKeys(keys), values);    
     try {
-      const res = await ApiService.postInput('reports', getFormData(keys, values));
-      const parsedData = JSON.parse(res);
-      Cookies.set('csrf', parsedData.csrfHash);
+      const res = await ApiService.processApiRequest("reports", getFormData(formData), null, false);
+      // const res = await ApiService.postInput('reports', getFormData(keys, values));
+      // const parsedData = JSON.parse(res);
+      // Cookies.set('csrf', parsedData.csrfHash);
 
-      if (Array.isArray(parsedData.data.data.result)) {
-        if (JSON.stringify(historyData) !== JSON.stringify(parsedData.data.data)) {
-          setHistoryData(parsedData.data.data);
+      if (Array.isArray(res.data.data.result)) {
+        if (JSON.stringify(historyData) !== JSON.stringify(res.data.data)) {
+          setHistoryData(res.data.data);
         }
       } else {
         console.warn('Data result tidak ditemukan atau bukan array');

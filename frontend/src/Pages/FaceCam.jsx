@@ -107,12 +107,14 @@ export default function FaceCam() {
 		const formValues = [];
 		const storedValues = getCombinedValues(keys.slice(0, 2));
 		let updatedCombinedKeys = [...keys];
-		updatedCombinedKeys.push("status_dinas", "status_kehadiran", "geolocation", "facecam_id", "foto_presensi");
 		if (localStorage.getItem("group_id") == "4") {
+            updatedCombinedKeys.push("status_dinas", "status_kehadiran", "geolocation");
 			formValues.push("non-dinas", ...state);
 		} else {
+            updatedCombinedKeys.push("status_kehadiran", "geolocation");
 			formValues.push(...state);
 		}
+        updatedCombinedKeys.push("facecam_id", "foto_presensi");
 		formValues.push(faceDescriptor.join(", "),`["${imgSrc}"]`);
 		const values = [...storedValues, ...formValues];
 		const formData = getFormData(updatedCombinedKeys, values);
