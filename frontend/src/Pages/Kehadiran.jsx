@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 import { ExclamationTriangleIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import Layout from '../Components/Layout';
-import { getFormData, handleSessionError, formatDate, addDefaultKeys, getCombinedValues } from '../utils/utils';
+import { getFormData, formatDate, addDefaultKeys, getCombinedValues } from '../utils/utils';
 import ApiService from '../utils/ApiService';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -122,21 +122,13 @@ export default function Kehadiran() {
 
   const fetchHistory = useCallback(async () => {
     if (!id) return;
-
     setLoading(true);
-    // const keys = ['csrf_token', 'token'];
-    // const values = [Cookies.get('csrf'), id];
     const keys = ["token"];
     const formValues = [id];
     const storedValues = getCombinedValues([]);
     const values = [...storedValues, ...formValues];
     const formData = getFormData(addDefaultKeys(keys), values);    
-    try {
-      const res = await ApiService.processApiRequest("reports", getFormData(formData), null, false);
-      // const res = await ApiService.postInput('reports', getFormData(keys, values));
-      // const parsedData = JSON.parse(res);
-      // Cookies.set('csrf', parsedData.csrfHash);
-
+    const res = await ApiService.processApiRequest("reports", getFormData(formData), null, false);
       if (Array.isArray(res.data.data.result)) {
         if (JSON.stringify(historyData) !== JSON.stringify(res.data.data)) {
           setHistoryData(res.data.data);
@@ -145,12 +137,7 @@ export default function Kehadiran() {
         console.warn('Data result tidak ditemukan atau bukan array');
         setHistoryData([]);
       }
-    } catch (err) {
-      const errorResponse = err.response ? JSON.parse(err.responseText) : err;
-      handleSessionError(errorResponse, '*');
-    } finally {
       setLoading(false);
-    }
   }, [id]);
 
   useEffect(() => {
