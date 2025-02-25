@@ -83,10 +83,7 @@ export const detectSingleFace = async (imgElement) => {
             .withFaceLandmarks()
             .withFaceDescriptor();
         console.log("face utils", detection);
-        return detection?.descriptor ? { 
-            descriptor: new Float32Array(detection.descriptor), 
-            detection 
-        } : null;
+        return detection;
 
     } catch (error) {
         console.error("Face detection error:", error);
