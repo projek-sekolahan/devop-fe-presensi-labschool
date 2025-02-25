@@ -128,7 +128,7 @@ export default function Kehadiran() {
     // const values = [Cookies.get('csrf'), id];
     const keys = ["token"];
     const formValues = [id];
-    const storedValues = getCombinedValues();
+    const storedValues = getCombinedValues([]);
     const values = [...storedValues, ...formValues];
     const formData = getFormData(addDefaultKeys(keys), values);    
     try {
