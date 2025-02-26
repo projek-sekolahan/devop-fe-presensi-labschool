@@ -28,21 +28,14 @@ export default function ChangePassword({ isOpen, onToggle }) {
         const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
         const res = await ApiService.processApiRequest("recover", formData, null, false);
-        console.log("sanitizedKeys" , sanitizedKeys);
+        /* console.log("sanitizedKeys" , sanitizedKeys);
         console.log("values" , values);
         console.log("formData" , formData);
         console.log("response" , res.data);
-        return false;
+        return false; */
         if (res?.data) {
-          if (Array.isArray(res.data.data.result)) {
-            if (JSON.stringify(historyData) !== JSON.stringify(res.data.data)) {
-              setHistoryData(res.data.data);
-            }
-          } else {
-            console.warn('Data result tidak ditemukan atau bukan array');
-            setHistoryData([]);
-          }
-          setLoading(false);
+            setLoad(false);
+            alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
         }
 
 
