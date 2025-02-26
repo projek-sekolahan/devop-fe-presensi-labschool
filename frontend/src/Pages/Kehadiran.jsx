@@ -142,7 +142,6 @@ export default function Kehadiran() {
       setLoading(false);
     }
   }, [id]);
-
   useEffect(() => {
     fetchHistory();
   }, [fetchHistory]);
