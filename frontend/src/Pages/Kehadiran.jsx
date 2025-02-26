@@ -125,7 +125,7 @@ export default function Kehadiran() {
     setLoading(true);
     const keys = ["token"];
     const formValues = [id];
-    const storedValues = getCombinedValues([]);
+    const storedValues = getCombinedValues();
     const values = [...storedValues, ...formValues];
     const formData = getFormData(addDefaultKeys(keys), values);
     console.log("keys", keys);
