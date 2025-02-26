@@ -23,17 +23,45 @@ export default function ChangePassword({ isOpen, onToggle }) {
         setLoad(true);
         const keys = ["username"];
         const formValues = [emailRef.current.value.trim()];
+        const storedValues = getCombinedValues([]);
+        const values = [...formValues,...storedValues].filter(value => value !== null);
+        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
+        const formData = getFormData(sanitizedKeys, values);
+        const res = await ApiService.processApiRequest("recover", formData, null, false);
+        console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("values" , values);
+        console.log("formData" , formData);
+        console.log("response" , res.data);
+        return false;
+        if (res?.data) {
+          if (Array.isArray(res.data.data.result)) {
+            if (JSON.stringify(historyData) !== JSON.stringify(res.data.data)) {
+              setHistoryData(res.data.data);
+            }
+          } else {
+            console.warn('Data result tidak ditemukan atau bukan array');
+            setHistoryData([]);
+          }
+          setLoading(false);
+        }
+
+
+
+
+
+        /* const keys = ["username"];
+        const formValues = [emailRef.current.value.trim()];
         const storedValues = getCombinedValues();
         const values = [...storedValues, ...formValues];
 		const formData = getFormData(addDefaultKeys(keys), values);
         localStorage.setItem("email", emailRef.current.value);
         try {
-			const res = await ApiService.processApiRequest("recover", getFormData(formData), null, false);
+			const res = await ApiService.processApiRequest("recover", formData, null, false);
             setLoad(false);
             alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
         } catch (err) {
             handleSessionError(err, "/recover");
-        }
+        } */
     };
 
     return (
