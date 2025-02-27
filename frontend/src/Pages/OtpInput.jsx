@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ApiService from "../utils/ApiService";
-import { getFormData, alertMessage } from "../utils/utils";
+import { getFormData, alertMessage, getCombinedValues, addDefaultKeys } from "../utils/utils";
 import Cookies from "js-cookie";
 
 export default function OtpInput({ isOpen, onToggle }) {
@@ -17,9 +17,21 @@ export default function OtpInput({ isOpen, onToggle }) {
 
 	const onOtpSubmit = async () => {
 		setLoad(true);
-		const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
+		/* const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
 		const values = [...otp, Cookies.get("csrf")];
-		const res = await ApiService.processApiRequest("verify", getFormData(keys, values));
+		const res = await ApiService.processApiRequest("verify", getFormData(keys, values)); */
+		const keys = [...new Array(4).fill("digit-input[]")];
+        const formValues = [...otp];
+        const storedValues = getCombinedValues([]);
+        const values = [...formValues,...storedValues].filter(value => value !== null);
+        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
+        const formData = getFormData(sanitizedKeys, values);
+        const res = await ApiService.processApiRequest("verify", formData, null, false);
+        console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("values" , values);
+        console.log("formData" , formData);
+        console.log("response" , res.data);
+        return false;
         setLoad(false);
 		if (res) {
 			if (res.data.info === "error") {
@@ -75,7 +87,7 @@ export default function OtpInput({ isOpen, onToggle }) {
         const values = [...formValues,...storedValues].filter(value => value !== null);
         const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
-        const res = await ApiService.processApiRequest("recover", formData, null, false);
+        const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
         console.log("sanitizedKeys" , sanitizedKeys);
         console.log("values" , values);
         console.log("formData" , formData);
