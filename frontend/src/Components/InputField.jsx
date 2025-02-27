@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import PropTypes from "prop-types";
 
 const InputField = forwardRef(
-    ({ id, name, placeholder = "", type = "text", autoComplete = "off", className = "", required = false }, ref) => (
+    ({ id, name, placeholder = "", type = "text", autoComplete = "off", className = "", required = false, onChange }, ref) => (
         <input
             id={id}
             name={name}
