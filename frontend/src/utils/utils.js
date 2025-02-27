@@ -50,24 +50,41 @@ export const addDefaultKeys = (keys) => {
     return [...keys, ...defaultKeys];
 };
 
-// Fungsi untuk mengambil nilai dari localStorage atau Cookies dengan fallback
+// Fungsi untuk mengambil nilai dari localStorage atau Cookies dengan debugging tambahan
 export const getStoredValue = (key) => {
-    const devopSso = localStorage.getItem("devop-sso") ?? localStorage.getItem("regist_token");
+    // Ambil nilai langsung dari localStorage sebelum diproses lebih lanjut
+    const registToken = localStorage.getItem("regist_token");
+    console.log(`🔍 [getStoredValue] Cek 'regist_token' langsung dari localStorage:`, registToken);
+
+    const devopSso = localStorage.getItem("devop-sso") ?? registToken;
+
+    // Debugging tambahan
+    console.log(`🛠️ [getStoredValue] Key: ${key}, Nilai yang ditemukan:`, {
+        csrf_token: Cookies.get("csrf"),
+        token: localStorage.getItem("login_token"),
+        devop_sso: devopSso,
+        regist_token: registToken
+    }[key] ?? localStorage.getItem(key));
 
     return {
         csrf_token: Cookies.get("csrf"),
         token: localStorage.getItem("login_token"),
-        devop_sso: devopSso
+        devop_sso: devopSso,
+        regist_token: registToken // Pastikan ini ada dalam daftar nilai yang dikembalikan
     }[key] ?? localStorage.getItem(key) ?? null;
 };
 
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
 export const getCombinedValues = (keys) => {
     const combinedKeys = addDefaultKeys(keys);
+    console.log("🔄 [getCombinedValues] Keys yang dicari:", combinedKeys);
+
     const valuesObj = combinedKeys.reduce((acc, key) => {
         acc[key] = getStoredValue(key);
+        console.log(`✅ [getCombinedValues] Nilai untuk key '${key}':`, acc[key]);
         return acc;
     }, {});
+
     return combinedKeys.map((key) => valuesObj[key]); // Mengembalikan array nilai saja
 };
 
