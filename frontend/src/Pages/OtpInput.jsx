@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import ApiService from "../utils/ApiService";
 import { getFormData, alertMessage, getCombinedValues, addDefaultKeys } from "../utils/utils";
 
@@ -9,78 +9,61 @@ export default function OtpInput({ isOpen, onToggle }) {
 	const formRef = useRef();
 
 	useEffect(() => {
-		if (inputRefs.current[0]) {
-			inputRefs.current[0].focus();
-		}
+		inputRefs.current[0]?.focus();
 	}, []);
 
-	const onOtpSubmit = async () => {
+	const onOtpSubmit = useCallback(async () => {
 		setLoad(true);
-		const keys = [...new Array(4).fill("digit-input[]")];
-        const formValues = [...otp];
-        const storedValues = getCombinedValues([]);
-        const values = [...formValues,...storedValues].filter(value => value !== null);
-        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
-        const formData = getFormData(sanitizedKeys, values);
-        const res = await ApiService.processApiRequest("verify", formData, null, true);
+		const keys = new Array(4).fill("digit-input[]");
+		const values = [...otp, ...getCombinedValues([])].filter(Boolean);
+		const sanitizedKeys = addDefaultKeys(keys).filter((key) => key !== "devop-sso");
+		const formData = getFormData(sanitizedKeys, values);
+		
+		const res = await ApiService.processApiRequest("verify", formData, null, true);
+		setLoad(false);
+
 		if (res?.data) {
-			setLoad(false);
 			localStorage.setItem("regist_token", res.data.data.token);
-			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("facereg"));
 		}
-	};
+	}, [otp, onToggle]);
 
 	const handleChange = (index, e) => {
-		const value = e.target.value;
-		if (isNaN(value)) return;
+		const value = e.target.value.replace(/\D/g, ""); // Hanya angka yang diperbolehkan
+		if (!value) return;
+
 		const newOtp = [...otp];
-		newOtp[index] = value.substring(value.length - 1);
+		newOtp[index] = value.charAt(value.length - 1); // Ambil digit terakhir
 		setOtp(newOtp);
-		if (value && index < 3 && inputRefs.current[index + 1]) {
+
+		if (index < 3 && inputRefs.current[index + 1]) {
 			inputRefs.current[index + 1].focus();
 		}
 	};
 
 	const handleClick = (index) => {
-		inputRefs.current[index].setSelectionRange(1, 1);
-		for (let i = 0; i < 4; i++) {
-			if (inputRefs.current[i].value === "") {
-				inputRefs.current[i].focus();
-				break;
-			}
-		}
+		inputRefs.current[index]?.focus();
 	};
 
 	const handleKeyDown = (index, e) => {
-		if (
-			e.key === "Backspace" &&
-			!otp[index] &&
-			index > 0 &&
-			inputRefs.current[index - 1]
-		) {
-			inputRefs.current[index - 1].focus();
+		if (e.key === "Backspace" && !otp[index] && index > 0) {
+			inputRefs.current[index - 1]?.focus();
 		}
 	};
 
-	const sendOtpAgain = async () => {
+	const sendOtpAgain = useCallback(async () => {
 		setLoad(true);
 		const keys = ["email"];
-        const formValues = [localStorage.getItem("email")];
-        const storedValues = getCombinedValues([]);
-        const values = [...formValues,...storedValues].filter(value => value !== null);
-        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
-        const formData = getFormData(sanitizedKeys, values);
-        const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
-        /* console.log("sanitizedKeys" , sanitizedKeys);
-        console.log("values" , values);
-        console.log("formData" , formData);
-        console.log("response" , res.data);
-        return false; */
+		const values = [localStorage.getItem("email"), ...getCombinedValues([])].filter(Boolean);
+		const sanitizedKeys = addDefaultKeys(keys).filter((key) => key !== "devop-sso");
+		const formData = getFormData(sanitizedKeys, values);
+		const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
+		setLoad(false);
+
 		if (res?.data) {
-			setLoad(false);
 			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
 		}
-	};
+	}, [onToggle]);
 
 	return (
 		<div className="verification-container">
@@ -101,8 +84,11 @@ export default function OtpInput({ isOpen, onToggle }) {
 							<input
 								key={index}
 								name="digit-input[]"
-								type="number"
-								ref={(input) => (inputRefs.current[index] = input)}
+								type="text"
+								inputMode="numeric"
+								pattern="\d*"
+								maxLength="1"
+								ref={(el) => (inputRefs.current[index] = el)}
 								value={value}
 								onChange={(e) => handleChange(index, e)}
 								onClick={() => handleClick(index)}
@@ -113,7 +99,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 					</div>
 					{/* Resend OTP Text */}
 					<p className="text-center font-light text-xs">
-						Tidak Menerima Kode OTP?{' '}
+						Tidak Menerima Kode OTP?{" "}
 						<span
 							className="text-link resend-otp text-center font-bold cursor-pointer"
 							onClick={sendOtpAgain}
@@ -126,9 +112,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 						type="button"
 						onClick={onOtpSubmit}
 						disabled={load}
-						className={`btn-submit ${
-							load ? 'opacity-50 cursor-not-allowed' : ''
-						}`}
+						className={`btn-submit ${load ? "opacity-50 cursor-not-allowed" : ""}`}
 					>
 						{load ? (
 							<div className="flex justify-center items-center gap-2">
@@ -136,7 +120,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 								<span className="loading loading-spinner text-white"></span>
 							</div>
 						) : (
-							'Verifikasi'
+							"Verifikasi"
 						)}
 					</button>
 				</form>
