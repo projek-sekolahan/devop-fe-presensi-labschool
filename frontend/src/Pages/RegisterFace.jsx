@@ -44,15 +44,30 @@ export default function RegisterFace({ isOpen, onToggle }) {
         }
     };
     const registerNewFace = async (faceData) => {
-        const keys = ["param", "img", "devop-sso", "csrf_token"];
+        const keys = ["param", "img"];
+        const formValues = [Array.from(faceData.descriptor).join(", "),`["${imgSrc}"]`];
+        const storedValues = getCombinedValues([]);
+        const values = [...formValues,...storedValues];
+        const sanitizedKeys = addDefaultKeys(keys);
+        const formData = getFormData(sanitizedKeys, values);
+        const res = await ApiService.processApiRequest("facecam", formData, null, false);
+        /* console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("values" , values);
+        console.log("formData" , formData);
+        console.log("response" , res.data);
+        return false; */
+
+
+
+        /* const keys = ["param", "img", "devop-sso", "csrf_token"];
         const values = [
             Array.from(faceData.descriptor).join(", "),
             `["${imgSrc}"]`,
             localStorage.getItem("regist_token"),
             Cookies.get("csrf"),
-        ];
-        const res = await ApiService.processApiRequest("facecam", getFormData(keys, values));
-        if (res.status) {
+        ]; */
+        // const res = await ApiService.processApiRequest("facecam", getFormData(keys, values));
+        /* if (res.status) {
             setIsLoading(false);
             alertMessage(
                 res.data.title,
@@ -66,7 +81,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             alertMessage("Error", "Gagal mendaftarkan wajah", "error", () =>
                 onToggle("facereg")
             );
-        }
+        } */
     };
     const clickHandler = async () => {
         setShowModal(true);

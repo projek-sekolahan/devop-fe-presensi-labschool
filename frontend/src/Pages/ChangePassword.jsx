@@ -10,24 +10,18 @@ export default function ChangePassword({ isOpen, onToggle }) {
     const [email, setEmail] = useState("");
     const [loadingState, setLoadingState] = useState(false);
     const [errors, setErrors] = useState({ email: "" });
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // Validasi input email
         const validationErrors = validateFormFields({ email: { value: email.trim(), type: "email" } });
         setErrors({ email: validationErrors.email || "" });
-
         if (Object.values(validationErrors).some(Boolean)) return;
-
         setLoadingState(true);
-
         // Siapkan data untuk request
         const formValues = [email.trim()];
         const storedValues = getCombinedValues([]);
         const sanitizedKeys = addDefaultKeys(["username"]).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, [...formValues, ...storedValues].filter(Boolean));
-
         try {
             const res = await ApiService.processApiRequest("recover", formData, null, true);
             if (res?.data) {

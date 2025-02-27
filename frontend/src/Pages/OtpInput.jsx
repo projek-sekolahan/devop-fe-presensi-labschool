@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ApiService from "../utils/ApiService";
 import { getFormData, alertMessage, getCombinedValues, addDefaultKeys } from "../utils/utils";
-import Cookies from "js-cookie";
 
 export default function OtpInput({ isOpen, onToggle }) {
 	const [otp, setOtp] = useState(new Array(4).fill(""));
@@ -17,29 +16,17 @@ export default function OtpInput({ isOpen, onToggle }) {
 
 	const onOtpSubmit = async () => {
 		setLoad(true);
-		/* const keys = [...new Array(4).fill("digit-input[]"), "csrf_token"];
-		const values = [...otp, Cookies.get("csrf")];
-		const res = await ApiService.processApiRequest("verify", getFormData(keys, values)); */
 		const keys = [...new Array(4).fill("digit-input[]")];
         const formValues = [...otp];
         const storedValues = getCombinedValues([]);
         const values = [...formValues,...storedValues].filter(value => value !== null);
         const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
-        const res = await ApiService.processApiRequest("verify", formData, null, false);
-        console.log("sanitizedKeys" , sanitizedKeys);
-        console.log("values" , values);
-        console.log("formData" , formData);
-        console.log("response" , res.data);
-        return false;
-        setLoad(false);
-		if (res) {
-			if (res.data.info === "error") {
-				alertMessage(res.data.title, res.data.message, res.data.info);
-			} else {
-				localStorage.setItem("regist_token", res.data.data.token);
-				alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("facereg"));
-			}
+        const res = await ApiService.processApiRequest("verify", formData, null, true);
+		if (res?.data) {
+			setLoad(false);
+			localStorage.setItem("regist_token", res.data.data.token);
+			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
 		}
 	};
 
@@ -77,10 +64,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 
 	const sendOtpAgain = async () => {
 		setLoad(true);
-		/* const keys = ["email", "csrf_token"];
-		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
-		const res = await ApiService.processApiRequest("sendOTP", getFormData(keys, values));
- */
 		const keys = ["email"];
         const formValues = [localStorage.getItem("email")];
         const storedValues = getCombinedValues([]);
@@ -88,14 +71,13 @@ export default function OtpInput({ isOpen, onToggle }) {
         const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
         const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
-        console.log("sanitizedKeys" , sanitizedKeys);
+        /* console.log("sanitizedKeys" , sanitizedKeys);
         console.log("values" , values);
         console.log("formData" , formData);
         console.log("response" , res.data);
-        return false;
-
-        setLoad(false);
-		if (res) {
+        return false; */
+		if (res?.data) {
+			setLoad(false);
 			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
 		}
 	};
