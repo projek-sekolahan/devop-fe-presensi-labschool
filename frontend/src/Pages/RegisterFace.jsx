@@ -61,8 +61,6 @@ export default function RegisterFace({ isOpen, onToggle }) {
         console.log("response" , res.data);
         // return false;
 
-
-
         /* const keys = ["param", "img", "devop-sso", "csrf_token"];
         const values = [
             Array.from(faceData.descriptor).join(", "),
