@@ -54,23 +54,11 @@ export const addDefaultKeys = (keys) => {
 export const getStoredValue = (key) => {
     // Ambil nilai langsung dari localStorage sebelum diproses lebih lanjut
     const registToken = localStorage.getItem("regist_token");
-    console.log(`🔍 [getStoredValue] Cek 'regist_token' langsung dari localStorage:`, registToken);
-
     let devopSso = localStorage.getItem("devop-sso");
-
     // Jika 'devop-sso' tidak ada atau kosong, gunakan 'regist_token'
     if (!devopSso || devopSso.trim() === "") {
         devopSso = registToken;
     }
-
-    // Debugging tambahan
-    console.log(`🛠️ [getStoredValue] Key: ${key}, Nilai yang ditemukan:`, {
-        "csrf_token": Cookies.get("csrf"),
-        "token": localStorage.getItem("login_token"),
-        "devop-sso": devopSso,
-        "regist_token": registToken
-    }[key] ?? localStorage.getItem(key));
-
     return {
         "csrf_token": Cookies.get("csrf"),
         "token": localStorage.getItem("login_token"),
@@ -82,14 +70,9 @@ export const getStoredValue = (key) => {
 // Fungsi utama untuk mendapatkan nilai berdasarkan keys yang diberikan
 export const getCombinedValues = (keys) => {
     const combinedKeys = addDefaultKeys(keys);
-    console.log("🔄 [getCombinedValues] Keys yang dicari:", combinedKeys);
-
     const valuesObj = combinedKeys.reduce((acc, key) => {
-        acc[key] = getStoredValue(key);
-        console.log(`✅ [getCombinedValues] Nilai untuk key '${key}':`, acc[key]);
-        return acc;
+        acc[key] = getStoredValue(key); return acc;
     }, {});
-
     return combinedKeys.map((key) => valuesObj[key]); // Mengembalikan array nilai saja
 };
 
