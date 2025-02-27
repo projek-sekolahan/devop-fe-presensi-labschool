@@ -65,17 +65,17 @@ export const getStoredValue = (key) => {
 
     // Debugging tambahan
     console.log(`🛠️ [getStoredValue] Key: ${key}, Nilai yang ditemukan:`, {
-        csrf_token: Cookies.get("csrf"),
-        token: localStorage.getItem("login_token"),
-        devop_sso: devopSso,
-        regist_token: registToken
+        "csrf_token": Cookies.get("csrf"),
+        "token": localStorage.getItem("login_token"),
+        "devop-sso": devopSso,
+        "regist_token": registToken
     }[key] ?? localStorage.getItem(key));
 
     return {
-        csrf_token: Cookies.get("csrf"),
-        token: localStorage.getItem("login_token"),
-        devop_sso: devopSso,
-        regist_token: registToken // Pastikan ini ada dalam daftar nilai yang dikembalikan
+        "csrf_token": Cookies.get("csrf"),
+        "token": localStorage.getItem("login_token"),
+        "devop-sso": devopSso,
+        "regist_token": registToken
     }[key] ?? localStorage.getItem(key) ?? null;
 };
 
