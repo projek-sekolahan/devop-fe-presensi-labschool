@@ -14,6 +14,8 @@ export default function Login({ isOpen, onToggle }) {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const submitBtnRef = useRef(null);
+    const passwordRef = useRef(null);
+    const emailRef = useRef(null);
 
     ApiService.getCsrf();
 
@@ -24,6 +26,7 @@ export default function Login({ isOpen, onToggle }) {
 
     const handleLogin = useCallback(async (e) => {
         e.preventDefault();
+        
         const validationErrors = validateFormFields({
             email: { value: formData.email.trim(), type: "email" },
             password: { value: formData.password.trim(), type: "password" },
@@ -59,6 +62,7 @@ export default function Login({ isOpen, onToggle }) {
                         placeholder: "Email",
                         autoComplete: "username",
                         error: errors.email,
+                        inputRef: emailRef,
                         onChange: handleInputChange,
                     })}
                     {renderInputGroup({
@@ -69,7 +73,8 @@ export default function Login({ isOpen, onToggle }) {
                         autoComplete: "current-password",
                         error: errors.password,
                         onChange: handleInputChange,
-                        additionalElement: <PasswordShow />,
+                        inputRef: passwordRef,
+                        additionalElement: <PasswordShow ref={passwordRef} />,
                     })}
                     <div className="flex justify-between items-center text-sm">
                         <Link to="#" onClick={() => onToggle("recover")} className="text-link ml-auto">
