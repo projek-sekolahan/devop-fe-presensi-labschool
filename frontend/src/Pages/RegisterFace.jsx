@@ -5,7 +5,7 @@ import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace } from "../utils/useFaceRecognition";
 import ApiService from "../utils/ApiService";
-import { alertMessage, loading, getFormData } from "../utils/utils";
+import { alertMessage, loading, getFormData, getCombinedValues, addDefaultKeys } from "../utils/utils";
 import DetailModal from "../Components/DetailModal";
 
 export default function RegisterFace({ isOpen, onToggle }) {
