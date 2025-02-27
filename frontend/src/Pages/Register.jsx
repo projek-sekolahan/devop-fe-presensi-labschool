@@ -66,9 +66,6 @@ export default function Register({ isOpen, onToggle }) {
           {renderInputGroup({ id: "namaLengkap", label: "Nama Lengkap", type: "text", inputRef: nameRef, placeholder: "Nama Lengkap", error: errors.namaLengkap })}
           {renderInputGroup({ id: "number", label: "No Whatsapp", type: "tel", inputRef: numberRef, placeholder: "No Whatsapp", error: errors.phone })}
           {renderInputGroup({ id: "username", label: "Email", type: "email", inputRef: emailRef, placeholder: "Email", error: errors.username })}
-          <button type="submit" disabled={isLoading} className={`btn-submit ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}>
-            {isLoading ? <div className="flex justify-center items-center gap-2"><p className="text-white">Loading</p><span className="loading loading-spinner text-white"></span></div> : "Create Account"}
-          </button>
           <button
             type="submit"
             disabled={isLoading}
