@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import ApiService from "../utils/ApiService";
-import { getFormData, alertMessage, loading, handleSessionError, addDefaultKeys, getCombinedValues } from "../utils/utils";
+import { getFormData, alertMessage, loading, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
@@ -28,33 +28,10 @@ export default function ChangePassword({ isOpen, onToggle }) {
         const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
         const res = await ApiService.processApiRequest("recover", formData, null, false);
-        /* console.log("sanitizedKeys" , sanitizedKeys);
-        console.log("values" , values);
-        console.log("formData" , formData);
-        console.log("response" , res.data);
-        return false; */
         if (res?.data) {
             setLoad(false);
             alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
         }
-
-
-
-
-
-        /* const keys = ["username"];
-        const formValues = [emailRef.current.value.trim()];
-        const storedValues = getCombinedValues();
-        const values = [...storedValues, ...formValues];
-		const formData = getFormData(addDefaultKeys(keys), values);
-        localStorage.setItem("email", emailRef.current.value);
-        try {
-			const res = await ApiService.processApiRequest("recover", formData, null, false);
-            setLoad(false);
-            alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
-        } catch (err) {
-            handleSessionError(err, "/recover");
-        } */
     };
 
     return (

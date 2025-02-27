@@ -65,9 +65,23 @@ export default function OtpInput({ isOpen, onToggle }) {
 
 	const sendOtpAgain = async () => {
 		setLoad(true);
-		const keys = ["email", "csrf_token"];
+		/* const keys = ["email", "csrf_token"];
 		const values = [localStorage.getItem("email"), Cookies.get("csrf")];
 		const res = await ApiService.processApiRequest("sendOTP", getFormData(keys, values));
+ */
+		const keys = ["email"];
+        const formValues = [localStorage.getItem("email")];
+        const storedValues = getCombinedValues([]);
+        const values = [...formValues,...storedValues].filter(value => value !== null);
+        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
+        const formData = getFormData(sanitizedKeys, values);
+        const res = await ApiService.processApiRequest("recover", formData, null, false);
+        console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("values" , values);
+        console.log("formData" , formData);
+        console.log("response" , res.data);
+        return false;
+
         setLoad(false);
 		if (res) {
 			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
