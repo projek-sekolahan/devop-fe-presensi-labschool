@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import PasswordShow from "../Components/PasswordShow";
 import ApiService from "../utils/ApiService.js";
 import { getHash, getKey, getFormData, alertMessage, addDefaultKeys, getCombinedValues } from "../utils/utils.js";
@@ -12,119 +12,103 @@ const FORM_KEYS = ["username", "password"];
 const TOKEN_KEYS = ["AUTH_KEY", "devop-sso"];
 
 export default function Login({ isOpen, onToggle }) {
-    // Refs for input elements
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
+    // State untuk email dan password
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState({ email: "", password: "" });
+
     const submitBtnRef = useRef(null);
-    const [errors, setErrors] = useState({
-        password: "",
-        email: "",
-    });
 
     // Mendapatkan CSRF Token
     ApiService.getCsrf();
+
     // Handle form submission
-    const handleLogin = async (e) => {
+    const handleLogin = useCallback(async (e) => {
         e.preventDefault();
-        // Define fields for validation
-        const fields = {
-            password: { value: passwordRef.current.value.trim(), type: "password" },
-            email: { value: emailRef.current.value.trim(), type: "email" },
-        };
-        // Validate form fields
-        const validationErrors = validateFormFields(fields);
-        // Set errors if any
-        setErrors({
-            password: validationErrors.password || "",
-            email: validationErrors.email || "",
+        
+        // Validasi input
+        const validationErrors = validateFormFields({
+            email: { value: email.trim(), type: "email" },
+            password: { value: password.trim(), type: "password" },
         });
-        // If there are validation errors, stop form submission
-        if (Object.values(validationErrors).some((error) => error)) {
-            return;
-        }
-        const emailValue = emailRef.current.value.trim();
-        const passwordValue = passwordRef.current.value.trim();
-        const hash = getHash(passwordValue);
-        const tokenKey = getKey(emailValue, hash);
-        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
-        const userValues = [emailValue, hash];
+
+        setErrors(validationErrors);
+
+        if (Object.values(validationErrors).some((error) => error)) return;
+
+        const hash = getHash(password);
+        const tokenKey = getKey(email, hash);
+        const userValues = [email, hash];
         const storedValues = getCombinedValues([]);
         const values = [...userValues, ...storedValues];
         const formData = getFormData(addDefaultKeys(FORM_KEYS), values);
+
         const loginResponse = await ApiService.processApiRequest("auth/login", formData, tokenKey[0], true);
-        localStorage.setItem("login_token", loginResponse.data.token);
-        if (loginResponse.status==false) {
-            // error alert and redirect
-            alertMessage(
-                loginResponse.title,
-                loginResponse.message,
-                "error",
-                () => window.location.replace("/login")
-            );
+
+        if (loginResponse?.status) {
+            localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+            localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
+            localStorage.setItem("login_token", loginResponse.data.token);
+
+            alertMessage("Berhasil", loginResponse.message, "success", () => window.location.replace("/home"));
         } else {
-            // Success alert and redirect
-            alertMessage(
-                "Berhasil",
-                loginResponse.message,
-                "success",
-                () => window.location.replace("/home")
-            );
+            alertMessage(loginResponse.title, loginResponse.message, "error", () => window.location.replace("/login"));
         }
-    };
+    }, [email, password]);
 
     return (
-<div className="login-container">
-    {/* Background Image */}
-    <img
-        src="/frontend/Icons/splash.svg"
-        alt="labschool-unesa-logo"
-        className={`bg-image ${isOpen ? "open" : ""}`}
-    />
-    {/* Login Form */}
-    <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
-        <h2 className="text-title text-4xl">Yuk Login!</h2>
-        <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
-        <form className="login-form" onSubmit={handleLogin}>
-            {/* Email Input */}
-            {renderInputGroup({
-                id: "email",
-                label: "Email",
-                type: "email",
-                inputRef: emailRef,
-                placeholder: "Email",
-                autoComplete: "username",
-                error: errors.email,
-            })}
-            {/* Password Input */}
-            {renderInputGroup({
-                id: "password",
-                label: "Password",
-                type: "password",
-                inputRef: passwordRef,
-                placeholder: "Password (8 or more characters)",
-                autoComplete: "current-password",
-                error: errors.password,
-                additionalElement: <PasswordShow ref={passwordRef} />,
-            })}
-            {/* Forgot Password and Register Link */}
-            <div className="flex justify-between items-center text-sm">
-                <Link to="#" onClick={() => onToggle("recover")} className="text-link ml-auto">
-                    Lupa password?
-                </Link>
+        <div className="login-container">
+            {/* Background Image */}
+            <img
+                src="/frontend/Icons/splash.svg"
+                alt="labschool-unesa-logo"
+                className={`bg-image ${isOpen ? "open" : ""}`}
+            />
+
+            {/* Login Form */}
+            <div className={`login-form-container ${isOpen ? "open" : "closed"}`}>
+                <h2 className="text-title text-4xl">Yuk Login!</h2>
+                <p className="text-subtitle">Solusi Pintar Sekolah Digital</p>
+                <form className="login-form" onSubmit={handleLogin}>
+                    {/* Email Input */}
+                    {renderInputGroup({
+                        id: "email",
+                        label: "Email",
+                        type: "email",
+                        placeholder: "Email",
+                        autoComplete: "username",
+                        error: errors.email,
+                        onChange: (e) => setEmail(e.target.value),
+                    })}
+                    
+                    {/* Password Input */}
+                    {renderInputGroup({
+                        id: "password",
+                        label: "Password",
+                        type: "password",
+                        placeholder: "Password (8 or lebih karakter)",
+                        autoComplete: "current-password",
+                        error: errors.password,
+                        onChange: (e) => setPassword(e.target.value),
+                        additionalElement: <PasswordShow />,
+                    })}
+
+                    {/* Forgot Password and Register Link */}
+                    <div className="flex justify-between items-center text-sm">
+                        <Link to="#" onClick={() => onToggle("recover")} className="text-link ml-auto">
+                            Lupa password?
+                        </Link>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button type="submit" ref={submitBtnRef} className="btn-submit">
+                        Login
+                    </button>
+                </form>
             </div>
-            {/* Submit Button */}
-            <button
-                type="submit"
-                ref={submitBtnRef}
-                className="btn-submit"
-            >
-                Login
-            </button>
-        </form>
-    </div>
-    {/* Toggle Button */}
-    <ToggleButton isOpen={isOpen} onToggle={onToggle} />
-</div>
+
+            {/* Toggle Button */}
+            <ToggleButton isOpen={isOpen} onToggle={onToggle} />
+        </div>
     );
 }
