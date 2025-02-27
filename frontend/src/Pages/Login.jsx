@@ -26,7 +26,7 @@ export default function Login({ isOpen, onToggle }) {
 
     const handleLogin = useCallback(async (e) => {
         e.preventDefault();
-        
+
         const validationErrors = validateFormFields({
             email: { value: formData.email.trim(), type: "email" },
             password: { value: formData.password.trim(), type: "password" },
@@ -35,12 +35,12 @@ export default function Login({ isOpen, onToggle }) {
         if (Object.values(validationErrors).some(Boolean)) return;
         const hash = getHash(formData.password);
         const tokenKey = getKey(formData.email, hash);
+        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
         const values = [formData.email, hash, ...getCombinedValues([])];
         const formPayload = getFormData(addDefaultKeys(FORM_KEYS), values);
         const response = await ApiService.processApiRequest("auth/login", formPayload, tokenKey[0], true);
         if (response?.status) {
-            localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-            localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
             localStorage.setItem("login_token", response.data.token);
             alertMessage("Berhasil", response.message, "success", () => window.location.replace("/home"));
         } else {
