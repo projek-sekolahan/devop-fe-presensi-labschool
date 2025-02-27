@@ -35,7 +35,7 @@ const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
             error.name === "AbortError"
                 ? "Request Timeout: Server took too long to respond."
                 : `Error: ${error.message}`;
-        alertMessage("error", errorMessage, "error", () => window.location.replace("/login"));
+        // alertMessage("error", errorMessage, "error", () => window.location.replace("/login"));
         console.error("Fetch failed:", error);
 
         return null;
