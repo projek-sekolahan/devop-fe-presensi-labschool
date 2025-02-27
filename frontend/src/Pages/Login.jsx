@@ -40,11 +40,11 @@ export default function Login({ isOpen, onToggle }) {
         const values = [formData.email, hash, ...getCombinedValues([])];
         const formPayload = getFormData(addDefaultKeys(FORM_KEYS), values);
         const response = await ApiService.processApiRequest("auth/login", formPayload, tokenKey[0], true);
-        if (response?.status) {
+        if (response?.data.status) {
             localStorage.setItem("login_token", response.data.token);
-            alertMessage("Berhasil", response.message, "success", () => window.location.replace("/home"));
+            alertMessage("Berhasil", response.data.message, "success", () => window.location.replace("/home"));
         } else {
-            alertMessage(response.title, response.message, "error", () => window.location.replace("/login"));
+            alertMessage(response.data.title, response.data.message, "error", () => window.location.replace("/login"));
         }
     }, [formData]);
 
