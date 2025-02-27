@@ -47,6 +47,7 @@ export default function Register({ isOpen, onToggle }) {
     try {
       const res = await ApiService.processApiRequest("register", formData, null, true);
       if (res?.data) {
+        localStorage.setItem("email", emailRef.current.value);
         alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location || "register"));
       }
     } catch (err) {
