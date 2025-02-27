@@ -1,148 +1,100 @@
 import { useRef, useState } from "react";
-import { getFormData, getHash, alertMessage, loading, addDefaultKeys } from "../utils/utils";
+import { getFormData, getHash, alertMessage, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import ApiService from "../utils/ApiService";
 import PasswordShow from "../Components/PasswordShow";
-import Cookies from "js-cookie";
 import { validateFormFields } from "../utils/validation";
 
 export default function SetPassword({ isOpen, onToggle }) {
-	const [warning, setWarning] = useState("none");
-	const [disabled, setDisabled] = useState(false);
-	const [errors, setErrors] = useState({password: ""});
-	const inputRef = useRef();
-	const confirmRef = useRef();
+    const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const inputRef = useRef();
+    const confirmRef = useRef();
 
-	const changeHandler = (e) => {
-		if (inputRef.current.value.trim()) {
-			setWarning("none");
-			if (e.target.value == inputRef.current.value.trim()) {
-				setDisabled(false);
-			} else {
-				setDisabled(true);
-			}
-		} else {
-			setWarning("inline");
-		}
-	};
+    const validatePasswords = () => {
+        const password = inputRef.current.value.trim();
+        const confirmPassword = confirmRef.current.value.trim();
+        let validationErrors = validateFormFields({ password: { value: password, type: "password" } });
 
-	const submitHandler = async (e) => {
-		e.preventDefault();
-		
-		// Validate form fields
-        const validationErrors = validateFormFields({password: { value: inputRef.current.value.trim(), type: "password" }});
-
-        // Set errors if any
-        setErrors({password: validationErrors.password || ""});
-
-        // If there are validation errors, stop form submission
-        if (Object.values(validationErrors).some((error) => error)) {
-            return;
+        if (confirmPassword && password !== confirmPassword) {
+            validationErrors.confirmPassword = "Passwords do not match";
         }
-		
-		loading("Loading", "Processing Set Password Data...");
-		setDisabled(true);
-		const key = ["password"];
-		const combinedKeys = addDefaultKeys(key);
-		const values = [
-			getHash(inputRef.current.value),
-			localStorage.getItem("regist_token"),
-			Cookies.get("csrf"),
-		];
 
-		/* console.log("sanitizedKeys" , sanitizedKeys);
-        console.log("storedValues" , storedValues);
-        console.log("formValues" , formValues);
-        console.log("values" , values);
-        console.log("formData" , formData);
-        console.log("response" , res.data); */
-        // return false;
-		const res = await ApiService.processApiRequest("setPassword", getFormData(combinedKeys, values));
-		setDisabled(false);
-		if (res) {
-			alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
-		}
-	};
+        setErrors(validationErrors);
+        return Object.values(validationErrors).every((error) => !error);
+    };
 
-	return (
-		<div className="confirmation-container">
-			{/* Background Image */}
-			<img
-				src="/frontend/Icons/splash.svg"
-				alt="reset"
-				className={`bg-image ${isOpen ? "open" : ""}`}
-			/>
+    const handleChange = () => validatePasswords();
 
-			{/* Form Container */}
-			<div className={`confirmation-form-container ${isOpen ? "open" : "closed"}`}>
-				<h2 className="text-title text-4xl">Set Password</h2>
-				<form className="confirmation-form">
-					{/* Password Input */}
-					<div className="input-group">
-						<label
-							htmlFor="password"
-							className={`input-label ${
-								errors.password ? "text-red-700 font-semibold" : ""
-							}`}
-							>
-							{errors.password ? errors.password : "Password"}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validatePasswords()) return;
+
+        setIsSubmitting(true);
+        const keys = ["password"];
+        const values = [getHash(inputRef.current.value), ...getCombinedValues([])];
+        const formData = getFormData(addDefaultKeys(keys), values);
+
+        try {
+            const res = await ApiService.processApiRequest("setPassword", formData, null, true);
+            if (res?.data) {
+                alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="confirmation-container">
+            <img src="/frontend/Icons/splash.svg" alt="reset" className={`bg-image ${isOpen ? "open" : ""}`} />
+            <div className={`confirmation-form-container ${isOpen ? "open" : "closed"}`}>
+                <h2 className="text-title text-4xl">Set Password</h2>
+                <form onSubmit={handleSubmit} className="confirmation-form">
+                    <div className="input-group">
+                        <label htmlFor="password" className={`input-label ${errors.password ? "text-red-700 font-semibold" : ""}`}>
+                            {errors.password || "Password"}
                         </label>
-						<div className="flex gap-2">
-							<input
-								type="password"
-								name="password"
-								id="password"
-								placeholder="Password (8 or more characters)"
-								className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-								required
-								ref={inputRef}
-							/>
-							<PasswordShow ref={inputRef} />
-						</div>
-						<label
-							htmlFor="password"
-							style={{ display: `${warning}` }}
-							className="warning-text text-red-700 text-sm font-semibold"
-						>
-							Please fill it first
-						</label>
-					</div>
+                        <div className="flex gap-2">
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Password (8 or more characters)"
+                                className="input-field"
+                                ref={inputRef}
+                                onChange={handleChange}
+                                required
+                            />
+                            <PasswordShow ref={inputRef} />
+                        </div>
+                    </div>
 
-					{/* Confirm Password Input */}
-					<div className="input-group">
-						<label htmlFor="confirm-password" className="input-label">Confirm Password</label>
-						<div className="flex gap-2">
-							<input
-								type="password"
-								placeholder="Password (8 or more characters)"
-								className="input-field bg-primary-md border-white border-[1px] placeholder-white text-white text-xs rounded-lg focus:bg-white focus:border-0 focus:text-black block w-full py-3 px-4"
-								required
-								ref={confirmRef}
-								onChange={changeHandler}
-							/>
-							<PasswordShow ref={confirmRef} />
-						</div>
-					</div>
+                    <div className="input-group">
+                        <label htmlFor="confirm-password" className={`input-label ${errors.confirmPassword ? "text-red-700 font-semibold" : ""}`}>
+                            {errors.confirmPassword || "Confirm Password"}
+                        </label>
+                        <div className="flex gap-2">
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                placeholder="Confirm your password"
+                                className="input-field"
+                                ref={confirmRef}
+                                onChange={handleChange}
+                                required
+                            />
+                            <PasswordShow ref={confirmRef} />
+                        </div>
+                    </div>
 
-					{/* Submit Button */}
-					<button
-						type="button"
-						onClick={submitHandler}
-						disabled={disabled}
-						className={`btn-submit w-full text-primary-md font-semibold bg-white hover:bg-primary-300 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-xl text-sm px-4 py-2 ${
-							disabled ? 'opacity-50 cursor-not-allowed' : ''
-						}`}
-					>
-						{disabled ? (
-							<div className="flex justify-center items-center gap-2">
-								<p className="text-white">Loading</p>
-								<span className="loading loading-spinner text-white"></span>
-							</div>
-						) : (
-							'Confirm Register'
-						)}
-					</button>
-				</form>
-			</div>
-		</div>
-	);
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`btn-submit ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {isSubmitting ? "Processing..." : "Confirm Register"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
 }
