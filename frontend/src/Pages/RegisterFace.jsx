@@ -54,6 +54,8 @@ export default function RegisterFace({ isOpen, onToggle }) {
         const formData = getFormData(sanitizedKeys, values);
         const res = await ApiService.processApiRequest("facecam", formData, null, true);
         console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("storedValues" , storedValues);
+        console.log("formValues" , formValues);
         console.log("values" , values);
         console.log("formData" , formData);
         console.log("response" , res.data);
