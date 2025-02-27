@@ -48,6 +48,14 @@ export default function SetPassword({ isOpen, onToggle }) {
 			localStorage.getItem("regist_token"),
 			Cookies.get("csrf"),
 		];
+
+		/* console.log("sanitizedKeys" , sanitizedKeys);
+        console.log("storedValues" , storedValues);
+        console.log("formValues" , formValues);
+        console.log("values" , values);
+        console.log("formData" , formData);
+        console.log("response" , res.data); */
+        // return false;
 		const res = await ApiService.processApiRequest("setPassword", getFormData(combinedKeys, values));
 		setDisabled(false);
 		if (res) {
