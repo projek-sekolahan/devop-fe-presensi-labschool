@@ -30,6 +30,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
         setIsLoading(true);
         setShowModal(false);
         loading("Loading", "Starting face registration...");
+        const faceData = await detectFace(imgRef.current);
         await registerNewFace(faceData);
         /* try {
             const faceData = await detectFace(imgRef.current);
