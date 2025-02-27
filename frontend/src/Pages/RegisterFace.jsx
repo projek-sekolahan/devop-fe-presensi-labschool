@@ -45,7 +45,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
     };
     const registerNewFace = async (faceData) => {
         const keys = ["param", "img"];
-        const formValues = [Array.from(faceData.descriptor).join(", "),`["${imgSrc}"]`];
+        const formValues = [Array.from(faceData.descriptor).join(", "),`["${imgSrc}"]`,localStorage.getItem("regist_token")];
         const storedValues = getCombinedValues([]);
         const values = [...formValues,...storedValues];
         const sanitizedKeys = addDefaultKeys(keys);
