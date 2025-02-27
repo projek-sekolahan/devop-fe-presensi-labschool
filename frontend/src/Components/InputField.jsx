@@ -12,6 +12,7 @@ const InputField = forwardRef(
             placeholder={placeholder}
             autoComplete={autoComplete}
             required={required}
+            onChange={onChange}
         />
     )
 );
@@ -28,15 +29,7 @@ InputField.propTypes = {
     autoComplete: PropTypes.string,
     className: PropTypes.string,
     required: PropTypes.bool,
-};
-
-// Menambahkan default props untuk beberapa nilai opsional
-InputField.defaultProps = {
-    placeholder: "",
-    type: "text",
-    autoComplete: "off",
-    className: "",
-    required: false,
+    onChange: PropTypes.func,
 };
 
 export default InputField;

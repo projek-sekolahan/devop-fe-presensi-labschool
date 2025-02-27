@@ -1,36 +1,41 @@
 import { useRef, useState } from "react";
 import ApiService from "../utils/ApiService";
-import { getFormData, alertMessage, loading, addDefaultKeys, getCombinedValues } from "../utils/utils";
+import { getFormData, alertMessage, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import { validateFormFields } from "../utils/validation";
 import renderInputGroup from "../Components/renderInputGroup";
 import ToggleButton from "../Components/ToggleButton";
 
 export default function ChangePassword({ isOpen, onToggle }) {
     const emailRef = useRef();
-    const [load, setLoad] = useState(false);
-    const [errors, setErrors] = useState({email: ""});
-    const submitHandler = async (e) => {
+    const [email, setEmail] = useState("");
+    const [loadingState, setLoadingState] = useState(false);
+    const [errors, setErrors] = useState({ email: "" });
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Validate form fields
-        const validationErrors = validateFormFields({email: { value: emailRef.current.value.trim(), type: "email" }});
-        // Set errors if any
-        setErrors({email: validationErrors.email || ""});
-        // If there are validation errors, stop form submission
-        if (Object.values(validationErrors).some((error) => error)) {
-            return;
-        }
-        loading("Loading", "Verifying Email...");
-        setLoad(true);
-        const keys = ["username"];
-        const formValues = [emailRef.current.value.trim()];
+
+        // Validasi input email
+        const validationErrors = validateFormFields({ email: { value: email.trim(), type: "email" } });
+        setErrors({ email: validationErrors.email || "" });
+
+        if (Object.values(validationErrors).some(Boolean)) return;
+
+        setLoadingState(true);
+
+        // Siapkan data untuk request
+        const formValues = [email.trim()];
         const storedValues = getCombinedValues([]);
-        const values = [...formValues,...storedValues].filter(value => value !== null);
-        const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
-        const formData = getFormData(sanitizedKeys, values);
-        const res = await ApiService.processApiRequest("recover", formData, null, false);
-        if (res?.data) {
-            setLoad(false);
-            alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+        const sanitizedKeys = addDefaultKeys(["username"]).filter(key => key !== "devop-sso");
+        const formData = getFormData(sanitizedKeys, [...formValues, ...storedValues].filter(Boolean));
+
+        try {
+            const res = await ApiService.processApiRequest("recover", formData, null, true);
+            if (res?.data) {
+                localStorage.setItem("email", email);
+                alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle(res.data.location));
+            }
+        } finally {
+            setLoadingState(false);
         }
     };
 
@@ -47,7 +52,7 @@ export default function ChangePassword({ isOpen, onToggle }) {
                 <h2 className="text-title text-4xl">Ganti Password</h2>
                 <form
                     className="reset-form"
-                    onSubmit={submitHandler}
+                    onSubmit={handleSubmit}
                 >
                     {/* Email Input */}
                     {renderInputGroup({
@@ -58,16 +63,17 @@ export default function ChangePassword({ isOpen, onToggle }) {
                         placeholder: "Email",
                         autoComplete: "Email",
                         error: errors.email,
+                        onChange: (e) => setEmail(e.target.value),
                     })}
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        disabled={load}
+                        disabled={loadingState}
                         className={`btn-submit ${
-                            load ? "opacity-50 cursor-not-allowed" : ""
+                            loadingState ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     >
-                        {load ? (
+                        {loadingState ? (
                             <div className="flex justify-center items-center gap-2">
                                 <p className="text-white">Loading</p>
                                 <span className="loading loading-spinner text-white"></span>

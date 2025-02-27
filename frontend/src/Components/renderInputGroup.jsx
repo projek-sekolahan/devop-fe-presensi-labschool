@@ -10,12 +10,10 @@ const renderInputGroup = ({
     autoComplete = "",
     error = "",
     additionalElement = null,
+    onChange,
 }) => (
     <div className="input-group">
-        <label
-            htmlFor={id}
-            className={`input-label ${error ? "text-red-700 font-semibold" : ""}`}
-        >
+        <label htmlFor={id} className={`input-label ${error ? "text-red-700 font-semibold" : ""}`}>
             {error || label}
         </label>
         <div className={additionalElement ? "password-container" : ""}>
@@ -26,6 +24,7 @@ const renderInputGroup = ({
                 ref={inputRef}
                 placeholder={placeholder}
                 autoComplete={autoComplete}
+                onChange={onChange}
             />
             {additionalElement}
         </div>
@@ -41,6 +40,7 @@ renderInputGroup.propTypes = {
     autoComplete: PropTypes.string,
     error: PropTypes.string,
     additionalElement: PropTypes.node,
+    onChange: PropTypes.func,
 };
 
 export default renderInputGroup;
