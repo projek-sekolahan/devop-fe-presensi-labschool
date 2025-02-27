@@ -30,7 +30,8 @@ export default function RegisterFace({ isOpen, onToggle }) {
         setIsLoading(true);
         setShowModal(false);
         loading("Loading", "Starting face registration...");
-        try {
+        await registerNewFace(faceData);
+        /* try {
             const faceData = await detectFace(imgRef.current);
             if (!faceData) {
                 throw new Error("No face detected or descriptor is undefined.");
@@ -41,7 +42,7 @@ export default function RegisterFace({ isOpen, onToggle }) {
             alertMessage("Error", "Gagal mendaftarkan wajah", "error", () => onToggle("facereg"));
         } finally {
             setIsLoading(false);
-        }
+        } */
     };
     const registerNewFace = async (faceData) => {
         const keys = ["param", "img"];
