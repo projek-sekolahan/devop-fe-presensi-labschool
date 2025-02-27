@@ -56,7 +56,7 @@ export const getStoredValue = (key) => {
     const registToken = localStorage.getItem("regist_token");
     console.log(`🔍 [getStoredValue] Cek 'regist_token' langsung dari localStorage:`, registToken);
 
-    const devopSso = localStorage.getItem("devop-sso") ?? registToken;
+    const devopSso = localStorage.getItem("devop-sso") || registToken;
 
     // Debugging tambahan
     console.log(`🛠️ [getStoredValue] Key: ${key}, Nilai yang ditemukan:`, {
