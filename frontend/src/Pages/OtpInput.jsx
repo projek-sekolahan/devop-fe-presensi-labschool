@@ -50,6 +50,8 @@ export default function OtpInput({ isOpen, onToggle }) {
     const resendOtp = useCallback(async () => {
         setIsLoading(true);
         const formData = getFormData(addDefaultKeys(["email"]).filter((key) => key !== "devop-sso"), [localStorage.getItem("email"), ...getCombinedValues([])].filter(Boolean));
+		console.log("keys" , addDefaultKeys(["email"]).filter((key) => key !== "devop-sso"));
+		console.log("values" , [localStorage.getItem("email"), ...getCombinedValues([])].filter(Boolean));
 		try {
             const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
             if (res?.data) {
@@ -66,7 +68,7 @@ export default function OtpInput({ isOpen, onToggle }) {
             <div className={`verification-form-container ${isOpen ? "open" : "closed"}`}>
                 <h2 className="text-title text-xl">Email Verification</h2>
                 <p className="text-sm text-center">Cek Email Anda (Masukkan Kode OTP)</p>
-                <div className="flex justify-between my-8">
+                <div className="flex justify-between my-4">
                     {otp.map((value, index) => (
                         <input
                             key={index}
@@ -81,7 +83,7 @@ export default function OtpInput({ isOpen, onToggle }) {
                         />
                     ))}
                 </div>
-                <p className="text-center font-light text-xs">
+                <p className="text-center font-light text-xs my-2">
                     Tidak Menerima Kode OTP? {" "}
                     <span className="text-link resend-otp font-bold cursor-pointer" onClick={resendOtp}>
                         Klik Disini
