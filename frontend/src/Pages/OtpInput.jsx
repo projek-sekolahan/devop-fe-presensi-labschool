@@ -34,13 +34,14 @@ export default function OtpInput({ isOpen, onToggle }) {
         const values = [...otp, ...getCombinedValues([])].filter(Boolean);
         const sanitizedKeys = addDefaultKeys(keys).filter((key) => key !== "devop-sso");
         const formData = getFormData(sanitizedKeys, values);
-
         try {
             const res = await ApiService.processApiRequest("verify", formData, null, true);
-            if (res?.data) {
+            if (res?.status) {
                 localStorage.setItem("regist_token", res.data.data.token);
                 alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("facereg"));
-            }
+            } else {
+				alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("verify"));
+			}
         } finally {
             setIsLoading(false);
         }
@@ -48,8 +49,7 @@ export default function OtpInput({ isOpen, onToggle }) {
 
     const resendOtp = useCallback(async () => {
         setIsLoading(true);
-        const formData = getFormData(addDefaultKeys(["email"]), [localStorage.getItem("email"), ...getCombinedValues([])].filter(Boolean));
-        
+        const formData = getFormData(addDefaultKeys(["email"]).filter((key) => key !== "devop-sso"), [localStorage.getItem("email"), ...getCombinedValues([])].filter(Boolean));
 		try {
             const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
             if (res?.data) {
