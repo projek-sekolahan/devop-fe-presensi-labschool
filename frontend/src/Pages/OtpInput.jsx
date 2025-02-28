@@ -13,7 +13,6 @@ export default function OtpInput({ isOpen, onToggle }) {
 
     const handleChange = (index, e) => {
         const value = e.target.value.replace(/\D/g, ""); // Hanya angka
-        if (!value) return;
         const newOtp = [...otp];
         newOtp[index] = value.slice(-1); // Ambil digit terakhir
         setOtp(newOtp);
@@ -23,9 +22,14 @@ export default function OtpInput({ isOpen, onToggle }) {
     };
 
     const handleKeyDown = (index, e) => {
-        if (e.key === "Backspace" && !otp[index] && index > 0) {
-            inputRefs.current[index - 1]?.focus();
-        }
+        if (e.key === "Backspace") {
+			const newOtp = [...otp];
+			if (!newOtp[index] && index > 0) {
+				inputRefs.current[index - 1]?.focus();
+			}
+			newOtp[index] = ""; // Kosongkan input saat dihapus
+			setOtp(newOtp);
+		}
     };
 
     const submitOtp = useCallback(async () => {
