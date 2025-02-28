@@ -54,8 +54,6 @@ export default function OtpInput({ isOpen, onToggle }) {
     const resendOtp = useCallback(async () => {
         setIsLoading(true);
         const formData = getFormData(addDefaultKeys(["email"]).filter((key) => key !== "devop-sso"), [localStorage.getItem("email"), ...getCombinedValues([])].filter(value => value !== "null" && Boolean(value)));
-		console.log("keys" , addDefaultKeys(["email"]).filter((key) => key !== "devop-sso"));
-		console.log("values" , [localStorage.getItem("email"), ...getCombinedValues([])].filter(value => value !== "null" && Boolean(value)));
 		try {
             const res = await ApiService.processApiRequest("sendOTP", formData, null, false);
             if (res?.data) {
