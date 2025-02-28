@@ -19,19 +19,15 @@ export default function Register({ isOpen, onToggle }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     const fields = {
       namaLengkap: { value: nameRef.current.value.trim(), type: "text" },
       phone: { value: numberRef.current.value.trim(), type: "phone" },
       username: { value: emailRef.current.value.trim(), type: "email" },
       role: { value: role, type: "role" },
     };
-
     const validationErrors = validateFormFields(fields);
     setErrors(validationErrors);
-
     if (Object.values(validationErrors).some(Boolean)) return;
-
     setIsLoading(true);
     const values = [
       emailRef.current.value,
@@ -39,11 +35,9 @@ export default function Register({ isOpen, onToggle }) {
       nameRef.current.value,
       role,
       ...getCombinedValues([]),
-    ].filter(Boolean);
-
+    ].filter(value => value !== "null" && Boolean(value));
     const sanitizedKeys = addDefaultKeys(FORM_KEYS).filter((key) => key !== "devop-sso");
     const formData = getFormData(sanitizedKeys, values);
-
     try {
       const res = await ApiService.processApiRequest("register", formData, null, true);
       if (res?.data) {
