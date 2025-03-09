@@ -68,7 +68,7 @@ export default function FaceCam() {
             }
             // Ambil descriptor dari token
             const token = localStorage.getItem("token");
-            const userData = token ? parseJwt(token) : null;
+            const userData = token ? parseJwt(token) : null; console.log(userData);
             const tokenDescriptor = userData?.facecam_id
                 ? new Float32Array(userData.facecam_id.split(", ").map(Number))
                 : null; console.log("tokenDescriptor", tokenDescriptor);
