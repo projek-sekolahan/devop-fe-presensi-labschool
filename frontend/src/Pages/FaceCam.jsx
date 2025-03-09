@@ -71,15 +71,15 @@ export default function FaceCam() {
             const userData = token ? parseJwt(token) : null;
             const tokenDescriptor = userData?.facecam_id
                 ? new Float32Array(userData.facecam_id.split(", ").map(Number))
-                : null;
+                : null; console.log("tokenDescriptor", tokenDescriptor);
             if (!tokenDescriptor) {
                 throw new Error("detectFacecam: Invalid or missing face descriptor in token.");
-            }
+            } console.log("imgRef", imgRef.current);
             // Deteksi wajah dari gambar
             const detectionResult = await detectFace(imgRef.current);
             if (!detectionResult?.descriptor) {
                 throw new Error("detectFacecam: No face detected or descriptor is undefined.");
-            }
+            } console.log("detectionResult", detectionResult.descriptor);
             // Membandingkan wajah yang terdeteksi dengan token descriptor
             const isFaceMatched = await compareFaces(detectionResult.descriptor, tokenDescriptor);
             if (!isFaceMatched) {

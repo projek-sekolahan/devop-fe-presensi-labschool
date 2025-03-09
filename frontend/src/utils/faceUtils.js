@@ -50,12 +50,12 @@ export const validateFaceDetection = (faceData, tokenDescriptor, threshold = DEF
         return false;
     }
 
-    const descriptor = faceData instanceof Float32Array ? faceData : faceData?.descriptor;
+    const descriptor = faceData instanceof Float32Array ? faceData : faceData?.descriptor; console.log("valid descriptor", descriptor);
     if (!(descriptor instanceof Float32Array) || descriptor.length !== FACE_DESCRIPTOR_LENGTH) {
         console.warn("Invalid descriptor format.");
         return false;
     }
-
+    console.log("valid token", tokenDescriptor instanceof Float32Array); console.log("token length", tokenDescriptor.length);
     if (tokenDescriptor instanceof Float32Array && tokenDescriptor.length === FACE_DESCRIPTOR_LENGTH) {
         if (faceapi.euclideanDistance([...tokenDescriptor], [...descriptor]) <= threshold) {
             return true;
