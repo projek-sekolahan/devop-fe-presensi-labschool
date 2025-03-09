@@ -68,9 +68,9 @@ export default function FaceCam() {
             }
             // Ambil descriptor dari token
             const token = localStorage.getItem("token");
-            const userData = token ? parseJwt(token) : null; console.log(userData); console.log("facecam_id:", userData?.facecam_id); console.log("facecam_id.split:", userData?.facecam_id?.split(", ")); console.log("parsedNumbers:", userData?.facecam_id?.split(", ").map(Number));
+            const userData = token ? parseJwt(token) : null; console.log(userData); console.log("facecam_id:", userData?.facecam_id); console.log("facecam_id.split:", userData?.facecam_id?.split(",")); console.log("parsedNumbers:", userData?.facecam_id?.split(",").map(Number));
             const tokenDescriptor = userData?.facecam_id && typeof userData.facecam_id === "string"
-            ? new Float32Array(userData.facecam_id.split(", ").map(n => Number(n) || 0))
+            ? new Float32Array(userData.facecam_id.split(",").map(n => Number(n) || 0))
             : null; console.log("tokenDescriptor", tokenDescriptor);
             if (!tokenDescriptor) {
                 throw new Error("detectFacecam: Invalid or missing face descriptor in token.");
