@@ -5,6 +5,7 @@ import Layout from '../Components/Layout';
 import { getFormData, formatDate, addDefaultKeys, getCombinedValues } from '../utils/utils';
 import ApiService from '../utils/ApiService';
 import { useParams, useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const STATUS_COLORS = {
   Normal: 'bg-green-500 text-white',
