@@ -5,54 +5,47 @@ const API_URL = "https://devop-sso.smalabschoolunesa1.sch.id";
 
 const createRequestBody = (formData) => formData.toString();
 
-const fetchWithTimeout = async (url, options = {}, timeout = 90000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
+const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-    try {
-        const response = await fetch(url, {
-            ...options,
-            signal: controller.signal,
-        });
+        try {
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(timeoutId);
 
-        clearTimeout(timeoutId);
+            if (!response.ok) {
+                if (response.status === 503 && i < retries - 1) {
+                    console.warn(`Service unavailable (503), retrying... (${i + 1}/${retries})`);
+                    await new Promise(res => setTimeout(res, 2000)); // Tunggu 2 detik sebelum retry
+                    continue;
+                }
+                throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+            }
+            return await response.text();
+        } catch (error) {
+            clearTimeout(timeoutId);
+            console.error(`Fetch failed (attempt ${i + 1}):`, error);
+            
+            if (i === retries - 1) { // Jika ini adalah percobaan terakhir
+                alertMessage("error", `Request failed after ${retries} attempts: ${error.message}`, "error", () => window.location.replace("/login"));
+                return null;
+            }
 
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+            await new Promise(res => setTimeout(res, 2000)); // Tunggu sebelum mencoba lagi
         }
-
-        const responseText = await response.text();
-        
-        return responseText;
-    } catch (error) {
-        clearTimeout(timeoutId);
-
-        if (error.name === "AbortError") {
-            console.warn("Request aborted due to timeout");
-        }
-
-        const errorMessage =
-            error.name === "AbortError"
-                ? "Request Timeout: Server took too long to respond."
-                : `Error: ${error.message}`;
-        alertMessage("error", errorMessage, "error", () => window.location.replace("/login"));
-        console.error("Fetch failed:", error);
-
-        return null;
     }
 };
 
 class ApiService {
     static async getCsrf() {
         try {
-            const responseText = await fetchWithTimeout(
+            const responseText = await fetchWithTimeoutAndRetry(
                 `${API_URL}/view/tokenGetCsrf`,
                 {
                     method: "GET",
                     credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                 }
             );
 
@@ -63,14 +56,14 @@ class ApiService {
         } catch (error) {
             console.error("Failed to fetch CSRF token:", error);
         }
-    }    
+    }
 
     static async post(endpoint, formData, key = null) {
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             ...(key && { Authorization: `Basic ${key}` }),
         };
-        return fetchWithTimeout(`${API_URL}${endpoint}`, {
+        return fetchWithTimeoutAndRetry(`${API_URL}${endpoint}`, {
             method: "POST",
             headers,
             credentials: "include",
@@ -124,7 +117,7 @@ class ApiService {
         } catch (error) {
             console.error(`processApiRequest Error pada endpoint: ${endpoint}`, error);
         }
-    }    
+    }
 
     static async postInput(url, data) {
         return this.post(`/input/${url}`, data);
