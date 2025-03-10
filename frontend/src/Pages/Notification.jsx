@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 import ApiService from "../utils/ApiService.js";
 import { getFormData, parseJwt, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import Layout from "../Components/Layout";
-import { sanitize } from 'dompurify';
+// import { sanitize } from 'dompurify';
 
 function NotificationCard({ notifications }) {
   if (notifications.length === 0) {
@@ -31,7 +31,7 @@ function NotificationCard({ notifications }) {
           (match) =>
             `<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-primary font-semibold underline">klik disini</a>`
         );        
-        const sanitizedMessage = sanitize(updatedMessage);
+        // const sanitizedMessage = sanitize(updatedMessage);
 
         return (
           <div className="card-notification" key={index}>
@@ -43,7 +43,7 @@ function NotificationCard({ notifications }) {
               <h4 className="font-semibold text-sm">{notification.title}</h4>
               <p
                 className="text-bg-3 font-light text-xs text-justify break-words overflow-hidden"
-                dangerouslySetInnerHTML={{ __html: sanitizedMessage }} // Render HTML dalam message
+                dangerouslySetInnerHTML={{ __html: updatedMessage }} // Render HTML dalam message
               />
             </div>
           </div>
