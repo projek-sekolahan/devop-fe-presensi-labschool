@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 import ApiService from "../utils/ApiService.js";
 import { getFormData, parseJwt, addDefaultKeys, getCombinedValues } from "../utils/utils";
 import Layout from "../Components/Layout";
-import DOMPurify from 'dompurify';
+import { sanitize } from 'dompurify';
 
 function NotificationCard({ notifications }) {
   if (notifications.length === 0) {
@@ -31,7 +31,7 @@ function NotificationCard({ notifications }) {
           (match) =>
             `<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-primary font-semibold underline">klik disini</a>`
         );        
-        const sanitizedMessage = DOMPurify.sanitize(updatedMessage);
+        const sanitizedMessage = sanitize(updatedMessage);
 
         return (
           <div className="card-notification" key={index}>
