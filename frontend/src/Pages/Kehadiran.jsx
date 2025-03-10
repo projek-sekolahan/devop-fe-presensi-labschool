@@ -125,10 +125,10 @@ export default function Kehadiran() {
     setLoading(true);
     const keys = ["token"];
     const formValues = [id];
-    const storedValues = getCombinedValues([]);
-    const values = [...formValues,...storedValues].filter(value => value !== null);
-    const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso");
-    const formData = getFormData(sanitizedKeys, values);
+    const storedValues = getCombinedValues([]); console.log("storedValues", storedValues);
+    const values = [...formValues,...storedValues].filter(value => value !== null); console.log("values", values);
+    const sanitizedKeys = addDefaultKeys(keys).filter(key => key !== "devop-sso"); console.log("sanitizedKeys", sanitizedKeys);
+    const formData = getFormData(sanitizedKeys, values); console.log("formData", formData);
     const res = await ApiService.processApiRequest("reports", formData, null, false);
     if (res?.data) {
       if (Array.isArray(res.data.data.result)) {
