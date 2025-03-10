@@ -109,7 +109,9 @@ export default function Kehadiran() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  ApiService.getCsrf();
+  if (!Cookies.get("csrf")) {
+    ApiService.getCsrf();
+  }
 
   useEffect(() => {
     if (id === undefined) return;
