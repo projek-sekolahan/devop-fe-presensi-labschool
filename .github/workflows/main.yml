@@ -52,9 +52,9 @@ jobs:
                   mkdir -p ~/.ssh
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
-                  ssh-keyscan -p 45022 23.106.52.199 >> ~/.ssh/known_hosts
+                  ssh-keyscan -p 45022 142.91.97.66 >> ~/.ssh/known_hosts
                   
                   rsync -e "ssh -p 45022 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
                         -az --delete --ignore-times --compress-level=3 --timeout=120 --info=progress2 \
-                        ./frontend smalabsc@23.106.52.199:~/smartapps.smalabschoolunesa1.sch.id/
+                        ./frontend smalabsc@142.91.97.66:~/smartapps.smalabschoolunesa1.sch.id/
               if: ${{ env.changed == 'true' }}
