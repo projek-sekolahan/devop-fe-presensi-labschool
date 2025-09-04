@@ -17,7 +17,7 @@ export default function Login({ isOpen, onToggle }) {
     const passwordRef = useRef(null);
     const emailRef = useRef(null);
 
-    ApiService.getCsrf();
+    // ApiService.getCsrf();
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
