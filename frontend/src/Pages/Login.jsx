@@ -27,24 +27,69 @@ export default function Login({ isOpen, onToggle }) {
     const handleLogin = useCallback(async (e) => {
         e.preventDefault();
 
+        // 🔹 Validasi input
         const validationErrors = validateFormFields({
             email: { value: formData.email.trim(), type: "email" },
             password: { value: formData.password.trim(), type: "password" },
         });
         setErrors(validationErrors);
         if (Object.values(validationErrors).some(Boolean)) return;
-        const hash = getHash(formData.password);
-        const tokenKey = getKey(formData.email, hash);
-        localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
-        localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
-        const values = [formData.email, hash, ...getCombinedValues([])];
-        const formPayload = getFormData(addDefaultKeys(FORM_KEYS), values);
-        const response = await ApiService.processApiRequest("auth/login", formPayload, tokenKey[0], true);
-        if (response?.data.status) {
-            localStorage.setItem("login_token", response.data.token);
-            alertMessage("Berhasil", response.data.message, "success", () => window.location.replace("/home"));
-        } else {
-            alertMessage(response.data.title, response.data.message, "error", () => window.location.replace("/login"));
+
+        try {
+            // 🔹 Buat token key & simpan
+            const hash = getHash(formData.password);
+            const tokenKey = getKey(formData.email, hash);
+            localStorage.setItem(TOKEN_KEYS[0], tokenKey[0]);
+            localStorage.setItem(TOKEN_KEYS[1], tokenKey[1]);
+
+            // 🔹 Buat payload form
+            const values = [formData.email, hash, ...getCombinedValues([])];
+            const formPayload = getFormData(addDefaultKeys(FORM_KEYS), values);
+
+            // 🔹 Panggil API
+            const response = await ApiService.processApiRequest(
+                "auth/login",
+                formPayload,
+                tokenKey[0],
+                true
+            );
+
+            // 🔹 Cek response valid atau tidak
+            if (!response || !response.data) {
+                alertMessage(
+                    "Error",
+                    "Gagal terhubung ke server. Silakan coba lagi.",
+                    "error",
+                    () => window.location.replace("/login")
+                );
+                return;
+            }
+
+            // 🔹 Cek status login
+            if (response.data.status) {
+                localStorage.setItem("login_token", response.data.token);
+                alertMessage(
+                    "Berhasil",
+                    response.data.message || "Login sukses",
+                    "success",
+                    () => window.location.replace("/home")
+                );
+            } else {
+                alertMessage(
+                    response.data.title || "Login Gagal",
+                    response.data.message || "Email atau password salah.",
+                    "error",
+                    () => window.location.replace("/login")
+                );
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alertMessage(
+                "Error",
+                "Terjadi kesalahan tak terduga. Silakan coba lagi.",
+                "error",
+                () => window.location.replace("/login")
+            );
         }
     }, [formData]);
 
