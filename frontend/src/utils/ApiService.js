@@ -15,7 +15,9 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-                // khusus retry kalau 503
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error(`Unauthorized: ${response.status}`);
+                }
                 if (response.status === 503 && i < retries - 1) {
                     console.warn(`Service unavailable (503), retrying... (${i + 1}/${retries})`);
                     await new Promise(res => setTimeout(res, 2000));
@@ -37,6 +39,7 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
                     "error",
                     `Request failed after ${retries} attempts: ${error.message}`,
                     "error",
+                    () => {}
                     // () => window.location.replace("/login")
                 );
                 return null;
