@@ -60,7 +60,7 @@ export default function Login({ isOpen, onToggle }) {
                     "Error",
                     "Gagal terhubung ke server. Silakan coba lagi.",
                     "error",
-                    () => window.location.replace("/login")
+                    // () => window.location.replace("/login")
                 );
                 return;
             }
@@ -79,7 +79,7 @@ export default function Login({ isOpen, onToggle }) {
                     response.data.title || "Login Gagal",
                     response.data.message || "Email atau password salah.",
                     "error",
-                    () => window.location.replace("/login")
+                    // () => window.location.replace("/login")
                 );
             }
         } catch (error) {
