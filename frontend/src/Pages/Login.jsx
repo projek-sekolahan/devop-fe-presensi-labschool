@@ -88,7 +88,7 @@ export default function Login({ isOpen, onToggle }) {
                 "Error",
                 "Terjadi kesalahan tak terduga. Silakan coba lagi.",
                 "error",
-                () => window.location.replace("/login")
+                // () => window.location.replace("/login")
             );
         }
     }, [formData]);
