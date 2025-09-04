@@ -275,9 +275,9 @@ export const handleSessionError = (err, location) => {
 
 export const handleSessionExpired = (data) => {
     clearCookies();
-    alertError(data.title, data.message, "error", () => {
-        window.location.replace("/login");
-    });
+    alertError(data.title, data.message, "error", 
+        // () => window.location.replace("/login")
+    );
 };
 
 function alertError(title, message, type, callback) {
