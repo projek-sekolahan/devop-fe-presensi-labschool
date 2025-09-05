@@ -39,8 +39,7 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
                     "error",
                     `Request failed after ${retries} attempts: ${error.message}`,
                     "error",
-                    () => {}
-                    // () => window.location.replace("/login")
+                    () => {window.location.replace("/login")}
                 );
                 return null;
             }

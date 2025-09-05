@@ -17,7 +17,7 @@ export default function Login({ isOpen, onToggle }) {
     const passwordRef = useRef(null);
     const emailRef = useRef(null);
 
-    // ApiService.getCsrf();
+    ApiService.getCsrf();
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -60,8 +60,7 @@ export default function Login({ isOpen, onToggle }) {
                     "Error",
                     "Gagal terhubung ke server. Silakan coba lagi.",
                     "error",
-                    () => {}
-                    // () => window.location.replace("/login")
+                    () => {window.location.replace("/login")}
                 );
                 return;
             }
@@ -80,8 +79,7 @@ export default function Login({ isOpen, onToggle }) {
                     response.data.title || "Login Gagal",
                     response.data.message || "Email atau password salah.",
                     "error",
-                    () => {}
-                    // () => window.location.replace("/login")
+                    () => {window.location.replace("/login")}
                 );
             }
         } catch (error) {
@@ -90,8 +88,7 @@ export default function Login({ isOpen, onToggle }) {
                 "Error",
                 "Terjadi kesalahan tak terduga. Silakan coba lagi.",
                 "error",
-                () => {}
-                // () => window.location.replace("/login")
+                () => {window.location.replace("/login")}
             );
         }
     }, [formData]);
