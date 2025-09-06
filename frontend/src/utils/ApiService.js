@@ -54,28 +54,33 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
 class ApiService {
     static async getCsrf() {
         try {
-            const responseText = await fetchWithTimeoutAndRetry(
+            const response = await fetchWithTimeoutAndRetry(
                 `${API_URL}/view/tokenGetCsrf`,
                 {
                     method: "GET",
                     credentials: "include",
-                    headers: { "Content-Type": "application/json" },
                 }
             );
 
-            if (!responseText) throw new Error("Empty response from CSRF API");
-
-            let res;
-            try {
-                res = JSON.parse(responseText);
-            } catch (e) {
-                throw new Error("Invalid JSON response from CSRF API");
+            // cek tipe respons
+            const contentType = response.headers.get("content-type") || "";
+            if (contentType.includes("application/json")) {
+                const res = await response.json();
+                if (res?.csrfHash) {
+                    Cookies.set("csrf", res.csrfHash);
+                    return res.csrfHash;
+                }
             }
 
-            if (!res.status || !res.csrfHash) throw new Error("Invalid CSRF response format");
-            Cookies.set("csrf", res.csrfHash);
+            // fallback: ambil dari cookie (CodeIgniter biasanya simpan di sini)
+            const csrfFromCookie = Cookies.get("ci_sso_csrf_cookie");
+            if (!csrfFromCookie) throw new Error("No CSRF token found");
+            Cookies.set("csrf", csrfFromCookie);
+            return csrfFromCookie;
+
         } catch (error) {
             console.error("Failed to fetch CSRF token:", error);
+            return null;
         }
     }
 
