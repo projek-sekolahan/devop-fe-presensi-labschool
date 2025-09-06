@@ -26,10 +26,7 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
                 throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
             }
 
-            // kadang API balas kosong → langsung return null
-            const text = await response.text();
-            if (!text) return null;
-            return text;
+            return response; // 🔑 return Response object
         } catch (error) {
             clearTimeout(timeoutId);
             console.error(`Fetch failed (attempt ${i + 1}):`, error);
@@ -39,12 +36,11 @@ const fetchWithTimeoutAndRetry = async (url, options = {}, timeout = 90000, retr
                     "error",
                     `Request failed after ${retries} attempts: ${error.message}`,
                     "error",
-                    () => {window.location.replace("/login")}
+                    () => { window.location.replace("/login"); }
                 );
                 return null;
             }
 
-            // tunggu sebelum retry
             await new Promise(res => setTimeout(res, 2000));
         }
     }
@@ -56,28 +52,29 @@ class ApiService {
         try {
             const response = await fetchWithTimeoutAndRetry(
                 `${API_URL}/view/tokenGetCsrf`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
+                { method: "GET", credentials: "include" }
             );
 
-            // cek tipe respons
+            if (!response) throw new Error("Empty response from CSRF API");
+
             const contentType = response.headers.get("content-type") || "";
+            let res;
+
             if (contentType.includes("application/json")) {
-                const res = await response.json();
+                res = await response.json();
                 if (res?.csrfHash) {
                     Cookies.set("csrf", res.csrfHash);
                     return res.csrfHash;
                 }
+            } else {
+                // fallback ke cookie (CodeIgniter)
+                const csrfFromCookie = Cookies.get("ci_sso_csrf_cookie");
+                if (!csrfFromCookie) throw new Error("No CSRF token found in cookie");
+                Cookies.set("csrf", csrfFromCookie);
+                return csrfFromCookie;
             }
 
-            // fallback: ambil dari cookie (CodeIgniter biasanya simpan di sini)
-            const csrfFromCookie = Cookies.get("ci_sso_csrf_cookie");
-            if (!csrfFromCookie) throw new Error("No CSRF token found");
-            Cookies.set("csrf", csrfFromCookie);
-            return csrfFromCookie;
-
+            throw new Error("Invalid CSRF response format");
         } catch (error) {
             console.error("Failed to fetch CSRF token:", error);
             return null;
@@ -90,24 +87,27 @@ class ApiService {
             ...(key && { Authorization: `Basic ${key}` }),
         };
 
-        return fetchWithTimeoutAndRetry(`${API_URL}${endpoint}`, {
+        const response = await fetchWithTimeoutAndRetry(`${API_URL}${endpoint}`, {
             method: "POST",
             headers,
             credentials: "include",
             body: createRequestBody(formData),
         });
+
+        if (!response) return null;
+        return response.text(); // 🔑 disini baru ambil body
     }
 
     static async processApiRequest(endpoint, data, authKey, load) {
         try {
-            let response;
+            let responseText;
 
             if (load) {
                 loading("Loading", `Processing ${endpoint.replace(/\//g, " ")} Data...`);
             }
 
             if (!authKey || authKey === "null") {
-                response = await this.postInput(endpoint, data);
+                responseText = await this.postInput(endpoint, data);
             } else {
                 const endpointMap = {
                     auth: this.authPost,
@@ -120,27 +120,25 @@ class ApiService {
                 const handler = endpointMap[prefix];
 
                 if (handler) {
-                    response = await handler.call(this, rest.join("/"), authKey, data);
+                    responseText = await handler.call(this, rest.join("/"), authKey, data);
                 } else {
-                    response = await this.post(`/api/client/${endpoint}`, data, authKey);
+                    responseText = await this.post(`/api/client/${endpoint}`, data, authKey);
                 }
             }
 
-            // kalau gagal total
-            if (!response) {
+            if (!responseText) {
                 console.error(`Tidak ada respon dari API untuk endpoint: ${endpoint}`);
                 return null;
             }
 
             let result;
             try {
-                result = JSON.parse(response);
+                result = JSON.parse(responseText);
             } catch (jsonError) {
-                console.error("Gagal parsing JSON:", jsonError, "Response:", response);
+                console.error("Gagal parsing JSON:", jsonError, "Response:", responseText);
                 return null;
             }
 
-            // update csrf kalau ada
             if (result?.csrfHash) {
                 Cookies.set("csrf", result.csrfHash);
             }
@@ -148,7 +146,7 @@ class ApiService {
             return result;
         } catch (error) {
             console.error(`processApiRequest Error pada endpoint: ${endpoint}`, error);
-            return null; // biar caller aman
+            return null;
         }
     }
 
