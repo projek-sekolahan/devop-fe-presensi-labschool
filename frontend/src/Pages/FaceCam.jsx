@@ -34,13 +34,15 @@ export default function FaceCam() {
 
         const initialize = async () => {
             setIsLoading(true);
+            loading("Loading", "Mengaktifkan kamera...");
             try {
                 await loadFaceModels();
-                setIsLoading(false);
                 Swal.close();
+                setIsLoading(false);
                 await startVideo();
             } catch (error) {
                 console.error("Initialization error:", error);
+                Swal.close();
                 alertMessage(
                     "Initialization error",
                     "Failed to initialize FaceCam",
@@ -84,6 +86,7 @@ export default function FaceCam() {
             const isFaceMatched = await compareFaces(detectionResult.descriptor, tokenDescriptor);
             if (!isFaceMatched) {
                 console.error("detectFacecam: No face matched or descriptor is undefined.");
+                Swal.close(); 
                 alertMessage(
                     "Pencocokan Gagal",
                     "Harap Ulangi Proses.",
@@ -93,10 +96,12 @@ export default function FaceCam() {
                 return;
             }
             // Jika wajah cocok, lanjutkan proses presensi
+            Swal.close();
             setIsLoading(false);
             submitPresence(detectionResult.descriptor);
         } catch (error) {
             setIsLoading(false);
+            Swal.close();
             console.error(error.message);
             alertMessage("Error", error.message, "error");
         }
