@@ -3,7 +3,8 @@ import useCamera from "../utils/useCamera";
 import { loadFaceModels } from "../utils/faceUtils";
 import { detectFace } from "../utils/useFaceRecognition";
 import ApiService from "../utils/ApiService";
-import { alertMessage, getFormData, getCombinedValues, addDefaultKeys } from "../utils/utils";
+import { alertMessage, getFormData, getCombinedValues, addDefaultKeys, loading } from "../utils/utils";
+import Swal from "sweetalert2"; // tambahkan supaya bisa close() loading
 import DetailModal from "../Components/DetailModal";
 
 export default function RegisterFace({ isOpen, onToggle }) {
@@ -26,7 +27,8 @@ export default function RegisterFace({ isOpen, onToggle }) {
 
     const detectAndRegisterFace = useCallback(async () => {
         setIsLoading(true);
-        setShowModal(false); // Tutup modal sebelum proses berjalan agar responsif
+        setShowModal(false); // Tutup modal dulu
+        loading("Sedang diproses", "Harap tunggu..."); // munculkan loading global
         try {
             const faceData = await detectFace(imgRef.current);
             if (!faceData) throw new Error("Wajah tidak terdeteksi, coba lagi.");
@@ -37,9 +39,11 @@ export default function RegisterFace({ isOpen, onToggle }) {
             const formData = getFormData(sanitizedKeys, values);
             const res = await ApiService.processApiRequest("facecam", formData, null, true);
             if (res?.data) {
+                Swal.close(); // tutup spinner
                 alertMessage(res.data.title, res.data.message, res.data.info, () => onToggle("setpassword"));
             }
         } catch (error) {
+            Swal.close(); // tutup spinner
             alertMessage("Error", error.message || "Terjadi kesalahan", "error");
         } finally {
             setIsLoading(false);
