@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 import Login from "./Login";
 import Register from "./Register";
 import OtpInput from "./OtpInput";
@@ -11,16 +12,19 @@ import Kehadiran from "./Kehadiran";
 export default function AuthContainer() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [currentPage, setCurrentPage] = useState("login"); // Default halaman
-    const [isOpen, setIsOpen] = useState(false); // Status form
 
-    // Fungsi untuk toggle form tanpa merubah URL
+    // 🔹 Default halaman dan status form
+    const [currentPage, setCurrentPage] = useState("login");
+    const [isOpen, setIsOpen] = useState(false);
+
+    // 🔹 Fungsi untuk toggle form login / register / recover
     const toggleForm = (page = "login") => {
-        setIsOpen((prevIsOpen) => !prevIsOpen); // Hanya toggle status form
-        setCurrentPage(page); // Menentukan halaman mana yang ditampilkan
+        setIsOpen((prev) => !prev);
+        setCurrentPage(page);
     };
 
     useEffect(() => {
+        // Pemetaan antara path dan halaman
         const pageMap = {
             "/register": "register",
             "/verify": "verify",
@@ -28,17 +32,38 @@ export default function AuthContainer() {
             "/recover": "recover",
             "/setpassword": "setpassword",
         };
+
+        // Tentukan halaman berdasarkan path
         if (location.pathname.startsWith("/kehadiran")) {
             setCurrentPage("kehadiran");
         } else {
             setCurrentPage(pageMap[location.pathname] || "login");
         }
-        const validPaths = ["/", "/register", "/verify", "/facereg", "/recover", "/setpassword", "/kehadiran"];
-        if (!validPaths.some(path => location.pathname.startsWith(path))) {
+
+        // Validasi path agar tidak error
+        const validPaths = [
+            "/",
+            "/login",
+            "/register",
+            "/verify",
+            "/facereg",
+            "/recover",
+            "/setpassword",
+            "/kehadiran",
+        ];
+        if (!validPaths.some((path) => location.pathname.startsWith(path))) {
             navigate("*");
+        }
+
+        // 🔹 Buka otomatis hanya untuk halaman login
+        if (location.pathname === "/" || location.pathname === "/login") {
+            setIsOpen(true);
+        } else {
+            setIsOpen(false);
         }
     }, [location.pathname, navigate]);
 
+    // 🔹 Render komponen berdasarkan halaman aktif
     const renderPage = () => {
         const pageMap = {
             login: <Login isOpen={isOpen} onToggle={toggleForm} />,
@@ -49,12 +74,9 @@ export default function AuthContainer() {
             setpassword: <SetPassword isOpen={true} onToggle={toggleForm} />,
             kehadiran: <Kehadiran />,
         };
+
         return pageMap[currentPage] || pageMap.login;
     };
 
-    return (
-        <div className="auth-container">
-            {renderPage()}
-        </div>
-    );
+    return <div className="auth-container">{renderPage()}</div>;
 }
